@@ -7,12 +7,13 @@ using UnityEditor;
 public class DatabaseMain : EditorWindow
 {
     #region Init Values
+
     private int selectedTab = 0;
-    private string[] tabNames = { 
-        "Actors", 
+    private string[] tabNames = {
+        "Actors",
         "Classes" ,
-        "Skills", 
-        "Item", 
+        "Skills",
+        "Item",
         "Weapons",
         "Armors",
         "Enemies",
@@ -29,8 +30,9 @@ public class DatabaseMain : EditorWindow
     private float tabAreaWidth;
     private float tabAreaHeight;
 
-    SerializedProperty actorName;
-    ActorData actorData;
+    public List<ActorData> player = new List<ActorData>();
+    List<string> actorDisplayName = new List<string>();
+
     #endregion
 
     #region Init Function
@@ -42,6 +44,11 @@ public class DatabaseMain : EditorWindow
         dbMain.Show();
     }
 
+    public void OnEnable()
+    {
+        ValueInit();
+    }
+
     //////////////////////////////////////////////////
 
     /// <summary>
@@ -49,7 +56,6 @@ public class DatabaseMain : EditorWindow
     /// </summary>
     private void OnGUI()
     {
-        ValueInit();
         DBTab();
         TabSelection(selectedTab);
     }
@@ -87,7 +93,7 @@ public class DatabaseMain : EditorWindow
     /// <param name="selectedTab"></param>
     private void TabSelection(int selectedTab)
     {
-        switch(selectedTab)
+        switch (selectedTab)
         {
             case 1:
                 ClassesTab();
@@ -98,37 +104,20 @@ public class DatabaseMain : EditorWindow
         }
     }
 
-    private void OnEnable()
-    {
-        SerializedObject serializedObject = new SerializedObject(actorData);
-        actorName = serializedObject.FindProperty("actorName");
-    }
     #endregion
 
     #region Functionality Tab  
     //////////////////////////////////////////////////
-    bool once = false;
+
+    //How many actor in ChangeMaximum Func
     public int actorSize;
-    public int actorSizeTemp;
 
-    public class Player
-    {
-        public string name;
-        public int damage;
-    }
-    List<Player> player = new List<Player>();
-
-    List<string> playerName = new List<string>();
     int index = 0;
     int indexTemp = -1;
     Vector2 scrollPos = Vector2.zero;
+
     private void ActorsTab()
     {
-        if(!once)
-        {
-            onceCalled();
-        }
-
         //Initialize value that actor tab needed.
         GUIStyle actorStyle;
 
@@ -156,64 +145,37 @@ public class DatabaseMain : EditorWindow
 
         //Scroll View
         scrollPos = GUILayout.BeginScrollView(scrollPos, false, true, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .82f));
-        index = GUILayout.SelectionGrid(index, playerName.ToArray(), 1, GUILayout.Width(firstTabWidth-20), GUILayout.Height(30*actorSize));
+        index = GUILayout.SelectionGrid(index, actorDisplayName.ToArray(), 1, GUILayout.Width(firstTabWidth - 20), GUILayout.Height(30 * actorSize));
         GUILayout.EndScrollView();
 
         //Happen everytime selection grid is updated
-        if(GUI.changed && index != indexTemp)
+        if (GUI.changed && index != indexTemp)
         {
             indexTemp = index;
-            chooseActor(indexTemp);
+            ActorListSelected(indexTemp);
             indexTemp = -1;
         }
-        
 
-        //if (GUILayout.Button("Choose!", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10))) { chooseActor(index); }
-
-        actorSizeTemp = EditorGUILayout.IntField(actorSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
-        if(GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
+        actorSize = EditorGUILayout.IntField(actorSize, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
+        if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
         {
-            actorSize = actorSizeTemp;
-            once = false;
+            ChangeMaximum(actorSize);
         }
 
-
-
-        //EditorGUILayout.PropertyField(actorName, new GUIContent("Actor Name"), GUILayout.Height(20));
-
-
-
-
         GUILayout.EndArea();
-
         GUILayout.EndArea();
     }
 
-    public void chooseActor(int index)
+    /// <summary>
+    /// This called when actor list on active.
+    /// </summary>
+    /// <param name="index">index of actor in a list.</param>
+    public void ActorListSelected(int index)
     {
-        if(index!=-1)
+        if (index != -1)
         {
-            Debug.Log(player[index].name);
+            Debug.Log(player[index].actorName);
         }
-    }
-
-    int counter = 0;
-    public void onceCalled()
-    {
-        while(counter <= actorSize)
-        {
-            player.Add(new Player { name = "keju" + counter.ToString(), damage = 1 });
-            playerName.Add(player[counter].name);
-            counter++;
-            once = true;
-        }
-        if(counter > actorSize)
-        {
-            player.RemoveRange(actorSize, player.Count - actorSize);
-            playerName.RemoveRange(actorSize, playerName.Count - actorSize);
-            counter = actorSize;
-        }
-        once = true;
     }
     //////////////////////////////////////////////////
 
@@ -248,6 +210,28 @@ public class DatabaseMain : EditorWindow
         result.SetPixels(colPixel);
         result.Apply();
         return result;
+    }
+
+    /// <summary>
+    /// Change Maximum function , when we change the size
+    /// and click Change Maximum button in Editor, it will update
+    /// and change the size while creating new data.
+    /// </summary>
+    /// <param name="size">get size from actorSize</param>
+    private void ChangeMaximum(int size)
+    {
+        //This count only useful when we doesn't have a name yet.
+        //you can remove this when decide a new format later.
+        int count = 0;
+
+        for (int i = 0; i < size; i++)
+        {
+            player.Add(CreateInstance<ActorData>());
+            AssetDatabase.CreateAsset(player[i], "Assets/Resources/Data/ActorData/Actor_" + count + ".asset");
+            AssetDatabase.SaveAssets();
+            actorDisplayName.Add(player[size].name);
+            count++;
+        }
     }
     #endregion
 }
