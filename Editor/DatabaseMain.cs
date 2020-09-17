@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEditor;
 
 [CustomEditor(typeof(ActorData))]
@@ -6,12 +7,13 @@ using UnityEditor;
 public class DatabaseMain : EditorWindow
 {
     #region Init Values
+
     private int selectedTab = 0;
-    private string[] tabNames = { 
-        "Actors", 
+    private string[] tabNames = {
+        "Actors",
         "Classes" ,
-        "Skills", 
-        "Item", 
+        "Skills",
+        "Item",
         "Weapons",
         "Armors",
         "Enemies",
@@ -28,8 +30,9 @@ public class DatabaseMain : EditorWindow
     private float tabAreaWidth;
     private float tabAreaHeight;
 
-    SerializedProperty actorName;
-    ActorData actorData;
+    public List<ActorData> player = new List<ActorData>();
+    List<string> actorDisplayName = new List<string>();
+
     #endregion
 
     #region Init Function
@@ -41,6 +44,11 @@ public class DatabaseMain : EditorWindow
         dbMain.Show();
     }
 
+    public void OnEnable()
+    {
+        ValueInit();
+    }
+
     //////////////////////////////////////////////////
 
     /// <summary>
@@ -48,7 +56,6 @@ public class DatabaseMain : EditorWindow
     /// </summary>
     private void OnGUI()
     {
-        ValueInit();
         DBTab();
         TabSelection(selectedTab);
     }
@@ -60,8 +67,7 @@ public class DatabaseMain : EditorWindow
     /// </summary>
     private void ValueInit()
     {
-        tabAreaWidth = position.width / 8;
-        tabAreaHeight = position.height * .75f;
+
     }
 
     //////////////////////////////////////////////////
@@ -72,6 +78,8 @@ public class DatabaseMain : EditorWindow
     /// </summary>
     private void DBTab()
     {
+        tabAreaWidth = position.width / 8;
+        tabAreaHeight = position.height * .75f;
         GUILayout.BeginVertical("Box");
         selectedTab = GUILayout.SelectionGrid(selectedTab, tabNames, 1, GUILayout.Width(tabAreaWidth), GUILayout.Height(tabAreaHeight));
         GUILayout.EndVertical();
@@ -86,7 +94,7 @@ public class DatabaseMain : EditorWindow
     /// <param name="selectedTab"></param>
     private void TabSelection(int selectedTab)
     {
-        switch(selectedTab)
+        switch (selectedTab)
         {
             case 1:
                 ClassesTab();
@@ -97,15 +105,18 @@ public class DatabaseMain : EditorWindow
         }
     }
 
-    private void OnEnable()
-    {
-        SerializedObject serializedObject = new SerializedObject(actorData);
-        actorName = serializedObject.FindProperty("actorName");
-    }
     #endregion
 
     #region Functionality Tab  
     //////////////////////////////////////////////////
+
+    //How many actor in ChangeMaximum Func
+    public int actorSize;
+
+    int index = 0;
+    int indexTemp = -1;
+    Vector2 scrollPos = Vector2.zero;
+
     private void ActorsTab()
     {
         //Initialize value that actor tab needed.
@@ -118,7 +129,7 @@ public class DatabaseMain : EditorWindow
         float firstTabWidth = tabWidth * 3 / 10;
 
         //Size array of Actor
-        int actorSize = 4;
+        //actorSize = 4;
 
         actorStyle = new GUIStyle(GUI.skin.box);
         actorStyle.normal.background = CreateTexture(1, 1, Color.gray);
@@ -132,21 +143,48 @@ public class DatabaseMain : EditorWindow
         //First Tab
         GUILayout.BeginArea(new Rect(0, 0, tabWidth, tabHeight));
         GUILayout.Box("Actors", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15));
-        actorSize = EditorGUILayout.IntField(actorSize, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
-        GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
 
-        EditorGUILayout.PropertyField(actorName, new GUIContent("Actor Name"), GUILayout.Height(20));
+        //Scroll View
+        scrollPos = GUILayout.BeginScrollView(scrollPos, false, true, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .82f));
+        index = GUILayout.SelectionGrid(index, actorDisplayName.ToArray(), 1, GUILayout.Width(firstTabWidth - 20), GUILayout.Height(30 * actorSize));
+        GUILayout.EndScrollView();
+
+        //Happen everytime selection grid is updated
+        if (GUI.changed && index != indexTemp)
+        {
+            indexTemp = index;
+            ActorListSelected(indexTemp);
+            indexTemp = -1;
+        }
+
+        actorSize = EditorGUILayout.IntField(actorSize, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
+        if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
+        {
+            ChangeMaximum(actorSize);
+        }
 
         GUILayout.EndArea();
         GUILayout.EndArea();
     }
 
+    /// <summary>
+    /// This called when actor list on active.
+    /// </summary>
+    /// <param name="index">index of actor in a list.</param>
+    public void ActorListSelected(int index)
+    {
+        if (index != -1)
+        {
+            Debug.Log(player[index].actorName);
+        }
+    }
     //////////////////////////////////////////////////
 
     private void ClassesTab()
     {
 
     }
+
 
     //////////////////////////////////////////////////
     #endregion
@@ -173,6 +211,48 @@ public class DatabaseMain : EditorWindow
         result.SetPixels(colPixel);
         result.Apply();
         return result;
+    }
+
+    /// <summary>
+    /// Change Maximum function , when we change the size
+    /// and click Change Maximum button in Editor, it will update
+    /// and change the size while creating new data.
+    /// </summary>
+    /// <param name="size">get size from actorSize</param>
+
+
+    int counter = 0;
+    private void ChangeMaximum(int size)
+    {
+        //This count only useful when we doesn't have a name yet.
+        //you can remove this when decide a new format later.
+         while(counter <= actorSize)
+        {
+            player.Add(CreateInstance<ActorData>());
+            AssetDatabase.CreateAsset(player[counter], "Assets/Resources/Data/ActorData/Actor_" + counter + ".asset");
+            AssetDatabase.SaveAssets();
+            actorDisplayName.Add(player[counter].actorName);
+            counter++;
+        }
+         if(counter > actorSize)
+        {
+            player.RemoveRange(actorSize, player.Count - actorSize);
+            actorDisplayName.RemoveRange(actorSize, actorDisplayName.Count - actorSize);
+            for(int i=actorSize;i<=counter;i++)
+            {
+                AssetDatabase.DeleteAsset("Assets/Resources/Data/ActorData/Actor_" + i + ".asset");
+            }
+            AssetDatabase.SaveAssets();
+            counter = actorSize;
+        }
+        //for (int i = 0; i < size; i++)
+        //{
+        //    player.Add(CreateInstance<ActorData>());
+        //    AssetDatabase.CreateAsset(player[i], "Assets/Resources/Data/ActorData/Actor_" + count + ".asset");
+        //    AssetDatabase.SaveAssets();
+        //    actorDisplayName.Add(player[i].name);
+        //    count++;
+        //}
     }
     #endregion
 }
