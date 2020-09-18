@@ -67,8 +67,7 @@ public class DatabaseMain : EditorWindow
     /// </summary>
     private void ValueInit()
     {
-        tabAreaWidth = position.width / 8;
-        tabAreaHeight = position.height * .75f;
+
     }
 
     //////////////////////////////////////////////////
@@ -79,6 +78,8 @@ public class DatabaseMain : EditorWindow
     /// </summary>
     private void DBTab()
     {
+        tabAreaWidth = position.width / 8;
+        tabAreaHeight = position.height * .75f;
         GUILayout.BeginVertical("Box");
         selectedTab = GUILayout.SelectionGrid(selectedTab, tabNames, 1, GUILayout.Width(tabAreaWidth), GUILayout.Height(tabAreaHeight));
         GUILayout.EndVertical();
@@ -110,7 +111,8 @@ public class DatabaseMain : EditorWindow
     //////////////////////////////////////////////////
 
     //How many actor in ChangeMaximum Func
-    public int actorSize;
+    public int actorSize; 
+    public int actorSizeTemp; //For fixing scroll rect immediately updating
 
     int index = 0;
     int indexTemp = -1;
@@ -156,7 +158,7 @@ public class DatabaseMain : EditorWindow
             indexTemp = -1;
         }
 
-        actorSize = EditorGUILayout.IntField(actorSize, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
+        actorSizeTemp = EditorGUILayout.IntField(actorSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
         if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
         {
             ChangeMaximum(actorSize);
@@ -218,20 +220,41 @@ public class DatabaseMain : EditorWindow
     /// and change the size while creating new data.
     /// </summary>
     /// <param name="size">get size from actorSize</param>
+
+
+    int counter = 0;
     private void ChangeMaximum(int size)
     {
         //This count only useful when we doesn't have a name yet.
         //you can remove this when decide a new format later.
-        int count = 0;
-
-        for (int i = 0; i < size; i++)
+        actorSize = actorSizeTemp; //Commiting to changing maximum value
+         while(counter <= actorSize)
         {
             player.Add(CreateInstance<ActorData>());
-            AssetDatabase.CreateAsset(player[i], "Assets/Resources/Data/ActorData/Actor_" + count + ".asset");
+            AssetDatabase.CreateAsset(player[counter], "Assets/Resources/Data/ActorData/Actor_" + counter + ".asset");
             AssetDatabase.SaveAssets();
-            actorDisplayName.Add(player[size].name);
-            count++;
+            actorDisplayName.Add(player[counter].actorName);
+            counter++;
         }
+         if(counter > actorSize)
+        {
+            player.RemoveRange(actorSize, player.Count - actorSize);
+            actorDisplayName.RemoveRange(actorSize, actorDisplayName.Count - actorSize);
+            for(int i=actorSize;i<=counter;i++)
+            {
+                AssetDatabase.DeleteAsset("Assets/Resources/Data/ActorData/Actor_" + i + ".asset");
+            }
+            AssetDatabase.SaveAssets();
+            counter = actorSize;
+        }
+        //for (int i = 0; i < size; i++)
+        //{
+        //    player.Add(CreateInstance<ActorData>());
+        //    AssetDatabase.CreateAsset(player[i], "Assets/Resources/Data/ActorData/Actor_" + count + ".asset");
+        //    AssetDatabase.SaveAssets();
+        //    actorDisplayName.Add(player[i].name);
+        //    count++;
+        //}
     }
     #endregion
 }
