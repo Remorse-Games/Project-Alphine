@@ -33,6 +33,17 @@ public class DatabaseMain : EditorWindow
     public List<ActorData> player = new List<ActorData>();
     List<string> actorDisplayName = new List<string>();
 
+        #region  DeleteLater
+            public string[] actorClassesList = 
+            {
+                "Mage",
+                "Cleric",
+                "Healer",
+                "Warrior",
+            };
+            public int selectedClassIndex;
+        #endregion
+
     #endregion
 
     #region Init Function
@@ -112,18 +123,26 @@ public class DatabaseMain : EditorWindow
 
     //How many actor in ChangeMaximum Func
     public int actorSize;
+    public int actorSizeTemp;
 
     int index = 0;
     int indexTemp = -1;
     Vector2 scrollPos = Vector2.zero;
 
+    Texture2D faceImage;
+    Texture2D characterImage;
+    Texture2D battlerImage;
+
     private void ActorsTab()
     {
         //Initialize value that actor tab needed.
         GUIStyle actorStyle;
+        GUIStyle tabStyle;
+        GUIStyle columnStyle;
 
         float tabWidth = position.width * .85f;
         float tabHeight = position.height - 10f;
+
 
         //Actor page
         float firstTabWidth = tabWidth * 3 / 10;
@@ -133,6 +152,10 @@ public class DatabaseMain : EditorWindow
 
         actorStyle = new GUIStyle(GUI.skin.box);
         actorStyle.normal.background = CreateTexture(1, 1, Color.gray);
+        columnStyle = new GUIStyle(GUI.skin.box);
+        columnStyle.normal.background = CreateTexture(1, 1, new Color32(99, 100, 100, 200));
+        tabStyle = new GUIStyle(GUI.skin.box);
+        tabStyle.normal.background = CreateTexture(1, 1, new Color32(76, 76, 76, 200));
 
         //Button Creation does here.
         GUILayout.BeginArea(new Rect(position.width / 7, 5, tabWidth, tabHeight));
@@ -146,7 +169,7 @@ public class DatabaseMain : EditorWindow
 
         //Scroll View
         scrollPos = GUILayout.BeginScrollView(scrollPos, false, true, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .82f));
-        index = GUILayout.SelectionGrid(index, actorDisplayName.ToArray(), 1, GUILayout.Width(firstTabWidth - 20), GUILayout.Height(30 * actorSize));
+            index = GUILayout.SelectionGrid(index, actorDisplayName.ToArray(), 1, GUILayout.Width(firstTabWidth - 20), GUILayout.Height(30 * actorSize));
         GUILayout.EndScrollView();
 
         //Happen everytime selection grid is updated
@@ -157,11 +180,74 @@ public class DatabaseMain : EditorWindow
             indexTemp = -1;
         }
 
-        actorSize = EditorGUILayout.IntField(actorSize, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
+        actorSizeTemp = EditorGUILayout.IntField(actorSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
         if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
         {
             ChangeMaximum(actorSize);
         }
+
+
+        //second Column
+        GUILayout.BeginArea(new Rect(firstTabWidth + 5, 0, firstTabWidth+70, tabHeight-15), columnStyle);
+
+        //GeneralSettings tab
+        Rect generalBox = new Rect(5, 5, firstTabWidth + 60, position.height/3 - 50);
+        GUILayout.BeginArea(generalBox, tabStyle); //Start of general settings tab
+            GUILayout.Label("General Settings", EditorStyles.boldLabel); //general settings label
+            GUILayout.BeginVertical(); 
+                GUILayout.BeginHorizontal();
+                    GUILayout.BeginVertical(); //Name label, name field, class label, and class popup
+                        GUILayout.Label("Name:");
+                        player[index].actorName = GUILayout.TextField(player[index].actorName, GUILayout.Width(generalBox.width/2 - 15), GUILayout.Height(generalBox.height/8));
+                        GUILayout.Space(generalBox.height/20);
+                        GUILayout.Label("Class:");
+                        selectedClassIndex = EditorGUILayout.Popup(selectedClassIndex, actorClassesList, GUILayout.Height(generalBox.height/8), GUILayout.Width(generalBox.width/2 -15));
+                    GUILayout.EndVertical(); //Name label, name field, class label, and class popup (ending)
+                    GUILayout.BeginVertical(); //Nickname label, nickname field, initial level and max level label and field
+                        GUILayout.Label("Nickname:");
+                        player[index].actorNickname = GUILayout.TextField(player[index].actorNickname, GUILayout.Width(generalBox.width/2 - 15), GUILayout.Height(generalBox.height/8));
+                        GUILayout.Space(generalBox.height/20);
+                        GUILayout.BeginHorizontal();
+                            GUILayout.BeginVertical();
+                                GUILayout.Label("Initial Level:");
+                                player[index].initLevel = EditorGUILayout.IntField(player[index].initLevel, GUILayout.Width(generalBox.width/4-20), GUILayout.Height(generalBox.height/8));
+                            GUILayout.EndVertical();
+                            GUILayout.BeginVertical();
+                                GUILayout.Label("Max Level:");
+                                player[index].maxLevel = EditorGUILayout.IntField(player[index].maxLevel, GUILayout.Width(generalBox.width/4-20), GUILayout.Height(generalBox.height/8));
+                            GUILayout.EndVertical();
+                        GUILayout.EndHorizontal();
+                    GUILayout.EndVertical(); //Nickname label, nickname field, initial level and max level label and field (ending)
+                GUILayout.EndHorizontal();
+                GUILayout.Label("Profile:");
+                player[index].notes = GUILayout.TextArea(player[index].notes, GUILayout.Width(firstTabWidth+50), GUILayout.Height(generalBox.height/5));
+            GUILayout.EndVertical();
+        GUILayout.EndArea();
+
+
+        //Images tab
+        Rect imageBox = new Rect(5, generalBox.height + 10, firstTabWidth + 60, position.height / 3 - 50); //Second Row
+            GUILayout.BeginArea(imageBox ,tabStyle); //Image Tab
+                GUILayout.Space(2);
+                GUILayout.Label("Images", EditorStyles.boldLabel); //Image Label
+                GUILayout.Space(imageBox.height/15);
+                //Three image parts
+                GUILayout.BeginHorizontal();
+                    GUILayout.BeginVertical();
+                        GUILayout.Label("Face:");
+                        GUILayout.Box(faceImage, GUILayout.Width(imageBox.width / 3 - 10), GUILayout.Height(imageBox.width / 3 - 10));
+                    GUILayout.EndVertical();
+                    GUILayout.BeginVertical();
+                        GUILayout.Label("Character:");
+                        GUILayout.Box(characterImage, GUILayout.Width(imageBox.width / 3 - 10), GUILayout.Height(imageBox.width / 3 - 10));
+                    GUILayout.EndVertical();
+                    GUILayout.BeginVertical();
+                        GUILayout.Label("[SV] Battler: ");
+                        GUILayout.Box(battlerImage, GUILayout.Width(imageBox.width/3 - 10), GUILayout.Height(imageBox.width / 3 - 10));
+                    GUILayout.EndVertical();
+                GUILayout.EndHorizontal();
+        GUILayout.EndArea();
+
 
         GUILayout.EndArea();
         GUILayout.EndArea();
@@ -176,6 +262,9 @@ public class DatabaseMain : EditorWindow
         if (index != -1)
         {
             Debug.Log(player[index].actorName);
+            faceImage = textureFromSprite(player[index].face);
+            characterImage = textureFromSprite(player[index].characterWorld);
+            battlerImage = textureFromSprite(player[index].battler);
         }
     }
     //////////////////////////////////////////////////
@@ -212,6 +301,22 @@ public class DatabaseMain : EditorWindow
         result.Apply();
         return result;
     }
+    public static Texture2D textureFromSprite(Sprite sprite)
+    {
+        if (sprite.rect.width != sprite.texture.width)
+        {
+            Texture2D newText = new Texture2D((int)sprite.rect.width, (int)sprite.rect.height);
+            Color[] newColors = sprite.texture.GetPixels((int)sprite.textureRect.x,
+                                                         (int)sprite.textureRect.y,
+                                                         (int)sprite.textureRect.width,
+                                                         (int)sprite.textureRect.height);
+            newText.SetPixels(newColors);
+            newText.Apply();
+            return newText;
+        }
+        else
+            return sprite.texture;
+    }
 
     /// <summary>
     /// Change Maximum function , when we change the size
@@ -224,6 +329,7 @@ public class DatabaseMain : EditorWindow
     int counter = 0;
     private void ChangeMaximum(int size)
     {
+        actorSize = actorSizeTemp;
         //This count only useful when we doesn't have a name yet.
         //you can remove this when decide a new format later.
          while(counter <= actorSize)
@@ -245,14 +351,6 @@ public class DatabaseMain : EditorWindow
             AssetDatabase.SaveAssets();
             counter = actorSize;
         }
-        //for (int i = 0; i < size; i++)
-        //{
-        //    player.Add(CreateInstance<ActorData>());
-        //    AssetDatabase.CreateAsset(player[i], "Assets/Resources/Data/ActorData/Actor_" + count + ".asset");
-        //    AssetDatabase.SaveAssets();
-        //    actorDisplayName.Add(player[i].name);
-        //    count++;
-        //}
     }
     #endregion
 }
