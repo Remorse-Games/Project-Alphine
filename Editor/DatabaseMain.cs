@@ -111,7 +111,8 @@ public class DatabaseMain : EditorWindow
     //////////////////////////////////////////////////
 
     //How many actor in ChangeMaximum Func
-    public int actorSize;
+    public int actorSize; 
+    public int actorSizeTemp; //For fixing scroll rect immediately updating
 
     int index = 0;
     int indexTemp = -1;
@@ -157,7 +158,7 @@ public class DatabaseMain : EditorWindow
             indexTemp = -1;
         }
 
-        actorSize = EditorGUILayout.IntField(actorSize, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
+        actorSizeTemp = EditorGUILayout.IntField(actorSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
         if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
         {
             ChangeMaximum(actorSize);
@@ -226,6 +227,7 @@ public class DatabaseMain : EditorWindow
     {
         //This count only useful when we doesn't have a name yet.
         //you can remove this when decide a new format later.
+        actorSize = actorSizeTemp; //Commiting to changing maximum value
          while(counter <= actorSize)
         {
             player.Add(CreateInstance<ActorData>());
