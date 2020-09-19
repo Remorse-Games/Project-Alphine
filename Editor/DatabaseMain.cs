@@ -60,7 +60,7 @@ public class DatabaseMain : EditorWindow
     public void OnEnable()
     {
         ValueInit();
-        folderChecker();
+        FolderChecker();
     }
 
     //////////////////////////////////////////////////
@@ -88,11 +88,27 @@ public class DatabaseMain : EditorWindow
     ///<summary>
     /// Folder checker, create folder if it doesnt exist already
     ///</summary>
-    private void folderChecker()
+    private void FolderChecker()
     {
-
+        if(!AssetDatabase.IsValidFolder("Assets/Resources"))
+        {
+            AssetDatabase.CreateFolder("Assets", "Resources");
+        }
+        if(!AssetDatabase.IsValidFolder("Assets/Resources/Data"))
+        {
+            AssetDatabase.CreateFolder("Assets/Resources", "Data");
+        }
+        if(!AssetDatabase.IsValidFolder("Assets/Resources/Data/ActorData"))
+        {
+            AssetDatabase.CreateFolder("Assets/Resources/Data", "ActorData");
+        }
+        if(!AssetDatabase.IsValidFolder("Assets/Resources/Image"))
+        {
+            AssetDatabase.CreateFolder("Assets/Resources", "Image");
+        }
+        
     }
-    
+
     /// <summary>
     /// Database Tab. Create selection grid so we can choose which tab is
     /// active currently.
