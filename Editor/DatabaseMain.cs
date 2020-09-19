@@ -86,7 +86,7 @@ public class DatabaseMain : EditorWindow
 
     //////////////////////////////////////////////////
     ///<summary>
-    /// Folder checker, create folder if it doesnt exist already
+    /// Folder checker, create folder if it doesnt exist already, Might refactor into one liner if
     ///</summary>
     private void FolderChecker()
     {
@@ -165,6 +165,7 @@ public class DatabaseMain : EditorWindow
     int initlevelTemp;
     int maxlevelTemp;
     string profileTemp;
+
     #endregion
 
 
@@ -317,12 +318,25 @@ public class DatabaseMain : EditorWindow
     /// <param name="index">index of actor in a list.</param>
     public void ActorListSelected(int index)
     {
+        Texture2D defTex = new Texture2D(256, 256);
         if (index != -1)
         {
-            Debug.Log(player[index].actorName);
-            faceImage = textureFromSprite(player[index].face);
-            characterImage = textureFromSprite(player[index].characterWorld);
-            battlerImage = textureFromSprite(player[index].battler);
+            if(player[index].face == null)
+                faceImage = defTex;
+            else
+                faceImage = textureFromSprite(player[index].face);
+
+
+            if(player[index].characterWorld == null)
+                characterImage = defTex;
+            else
+                characterImage = textureFromSprite(player[index].characterWorld);
+
+                
+            if(player[index].battler == null)
+                battlerImage = defTex;
+            else
+                battlerImage = textureFromSprite(player[index].battler);
         }
     }
     //////////////////////////////////////////////////
