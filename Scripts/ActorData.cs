@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+[CreateAssetMenu(menuName = "Database/ActorData")]
 public class ActorData : ScriptableObject
 {
     public string actorName;
@@ -7,6 +8,8 @@ public class ActorData : ScriptableObject
     //public ActorClass actorClass;
     public int initLevel;
     public int maxLevel;
+
+    [TextArea]
     public string description;
 
     public Sprite face;
@@ -17,5 +20,21 @@ public class ActorData : ScriptableObject
 
     //TODO : Traits
 
+    [TextArea]
     public string notes;
+
+    public void OnEnable()
+    {
+        Sprite sp = Resources.Load<Sprite>("Image");
+
+        actorName = "player";
+        actorNickname = "actorNickname";
+        initLevel = 1;
+        maxLevel = 99;
+        description = "insert your description here";
+        face = sp;
+        characterWorld = sp;
+        battler = sp;
+        notes = "write your notes here, it won't affect the game though.";
+    }
 }
