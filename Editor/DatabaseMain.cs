@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 using UnityEditor;
 
 [CustomEditor(typeof(ActorData))]
@@ -169,7 +170,7 @@ public class DatabaseMain : EditorWindow
 
         //Scroll View
         scrollPos = GUILayout.BeginScrollView(scrollPos, false, true, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .82f));
-            index = GUILayout.SelectionGrid(index, actorDisplayName.ToArray(), 1, GUILayout.Width(firstTabWidth - 20), GUILayout.Height(30 * actorSize));
+            index = GUILayout.SelectionGrid(index, actorDisplayName.ToArray(), 1, GUILayout.Width(firstTabWidth - 20), GUILayout.Height(position.height/24 * actorSize));
         GUILayout.EndScrollView();
 
         //Happen everytime selection grid is updated
@@ -199,6 +200,7 @@ public class DatabaseMain : EditorWindow
                     GUILayout.BeginVertical(); //Name label, name field, class label, and class popup
                         GUILayout.Label("Name:");
                         player[index].actorName = GUILayout.TextField(player[index].actorName, GUILayout.Width(generalBox.width/2 - 15), GUILayout.Height(generalBox.height/8));
+                        actorDisplayName[index] = player[index].actorName;
                         GUILayout.Space(generalBox.height/20);
                         GUILayout.Label("Class:");
                         selectedClassIndex = EditorGUILayout.Popup(selectedClassIndex, actorClassesList, GUILayout.Height(generalBox.height/8), GUILayout.Width(generalBox.width/2 -15));
@@ -226,7 +228,7 @@ public class DatabaseMain : EditorWindow
 
 
         //Images tab
-        Rect imageBox = new Rect(5, generalBox.height + 10, firstTabWidth + 60, position.height / 3 - 50); //Second Row
+        Rect imageBox = new Rect(5, generalBox.height + 10, firstTabWidth + 60, position.height / 3 - 30); //Second Row
             GUILayout.BeginArea(imageBox ,tabStyle); //Image Tab
                 GUILayout.Space(2);
                 GUILayout.Label("Images", EditorStyles.boldLabel); //Image Label
@@ -236,14 +238,17 @@ public class DatabaseMain : EditorWindow
                     GUILayout.BeginVertical();
                         GUILayout.Label("Face:");
                         GUILayout.Box(faceImage, GUILayout.Width(imageBox.width / 3 - 10), GUILayout.Height(imageBox.width / 3 - 10));
+                        if(GUILayout.Button("Edit Face", GUILayout.Height(imageBox.height/10), GUILayout.Width(imageBox.width/3 - 10))) {changeFaceImage();}
                     GUILayout.EndVertical();
                     GUILayout.BeginVertical();
                         GUILayout.Label("Character:");
                         GUILayout.Box(characterImage, GUILayout.Width(imageBox.width / 3 - 10), GUILayout.Height(imageBox.width / 3 - 10));
+                        if(GUILayout.Button("Edit Character", GUILayout.Height(imageBox.height/10), GUILayout.Width(imageBox.width/3 - 10))) {changeCharacterImage();}                        
                     GUILayout.EndVertical();
                     GUILayout.BeginVertical();
                         GUILayout.Label("[SV] Battler: ");
                         GUILayout.Box(battlerImage, GUILayout.Width(imageBox.width/3 - 10), GUILayout.Height(imageBox.width / 3 - 10));
+                        if(GUILayout.Button("Edit Battler", GUILayout.Height(imageBox.height/10), GUILayout.Width(imageBox.width/3 - 10))) {changeBattlerImage();}
                     GUILayout.EndVertical();
                 GUILayout.EndHorizontal();
         GUILayout.EndArea();
@@ -351,6 +356,22 @@ public class DatabaseMain : EditorWindow
             AssetDatabase.SaveAssets();
             counter = actorSize;
         }
+    }
+
+
+    private void changeFaceImage()
+    {
+        
+    }
+
+    private void changeCharacterImage()
+    {
+
+    }
+
+    private void changeBattlerImage()
+    {
+
     }
     #endregion
 }
