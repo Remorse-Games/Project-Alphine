@@ -130,9 +130,13 @@ public class DatabaseMain : EditorWindow
     int indexTemp = -1;
     Vector2 scrollPos = Vector2.zero;
 
-    Texture2D faceImage;
-    Texture2D characterImage;
-    Texture2D battlerImage;
+    #region TempValues
+    string actorNameTemp;
+    string actorNicknameTemp;
+    int initlevelTemp;
+    int maxlevelTemp;
+    string profileTemp;
+    #endregion
 
     private void ActorsTab()
     {
@@ -193,65 +197,58 @@ public class DatabaseMain : EditorWindow
 
         //GeneralSettings tab
         Rect generalBox = new Rect(5, 5, firstTabWidth + 60, position.height/3 - 50);
-        GUILayout.BeginArea(generalBox, tabStyle); //Start of general settings tab
+
+            GUILayout.BeginArea(generalBox, tabStyle); //Start of general settings tab
             GUILayout.Label("General Settings", EditorStyles.boldLabel); //general settings label
             GUILayout.BeginVertical(); 
                 GUILayout.BeginHorizontal();
                     GUILayout.BeginVertical(); //Name label, name field, class label, and class popup
                         GUILayout.Label("Name:");
-                        player[index].actorName = GUILayout.TextField(player[index].actorName, GUILayout.Width(generalBox.width/2 - 15), GUILayout.Height(generalBox.height/8));
-                        actorDisplayName[index] = player[index].actorName;
+                        if(actorSize > 0)
+                        {player[index].actorName = GUILayout.TextField(player[index].actorName, GUILayout.Width(generalBox.width/2 - 15), GUILayout.Height(generalBox.height/8));
+                         actorDisplayName[index] = player[index].actorName;}
+                        else
+                        {actorNameTemp = GUILayout.TextField(actorNameTemp, GUILayout.Width(generalBox.width/2 - 15), GUILayout.Height(generalBox.height/8));}
                         GUILayout.Space(generalBox.height/20);
                         GUILayout.Label("Class:");
                         selectedClassIndex = EditorGUILayout.Popup(selectedClassIndex, actorClassesList, GUILayout.Height(generalBox.height/8), GUILayout.Width(generalBox.width/2 -15));
                     GUILayout.EndVertical(); //Name label, name field, class label, and class popup (ending)
                     GUILayout.BeginVertical(); //Nickname label, nickname field, initial level and max level label and field
                         GUILayout.Label("Nickname:");
-                        player[index].actorNickname = GUILayout.TextField(player[index].actorNickname, GUILayout.Width(generalBox.width/2 - 15), GUILayout.Height(generalBox.height/8));
+                        if(actorSize>0)
+                        {player[index].actorNickname = GUILayout.TextField(player[index].actorNickname, GUILayout.Width(generalBox.width/2 - 15), GUILayout.Height(generalBox.height/8));}
+                        else
+                        {actorNicknameTemp = GUILayout.TextField(actorNicknameTemp, GUILayout.Width(generalBox.width/2 - 15), GUILayout.Height(generalBox.height/8));}
                         GUILayout.Space(generalBox.height/20);
                         GUILayout.BeginHorizontal();
                             GUILayout.BeginVertical();
                                 GUILayout.Label("Initial Level:");
+                                if(actorSize>0)
                                 player[index].initLevel = EditorGUILayout.IntField(player[index].initLevel, GUILayout.Width(generalBox.width/4-20), GUILayout.Height(generalBox.height/8));
+                                else
+                                initlevelTemp = EditorGUILayout.IntField(initlevelTemp, GUILayout.Width(generalBox.width/4-20), GUILayout.Height(generalBox.height/8));
                             GUILayout.EndVertical();
                             GUILayout.BeginVertical();
                                 GUILayout.Label("Max Level:");
+                                if(actorSize>0)
                                 player[index].maxLevel = EditorGUILayout.IntField(player[index].maxLevel, GUILayout.Width(generalBox.width/4-20), GUILayout.Height(generalBox.height/8));
+                                else
+                                maxlevelTemp = EditorGUILayout.IntField(maxlevelTemp, GUILayout.Width(generalBox.width/4-20), GUILayout.Height(generalBox.height/8));
                             GUILayout.EndVertical();
                         GUILayout.EndHorizontal();
                     GUILayout.EndVertical(); //Nickname label, nickname field, initial level and max level label and field (ending)
                 GUILayout.EndHorizontal();
                 GUILayout.Label("Profile:");
+                if(actorSize>0)
                 player[index].notes = GUILayout.TextArea(player[index].notes, GUILayout.Width(firstTabWidth+50), GUILayout.Height(generalBox.height/5));
+                else
+                profileTemp = GUILayout.TextArea(profileTemp, GUILayout.Width(firstTabWidth+50), GUILayout.Height(generalBox.height/5));
             GUILayout.EndVertical();
-        GUILayout.EndArea();
+            GUILayout.EndArea();
 
 
         //Images tab
-        Rect imageBox = new Rect(5, generalBox.height + 10, firstTabWidth + 60, position.height / 3 - 30); //Second Row
-            GUILayout.BeginArea(imageBox ,tabStyle); //Image Tab
-                GUILayout.Space(2);
-                GUILayout.Label("Images", EditorStyles.boldLabel); //Image Label
-                GUILayout.Space(imageBox.height/15);
-                //Three image parts
-                GUILayout.BeginHorizontal();
-                    GUILayout.BeginVertical();
-                        GUILayout.Label("Face:");
-                        GUILayout.Box(faceImage, GUILayout.Width(imageBox.width / 3 - 10), GUILayout.Height(imageBox.width / 3 - 10));
-                        if(GUILayout.Button("Edit Face", GUILayout.Height(imageBox.height/10), GUILayout.Width(imageBox.width/3 - 10))) {changeFaceImage();}
-                    GUILayout.EndVertical();
-                    GUILayout.BeginVertical();
-                        GUILayout.Label("Character:");
-                        GUILayout.Box(characterImage, GUILayout.Width(imageBox.width / 3 - 10), GUILayout.Height(imageBox.width / 3 - 10));
-                        if(GUILayout.Button("Edit Character", GUILayout.Height(imageBox.height/10), GUILayout.Width(imageBox.width/3 - 10))) {changeCharacterImage();}                        
-                    GUILayout.EndVertical();
-                    GUILayout.BeginVertical();
-                        GUILayout.Label("[SV] Battler: ");
-                        GUILayout.Box(battlerImage, GUILayout.Width(imageBox.width/3 - 10), GUILayout.Height(imageBox.width / 3 - 10));
-                        if(GUILayout.Button("Edit Battler", GUILayout.Height(imageBox.height/10), GUILayout.Width(imageBox.width/3 - 10))) {changeBattlerImage();}
-                    GUILayout.EndVertical();
-                GUILayout.EndHorizontal();
-        GUILayout.EndArea();
+
 
 
         GUILayout.EndArea();
@@ -267,9 +264,6 @@ public class DatabaseMain : EditorWindow
         if (index != -1)
         {
             Debug.Log(player[index].actorName);
-            faceImage = textureFromSprite(player[index].face);
-            characterImage = textureFromSprite(player[index].characterWorld);
-            battlerImage = textureFromSprite(player[index].battler);
         }
     }
     //////////////////////////////////////////////////
@@ -359,19 +353,6 @@ public class DatabaseMain : EditorWindow
     }
 
 
-    private void changeFaceImage()
-    {
-        
-    }
 
-    private void changeCharacterImage()
-    {
-
-    }
-
-    private void changeBattlerImage()
-    {
-
-    }
     #endregion
 }
