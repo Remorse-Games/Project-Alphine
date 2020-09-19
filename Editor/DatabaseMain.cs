@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using UnityEditor;
+using SFB;
 
 [CustomEditor(typeof(ActorData))]
 [CanEditMultipleObjects]
@@ -59,6 +60,7 @@ public class DatabaseMain : EditorWindow
     public void OnEnable()
     {
         ValueInit();
+        folderChecker();
     }
 
     //////////////////////////////////////////////////
@@ -83,7 +85,14 @@ public class DatabaseMain : EditorWindow
     }
 
     //////////////////////////////////////////////////
+    ///<summary>
+    /// Folder checker, create folder if it doesnt exist already
+    ///</summary>
+    private void folderChecker()
+    {
 
+    }
+    
     /// <summary>
     /// Database Tab. Create selection grid so we can choose which tab is
     /// active currently.
@@ -129,7 +138,11 @@ public class DatabaseMain : EditorWindow
     int index = 0;
     int indexTemp = -1;
     Vector2 scrollPos = Vector2.zero;
-
+    
+    Texture2D faceImage;
+    Texture2D characterImage;
+    Texture2D battlerImage;
+    
     #region TempValues
     string actorNameTemp;
     string actorNicknameTemp;
@@ -137,6 +150,7 @@ public class DatabaseMain : EditorWindow
     int maxlevelTemp;
     string profileTemp;
     #endregion
+
 
     private void ActorsTab()
     {
@@ -248,7 +262,33 @@ public class DatabaseMain : EditorWindow
 
 
         //Images tab
+        
+        //Images tab
 
+        Rect imageBox = new Rect(5, generalBox.height + 10, firstTabWidth + 60, position.height / 3 - 30); //Second Row
+            GUILayout.BeginArea(imageBox ,tabStyle); //Image Tab
+                GUILayout.Space(2);
+                GUILayout.Label("Images", EditorStyles.boldLabel); //Image Label
+                GUILayout.Space(imageBox.height/15);
+                //Three image parts
+                GUILayout.BeginHorizontal();
+                    GUILayout.BeginVertical();
+                        GUILayout.Label("Face:");
+                        GUILayout.Box(faceImage, GUILayout.Width(imageBox.width / 3 - 10), GUILayout.Height(imageBox.width / 3 - 10));
+                        if(GUILayout.Button("Edit Face", GUILayout.Height(imageBox.height/10), GUILayout.Width(imageBox.width/3 - 10))) {changeFaceImage();}
+                    GUILayout.EndVertical();
+                    GUILayout.BeginVertical();
+                        GUILayout.Label("Character:");
+                        GUILayout.Box(characterImage, GUILayout.Width(imageBox.width / 3 - 10), GUILayout.Height(imageBox.width / 3 - 10));
+                        if(GUILayout.Button("Edit Character", GUILayout.Height(imageBox.height/10), GUILayout.Width(imageBox.width/3 - 10))) {changeCharacterImage();}                        
+                    GUILayout.EndVertical();
+                    GUILayout.BeginVertical();
+                        GUILayout.Label("[SV] Battler: ");
+                        GUILayout.Box(battlerImage, GUILayout.Width(imageBox.width/3 - 10), GUILayout.Height(imageBox.width / 3 - 10));
+                        if(GUILayout.Button("Edit Battler", GUILayout.Height(imageBox.height/10), GUILayout.Width(imageBox.width/3 - 10))) {changeBattlerImage();}
+                    GUILayout.EndVertical();
+                GUILayout.EndHorizontal();
+        GUILayout.EndArea();
 
 
         GUILayout.EndArea();
@@ -264,6 +304,9 @@ public class DatabaseMain : EditorWindow
         if (index != -1)
         {
             Debug.Log(player[index].actorName);
+            faceImage = textureFromSprite(player[index].face);
+            characterImage = textureFromSprite(player[index].characterWorld);
+            battlerImage = textureFromSprite(player[index].battler);
         }
     }
     //////////////////////////////////////////////////
@@ -350,6 +393,46 @@ public class DatabaseMain : EditorWindow
             AssetDatabase.SaveAssets();
             counter = actorSize;
         }
+    }
+
+        ExtensionFilter[] extensions = new[] {
+                new ExtensionFilter("Image Files", "png", "jpg", "jpeg" ),
+                new ExtensionFilter("Sound Files", "mp3", "wav" ),
+                new ExtensionFilter("All Files", "*" ),
+        };
+
+    private void changeFaceImage()
+    {
+        string relativepath;
+        string[] path = StandaloneFileBrowser.OpenFilePanel("Choose Face", "Assets/Resources/Image",extensions, false);
+        relativepath = "Image/";
+        relativepath += Path.GetFileNameWithoutExtension(path[0]);
+        Sprite imageChosen = Resources.Load<Sprite>(relativepath);
+        player[index].face = imageChosen;
+        ActorListSelected(index);
+    }
+
+    private void changeCharacterImage()
+    {
+        string relativepath;
+        string[] path = StandaloneFileBrowser.OpenFilePanel("Choose Character", "Assets/Resources/Image",extensions, false);
+        relativepath = "Image/";
+        relativepath += Path.GetFileNameWithoutExtension(path[0]);
+        Sprite imageChosen = Resources.Load<Sprite>(relativepath);
+        player[index].characterWorld = imageChosen;
+        ActorListSelected(index);
+    }
+
+    private void changeBattlerImage()
+    {
+        string relativepath;
+        Debug.Log("called");
+        string[] path = StandaloneFileBrowser.OpenFilePanel("Choose Face", "Assets/Resources/Image",extensions, false);
+        relativepath = "Image/";
+        relativepath += Path.GetFileNameWithoutExtension(path[0]);
+        Sprite imageChosen = Resources.Load<Sprite>(relativepath);
+        player[index].battler = imageChosen;
+        ActorListSelected(index);
     }
 
 
