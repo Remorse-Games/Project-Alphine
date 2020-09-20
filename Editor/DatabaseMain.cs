@@ -154,6 +154,8 @@ public class DatabaseMain : EditorWindow
     int index = 0;
     int indexTemp = -1;
     Vector2 scrollPos = Vector2.zero;
+    Vector2 equipmentScrollPos = Vector2.zero;
+    Vector2 traitsScrollPos = Vector2.zero;
     
     Texture2D faceImage;
     Texture2D characterImage;
@@ -279,9 +281,6 @@ public class DatabaseMain : EditorWindow
 
 
         //Images tab
-        
-        //Images tab
-
         Rect imageBox = new Rect(5, generalBox.height + 10, firstTabWidth + 60, position.height / 3 - 30); //Second Row
             GUILayout.BeginArea(imageBox ,tabStyle); //Image Tab
                 GUILayout.Space(2);
@@ -307,8 +306,55 @@ public class DatabaseMain : EditorWindow
                 GUILayout.EndHorizontal();
         GUILayout.EndArea();
 
+        //Initial Equipment
+        Rect equipmentBox = new Rect(5, generalBox.height + imageBox.height + 20, firstTabWidth + 60, position.height/3+20);
+            GUILayout.BeginArea(equipmentBox, tabStyle);
+                GUILayout.Space(2);
+                GUILayout.Label("Initial Equipment", EditorStyles.boldLabel);
+                GUILayout.BeginVertical();
+                GUILayout.Space(equipmentBox.height/10);
+                    GUILayout.BeginHorizontal("");
+                        GUILayout.Label("Type", GUILayout.Width(equipmentBox.width*3/8));
+                        GUILayout.Label("Equipment Item", GUILayout.Width(equipmentBox.width*5/8));
+                    GUILayout.EndHorizontal();
+                    equipmentScrollPos = GUILayout.BeginScrollView(equipmentScrollPos, false, true, GUILayout.Width(firstTabWidth+50), GUILayout.Height(equipmentBox.height*0.7f));
 
+                    GUILayout.EndScrollView();
+                GUILayout.EndVertical();
+            GUILayout.EndArea();
         GUILayout.EndArea();
+
+        
+        //Third Column
+        GUILayout.BeginArea(new Rect(position.width - (position.width - firstTabWidth*2) + 77, 0, firstTabWidth+25, tabHeight-15), columnStyle);
+            
+            //Traits
+            Rect traitsBox = new Rect(5, 5, firstTabWidth + 15, position.height*5/8); 
+            GUILayout.BeginArea(traitsBox, tabStyle);
+                GUILayout.Space(2);
+                GUILayout.Label("Traits", EditorStyles.boldLabel);
+                GUILayout.Space(traitsBox.height/30);
+                GUILayout.BeginHorizontal();
+                    GUILayout.Label("Type", GUILayout.Width(traitsBox.width*3/8));
+                    GUILayout.Label("Content", GUILayout.Width(traitsBox.width*5/8));
+                GUILayout.EndHorizontal();
+                traitsScrollPos = GUILayout.BeginScrollView(traitsScrollPos, false, true, GUILayout.Width(firstTabWidth+5), GUILayout.Height(traitsBox.height*0.87f));
+
+                GUILayout.EndScrollView();
+            GUILayout.EndArea();
+
+            //Notes
+            Rect notesBox = new Rect(5, traitsBox.height+20, firstTabWidth + 15, position.height * 2.5f/8);
+            GUILayout.BeginArea(notesBox, tabStyle);
+                GUILayout.Space(2);
+                GUILayout.Label("Notes", EditorStyles.boldLabel);
+                GUILayout.Space(notesBox.height/50);
+                player[index].notes =  GUILayout.TextArea(player[index].notes, GUILayout.Width(notesBox.width - 5), GUILayout.Height(notesBox.height * 0.9f));
+            GUILayout.EndArea();
+        GUILayout.EndArea();
+
+
+
         GUILayout.EndArea();
     }
 
