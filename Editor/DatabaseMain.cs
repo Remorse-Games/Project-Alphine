@@ -117,9 +117,12 @@ public class DatabaseMain : EditorWindow
     {
         tabAreaWidth = position.width / 8;
         tabAreaHeight = position.height * .75f;
+        
+        #region  ActorBoxUI
         GUILayout.BeginVertical("Box");
         selectedTab = GUILayout.SelectionGrid(selectedTab, tabNames, 1, GUILayout.Width(tabAreaWidth), GUILayout.Height(tabAreaHeight));
         GUILayout.EndVertical();
+        #endregion
     }
 
     //////////////////////////////////////////////////
@@ -313,7 +316,7 @@ public class DatabaseMain : EditorWindow
                 GUILayout.Label("Initial Equipment", EditorStyles.boldLabel);
                 GUILayout.BeginVertical();
                 GUILayout.Space(equipmentBox.height/10);
-                    GUILayout.BeginHorizontal("");
+                    GUILayout.BeginHorizontal();
                         GUILayout.Label("Type", GUILayout.Width(equipmentBox.width*3/8));
                         GUILayout.Label("Equipment Item", GUILayout.Width(equipmentBox.width*5/8));
                     GUILayout.EndHorizontal();
@@ -344,17 +347,17 @@ public class DatabaseMain : EditorWindow
             GUILayout.EndArea();
 
             //Notes
-            Rect notesBox = new Rect(5, traitsBox.height+20, firstTabWidth + 15, position.height * 2.5f/8);
+            Rect notesBox = new Rect(5, traitsBox.height+15, firstTabWidth + 15, position.height * 2.5f/8);
             GUILayout.BeginArea(notesBox, tabStyle);
                 GUILayout.Space(2);
                 GUILayout.Label("Notes", EditorStyles.boldLabel);
                 GUILayout.Space(notesBox.height/50);
+                if(actorSize > 0)
                 player[index].notes =  GUILayout.TextArea(player[index].notes, GUILayout.Width(notesBox.width - 5), GUILayout.Height(notesBox.height * 0.9f));
+                else
+                profileTemp = GUILayout.TextArea(profileTemp, GUILayout.Width(notesBox.width - 5), GUILayout.Height(notesBox.height * 0.85f));
             GUILayout.EndArea();
         GUILayout.EndArea();
-
-
-
         GUILayout.EndArea();
     }
 
@@ -367,22 +370,25 @@ public class DatabaseMain : EditorWindow
         Texture2D defTex = new Texture2D(256, 256);
         if (index != -1)
         {
-            if(player[index].face == null)
-                faceImage = defTex;
-            else
-                faceImage = textureFromSprite(player[index].face);
+            if(actorSize>0)
+            {
+                if(player[index].face == null)
+                    faceImage = defTex;
+                else
+                    faceImage = textureFromSprite(player[index].face);
 
 
-            if(player[index].characterWorld == null)
-                characterImage = defTex;
-            else
-                characterImage = textureFromSprite(player[index].characterWorld);
+                if(player[index].characterWorld == null)
+                    characterImage = defTex;
+                else
+                    characterImage = textureFromSprite(player[index].characterWorld);
 
-                
-            if(player[index].battler == null)
-                battlerImage = defTex;
-            else
-                battlerImage = textureFromSprite(player[index].battler);
+                    
+                if(player[index].battler == null)
+                    battlerImage = defTex;
+                else
+                    battlerImage = textureFromSprite(player[index].battler);
+            }
         }
     }
     //////////////////////////////////////////////////
