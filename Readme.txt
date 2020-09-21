@@ -5,4 +5,5 @@ We made several tools privately for people who want to start developing game wit
 and made a classic RPG while still having compatibility with other tools.
 
 ##Version 0.0.1
+Init Commit
 We start to add basic tools that RPG Maker have.
