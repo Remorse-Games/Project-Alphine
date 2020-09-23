@@ -6,7 +6,9 @@ public class ClassExpWindow : EditorWindow {
     GUIStyle classStyle;
     GUIStyle tabStyle;
     GUIStyle columnStyle;
-
+    GUIStyle textStyleRed;
+    GUIStyle textStyleGreen;
+    bool showTotalExp = false;
     static ClassesData thisClass;
     public static void ShowWindow(ClassesData classData) {
         var window = GetWindow<ClassExpWindow>();
@@ -21,6 +23,12 @@ public class ClassExpWindow : EditorWindow {
     private void OnGUI() {
 
         //Styling
+        textStyleRed = new GUIStyle(GUI.skin.label);
+        textStyleRed.normal.textColor = new Color32(255,203,221,255);
+
+        textStyleGreen = new GUIStyle(GUI.skin.label);
+        textStyleGreen.normal.textColor = new Color32(127,255,212, 255);
+
         classStyle = new GUIStyle(GUI.skin.box);
         classStyle.normal.background = CreateTexture(1, 1, Color.gray);
         columnStyle = new GUIStyle(GUI.skin.box);
@@ -37,39 +45,27 @@ public class ClassExpWindow : EditorWindow {
         GUILayout.BeginArea(expCurveBox, columnStyle);
             GUILayout.BeginVertical();
                 GUILayout.Space(5);
-                GUILayout.Label("CURVE IS READ ONLY, DO NOT EDIT VALUE IN CURVE EDITOR", EditorStyles.boldLabel);
-                EditorGUILayout.CurveField(thisClass.expCurve, GUILayout.Height(385));
+                GUILayout.BeginHorizontal();
+                    GUILayout.Label("CURVE IS READ ONLY, DO NOT EDIT VALUE IN CURVE EDITOR", EditorStyles.boldLabel);
+                    showTotalExp = GUILayout.Toggle(showTotalExp, "Show Total EXP");
+                GUILayout.EndHorizontal();
+                EditorGUILayout.CurveField(thisClass.expCurve,Color.green, new Rect(0,0, 100, 8000000) , GUILayout.Height(385));
                 GUILayout.BeginArea(new Rect(0,25,position.width, 385), tabStyle);
                     GUILayout.BeginHorizontal();
                         GUILayout.BeginVertical();
-                            for(int i=0;i<20;i++)
-                            {
-                                GUILayout.Label("L"+(i+1).ToString()+":      "+thisClass.getExp(i+1).ToString());
-                            }
+                            CreateExpText(0,20);
                         GUILayout.EndVertical();
                         GUILayout.BeginVertical();
-                            for(int i=20;i<40;i++)
-                            {
-                                GUILayout.Label("L"+(i+1).ToString()+":      "+thisClass.getExp(i+1).ToString());
-                            }
+                            CreateExpText(20,40);
                         GUILayout.EndVertical();
                         GUILayout.BeginVertical();
-                            for(int i=40;i<60;i++)
-                            {
-                                GUILayout.Label("L"+(i+1).ToString()+":      "+thisClass.getExp(i+1).ToString());
-                            }
+                            CreateExpText(40,60);
                         GUILayout.EndVertical();
                         GUILayout.BeginVertical();
-                            for(int i=60;i<80;i++)
-                            {
-                                GUILayout.Label("L"+(i+1).ToString()+":      "+thisClass.getExp(i+1).ToString());
-                            }
+                            CreateExpText(60,80);
                         GUILayout.EndVertical();
                         GUILayout.BeginVertical();
-                            for(int i=80;i<100;i++)
-                            {
-                                GUILayout.Label("L"+(i+1).ToString()+":      "+thisClass.getExp(i+1).ToString());
-                            }
+                            CreateExpText(80,100);
                         GUILayout.EndVertical();
                     GUILayout.EndHorizontal();
                 GUILayout.EndArea();          
@@ -101,8 +97,8 @@ public class ClassExpWindow : EditorWindow {
                         GUILayout.EndHorizontal();
                     GUILayout.EndVertical();
                 GUILayout.EndHorizontal();
-
-                if(GUILayout.Button("Update"))
+                
+                if(GUI.changed)
                 {
                     UpdateCurve();
                 }
@@ -145,6 +141,24 @@ public class ClassExpWindow : EditorWindow {
             key.outTangent = float.NegativeInfinity;
             AnimationUtility.SetKeyLeftTangentMode(thisClass.expCurve, i, AnimationUtility.TangentMode.Constant);
             thisClass.expCurve.MoveKey(i,key);
+        }
+    }
+
+    private void CreateExpText(int start, int end)
+    {
+        if(!showTotalExp)
+        {
+            for(int i = start; i<end && i!=99 ;i++)
+            {
+                GUILayout.Label("L"+(i+1).ToString()+":     "+ (thisClass.getExp(i+2)-thisClass.getExp(i+1)).ToString(), textStyleGreen );
+            }
+        }
+        else if(showTotalExp)
+        {
+            for(int i=start;i<end;i++)
+            {
+                GUILayout.Label("L"+(i+1).ToString()+":      "+thisClass.getExp(i+1).ToString(), textStyleRed);
+            }
         }
     }
 }
