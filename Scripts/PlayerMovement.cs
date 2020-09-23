@@ -7,17 +7,26 @@ public class PlayerMovement : MonoBehaviour
 {
     //Player and Player's Speed declaration.
     public GameObject mainPlayer;
+    public Transform movePoint;
     public float moveSpeed;
     void Start()
     {
-        //Resets the player location to (0,0,0).
+        //Sets first position of mainPlayer and movePoint
         mainPlayer.transform.position = Vector3.zero;
+
+        //Sets parent of movePoint to null
+        movePoint.SetParent(null,false);
     }
 
     void Update()
     {
+        Debug.Log(Input.GetAxisRaw("Horizontal"));
         //Player's movement.
-        mainPlayer.transform.position += new Vector3(moveSpeed * Input.GetAxis("Horizontal") * Time.deltaTime,0 , 0);
-        mainPlayer.transform.position += new Vector3(0, 0, moveSpeed * Input.GetAxis("Vertical") * Time.deltaTime);
+        mainPlayer.transform.position = Vector3.MoveTowards(mainPlayer.transform.position, movePoint.position, moveSpeed * Time.deltaTime);
+        if (Vector3.Distance(mainPlayer.transform.position, movePoint.transform.position) <= 0.5f)
+        {
+            movePoint.position += new Vector3(Input.GetAxisRaw("Horizontal"), 0f, 0f);
+            movePoint.position += new Vector3(0f, 0f, Input.GetAxisRaw("Vertical"));
+        }
     }
 }
