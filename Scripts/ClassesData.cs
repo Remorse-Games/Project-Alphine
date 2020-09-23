@@ -12,9 +12,8 @@ public class ClassesData : ScriptableObject
 
     public int getExp(int level)
     {
-        int result = Mathf.RoundToInt(baseValue*(Mathf.Pow(level-1, 0.9f+accelA/250))*level*
-                    (level+1)/(6+Mathf.Pow(level,2)/50/accelB)+(level-1)*extraValue);
-        return result;
+            return Mathf.RoundToInt(baseValue*(Mathf.Pow(level-1, 0.9f+accelA/250f))*level*
+            (level+1)/(6+Mathf.Pow(level,2)/50/accelB)+(level-1)*extraValue);
     }
 
     public void OnEnable() {

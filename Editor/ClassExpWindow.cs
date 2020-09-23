@@ -27,7 +27,7 @@ public class ClassExpWindow : EditorWindow {
         columnStyle.normal.background = CreateTexture(1, 1, new Color32(70, 70, 70, 200));
         tabStyle = new GUIStyle(GUI.skin.box);
         if(EditorGUIUtility.isProSkin)
-        tabStyle.normal.background = CreateTexture(1, 1, new Color32(76, 76, 76, 100));
+        tabStyle.normal.background = CreateTexture(1, 1, new Color32(150, 150, 150, 100));
         else
         tabStyle.normal.background = CreateTexture(1,1, new Color32(200,200,200,100));
 
@@ -38,17 +38,41 @@ public class ClassExpWindow : EditorWindow {
             GUILayout.BeginVertical();
                 GUILayout.Space(5);
                 GUILayout.Label("CURVE IS READ ONLY, DO NOT EDIT VALUE IN CURVE EDITOR", EditorStyles.boldLabel);
-                EditorGUILayout.CurveField(thisClass.expCurve, GUILayout.Height(380));
-                GUI.BeginGroup(new Rect(0,25, position.width, 380), tabStyle);
+                EditorGUILayout.CurveField(thisClass.expCurve, GUILayout.Height(385));
+                GUILayout.BeginArea(new Rect(0,25,position.width, 385), tabStyle);
                     GUILayout.BeginHorizontal();
                         GUILayout.BeginVertical();
-                            // for(int i=0; i < 20;i++)
-                            // {
-                            //     GUILayout.Label("L "+i.ToString() + ":     " + thisClass.getExp(i+1).ToString());
-                            // }
+                            for(int i=0;i<20;i++)
+                            {
+                                GUILayout.Label("L"+(i+1).ToString()+":      "+thisClass.getExp(i+1).ToString());
+                            }
+                        GUILayout.EndVertical();
+                        GUILayout.BeginVertical();
+                            for(int i=20;i<40;i++)
+                            {
+                                GUILayout.Label("L"+(i+1).ToString()+":      "+thisClass.getExp(i+1).ToString());
+                            }
+                        GUILayout.EndVertical();
+                        GUILayout.BeginVertical();
+                            for(int i=40;i<60;i++)
+                            {
+                                GUILayout.Label("L"+(i+1).ToString()+":      "+thisClass.getExp(i+1).ToString());
+                            }
+                        GUILayout.EndVertical();
+                        GUILayout.BeginVertical();
+                            for(int i=60;i<80;i++)
+                            {
+                                GUILayout.Label("L"+(i+1).ToString()+":      "+thisClass.getExp(i+1).ToString());
+                            }
+                        GUILayout.EndVertical();
+                        GUILayout.BeginVertical();
+                            for(int i=80;i<100;i++)
+                            {
+                                GUILayout.Label("L"+(i+1).ToString()+":      "+thisClass.getExp(i+1).ToString());
+                            }
                         GUILayout.EndVertical();
                     GUILayout.EndHorizontal();
-                GUI.EndGroup();          
+                GUILayout.EndArea();          
                 GUILayout.BeginHorizontal();
                     GUILayout.BeginVertical();
                         GUILayout.Label("Base Value:");

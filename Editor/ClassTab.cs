@@ -114,7 +114,11 @@ public class ClassTab
                             GUILayout.Label("Exp Curve: ");
                             if(classSize > 0)
                             {
-                                if(GUILayout.Button("Testing Exp Curve ", GUILayout.Width(generalSettingsClass.width/2 - 10),
+                                string bv = classes[index].baseValue.ToString();
+                                string xv = classes[index].extraValue.ToString();
+                                string aca = classes[index].accelA.ToString();
+                                string acb = classes[index].accelB.ToString();
+                                if(GUILayout.Button("[ "+bv+", "+xv+", "+aca+", "+acb+" ]" , GUILayout.Width(generalSettingsClass.width/2 - 10),
                                                                           GUILayout.Height(generalSettingsClass.height*0.25f)))
                                 {
                                     ClassExpWindow.ShowWindow(classes[index]);
@@ -122,7 +126,7 @@ public class ClassTab
                             }
                             else
                             {
-                                GUILayout.Button("Testing Exp Curve ", GUILayout.Width(generalSettingsClass.width/2 - 10),
+                                GUILayout.Button("No Class Selected", GUILayout.Width(generalSettingsClass.width/2 - 10),
                                                                       GUILayout.Height(generalSettingsClass.height*0.25f));
                             }
                 
