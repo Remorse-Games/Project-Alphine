@@ -51,7 +51,6 @@ public class ActorTab
     #endregion
 
     #region TempValues
-    //THIS SHOULD BE REMOVED LATER. please contact keju for this.
     public int actorSizeTemp;
     #endregion
 
@@ -378,6 +377,10 @@ public class ActorTab
         {
             AssetDatabase.CreateFolder("Assets/Resources", "Image");
         }
+        if (!AssetDatabase.IsValidFolder("Assets/Resources/Data/ClassesData"))
+        {
+            AssetDatabase.CreateFolder("Assets/Resources/Data", "ClassesData");
+        }
 
     }
 
@@ -403,6 +406,13 @@ public class ActorTab
         result.Apply();
         return result;
     }
+
+
+    /// <summary>
+    /// Create a texture from a sprite (Used for changing actors' images)
+    /// </summary>
+    /// <param name="sprite">the sprite that wants to be converted into texture</param>
+    /// <returns></returns>
     public static Texture2D textureFromSprite(Sprite sprite)
     {
         if (sprite.rect.width != sprite.texture.width)
