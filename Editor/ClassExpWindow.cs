@@ -46,10 +46,12 @@ public class ClassExpWindow : EditorWindow {
             GUILayout.BeginVertical();
                 GUILayout.Space(5);
                 GUILayout.BeginHorizontal();
-                    GUILayout.Label("CURVE IS READ ONLY, DO NOT EDIT VALUE IN CURVE EDITOR", EditorStyles.boldLabel);
                     showTotalExp = GUILayout.Toggle(showTotalExp, "Show Total EXP");
                 GUILayout.EndHorizontal();
-                EditorGUILayout.CurveField(thisClass.expCurve,Color.green, new Rect(0,0, 100, 8000000) , GUILayout.Height(385));
+                using (new EditorGUI.DisabledScope(true))
+                {
+                    EditorGUILayout.CurveField(thisClass.expCurve,Color.green, new Rect(0,0, 100, 8000000) , GUILayout.Height(385));
+                }
                 GUILayout.BeginArea(new Rect(0,25,position.width, 385), tabStyle);
                     GUILayout.BeginHorizontal();
                         GUILayout.BeginVertical();
@@ -98,10 +100,9 @@ public class ClassExpWindow : EditorWindow {
                     GUILayout.EndVertical();
                 GUILayout.EndHorizontal();
                 
-                if(GUI.changed)
-                {
+                //Update Curve every frame
                     UpdateCurve();
-                }
+    
             GUILayout.EndVertical();
         GUILayout.EndArea();
     }
@@ -140,6 +141,7 @@ public class ClassExpWindow : EditorWindow {
             key.inTangent = float.PositiveInfinity;
             key.outTangent = float.NegativeInfinity;
             AnimationUtility.SetKeyLeftTangentMode(thisClass.expCurve, i, AnimationUtility.TangentMode.Constant);
+            AnimationUtility.SetKeyRightTangentMode(thisClass.maxHPCurve, i, AnimationUtility.TangentMode.Constant);
             thisClass.expCurve.MoveKey(i,key);
         }
     }

@@ -52,8 +52,8 @@ public class ClassTab
         /////////////////////////////END REGION OF VALUE INIT///////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////////////////
 
-        #region Entry Of ActorTab GUILayout
-        //Start drawing the whole ActorTab.
+        #region Entry Of ClassTab GUILayout
+        //Start drawing the whole ClassTab.
         GUILayout.BeginArea(new Rect(position.width / 7, 5, tabWidth, tabHeight));
             GUILayout.Box(" ", classStyle, GUILayout.Width(position.width - DatabaseMain.tabAreaWidth), GUILayout.Height(position.height - 25f));
                 
@@ -101,6 +101,7 @@ public class ClassTab
                                 classes[index].className = GUILayout.TextField(classes[index].className,
                                                                                 GUILayout.Width(generalSettingsClass.width/2 - 10),
                                                                                 GUILayout.Height(generalSettingsClass.height*0.25f));
+                                classesNames[index] = classes[index].className;
                             }
                             else
                             {
@@ -129,10 +130,42 @@ public class ClassTab
                                 GUILayout.Button("No Class Selected", GUILayout.Width(generalSettingsClass.width/2 - 10),
                                                                       GUILayout.Height(generalSettingsClass.height*0.25f));
                             }
-                
                         GUILayout.EndVertical();
                     GUILayout.EndHorizontal();
                 GUILayout.EndArea();
+
+                //Parameter Curve Tab
+                Rect parameterCurveBox = new Rect(5, generalSettingsClass.height + 10, firstTabWidth+60, position.height/3);
+                GUILayout.BeginArea(parameterCurveBox, tabStyle);
+                    GUILayout.Space(2);
+                    GUILayout.Label("Parameter Curve", EditorStyles.boldLabel);
+                    GUILayout.BeginHorizontal();
+                        GUILayout.BeginVertical();
+
+                            Rect curveValueRange = new Rect(0,0, 100, 9999);
+                            float curveWidth = (parameterCurveBox.width-10)/4;
+                            float curveheight = (parameterCurveBox.height - 70)/2;
+                            GUILayout.Label("Max HP:");
+                            if(classSize > 0)
+                            {
+                                using (new EditorGUI.DisabledScope(true))
+                                {
+                                    EditorGUILayout.CurveField(classes[index].maxHPCurve,new Color32(208, 128, 96, 255), curveValueRange, GUILayout.Width(curveWidth), GUILayout.Height(curveheight));
+                                }
+                                if(GUILayout.Button("Edit Max Hp", GUILayout.Width(curveWidth)))
+                                {
+                                    MaxHPWindow maxHPWindow = new MaxHPWindow(classes[index]);
+                                }
+                            }
+                            else
+                            {
+                                GUILayout.Box("Null", GUILayout.Width(curveWidth), GUILayout.Height(curveheight));
+                            }
+                        
+                        GUILayout.EndVertical();
+                    GUILayout.EndHorizontal();
+                GUILayout.EndArea();
+
             GUILayout.EndArea();
 
         GUILayout.EndArea();
