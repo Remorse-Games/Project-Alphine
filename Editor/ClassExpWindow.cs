@@ -141,7 +141,7 @@ public class ClassExpWindow : EditorWindow {
             key.inTangent = float.PositiveInfinity;
             key.outTangent = float.NegativeInfinity;
             AnimationUtility.SetKeyLeftTangentMode(thisClass.expCurve, i, AnimationUtility.TangentMode.Constant);
-            AnimationUtility.SetKeyRightTangentMode(thisClass.maxHPCurve, i, AnimationUtility.TangentMode.Constant);
+            AnimationUtility.SetKeyRightTangentMode(thisClass.expCurve, i, AnimationUtility.TangentMode.Constant);
             thisClass.expCurve.MoveKey(i,key);
         }
     }

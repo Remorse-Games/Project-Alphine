@@ -99,7 +99,7 @@ public class MaxHPWindow : EditorWindow
                             GUILayout.Space(50);
                             if(GUILayout.Button("Generate Curve!", GUILayout.Height(30), GUILayout.Width(150)))
                             {
-                                MakeCurve(genCurveStartValue, genCurveEndValue, genCurveGrowthRate);
+                                MakeCurveHP(genCurveStartValue, genCurveEndValue, genCurveGrowthRate);
                             }
                             GUILayout.Space(500);
                         GUILayout.EndHorizontal();
@@ -144,11 +144,11 @@ public class MaxHPWindow : EditorWindow
         }
     }
 
-    private void MakeCurve(int start, int end, int rate)
+    private void MakeCurveHP(int start, int end, int rate)
     {
         thisClass.minHP = start;
         thisClass.maxHP = end;
-        thisClass.growthRate = rate;
+        thisClass.growthRateHP = rate;
         for(int i=0;i<100;i++)
         {
             Keyframe key = thisClass.maxHPCurve.keys[i];
@@ -156,7 +156,7 @@ public class MaxHPWindow : EditorWindow
             key.outTangent = float.NegativeInfinity;
             AnimationUtility.SetKeyLeftTangentMode(thisClass.maxHPCurve, i, AnimationUtility.TangentMode.Constant);
             AnimationUtility.SetKeyRightTangentMode(thisClass.maxHPCurve, i, AnimationUtility.TangentMode.Constant);
-            thisClass.maxHPCurve.MoveKey(i, new Keyframe(i, thisClass.getMaxHP(i+1)));
+            thisClass.maxHPCurve.MoveKey(i, new Keyframe(i, thisClass.GetCurveValue(i, thisClass.minHP, thisClass.maxHP, thisClass.growthRateHP)));
         }
     }
 }

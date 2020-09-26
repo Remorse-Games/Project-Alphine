@@ -16,7 +16,7 @@ public class ClassesData : ScriptableObject
     public AnimationCurve maxHPCurve;
     public int minHP;
     public int maxHP;
-    public int growthRate;
+    public int growthRateHP;
     #endregion
     public int getExp(int level)
     {
@@ -24,19 +24,26 @@ public class ClassesData : ScriptableObject
             (level+1)/(6+Mathf.Pow(level,2)/50/accelB)+(level-1)*extraValue);
     }
 
-    public int getMaxHP(int level)
+    ///<summary>
+    /// returns a value based on the levels, min, max, and growth rate values. Used to generate Curve
+    ///</summary>
+    ///<param name="level"> The X value that wanted to be evaluated </param>
+    ///<param name="minVal">The minimal Value of the curve, level 1 value </param>
+    ///<param name="maxVal">The maximum value of the curve, level 100 value</param>
+    ///<param name="growthRate">0 = normal, 1 = slow, -1 = fast determine how fast should the curve grow</param>
+    public int GetCurveValue(int level, int minVal, int maxVal, int growthRate)
     {
         if(growthRate < 0)
         {
-            return Mathf.RoundToInt(((minHP-maxHP)/Mathf.Pow(99,2)) * Mathf.Pow((level - 100),2) + maxHP);
+            return Mathf.RoundToInt(((minVal-maxVal)/Mathf.Pow(99,2)) * Mathf.Pow((level - 100),2) + maxVal);
         }
         else if (growthRate > 0)
         {
-            return Mathf.RoundToInt(((maxHP - minHP)/Mathf.Pow(99,2)) * Mathf.Pow((level - 1),2) + minHP);
+            return Mathf.RoundToInt(((maxVal - minVal)/Mathf.Pow(99,2)) * Mathf.Pow((level - 1),2) + minVal);
         }
         else
         {
-            return Mathf.RoundToInt(((maxHP-minHP)/99) *level + minHP);
+            return Mathf.RoundToInt(((maxVal-minVal)/99) *level + minVal);
         }
     }
 
@@ -55,7 +62,7 @@ public class ClassesData : ScriptableObject
         accelA = 30;
         accelB = 30;
         #endregion
-        #region MaxHPBase
+        #region maxValBase
         minHP = 450;    
         maxHP = 5350;
         #endregion
