@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEditor;
 using System.IO;
 using SFB;
-public class ActorTab
+public class ActorTab : BaseTab
 {
     //Having list of all player exist in data.
     public List<ActorData> player = new List<ActorData>();
@@ -12,7 +12,7 @@ public class ActorTab
     //array of string, which we cannot obtain in ActorData.
     //I hope later got better solution about this to not do
     //a double List for this kind of thing.
-    List<string> actorDisplayName = new List<string>();
+    public List<string> actorDisplayName = new List<string>();
 
     //All GUIStyle variable initialization.
     GUIStyle actorStyle;
@@ -111,14 +111,14 @@ public class ActorTab
                 if (GUI.changed && index != indexTemp)
                 {
                     indexTemp = index;
-                    ActorListSelected(indexTemp);
+                    ActorListSelected(indexTemp, actorSize);
                     indexTemp = -1;
                 }
 
                 actorSizeTemp = EditorGUILayout.IntField(actorSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
                 if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
                 {
-                    ChangeMaximum(actorSize);
+                    ChangeMaximum(actorSize, player, actorDisplayName);
                 }
             GUILayout.EndArea();
             #endregion
@@ -211,21 +211,42 @@ public class ActorTab
                         GUILayout.BeginVertical();
                             GUILayout.Label("Face:");
                             GUILayout.Box(faceImage, GUILayout.Width(imageBox.width / 3 - 10), GUILayout.Height(imageBox.width / 3 - 10));
-                            if (GUILayout.Button("Edit Face", GUILayout.Height(imageBox.height / 10), GUILayout.Width(imageBox.width / 3 - 10))) { changeFaceImage(); }
+                            if (GUILayout.Button("Edit Face", GUILayout.Height(imageBox.height / 10), GUILayout.Width(imageBox.width / 3 - 10))) 
+                            { 
+                                ImageChanger(
+                                    index, 
+                                    "Choose Face", 
+                                    "Assets/Resources/Image",
+                                    player[index].face); 
+                            }
                         GUILayout.EndVertical();
                         #endregion
                         #region Character
                         GUILayout.BeginVertical();
                             GUILayout.Label("Character:");
                             GUILayout.Box(characterImage, GUILayout.Width(imageBox.width / 3 - 10), GUILayout.Height(imageBox.width / 3 - 10));
-                            if (GUILayout.Button("Edit Character", GUILayout.Height(imageBox.height / 10), GUILayout.Width(imageBox.width / 3 - 10))) { changeCharacterImage(); }
+                            if (GUILayout.Button("Edit Character", GUILayout.Height(imageBox.height / 10), GUILayout.Width(imageBox.width / 3 - 10))) 
+                            { 
+                                ImageChanger(
+                                    index,
+                                    "Choose Character",
+                                    "Assets/Resources/Image",
+                                    player[index].characterWorld); 
+                            }
                         GUILayout.EndVertical();
                         #endregion
                         #region SV Battler
                         GUILayout.BeginVertical();
                             GUILayout.Label("[SV] Battler: ");
                             GUILayout.Box(battlerImage, GUILayout.Width(imageBox.width / 3 - 10), GUILayout.Height(imageBox.width / 3 - 10));
-                            if (GUILayout.Button("Edit Battler", GUILayout.Height(imageBox.height / 10), GUILayout.Width(imageBox.width / 3 - 10))) { changeBattlerImage(); }
+                            if (GUILayout.Button("Edit Battler", GUILayout.Height(imageBox.height / 10), GUILayout.Width(imageBox.width / 3 - 10))) 
+                            { 
+                                ImageChanger(
+                                    index, 
+                                    "Choose Face", 
+                                    "Assets/Resources/Image", 
+                                    player[index].battler); 
+                            }
                         GUILayout.EndVertical();
                         #endregion
                     GUILayout.EndHorizontal();
@@ -323,13 +344,7 @@ public class ActorTab
         #endregion
     }
 
-
-    #region Features
-    /// <summary>
-    /// This called when actor list on active.
-    /// </summary>
-    /// <param name="index">index of actor in a list.</param>
-    public void ActorListSelected(int index)
+    public override void ActorListSelected(int index, int actorSize)
     {
         Texture2D defTex = new Texture2D(256, 256);
         if (index != -1)
@@ -355,168 +370,4 @@ public class ActorTab
             }
         }
     }
-
-    ///<summary>
-    /// Folder checker, create folder if it doesnt exist already, Might refactor into one liner if
-    ///</summary>
-    public void FolderChecker()
-    {
-        if (!AssetDatabase.IsValidFolder("Assets/Resources"))
-        {
-            AssetDatabase.CreateFolder("Assets", "Resources");
-        }
-        if (!AssetDatabase.IsValidFolder("Assets/Resources/Data"))
-        {
-            AssetDatabase.CreateFolder("Assets/Resources", "Data");
-        }
-        if (!AssetDatabase.IsValidFolder("Assets/Resources/Data/ActorData"))
-        {
-            AssetDatabase.CreateFolder("Assets/Resources/Data", "ActorData");
-        }
-        if (!AssetDatabase.IsValidFolder("Assets/Resources/Image"))
-        {
-            AssetDatabase.CreateFolder("Assets/Resources", "Image");
-        }
-        if (!AssetDatabase.IsValidFolder("Assets/Resources/Data/ClassesData"))
-        {
-            AssetDatabase.CreateFolder("Assets/Resources/Data", "ClassesData");
-        }
-
-    }
-
-    /// <summary>
-    /// Create Texture for GUI skin.
-    /// </summary>
-    /// <param name="width">pixel width of GUI Skin.</param>
-    /// <param name="height">pixel height of GUI Skin.</param>
-    /// <param name="col">Color of GUI Skin.</param>
-    /// <returns></returns>
-    private Texture2D CreateTexture(int width, int height, Color col)
-    {
-        //Create array of color.
-        Color[] colPixel = new Color[width * height];
-
-        for (int i = 0; i < colPixel.Length; ++i)
-        {
-            colPixel[i] = col;
-        }
-
-        Texture2D result = new Texture2D(width, height);
-        result.SetPixels(colPixel);
-        result.Apply();
-        return result;
-    }
-
-
-    /// <summary>
-    /// Create a texture from a sprite (Used for changing actors' images)
-    /// </summary>
-    /// <param name="sprite">the sprite that wants to be converted into texture</param>
-    /// <returns></returns>
-    public static Texture2D textureFromSprite(Sprite sprite)
-    {
-        if (sprite.rect.width != sprite.texture.width)
-        {
-            Texture2D newText = new Texture2D((int)sprite.rect.width, (int)sprite.rect.height);
-            Color[] newColors = sprite.texture.GetPixels((int)sprite.textureRect.x,
-                                                         (int)sprite.textureRect.y,
-                                                         (int)sprite.textureRect.width,
-                                                         (int)sprite.textureRect.height);
-            newText.SetPixels(newColors);
-            newText.Apply();
-            return newText;
-        }
-        else
-            return sprite.texture;
-    }
-
-    /// <summary>
-    /// Change Maximum function , when we change the size
-    /// and click Change Maximum button in Editor, it will update
-    /// and change the size while creating new data.
-    /// </summary>
-    /// <param name="size">get size from actorSize</param>
-
-
-    int counter = 0;
-    private void ChangeMaximum(int size)
-    {
-        actorSize = actorSizeTemp;
-        //This count only useful when we doesn't have a name yet.
-        //you can remove this when decide a new format later.
-        while (counter <= actorSize)
-        {
-            player.Add(ScriptableObject.CreateInstance<ActorData>());
-            AssetDatabase.CreateAsset(player[counter], "Assets/Resources/Data/ActorData/Actor_" + counter + ".asset");
-            AssetDatabase.SaveAssets();
-            actorDisplayName.Add(player[counter].actorName);
-            counter++;
-        }
-        if (counter > actorSize)
-        {
-            player.RemoveRange(actorSize, player.Count - actorSize);
-            actorDisplayName.RemoveRange(actorSize, actorDisplayName.Count - actorSize);
-            for (int i = actorSize; i <= counter; i++)
-            {
-                AssetDatabase.DeleteAsset("Assets/Resources/Data/ActorData/Actor_" + i + ".asset");
-            }
-            AssetDatabase.SaveAssets();
-            counter = actorSize;
-        }
-    }
-
-    ExtensionFilter[] extensions = new[] {
-                new ExtensionFilter("Image Files", "png", "jpg", "jpeg" ),
-                new ExtensionFilter("Sound Files", "mp3", "wav" ),
-                new ExtensionFilter("All Files", "*" ),
-        };
-
-    private void changeFaceImage()
-    {
-        string relativepath;
-        string[] path = StandaloneFileBrowser.OpenFilePanel("Choose Face", "Assets/Resources/Image", extensions, false);
-
-        if(path.Length != 0)
-        {
-            relativepath = "Image/";
-            relativepath += Path.GetFileNameWithoutExtension(path[0]);
-            Sprite imageChosen = Resources.Load<Sprite>(relativepath);
-            player[index].face = imageChosen;
-            ActorListSelected(index);
-        }
-    }
-
-    private void changeCharacterImage()
-    {
-        string relativepath;
-        string[] path = StandaloneFileBrowser.OpenFilePanel("Choose Character", "Assets/Resources/Image", extensions, false);
-        if(path.Length != 0)
-        {
-            relativepath = "Image/";
-            relativepath += Path.GetFileNameWithoutExtension(path[0]);
-            Sprite imageChosen = Resources.Load<Sprite>(relativepath);
-            player[index].characterWorld = imageChosen;
-            ActorListSelected(index);
-        }
-    }
-
-    private void changeBattlerImage()
-    {
-        string relativepath;
-        Debug.Log("called");
-        string[] path = StandaloneFileBrowser.OpenFilePanel("Choose Face", "Assets/Resources/Image", extensions, false);
-        if(path.Length != 0)
-        {
-            relativepath = "Image/";
-            relativepath += Path.GetFileNameWithoutExtension(path[0]);
-            Sprite imageChosen = Resources.Load<Sprite>(relativepath);
-            player[index].battler = imageChosen;
-            ActorListSelected(index);
-        }
-    }
-
-
-
-    #endregion
-
 }
