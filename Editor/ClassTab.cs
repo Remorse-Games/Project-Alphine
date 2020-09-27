@@ -135,22 +135,21 @@ public class ClassTab
                 GUILayout.EndArea();
 
                 //Parameter Curve Tab
-                Rect parameterCurveBox = new Rect(5, generalSettingsClass.height + 10, firstTabWidth+60, position.height/3);
+                Rect parameterCurveBox = new Rect(5, generalSettingsClass.height + 10, firstTabWidth+60, position.height/2.8f);
                 GUILayout.BeginArea(parameterCurveBox, tabStyle);
                     GUILayout.Space(2);
                     GUILayout.Label("Parameter Curve", EditorStyles.boldLabel);
+                    float curveWidth = (parameterCurveBox.width-10)/4.2f;
+                    float curveheight = (parameterCurveBox.height - 70)/2.7f;
                     GUILayout.BeginHorizontal();
-                        GUILayout.BeginVertical();
-
-                            Rect curveValueRange = new Rect(0,0, 100, 9999);
-                            float curveWidth = (parameterCurveBox.width-10)/4;
-                            float curveheight = (parameterCurveBox.height - 70)/2;
+                        GUILayout.BeginVertical(); //Max HP and M.Attack Curve
                             GUILayout.Label("Max HP:");
+                            Rect curveValueRangeHP = new Rect(0,0, 100, 9999);
                             if(classSize > 0)
                             {
                                 using (new EditorGUI.DisabledScope(true))
                                 {
-                                    EditorGUILayout.CurveField(classes[index].maxHPCurve,new Color32(208, 128, 96, 255), curveValueRange, GUILayout.Width(curveWidth), GUILayout.Height(curveheight));
+                                    EditorGUILayout.CurveField(classes[index].maxHPCurve,new Color32(208, 128, 96, 255), curveValueRangeHP, GUILayout.Width(curveWidth), GUILayout.Height(curveheight));
                                 }
                                 if(GUILayout.Button("Edit Max Hp", GUILayout.Width(curveWidth)))
                                 {
@@ -161,8 +160,144 @@ public class ClassTab
                             {
                                 GUILayout.Box("Null", GUILayout.Width(curveWidth), GUILayout.Height(curveheight));
                             }
-                        
+                            GUILayout.Space(10);
+                            //Add Under HP (M.Attack)
+                            GUILayout.Label("M.Attack");
+                            Rect curveValueRangeMAtk = new Rect(0,0, 100,250);
+                            if(classSize > 0)
+                            {
+                                using (new EditorGUI.DisabledScope(true))
+                                {
+                                    EditorGUILayout.CurveField(classes[index].mAttackCurve,new Color32(192, 80, 176, 255), curveValueRangeMAtk, GUILayout.Width(curveWidth), GUILayout.Height(curveheight));
+                                }
+                                if(GUILayout.Button("Edit M.Attack", GUILayout.Width(curveWidth)))
+                                {
+                                    MAttackWindow mAttackWindow = new MAttackWindow(classes[index]);
+                                }
+                            }
+                            else
+                            {
+                                GUILayout.Box("Null", GUILayout.Width(curveWidth), GUILayout.Height(curveheight));
+                            }
                         GUILayout.EndVertical();
+
+                        GUILayout.BeginVertical(); //Max MP and M.Defense Curve
+                            GUILayout.Label("Max MP:");
+                            Rect curveValueRangeMP = new Rect(0,0, 100, 2000);
+                            if(classSize > 0)
+                            {
+                                using (new EditorGUI.DisabledScope(true))
+                                {
+                                    EditorGUILayout.CurveField(classes[index].maxMPCurve,new Color32(80, 128, 224, 255), curveValueRangeMP, GUILayout.Width(curveWidth), GUILayout.Height(curveheight));
+                                }
+                                if(GUILayout.Button("Edit Max MP", GUILayout.Width(curveWidth)))
+                                {
+                                    MaxMPWindow maxMPWindow = new MaxMPWindow(classes[index]);
+                                }
+                            }
+                            else
+                            {
+                                GUILayout.Box("Null", GUILayout.Width(curveWidth), GUILayout.Height(curveheight));
+                            }
+                            GUILayout.Space(10);
+                            //Add Under MP (M.Defense)
+                            GUILayout.Label("M.Defense");
+                            Rect curveValueRangeMDef = new Rect(0,0, 100,250);
+                            if(classSize > 0)
+                            {
+                                using (new EditorGUI.DisabledScope(true))
+                                {
+                                    EditorGUILayout.CurveField(classes[index].mDefenseCurve,new Color32(64, 160, 64, 255), curveValueRangeMAtk, GUILayout.Width(curveWidth), GUILayout.Height(curveheight));
+                                }
+                                if(GUILayout.Button("Edit M.Defense", GUILayout.Width(curveWidth)))
+                                {
+                                    MDefenseWindow mDefensekWindow = new MDefenseWindow(classes[index]);
+                                }
+                            }
+                            else
+                            {
+                                GUILayout.Box("Null", GUILayout.Width(curveWidth), GUILayout.Height(curveheight));
+                            }
+                        GUILayout.EndVertical();
+
+                        GUILayout.BeginVertical(); //Attack and Agility
+                            GUILayout.Label("Attack:");
+                            Rect curveValueRangeAttack = new Rect(0,0, 100, 250);
+                            if(classSize > 0)
+                            {
+                                using (new EditorGUI.DisabledScope(true))
+                                {
+                                    EditorGUILayout.CurveField(classes[index].AttackCurve,new Color32(192, 64, 96, 255), curveValueRangeAttack, GUILayout.Width(curveWidth), GUILayout.Height(curveheight));
+                                }
+                                if(GUILayout.Button("Edit Attack", GUILayout.Width(curveWidth)))
+                                {
+                                    AttackWindow attackWindow = new AttackWindow(classes[index]);
+                                }
+                            }
+                            else
+                            {
+                                GUILayout.Box("Null", GUILayout.Width(curveWidth), GUILayout.Height(curveheight));
+                            }
+                            GUILayout.Space(10);
+                            //Add Under Attack (Agility)
+                            GUILayout.Label("Agility:");
+                            Rect curveValueRangeAgi= new Rect(0,0, 100,500);
+                            if(classSize > 0)
+                            {
+                                using (new EditorGUI.DisabledScope(true))
+                                {
+                                    EditorGUILayout.CurveField(classes[index].agilityCurve,new Color32(80, 176, 224, 255), curveValueRangeAgi, GUILayout.Width(curveWidth), GUILayout.Height(curveheight));
+                                }
+                                if(GUILayout.Button("Edit Agility", GUILayout.Width(curveWidth)))
+                                {
+                                    AgilityWindow agilityWindow = new AgilityWindow(classes[index]);
+                                }
+                            }
+                            else
+                            {
+                                GUILayout.Box("Null", GUILayout.Width(curveWidth), GUILayout.Height(curveheight));
+                            }
+                        GUILayout.EndVertical();
+
+                        GUILayout.BeginVertical(); //Defense and Luck
+                            GUILayout.Label("Defense: ");
+                            Rect curveValueRangeDefense = new Rect(0,0, 100, 250);
+                            if(classSize > 0)
+                            {
+                                using (new EditorGUI.DisabledScope(true))
+                                {
+                                    EditorGUILayout.CurveField(classes[index].DefenseCurve,new Color32(144, 176, 96, 255), curveValueRangeDefense, GUILayout.Width(curveWidth), GUILayout.Height(curveheight));
+                                }
+                                if(GUILayout.Button("Edit Defense", GUILayout.Width(curveWidth)))
+                                {
+                                    DefenseWindow defenseWindow = new DefenseWindow(classes[index]);
+                                }
+                            }
+                            else
+                            {
+                                GUILayout.Box("Null", GUILayout.Width(curveWidth), GUILayout.Height(curveheight));
+                            }
+                            GUILayout.Space(10);
+                            //Add Under Defense (Luck)
+                            GUILayout.Label("Luck: ");
+                            Rect curveValueRangeLuck= new Rect(0,0, 100,500);
+                            if(classSize > 0)
+                            {
+                                using (new EditorGUI.DisabledScope(true))
+                                {
+                                    EditorGUILayout.CurveField(classes[index].luckCurve,new Color32(208, 176, 64, 255), curveValueRangeLuck, GUILayout.Width(curveWidth), GUILayout.Height(curveheight));
+                                }
+                                if(GUILayout.Button("Edit Luck", GUILayout.Width(curveWidth)))
+                                {
+                                    LuckWindow luckWindow = new LuckWindow(classes[index]);
+                                }
+                            }
+                            else
+                            {
+                                GUILayout.Box("Null", GUILayout.Width(curveWidth), GUILayout.Height(curveheight));
+                            }
+                        GUILayout.EndVertical();
+
                     GUILayout.EndHorizontal();
                 GUILayout.EndArea();
 
