@@ -6,12 +6,6 @@ public class PlayerMovement : MonoBehaviour
     [Header("Customized Value")]
     public float movementSpeed = 0;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
     private void Update()
     {
         transform.Translate(new Vector3(Input.GetAxis("Horizontal") * movementSpeed, 0, 0));
