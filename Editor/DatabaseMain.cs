@@ -68,6 +68,7 @@ public class DatabaseMain : EditorWindow
 
     //////////////////////////////////////////////////
 
+
     /// <summary>
     /// We Initialize all value that doesn't static in here.
     /// </summary>
