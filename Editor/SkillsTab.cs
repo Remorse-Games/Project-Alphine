@@ -6,15 +6,6 @@ using SFB;
 
 public class SkillsTab
 {
-    //Having list of all skills exist in data.
-    //public List<SkillData> skill = new List<SkillData>();
-
-    //List of names. Why you ask? because selectionGrid require
-    //array of string, which we cannot obtain in SkillData.
-    //I hope later got better solution about this to not do
-    //a double List for this kind of thing.
-    //List<string> skillDisplayName = new List<string>();
-
     //All GUIStyle variable initialization.
     GUIStyle skillStyle;
 

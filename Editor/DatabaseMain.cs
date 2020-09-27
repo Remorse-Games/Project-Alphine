@@ -6,7 +6,6 @@ using SFB;
 
 public class DatabaseMain : EditorWindow
 {
-
     #region Init Values
     //Editor Classes
     ActorTab actorTab;
