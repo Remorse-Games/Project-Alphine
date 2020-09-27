@@ -358,12 +358,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2010799891}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34765829ebd42ec499d65df7027696ff, type: 3}
+  m_Script: {fileID: 11500000, guid: a13e4e70c47ff2f4c9db06c6dd7d7cc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   mainPlayer: {fileID: 2010799891}
-  movePoint: {fileID: 745772395}
-  moveSpeed: 10
+  movePoint: {fileID: 2010799894}
+  moveSpeed: 5
 --- !u!212 &2010799893
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -403,7 +403,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 7251022704778811985, guid: 828ce6821258a8b40b47ea594b7e469e,
+  m_Sprite: {fileID: -715499929006782331, guid: 2d3b7bcbb36f1c84b9a496f3ceafe5e2,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

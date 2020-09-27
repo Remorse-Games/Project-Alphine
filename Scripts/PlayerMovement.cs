@@ -1,32 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using UnityEngine;
-
 public class PlayerMovement : MonoBehaviour
 {
-    //Player and Player's Speed declaration.
-    public GameObject mainPlayer;
-    public Transform movePoint;
-    public float moveSpeed;
+    [Header("Customized Value")]
+    public float movementSpeed = 0;
+
+    // Start is called before the first frame update
     void Start()
     {
-        //Sets first position of mainPlayer and movePoint
-        mainPlayer.transform.position = Vector3.zero;
 
-        //Sets parent of movePoint to null
-        movePoint.SetParent(null,false);
     }
 
-    void Update()
+    private void Update()
     {
-        Debug.Log(Input.GetAxisRaw("Horizontal"));
-        //Player's movement.
-        mainPlayer.transform.position = Vector3.MoveTowards(mainPlayer.transform.position, movePoint.position, moveSpeed * Time.deltaTime);
-        if (Vector3.Distance(mainPlayer.transform.position, movePoint.transform.position) <= 0.5f)
-        {
-            movePoint.position += new Vector3(Input.GetAxisRaw("Horizontal"), 0f, 0f);
-            movePoint.position += new Vector3(0f, 0f, Input.GetAxisRaw("Vertical"));
-        }
+        transform.Translate(new Vector3(Input.GetAxis("Horizontal") * movementSpeed, 0, 0));
+        transform.Translate(new Vector3(0, 0, Input.GetAxis("Vertical") * movementSpeed));
+
+        transform.GetChild(0).GetComponent<Animator>().SetFloat("horizontal", Input.GetAxis("Horizontal"));
+        transform.GetChild(0).GetComponent<Animator>().SetFloat("vertical", Input.GetAxis("Vertical"));
     }
 }
