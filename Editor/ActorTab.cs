@@ -51,6 +51,11 @@ public class ActorTab : BaseTab
     #endregion
 
     #region TempValues
+    //we use actorSizeTemp because when
+    //value updated immediately (since OnGUI work when we do input
+    //either it mouse or keyboard) the real actor size will be updated and
+    //cause some errors. to prevent it we add this temp value.
+    //maybe we will change in the future.
     public int actorSizeTemp;
     #endregion
 
