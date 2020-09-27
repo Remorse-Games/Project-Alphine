@@ -130,7 +130,7 @@ public class ActorTab
 
             //GeneralSettings tab
                 Rect generalBox = new Rect(5, 5, firstTabWidth + 60, position.height / 3 - 50);
-
+ 
                 #region GeneralSettings
                 GUILayout.BeginArea(generalBox, tabStyle); //Start of general settings tab
                     GUILayout.Label("General Settings", EditorStyles.boldLabel); //general settings label
@@ -182,7 +182,7 @@ public class ActorTab
                                     GUILayout.EndVertical();
                                     #endregion
                                 GUILayout.EndHorizontal();
-                                #endregion
+                                #endregion  
                             GUILayout.EndVertical(); //Nickname label, nickname field, initial level and max level label and field (ending)
                             #endregion
                         GUILayout.EndHorizontal();
@@ -377,6 +377,14 @@ public class ActorTab
         if (!AssetDatabase.IsValidFolder("Assets/Resources/Image"))
         {
             AssetDatabase.CreateFolder("Assets/Resources", "Image");
+        }
+        if (!AssetDatabase.IsValidFolder("Assets/Resources/Data/ClassesData"))
+        {
+            AssetDatabase.CreateFolder("Assets/Resources/Data", "ClassesData");
+        }
+        if (!AssetDatabase.IsValidFolder("Assets/Resources/Data/SkillData"))
+        {
+            AssetDatabase.CreateFolder("Assets/Resources/Data", "SkillData");
         }
 
     }
