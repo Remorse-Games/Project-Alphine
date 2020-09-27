@@ -15,8 +15,6 @@ using SFB;
 
 public abstract class BaseTab
 {
-    private int actorSizeTemp;
-
     #region Features
     /// <summary>
     /// This called when actor list on active.
@@ -109,14 +107,11 @@ public abstract class BaseTab
     int counter = 0;
     public void ChangeMaximum(int actorSize, List<ActorData> player, List<string> actorDisplayName)
     {
-
-        actorSize = actorSizeTemp;
         //This count only useful when we doesn't have a name yet.
         //you can remove this when decide a new format later.
         while (counter <= actorSize)
         {
             player.Add(ScriptableObject.CreateInstance<ActorData>());
-            Debug.Log("Show player List size : " + player.Count);
 
             AssetDatabase.CreateAsset(player[counter], "Assets/Resources/Data/ActorData/Actor_" + counter + ".asset");
             AssetDatabase.SaveAssets();
@@ -142,39 +137,38 @@ public abstract class BaseTab
                 new ExtensionFilter("All Files", "*" ),
         };
 
-    public void changeFaceImage(int index, List<ActorData> player)
+    //public void changeFaceImage(int index, List<ActorData> player)
+    //{
+    //    string relativepath;
+    //    string[] path = StandaloneFileBrowser.OpenFilePanel("Choose Face", "Assets/Resources/Image", extensions, false);
+
+    //    if (path.Length != 0)
+    //    {
+    //        relativepath = "Image/";
+    //        relativepath += Path.GetFileNameWithoutExtension(path[0]);
+    //        Sprite imageChosen = Resources.Load<Sprite>(relativepath);
+    //        player[index].face = imageChosen;
+    //        ActorListSelected(index, actorSizeTemp);
+    //    }
+    //}
+
+    //public void changeCharacterImage(int index, List<ActorData> player)
+    //{
+    //    string relativepath;
+    //    string[] path = StandaloneFileBrowser.OpenFilePanel("Choose Character", "Assets/Resources/Image", extensions, false);
+    //    if (path.Length != 0)
+    //    {
+    //        relativepath = "Image/";
+    //        relativepath += Path.GetFileNameWithoutExtension(path[0]);
+    //        Sprite imageChosen = Resources.Load<Sprite>(relativepath);
+    //        player[index].characterWorld = imageChosen;
+    //        ActorListSelected(index, actorSizeTemp);
+    //    }
+    //}
+
+    public void ImageChanger(int index,int actorSizeTemp, string panelName, string assetPath, Sprite imagePick)
     {
         string relativepath;
-        string[] path = StandaloneFileBrowser.OpenFilePanel("Choose Face", "Assets/Resources/Image", extensions, false);
-
-        if (path.Length != 0)
-        {
-            relativepath = "Image/";
-            relativepath += Path.GetFileNameWithoutExtension(path[0]);
-            Sprite imageChosen = Resources.Load<Sprite>(relativepath);
-            player[index].face = imageChosen;
-            ActorListSelected(index, actorSizeTemp);
-        }
-    }
-
-    public void changeCharacterImage(int index, List<ActorData> player)
-    {
-        string relativepath;
-        string[] path = StandaloneFileBrowser.OpenFilePanel("Choose Character", "Assets/Resources/Image", extensions, false);
-        if (path.Length != 0)
-        {
-            relativepath = "Image/";
-            relativepath += Path.GetFileNameWithoutExtension(path[0]);
-            Sprite imageChosen = Resources.Load<Sprite>(relativepath);
-            player[index].characterWorld = imageChosen;
-            ActorListSelected(index, actorSizeTemp);
-        }
-    }
-
-    public void ImageChanger(int index, string panelName, string assetPath, Sprite imagePick)
-    {
-        string relativepath;
-        Debug.Log("called");
         string[] path = StandaloneFileBrowser.OpenFilePanel(panelName, assetPath, extensions, false);
  //       string[] path = StandaloneFileBrowser.OpenFilePanel("Choose Face", "Assets/Resources/Image", extensions, false);
         if (path.Length != 0)

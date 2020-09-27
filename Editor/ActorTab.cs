@@ -115,10 +115,11 @@ public class ActorTab : BaseTab
                     indexTemp = -1;
                 }
 
+                //Int field of change Maximum
                 actorSizeTemp = EditorGUILayout.IntField(actorSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
                 if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
                 {
-                    ChangeMaximum(actorSize, player, actorDisplayName);
+                    ChangeMaximum(actorSizeTemp, player, actorDisplayName);
                 }
             GUILayout.EndArea();
             #endregion
@@ -215,6 +216,7 @@ public class ActorTab : BaseTab
                             { 
                                 ImageChanger(
                                     index, 
+                                    actorSizeTemp,
                                     "Choose Face", 
                                     "Assets/Resources/Image",
                                     player[index].face); 
@@ -229,6 +231,7 @@ public class ActorTab : BaseTab
                             { 
                                 ImageChanger(
                                     index,
+                                    actorSizeTemp,
                                     "Choose Character",
                                     "Assets/Resources/Image",
                                     player[index].characterWorld); 
@@ -243,6 +246,7 @@ public class ActorTab : BaseTab
                             { 
                                 ImageChanger(
                                     index, 
+                                    actorSizeTemp,
                                     "Choose Face", 
                                     "Assets/Resources/Image", 
                                     player[index].battler); 
