@@ -6,11 +6,16 @@ using SFB;
 
 public class DatabaseMain : EditorWindow
 {
-
     #region Init Values
     //Editor Classes
     ActorTab actorTab;
+<<<<<<< .mine
     ClassTab classTab;
+    SkillsTab skillTab;
+=======
+    ClassTab classTab;
+
+>>>>>>> .theirs
 
     //Tab Area. DO NOT CHANGE anything in here.
     public static float tabAreaWidth;
@@ -51,6 +56,7 @@ public class DatabaseMain : EditorWindow
     {
         ValueInit();
         actorTab.FolderChecker();
+        skillTab.FolderChecker();
     }
 
     //////////////////////////////////////////////////
@@ -66,12 +72,15 @@ public class DatabaseMain : EditorWindow
 
     //////////////////////////////////////////////////
 
+
     /// <summary>
     /// We Initialize all value that doesn't static in here.
     /// </summary>
     private void ValueInit()
     {
-       actorTab = new ActorTab();
+        actorTab = new ActorTab();
+        classTab = new ClassTab();
+        skillTab = new SkillsTab();
        classTab = new ClassTab();
     }
 
@@ -141,7 +150,7 @@ public class DatabaseMain : EditorWindow
                 actorTab.Init(position);
                 break;
             case 2:
-                actorTab.Init(position);
+                skillTab.Init(position);
                 break;
             case 1:
                 classTab.Init(position);
