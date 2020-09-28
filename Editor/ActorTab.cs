@@ -108,7 +108,13 @@ public class ActorTab : BaseTab
                 //Scroll View
                 #region ScrollView
                 scrollPos = GUILayout.BeginScrollView(scrollPos, false, true, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .82f));
-                    index = GUILayout.SelectionGrid(index, actorDisplayName.ToArray(), 1, GUILayout.Width(firstTabWidth - 20), GUILayout.Height(position.height / 24 * actorSize));
+                    index = GUILayout.SelectionGrid(
+                        index, 
+                        actorDisplayName.ToArray(), 
+                        1, 
+                        GUILayout.Width(firstTabWidth - 20), 
+                        GUILayout.Height(position.height / 24 * actorSizeTemp
+                        ));
                 GUILayout.EndScrollView();
                 #endregion
 
@@ -116,7 +122,7 @@ public class ActorTab : BaseTab
                 if (GUI.changed && index != indexTemp)
                 {
                     indexTemp = index;
-                    ActorListSelected(indexTemp, actorSize);
+                    ItemTabLoader(indexTemp);
                     indexTemp = -1;
                 }
 
@@ -124,7 +130,8 @@ public class ActorTab : BaseTab
                 actorSizeTemp = EditorGUILayout.IntField(actorSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
                 if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
                 {
-                    ChangeMaximum(actorSizeTemp, player, actorDisplayName);
+                    actorSize = actorSizeTemp;
+                    ChangeMaximum(actorSize, player, actorDisplayName);
                 }
             GUILayout.EndArea();
             #endregion
@@ -152,7 +159,9 @@ public class ActorTab : BaseTab
                                     actorDisplayName[index] = player[index].actorName;
                                 }
                                 else
-                                { GUILayout.TextField("Null", GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 8)); }
+                                { 
+                                    GUILayout.TextField("Null", GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 8)); 
+                                }
                                 GUILayout.Space(generalBox.height / 20);
                                 GUILayout.Label("Class:");
                                 selectedClassIndex = EditorGUILayout.Popup(selectedClassIndex, actorClassesList, GUILayout.Height(generalBox.height / 8), GUILayout.Width(generalBox.width / 2 - 15));
@@ -218,13 +227,13 @@ public class ActorTab : BaseTab
                             GUILayout.Label("Face:");
                             GUILayout.Box(faceImage, GUILayout.Width(imageBox.width / 3 - 10), GUILayout.Height(imageBox.width / 3 - 10));
                             if (GUILayout.Button("Edit Face", GUILayout.Height(imageBox.height / 10), GUILayout.Width(imageBox.width / 3 - 10))) 
-                            { 
-                                ImageChanger(
-                                    index, 
-                                    actorSizeTemp,
+                            {
+                                    player[index].face = ImageChanger(
+                                    index,
                                     "Choose Face", 
-                                    "Assets/Resources/Image",
-                                    player[index].face); 
+                                    "Assets/Resources/Image"
+                                    );
+                                    ItemTabLoader(index);
                             }
                         GUILayout.EndVertical();
                         #endregion
@@ -233,13 +242,13 @@ public class ActorTab : BaseTab
                             GUILayout.Label("Character:");
                             GUILayout.Box(characterImage, GUILayout.Width(imageBox.width / 3 - 10), GUILayout.Height(imageBox.width / 3 - 10));
                             if (GUILayout.Button("Edit Character", GUILayout.Height(imageBox.height / 10), GUILayout.Width(imageBox.width / 3 - 10))) 
-                            { 
-                                ImageChanger(
-                                    index,
-                                    actorSizeTemp,
+                            {
+                                    player[index].characterWorld = ImageChanger(
+                                    index,                                    
                                     "Choose Character",
-                                    "Assets/Resources/Image",
-                                    player[index].characterWorld); 
+                                    "Assets/Resources/Image"
+                                    );
+                                    ItemTabLoader(index);
                             }
                         GUILayout.EndVertical();
                         #endregion
@@ -248,20 +257,21 @@ public class ActorTab : BaseTab
                             GUILayout.Label("[SV] Battler: ");
                             GUILayout.Box(battlerImage, GUILayout.Width(imageBox.width / 3 - 10), GUILayout.Height(imageBox.width / 3 - 10));
                             if (GUILayout.Button("Edit Battler", GUILayout.Height(imageBox.height / 10), GUILayout.Width(imageBox.width / 3 - 10))) 
-                            { 
-                                ImageChanger(
+                            {
+                                    player[index].battler = ImageChanger(
                                     index, 
-                                    actorSizeTemp,
                                     "Choose Face", 
-                                    "Assets/Resources/Image", 
-                                    player[index].battler); 
+                                    "Assets/Resources/Image" 
+                                    );
+                                    ItemTabLoader(index);
+
                             }
-                        GUILayout.EndVertical();
-                        #endregion
-                    GUILayout.EndHorizontal();
-                    #endregion
-                GUILayout.EndArea();
-                #endregion
+                            GUILayout.EndVertical();
+                                            #endregion
+                                        GUILayout.EndHorizontal();
+                                        #endregion
+                                    GUILayout.EndArea();
+                                    #endregion
 
                 
                 //Initial Equipment
@@ -353,8 +363,9 @@ public class ActorTab : BaseTab
         #endregion
     }
 
-    public override void ActorListSelected(int index, int actorSize)
+    public override void ItemTabLoader(int index)
     {
+        Debug.Log(index + "index");
         Texture2D defTex = new Texture2D(256, 256);
         if (index != -1)
         {
@@ -363,19 +374,19 @@ public class ActorTab : BaseTab
                 if (player[index].face == null)
                     faceImage = defTex;
                 else
-                    faceImage = textureFromSprite(player[index].face);
+                    faceImage = TextureToSprite(player[index].face);
 
 
                 if (player[index].characterWorld == null)
                     characterImage = defTex;
                 else
-                    characterImage = textureFromSprite(player[index].characterWorld);
+                    characterImage = TextureToSprite(player[index].characterWorld);
 
 
                 if (player[index].battler == null)
                     battlerImage = defTex;
                 else
-                    battlerImage = textureFromSprite(player[index].battler);
+                    battlerImage = TextureToSprite(player[index].battler);
             }
         }
     }

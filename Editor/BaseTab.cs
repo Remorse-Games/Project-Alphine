@@ -18,9 +18,10 @@ public abstract class BaseTab
     #region Features
     /// <summary>
     /// This called when actor list on active.
+    /// pick item to load it.
     /// </summary>
     /// <param name="index">index of actor in a list.</param>
-    public abstract void ActorListSelected(int index, int actorSize);
+    public abstract void ItemTabLoader(int index);
 
     ///<summary>
     /// Folder checker, create folder if it doesnt exist already, Might refactor into one liner if
@@ -79,7 +80,7 @@ public abstract class BaseTab
     /// </summary>
     /// <param name="sprite">the sprite that wants to be converted into texture</param>
     /// <returns></returns>
-    public static Texture2D textureFromSprite(Sprite sprite)
+    public Texture2D TextureToSprite(Sprite sprite)
     {
         if (sprite.rect.width != sprite.texture.width)
         {
@@ -102,26 +103,27 @@ public abstract class BaseTab
     /// and change the size while creating new data.
     /// </summary>
     /// <param name="size">get size from actorSize</param>
-
-
-    int counter = 0;
-    public void ChangeMaximum(int actorSize, List<ActorData> player, List<string> actorDisplayName)
+    /// <param name="listTabItem">list of item that you want to display.</param>
+    /// <param name="itemTabName">get size from actorSize</param>
+    public void ChangeMaximum(int actorSize, List<ActorData> listTabItem, List<string> itemTabName)
     {
+        int counter = 0;
+
         //This count only useful when we doesn't have a name yet.
         //you can remove this when decide a new format later.
         while (counter <= actorSize)
         {
-            player.Add(ScriptableObject.CreateInstance<ActorData>());
+            listTabItem.Add(ScriptableObject.CreateInstance<ActorData>());
 
-            AssetDatabase.CreateAsset(player[counter], "Assets/Resources/Data/ActorData/Actor_" + counter + ".asset");
+            AssetDatabase.CreateAsset(listTabItem[counter], "Assets/Resources/Data/ActorData/Actor_" + counter + ".asset");
             AssetDatabase.SaveAssets();
-            actorDisplayName.Add(player[counter].actorName);
+            itemTabName.Add(listTabItem[counter].actorName);
             counter++;
         }
         if (counter > actorSize)
         {
-            player.RemoveRange(actorSize, player.Count - actorSize);
-            actorDisplayName.RemoveRange(actorSize, actorDisplayName.Count - actorSize);
+            listTabItem.RemoveRange(actorSize, listTabItem.Count - actorSize);
+            itemTabName.RemoveRange(actorSize, itemTabName.Count - actorSize);
             for (int i = actorSize; i <= counter; i++)
             {
                 AssetDatabase.DeleteAsset("Assets/Resources/Data/ActorData/Actor_" + i + ".asset");
@@ -131,55 +133,27 @@ public abstract class BaseTab
         }
     }
 
-    ExtensionFilter[] extensions = new[] {
+    ExtensionFilter[] fileExtensions = new[] {
                 new ExtensionFilter("Image Files", "png", "jpg", "jpeg" ),
                 new ExtensionFilter("Sound Files", "mp3", "wav" ),
                 new ExtensionFilter("All Files", "*" ),
         };
 
-    //public void changeFaceImage(int index, List<ActorData> player)
-    //{
-    //    string relativepath;
-    //    string[] path = StandaloneFileBrowser.OpenFilePanel("Choose Face", "Assets/Resources/Image", extensions, false);
-
-    //    if (path.Length != 0)
-    //    {
-    //        relativepath = "Image/";
-    //        relativepath += Path.GetFileNameWithoutExtension(path[0]);
-    //        Sprite imageChosen = Resources.Load<Sprite>(relativepath);
-    //        player[index].face = imageChosen;
-    //        ActorListSelected(index, actorSizeTemp);
-    //    }
-    //}
-
-    //public void changeCharacterImage(int index, List<ActorData> player)
-    //{
-    //    string relativepath;
-    //    string[] path = StandaloneFileBrowser.OpenFilePanel("Choose Character", "Assets/Resources/Image", extensions, false);
-    //    if (path.Length != 0)
-    //    {
-    //        relativepath = "Image/";
-    //        relativepath += Path.GetFileNameWithoutExtension(path[0]);
-    //        Sprite imageChosen = Resources.Load<Sprite>(relativepath);
-    //        player[index].characterWorld = imageChosen;
-    //        ActorListSelected(index, actorSizeTemp);
-    //    }
-    //}
-
-    public void ImageChanger(int index,int actorSizeTemp, string panelName, string assetPath, Sprite imagePick)
+    public Sprite ImageChanger(int index, string panelName, string assetPath)
     {
         string relativepath;
-        string[] path = StandaloneFileBrowser.OpenFilePanel(panelName, assetPath, extensions, false);
- //       string[] path = StandaloneFileBrowser.OpenFilePanel("Choose Face", "Assets/Resources/Image", extensions, false);
+        string[] path = StandaloneFileBrowser.OpenFilePanel(panelName, assetPath, fileExtensions, false);
+        
         if (path.Length != 0)
         {
             relativepath = "Image/";
             relativepath += Path.GetFileNameWithoutExtension(path[0]);
             Sprite imageChosen = Resources.Load<Sprite>(relativepath);
-            imagePick = imageChosen;
- //           player[index].battler = imageChosen;
-            ActorListSelected(index, actorSizeTemp);
+            return imageChosen;
         }
+
+        Debug.LogError("Image Changer should have path directly to this!");
+        return null;
     }
     #endregion
 }
