@@ -16,10 +16,10 @@ public class SkillsTab
     List<string> skillDisplayName = new List<string>();
 
     //All GUIStyle variable initialization.
-    GUIStyle skillStyle;
     GUIStyle tabStyle;
     GUIStyle columnStyle;
-
+    GUIStyle skillStyle;
+  
     //Index for selected Class.
     public int selectedClassIndex;
 
@@ -56,6 +56,7 @@ public class SkillsTab
 
         float tabWidth = position.width * .85f;
         float tabHeight = position.height - 10f;
+
         float firstTabWidth = tabWidth * 3 / 10;
 
         //Style area.
@@ -68,6 +69,7 @@ public class SkillsTab
             tabStyle.normal.background = CreateTexture(1, 1, new Color32(76, 76, 76, 200));
         else
             tabStyle.normal.background = CreateTexture(1, 1, new Color32(200, 200, 200, 200));
+
 
         ////////////////////////////////////////////////////////////////////////////////////////
         /////////////////////////////END REGION OF VALUE INIT///////////////////////////////////
@@ -197,4 +199,11 @@ public class SkillsTab
     }
 
     #endregion
+        //The black box behind the SkillsTab? yes, this one.
+        GUILayout.Box(" ", skillStyle, GUILayout.Width(position.width - DatabaseMain.tabAreaWidth), GUILayout.Height(position.height - 25f));
+
+
+        GUILayout.EndArea(); // End of drawing SkillsTab
+        #endregion
+    }
 }

@@ -9,13 +9,8 @@ public class DatabaseMain : EditorWindow
     #region Init Values
     //Editor Classes
     ActorTab actorTab;
-<<<<<<< .mine
     ClassTab classTab;
     SkillsTab skillTab;
-=======
-    ClassTab classTab;
-
->>>>>>> .theirs
 
     //Tab Area. DO NOT CHANGE anything in here.
     public static float tabAreaWidth;
@@ -56,7 +51,6 @@ public class DatabaseMain : EditorWindow
     {
         ValueInit();
         actorTab.FolderChecker();
-        skillTab.FolderChecker();
     }
 
     //////////////////////////////////////////////////
@@ -81,7 +75,6 @@ public class DatabaseMain : EditorWindow
         actorTab = new ActorTab();
         classTab = new ClassTab();
         skillTab = new SkillsTab();
-       classTab = new ClassTab();
     }
 
     //////////////////////////////////////////////////
