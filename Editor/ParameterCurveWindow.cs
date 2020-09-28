@@ -716,7 +716,7 @@ public class MDefenseWindow : EditorWindow
         GUILayout.EndHorizontal();
         using (new EditorGUI.DisabledScope(true))
         {
-            EditorGUILayout.CurveField(thisClass.mDefenseCurve, new Color32(192, 80, 176, 255), new Rect(0, 0, 100, 250), GUILayout.Height(300), GUILayout.Width(800));
+            EditorGUILayout.CurveField(thisClass.mDefenseCurve, new Color32(64, 160, 64, 255), new Rect(0, 0, 100, 250), GUILayout.Height(300), GUILayout.Width(800));
         }
         GUILayout.Label("Generate Curve: ");
         GUILayout.Space(10);
