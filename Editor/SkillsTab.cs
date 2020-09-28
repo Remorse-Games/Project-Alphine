@@ -197,13 +197,5 @@ public class SkillsTab
         }
 
     }
-
     #endregion
-        //The black box behind the SkillsTab? yes, this one.
-        GUILayout.Box(" ", skillStyle, GUILayout.Width(position.width - DatabaseMain.tabAreaWidth), GUILayout.Height(position.height - 25f));
-
-
-        GUILayout.EndArea(); // End of drawing SkillsTab
-        #endregion
-    }
 }
