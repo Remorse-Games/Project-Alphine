@@ -9,6 +9,14 @@ public class SkillData : ScriptableObject
     [TextArea]
     public string skillDescription;
 
+    //Index for selected Class.
+    public int selectedSkillTypeIndex;
+    public int selectedSkillScopeIndex;
+    public int selectedSkillOccasionIndex;
+    public int selectedSkillHitTypeIndex;
+    public int selectedSkillAnimationIndex;
+    public int selectedSKillWeaponIndex;
+
     //skillType
     public int skillMPCost;
     public int skillTPCost;
