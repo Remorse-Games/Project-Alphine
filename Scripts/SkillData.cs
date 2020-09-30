@@ -4,7 +4,7 @@
 public class SkillData : ScriptableObject
 {
     public string skillName;
-    public Sprite skillIcon;
+    public Sprite Icon;
 
     [TextArea]
     public string skillDescription;
@@ -40,7 +40,7 @@ public class SkillData : ScriptableObject
         Sprite sp = Resources.Load<Sprite>("Image");
 
         skillName = "skill";
-        skillIcon = sp;
+        Icon = sp;
         skillDescription = " ";
         skillMPCost = 0;
         skillTPCost = 0;

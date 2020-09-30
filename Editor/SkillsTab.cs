@@ -3,8 +3,9 @@ using UnityEngine;
 using UnityEditor;
 using System.IO;
 using SFB;
+using System.ComponentModel;
 
-public class SkillsTab
+public class SkillsTab : BaseTab
 {
     //Having list of all skills exist in data.
     public List<SkillData> skill = new List<SkillData>();
@@ -15,13 +16,75 @@ public class SkillsTab
     //a double List for this kind of thing.
     List<string> skillDisplayName = new List<string>();
 
+    //Classes
+
+    public string[] skillTypeList =
+    {
+        "None",
+        "Magic",
+        "Special",
+    };
+
+
+    public string[] skillScopeList =
+    {
+        "None",
+        "1 Enemy",
+        "All Enemies",
+        "1 Random Enimies",
+        "2 Random Enimies",
+        "3 Random Enimies",
+        "4 Random Enimies",
+        "1 Ally",
+        "All Allies",
+        "1 Ally (Dead)",
+        "The Allies (Dead)",
+        "The User",
+    };
+
+    public string[] skillOccasion =
+    {
+        "Always",
+        "Battle Screen",
+        "Menu Screen",
+        "Never",
+    };
+
+    public string[] skillHitType =
+    {
+        "Certain Hit",
+        "Pyhsical Hit",
+        "Magical Hit",
+    };
+
+    public string[] skillAnimation =
+    {
+        "Normal Attack",
+        "None",
+        "Hit Pyhsical",
+        "...",
+    };
+
+    public string[] skillWeaponType =
+    {
+        "None",
+        "Dagger",
+        "Sword",
+        "...",
+    };
+
     //All GUIStyle variable initialization.
     GUIStyle tabStyle;
     GUIStyle columnStyle;
     GUIStyle skillStyle;
-  
+
     //Index for selected Class.
-    public int selectedClassIndex;
+    public int selectedSkillTypeIndex;
+    public int selectedSkillScopeIndex;
+    public int selectedSkillOccasionIndex;
+    public int selectedSkillHitTypeIndex;
+    public int selectedSkillAnimationIndex;
+    public int selectedSKillWeaponIndex;
 
     //How many skill in ChangeMaximum Func
     public int skillSize;
@@ -36,7 +99,7 @@ public class SkillsTab
     Vector2 traitsScrollPos = Vector2.zero;
 
     //Image Area.
-    Texture2D Icon;
+    Texture2D skillIcon;
 
     public int skillSizeTemp;
 
@@ -79,8 +142,8 @@ public class SkillsTab
         //Start drawing the whole SkillsTab.
         GUILayout.BeginArea(new Rect(position.width / 7, 5, tabWidth, tabHeight));
 
-            //The black box behind the SkillsTab? yes, this one.
-            GUILayout.Box(" ", skillStyle, GUILayout.Width(position.width - DatabaseMain.tabAreaWidth), GUILayout.Height(position.height - 25f));
+        //The black box behind the SkillsTab? yes, this one.
+        GUILayout.Box(" ", skillStyle, GUILayout.Width(position.width - DatabaseMain.tabAreaWidth), GUILayout.Height(position.height - 25f));
 
             #region Tab 1/3
             //First Tab of three
@@ -98,48 +161,131 @@ public class SkillsTab
             if (GUI.changed && index != indexTemp)
             {
                 indexTemp = index;
-                //SkillListSelected(indexTemp);
+                ItemTabLoader(indexTemp);
                 indexTemp = -1;
             }
 
+            // Change Maximum field and button
             skillSizeTemp = EditorGUILayout.IntField(skillSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
             if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
             {
                 ChangeMaximum(skillSize);
             }
+
             GUILayout.EndArea();
-            #endregion
+            #endregion // End Of First Tab
 
-        GUILayout.EndArea(); // End of drawing SkillsTab
+            #region Tab 2/3
+            GUILayout.BeginArea(new Rect(firstTabWidth + 5, 0, firstTabWidth + 70, tabHeight - 15), columnStyle);
+            Rect generalBox = new Rect(5, 5, firstTabWidth + 60, position.height / 2 - 110);
+                #region GeneralSettings
+                GUILayout.BeginArea(generalBox, tabStyle); // Start of General Settings tab
+                    GUILayout.Label("General Settings", EditorStyles.boldLabel); // General Settings label
+                    #region Vertical
+                    GUILayout.BeginVertical();
+                        #region Horizontal
+                        GUILayout.BeginHorizontal();
+                            #region Name
+                            GUILayout.BeginVertical();
+                                GUILayout.Label("Name:"); // Name label
+                                if (skillSize > 0)
+                                {
+                                    skill[index].skillName = GUILayout.TextField(skill[index].skillName, GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 8));
+                                    skillDisplayName[index] = skill[index].skillName;
+                                }
+                                else
+                                {
+                                    GUILayout.TextField("Null", GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 8));
+                                }
+                            GUILayout.EndVertical();
+                            #endregion
+                            #region Icon
+                            GUILayout.BeginArea(new Rect(200, 21, firstTabWidth -220, position.height / 2)); // Icon Area
+                            GUILayout.BeginHorizontal();
+                                GUILayout.BeginVertical();
+                                    GUILayout.Label("Icon:"); // Icon label
+                                GUILayout.EndVertical();
 
-        #endregion
+                                GUILayout.BeginVertical();
+                                    GUILayout.Box(skillIcon, GUILayout.Width(61), GUILayout.Height(61)); // Icon Box preview
+                                    if (GUILayout.Button("Edit Icon", GUILayout.Height(20), GUILayout.Width(63))) // Icon changer Button
+                                    {
+                                        skill[index].Icon = ImageChanger(
+                                        index,
+                                        "Choose Icon",
+                                        "Assets/Resources/Image"
+                                        );
+                                        ItemTabLoader(index);
+                                    }
+                                GUILayout.EndVertical();
+                            GUILayout.EndHorizontal();
+                            GUILayout.EndArea();
+                            #endregion
+                        GUILayout.EndHorizontal();
+                        #endregion
 
+                        GUILayout.Space(30);
+                            #region Description
+                            GUILayout.Label("Description:"); // Description label
+                            if (skillSize > 0)
+                            {
+                                skill[index].skillDescription = GUILayout.TextArea(skill[index].skillDescription, GUILayout.Width(firstTabWidth + 50), GUILayout.Height(generalBox.height / 5 - 13));
+                            }
+                            else
+                            {
+                                GUILayout.TextArea("Null", GUILayout.Width(firstTabWidth + 50), GUILayout.Height(generalBox.height / 5 - 13));
+                            }
+                            #endregion
+                        GUILayout.Space(5);
+                        #region Horizontal
+                        GUILayout.BeginHorizontal();   
+                            #region SkillType Scope
+                            GUILayout.BeginVertical();
+                                GUILayout.Label("Skill Type:"); // Skill Type class label
+                                selectedSkillTypeIndex = EditorGUILayout.Popup(selectedSkillTypeIndex, skillTypeList, GUILayout.Height(generalBox.height / 8 - 15), GUILayout.Width(generalBox.width / 2 - 15));
+
+                                GUILayout.Space(1);
+                                GUILayout.Label("Scope:"); // Scope class label
+                                selectedSkillScopeIndex = EditorGUILayout.Popup(selectedSkillScopeIndex, skillScopeList, GUILayout.Height(generalBox.height / 8 - 15), GUILayout.Width(generalBox.width / 2 - 15));
+                            GUILayout.EndVertical();
+                            #endregion
+                            #region MP_Cost TP_Cost Occasion
+                            GUILayout.BeginVertical();
+                                GUILayout.Label("MP Cost:"); // MP Cost class label
+                                if (skillSize > 0)
+                                { skill[index].skillMPCost = EditorGUILayout.IntField(skill[index].skillMPCost, GUILayout.Width(generalBox.width / 4 - 20), GUILayout.Height(generalBox.height / 8 - 15)); }
+                                else
+                                { EditorGUILayout.IntField(-1, GUILayout.Width(generalBox.width / 4 - 20), GUILayout.Height(generalBox.height / 8 - 15)); }
+                                GUILayout.Space(1);
+                                GUILayout.Label("Occasion:"); // Occasion class label
+                                selectedSkillOccasionIndex = EditorGUILayout.Popup(selectedSkillOccasionIndex, skillOccasion, GUILayout.Height(generalBox.height / 8 - 15), GUILayout.Width(generalBox.width / 4 - 20));
+                            GUILayout.EndVertical();
+
+                            GUILayout.BeginVertical();
+                                GUILayout.Label("TP Cost:"); // TP Cost class label
+                                if (skillSize > 0)
+                                { skill[index].skillTPCost = EditorGUILayout.IntField(skill[index].skillTPCost, GUILayout.Width(generalBox.width / 4 - 20), GUILayout.Height(generalBox.height / 8 - 15)); }
+                                else
+                                { EditorGUILayout.IntField(-1, GUILayout.Width(generalBox.width / 4 - 20), GUILayout.Height(generalBox.height / 8 - 15)); }
+                            GUILayout.EndVertical();
+
+                           
+                            #endregion
+                        GUILayout.EndHorizontal();
+                        #endregion
+
+                    GUILayout.EndVertical();
+                    #endregion
+                GUILayout.EndArea();
+                #endregion
+            GUILayout.EndArea();
+            #endregion // End of Second Tab
+
+        GUILayout.EndArea();
+        #endregion // End of SkillTab
     }
 
     #region Features
-    /// <summary>
-    /// Create Texture for GUI skin.
-    /// </summary>
-    /// <param name="width">pixel width of GUI Skin.</param>
-    /// <param name="height">pixel height of GUI Skin.</param>
-    /// <param name="col">Color of GUI Skin.</param>
-    /// <returns></returns>
-    private Texture2D CreateTexture(int width, int height, Color col)
-    {
-        //Create array of color.
-        Color[] colPixel = new Color[width * height];
-
-        for (int i = 0; i < colPixel.Length; ++i)
-        {
-            colPixel[i] = col;
-        }
-
-        Texture2D result = new Texture2D(width, height);
-        result.SetPixels(colPixel);
-        result.Apply();
-        return result;
-    }
-
     /// <summary>
     /// Change Maximum function , when we change the size
     /// and click Change Maximum button in Editor, it will update
@@ -174,28 +320,22 @@ public class SkillsTab
         }
     }
 
-    ///<summary>
-    /// Folder checker, create folder if it doesnt exist already, Might refactor into one liner if
-    ///</summary>
-    public void FolderChecker()
+    public override void ItemTabLoader(int index)
     {
-        if (!AssetDatabase.IsValidFolder("Assets/Resources"))
+        Debug.Log(index + "index");
+        Texture2D defTex = new Texture2D(256, 256);
+        if (index != -1)
         {
-            AssetDatabase.CreateFolder("Assets", "Resources");
-        }
-        if (!AssetDatabase.IsValidFolder("Assets/Resources/Data"))
-        {
-            AssetDatabase.CreateFolder("Assets/Resources", "Data");
-        }
-        if (!AssetDatabase.IsValidFolder("Assets/Resources/Image"))
-        {
-            AssetDatabase.CreateFolder("Assets/Resources", "Image");
-        }
-        if (!AssetDatabase.IsValidFolder("Assets/Resources/Data/SkillData"))
-        {
-            AssetDatabase.CreateFolder("Assets/Resources/Data", "SkillData");
-        }
+            if (skillSize > 0)
+            {
+                if (skill[index].Icon == null)
+                    skillIcon= defTex;
+                else
+                    skillIcon = TextureToSprite(skill[index].Icon);
 
+            }
+        }
     }
+
     #endregion
 }
