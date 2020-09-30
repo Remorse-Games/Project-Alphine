@@ -15,6 +15,7 @@ public class SkillsTab : BaseTab
     //I hope later got better solution about this to not do
     //a double List for this kind of thing.
     List<string> skillDisplayName = new List<string>();
+
     //Classes
     public string[] skillTypeList =
     {
@@ -22,7 +23,6 @@ public class SkillsTab : BaseTab
         "Magic",
         "Special",
     };
-
 
     public string[] skillScopeList =
     {
@@ -70,8 +70,6 @@ public class SkillsTab : BaseTab
         "Sword",
         "Other... (Add More Manually)",
     };
-
-
 
     //All GUIStyle variable initialization.
     GUIStyle tabStyle;
@@ -168,9 +166,9 @@ public class SkillsTab : BaseTab
             #endregion // End Of First Tab
 
             #region Tab 2/3
-            GUILayout.BeginArea(new Rect(firstTabWidth + 5, 0, firstTabWidth + 70, tabHeight - 29), columnStyle);
+            GUILayout.BeginArea(new Rect(firstTabWidth + 5, 0, firstTabWidth + 70, tabHeight - 25), columnStyle);
 
-            Rect generalBox = new Rect(5, 5, firstTabWidth + 60, position.height / 2 - 100);
+            Rect generalBox = new Rect(5, 5, firstTabWidth + 60, position.height / 2 - 68);
                 #region GeneralSettings
                 GUILayout.BeginArea(generalBox, tabStyle); // Start of General Settings tab
                     GUILayout.Label("General Settings", EditorStyles.boldLabel); // General Settings label
@@ -193,7 +191,7 @@ public class SkillsTab : BaseTab
                             GUILayout.EndVertical();
                             #endregion
                             #region Icon
-                            GUILayout.BeginArea(new Rect(220, 21, firstTabWidth - 220, position.height / 2)); // Icon Area
+                            GUILayout.BeginArea(new Rect(190, 21, firstTabWidth - 220, position.height / 2)); // Icon Area
                             GUILayout.BeginHorizontal();
                                 GUILayout.BeginVertical();
                                     GUILayout.Label("Icon:"); // Icon label
@@ -201,7 +199,7 @@ public class SkillsTab : BaseTab
 
                                 GUILayout.BeginVertical();
                                     GUILayout.Box(skillIcon, GUILayout.Width(61), GUILayout.Height(61)); // Icon Box preview
-                                    if (GUILayout.Button("Edit Icon", GUILayout.Height(20), GUILayout.Width(63))) // Icon changer Button
+                                    if (GUILayout.Button("Edit Icon", GUILayout.Height(20), GUILayout.Width(64))) // Icon changer Button
                                     {
                                         skill[index].Icon = ImageChanger(
                                         index,
@@ -222,11 +220,11 @@ public class SkillsTab : BaseTab
                             GUILayout.Label("Description:"); // Description label
                             if (skillSize > 0)
                             {
-                                skill[index].skillDescription = GUILayout.TextArea(skill[index].skillDescription, GUILayout.Width(firstTabWidth + 50), GUILayout.Height(generalBox.height / 5 - 13));
+                                skill[index].skillDescription = GUILayout.TextArea(skill[index].skillDescription, GUILayout.Width(firstTabWidth + 53), GUILayout.Height(generalBox.height / 5 - 13));
                             }
                             else
                             {
-                                GUILayout.TextArea("Null", GUILayout.Width(firstTabWidth + 50), GUILayout.Height(generalBox.height / 5 - 13));
+                                GUILayout.TextArea("Null", GUILayout.Width(firstTabWidth + 53), GUILayout.Height(generalBox.height / 5 + 5));
                             }
                             #endregion
                         GUILayout.Space(5);
@@ -267,7 +265,7 @@ public class SkillsTab : BaseTab
                         GUILayout.EndHorizontal();
 
                         GUILayout.BeginHorizontal();
-
+                            #region Scope Occasion
                             GUILayout.BeginVertical();
                                 GUILayout.Label("Scope:"); // Scope class label
                                 if (skillSize > 0)
@@ -291,7 +289,7 @@ public class SkillsTab : BaseTab
                                     EditorGUILayout.Popup(0, skillOccasion, GUILayout.Height(generalBox.height / 8 - 15), GUILayout.Width(generalBox.width / 2));
                                 }
                             GUILayout.EndVertical();
-
+                            #endregion
                         GUILayout.EndHorizontal();
                         #endregion
 
@@ -300,7 +298,7 @@ public class SkillsTab : BaseTab
                 GUILayout.EndArea();
         #endregion
   
-            Rect invocationBox = new Rect(5, 280, firstTabWidth + 60, position.height / 4 - 70);
+            Rect invocationBox = new Rect(5, 310, firstTabWidth + 60, position.height / 4 - 70);
                 #region InvocationSettings
                 GUILayout.BeginArea(invocationBox, tabStyle);
                 #region Vertical
@@ -380,8 +378,100 @@ public class SkillsTab : BaseTab
                 #endregion
                 
                 GUILayout.EndArea();
-                #endregion // End Of Invocation Settings
-            
+        #endregion // End Of Invocation Settings
+
+            Rect messageBox = new Rect(5, 430, firstTabWidth + 60, position.height / 4 - 20);
+                #region messageBox
+                GUILayout.BeginArea(messageBox, tabStyle);
+                    GUILayout.Label("Message", EditorStyles.boldLabel);
+                    #region Vertical
+                    GUILayout.BeginVertical();
+                        #region Fields
+                        GUILayout.BeginHorizontal();
+                            GUILayout.Label("(User Name)");
+                            if (skillSize > 0)
+                            {
+                                skill[index].skillUserNameMessage = GUILayout.TextField(skill[index].skillUserNameMessage, GUILayout.Width(messageBox.width - 90), GUILayout.Height(messageBox.height / 4 - 19));
+                            }
+                            else
+                            {
+                                GUILayout.TextField("Null", GUILayout.Width(messageBox.width - 90), GUILayout.Height(messageBox.height / 4 - 19));
+                            }
+                        GUILayout.EndHorizontal();
+
+                            GUILayout.Space(3);
+                            if (skillSize > 0)
+                            {
+                                skill[index].skillMessage = GUILayout.TextField(skill[index].skillMessage, GUILayout.Width(messageBox.width - 9), GUILayout.Height(messageBox.height / 4 + 25));
+                            }
+                            else
+                            {
+                                GUILayout.TextField("Null", GUILayout.Width(messageBox.width - 9), GUILayout.Height(messageBox.height / 4 + 25));
+                            }
+
+                            GUILayout.Space(9);
+                        #region Buttons
+                        GUILayout.BeginHorizontal();
+                            GUILayout.Space(65);
+        
+                            if (GUILayout.Button("\"casts *!\"", GUILayout.Height(30), GUILayout.Width(63)))
+                            {
+                                skill[index].skillUserNameMessage = "\"casts *!\"";
+                            }
+                            GUILayout.Space(25);
+                            if (GUILayout.Button("\"does *!\"", GUILayout.Height(30), GUILayout.Width(63)))
+                            {
+                                skill[index].skillUserNameMessage = "\"does *!\"";
+                            }
+                            GUILayout.Space(25);
+                            if (GUILayout.Button("\"uses *!\"", GUILayout.Height(30), GUILayout.Width(63)))
+                            {
+                                skill[index].skillUserNameMessage = "\"uses *!\"";
+                            }
+                        GUILayout.EndHorizontal();
+                        #endregion
+                    #endregion
+                    GUILayout.EndVertical();
+                GUILayout.EndArea();
+        #endregion
+                #endregion
+
+            Rect requiredWeapon = new Rect(5, 600, firstTabWidth + 60, position.height / 10 - 25);
+                #region RequiredWeapon
+                    GUILayout.BeginArea(requiredWeapon, tabStyle);
+                        #region Horizontal
+                        GUILayout.BeginHorizontal();
+                            #region WeaponTypes
+                            GUILayout.BeginVertical();
+                                GUILayout.Label("Weapon Type 1:");
+                                if (skillSize > 0)
+                                {
+                                    skill[index].selectedSkillWeaponOneIndex = EditorGUILayout.Popup(skill[index].selectedSkillWeaponOneIndex, skillWeaponType, GUILayout.Height(requiredWeapon.height / 3 + 3), GUILayout.Width(requiredWeapon.width / 2 - 5));
+                                }
+                                else
+                                {
+                                    EditorGUILayout.Popup(0, skillWeaponType, GUILayout.Height(requiredWeapon.height / 3 + 3), GUILayout.Width(requiredWeapon.width / 2 - 5));
+                                }
+                            GUILayout.EndVertical();
+
+                            GUILayout.BeginVertical();
+                                GUILayout.Label("Weapon Type 2:");
+                                if (skillSize > 0)
+                                {
+                                    skill[index].selectedSkillWeaponTwoIndex = EditorGUILayout.Popup(skill[index].selectedSkillWeaponTwoIndex, skillWeaponType, GUILayout.Height(requiredWeapon.height / 3 + 3), GUILayout.Width(requiredWeapon.width / 2 - 5));
+                                }
+                                else
+                                {
+                                    EditorGUILayout.Popup(0, skillWeaponType, GUILayout.Height(requiredWeapon.height / 3 + 3), GUILayout.Width(requiredWeapon.width / 2 -5));
+                                }
+                            GUILayout.EndVertical();
+                            #endregion
+                        GUILayout.EndHorizontal();
+                        #endregion
+
+                    GUILayout.EndArea();
+                    #endregion
+
             GUILayout.EndArea();
             #endregion // End of Second Tab
 
