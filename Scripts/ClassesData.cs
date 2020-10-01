@@ -3,6 +3,7 @@
 public class ClassesData : ScriptableObject
 {
     public string className;
+    public string notes;
 
     #region ExpVar    
     public AnimationCurve expCurve;
