@@ -8,6 +8,8 @@ public class SkillData : ScriptableObject
 
     [TextArea]
     public string skillDescription;
+    public string skillUserNameMessage;
+    public string skillMessage;
 
     //Index for selected Class.
     public int selectedSkillTypeIndex;
@@ -15,7 +17,9 @@ public class SkillData : ScriptableObject
     public int selectedSkillOccasionIndex;
     public int selectedSkillHitTypeIndex;
     public int selectedSkillAnimationIndex;
-    public int selectedSKillWeaponIndex;
+
+    public int selectedSkillWeaponOneIndex;
+    public int selectedSkillWeaponTwoIndex;
 
     //skillType
     public int skillMPCost;
@@ -49,10 +53,12 @@ public class SkillData : ScriptableObject
 
         skillName = "skill";
         Icon = sp;
-        skillDescription = " ";
+        skillDescription = "Insert your description here";
         skillMPCost = 0;
         skillTPCost = 0;
         skillSpeed = 0;
+        skillUserNameMessage = "! !";
+        skillMessage = "";
         skillSuccessLevel = 100;
         skillRepeat = 1;
         skillTPGain = 10;
