@@ -11,6 +11,7 @@ public class DatabaseMain : EditorWindow
     ActorTab actorTab;
     ClassTab classTab;
     SkillsTab skillTab;
+    ItemTab itemTab;
 
     //Tab Area. DO NOT CHANGE anything in here.
     public static float tabAreaWidth;
@@ -52,6 +53,7 @@ public class DatabaseMain : EditorWindow
         ValueInit();
         actorTab.FolderChecker();
         skillTab.FolderChecker();
+        itemTab.FolderChecker();
     }
 
     //////////////////////////////////////////////////
@@ -76,6 +78,7 @@ public class DatabaseMain : EditorWindow
         actorTab = new ActorTab();
         classTab = new ClassTab();
         skillTab = new SkillsTab();
+        itemTab = new ItemTab();
     }
 
     //////////////////////////////////////////////////
@@ -141,7 +144,7 @@ public class DatabaseMain : EditorWindow
                 actorTab.Init(position);
                 break;
             case 3:
-                actorTab.Init(position);
+                itemTab.Init(position);
                 break;
             case 2:
                 skillTab.Init(position);
