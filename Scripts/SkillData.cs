@@ -36,13 +36,6 @@ public class SkillData : ScriptableObject
     public int skillRepeat;
     public int skillTPGain;
 
-    //skillHitType skillAnimation
-
-    //TODO: Message (User Name "casts *!)
-
-    //skillWeaponType1 and 2
-    //skillDamageType skillDamageElement
-
     public string skillFormula;
     public int skillVariance;
 

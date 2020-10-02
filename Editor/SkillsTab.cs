@@ -97,7 +97,7 @@ public class SkillsTab : BaseTab
         "Darkness",
     };
 
-    public string[] skillCriticalList =
+    public string[] skillBool =
     {
         "Yes",
         "No",
@@ -253,7 +253,7 @@ public class SkillsTab : BaseTab
                             GUILayout.Label("Description:"); // Description label
                             if (skillSize > 0)
                             {
-                                skill[index].skillDescription = GUILayout.TextArea(skill[index].skillDescription, GUILayout.Width(firstTabWidth + 53), GUILayout.Height(generalBox.height / 5 - 13));
+                                skill[index].skillDescription = GUILayout.TextArea(skill[index].skillDescription, GUILayout.Width(firstTabWidth + 53), GUILayout.Height(generalBox.height / 5 + 5));
                             }
                             else
                             {
@@ -592,11 +592,11 @@ public class SkillsTab : BaseTab
                                     GUILayout.Label("Critical Hits:");
                                     if (skillSize > 0)
                                     {
-                                        skill[index].selectedCriticalHits = EditorGUILayout.Popup(skill[index].selectedCriticalHits, skillCriticalList, GUILayout.Height(damageBox.height / 3 - 35), GUILayout.Width(.25f * (damageBox.width - 8)));
+                                        skill[index].selectedCriticalHits = EditorGUILayout.Popup(skill[index].selectedCriticalHits, skillBool, GUILayout.Height(damageBox.height / 3 - 35), GUILayout.Width(.25f * (damageBox.width - 8)));
                                     }
                                     else
                                     {
-                                        EditorGUILayout.Popup(0, skillCriticalList, GUILayout.Height(damageBox.height / 3 - 35), GUILayout.Width(.25f * (damageBox.width - 8)));
+                                        EditorGUILayout.Popup(0, skillBool, GUILayout.Height(damageBox.height / 3 - 35), GUILayout.Width(.25f * (damageBox.width - 8)));
                                     }
                                 GUILayout.EndVertical();
 
@@ -608,7 +608,7 @@ public class SkillsTab : BaseTab
                         GUILayout.EndVertical();
 
                     GUILayout.EndArea();
-        #endregion
+                    #endregion
 
                 Rect effectsBox = new Rect(5, damageBox.height + 10, firstTabWidth + 15, position.height / 3);
                     #region Effects
