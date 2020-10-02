@@ -328,91 +328,11 @@ public class ItemTab : BaseTab
                         GUILayout.EndArea();
                         #endregion
 
-                    Rect invocationBox = new Rect(5, generalBox.height + 10, firstTabWidth + 60, position.height / 4 - 70);
-                        #region InvocationSettings
-                        GUILayout.BeginArea(invocationBox, tabStyle);
-                            #region Vertical
-                            GUILayout.BeginVertical();
-
-                                GUILayout.Label("Invocation", EditorStyles.boldLabel);
-
-                                GUILayout.BeginHorizontal();
-
-                                    #region InitialLevel Success Repeat TPGain
-                                    GUILayout.BeginVertical();
-                                        GUILayout.Label("Initial Level:");
-                                        if (itemSize > 0)
-                                        { item[index].itemSpeed = EditorGUILayout.IntField(item[index].itemSpeed, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
-                                        else
-                                        { EditorGUILayout.IntField(-1, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
-                                    GUILayout.EndVertical();
-
-                                    GUILayout.BeginVertical();
-                                        GUILayout.Label("Success:");
-                                        if (itemSize > 0)
-                                        { item[index].itemSuccessLevel = EditorGUILayout.IntField(item[index].itemSuccessLevel, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
-                                        else
-                                        { EditorGUILayout.IntField(-1, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
-                                    GUILayout.EndVertical();
-
-                                    GUILayout.BeginVertical();
-                                        GUILayout.Label("Repeat:");
-                                        if (itemSize > 0)
-                                        { item[index].itemRepeat = EditorGUILayout.IntField(item[index].itemRepeat, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
-                                        else
-                                        { EditorGUILayout.IntField(-1, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
-                                    GUILayout.EndVertical();
-
-                                    GUILayout.BeginVertical();
-                                        GUILayout.Label("TP Gain:");
-                                        if (itemSize > 0)
-                                        { item[index].itemTPGain = EditorGUILayout.IntField(item[index].itemTPGain, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
-                                        else
-                                        { EditorGUILayout.IntField(-1, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
-                                    GUILayout.EndVertical();
-
-                                    GUILayout.EndHorizontal();
-                                    #endregion
-
-                                    #region HitType Animation
-                                    GUILayout.BeginHorizontal();
-
-                                        GUILayout.BeginVertical();
-                                            GUILayout.Label("Hit Type:"); // item Hit Type class label
-                                            if (itemSize > 0)
-                                            {
-                                                item[index].selecteditemHitTypeIndex = EditorGUILayout.Popup(item[index].selecteditemHitTypeIndex, itemHitType, GUILayout.Height(invocationBox.height / 8 + 3), GUILayout.Width(invocationBox.width / 2 - 5));
-                                            }
-                                            else
-                                            {
-                                                EditorGUILayout.Popup(0, itemHitType, GUILayout.Height(invocationBox.height / 8 + 3), GUILayout.Width(invocationBox.width / 2 - 5));
-                                            }
-                                        GUILayout.EndVertical();
-
-                                        GUILayout.BeginVertical();
-                                            GUILayout.Label("Animation:"); // item Animation label
-                                            if (itemSize > 0)
-                                            {
-                                                item[index].selecteditemAnimationIndex = EditorGUILayout.Popup(item[index].selecteditemAnimationIndex, itemAnimation, GUILayout.Height(invocationBox.height / 8 + 3), GUILayout.Width(invocationBox.width / 2 - 5));
-                                            }
-                                            else
-                                            {
-                                                EditorGUILayout.Popup(0, itemAnimation, GUILayout.Height(invocationBox.height / 8 + 3), GUILayout.Width(invocationBox.width / 2 - 5));
-                                            }
-                                        GUILayout.EndVertical();
-
-
-                                    GUILayout.EndHorizontal();
-                                    #endregion
-                            GUILayout.EndVertical();
-                            #endregion
-
-                        GUILayout.EndArea();
-                        #endregion // End Of Invocation Settings
-
 
                 GUILayout.EndArea();
                 #endregion
+
+
 
         GUILayout.EndArea(); //End drawing the ItemTab
 

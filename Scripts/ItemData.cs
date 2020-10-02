@@ -24,7 +24,6 @@ public class ItemData : ScriptableObject
     public int selectedTypeIndex;
     public int selectedElementIndex;
     public int selectedCriticalHits;
-
     public int itemPrice;
 
 
