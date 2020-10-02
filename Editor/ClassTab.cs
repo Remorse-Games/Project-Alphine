@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class ClassTab
+public class ClassTab : BaseTab
 {
     //Make a classData List
     List<ClassesData> classes = new List<ClassesData>();
@@ -396,28 +396,6 @@ public class ClassTab
 
 
     #region Features
-    /// <summary>
-    /// Create Texture for GUI skin.
-    /// </summary>
-    /// <param name="width">pixel width of GUI Skin.</param>
-    /// <param name="height">pixel height of GUI Skin.</param>
-    /// <param name="col">Color of GUI Skin.</param>
-    /// <returns></returns>
-    private Texture2D CreateTexture(int width, int height, Color col)
-    {
-        //Create array of color.
-        Color[] colPixel = new Color[width * height];
-
-        for (int i = 0; i < colPixel.Length; ++i)
-        {
-            colPixel[i] = col;
-        }
-
-        Texture2D result = new Texture2D(width, height);
-        result.SetPixels(colPixel);
-        result.Apply();
-        return result;
-    }
 
 
     /// <summary>
@@ -455,6 +433,11 @@ public class ClassTab
     #endregion
 
     private void Testing(int windowId)
+    {
+
+    }
+
+    public override void ItemTabLoader(int index)
     {
 
     }
