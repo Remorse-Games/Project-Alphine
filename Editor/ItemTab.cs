@@ -414,6 +414,146 @@ public class ItemTab : BaseTab
                 GUILayout.EndArea();
                 #endregion
 
+                #region Tab 3/3
+                GUILayout.BeginArea(new Rect(firstTabWidth * 2 + 77, 0, firstTabWidth + 25, tabHeight - 25), columnStyle);
+
+                    Rect damageBox = new Rect(5, 5, firstTabWidth + 15, position.height / 3 - 80);
+                        #region DamageBox
+                        GUILayout.BeginArea(damageBox, tabStyle);
+                            GUILayout.Label("Damage", EditorStyles.boldLabel);
+                            GUILayout.BeginVertical();
+                                #region Type Element Formula
+                                GUILayout.BeginHorizontal();
+
+                                    #region Type Element
+                                    #region Type
+                                    GUILayout.BeginVertical();
+                                        GUILayout.Label("Type:");
+                                        if (itemSize > 0)
+                                        {
+                                            item[index].selectedTypeIndex = EditorGUILayout.Popup(item[index].selectedTypeIndex, itemType, GUILayout.Height(damageBox.height / 3 - 35), GUILayout.Width(damageBox.width / 2 - 5));
+                                        }
+                                        else
+                                        {
+                                            EditorGUILayout.Popup(0, itemType, GUILayout.Height(damageBox.height / 3 - 35), GUILayout.Width(damageBox.width / 2 - 5));
+                                        }
+                                    GUILayout.EndVertical();
+                                    #endregion
+                                    #region Element
+                                    GUILayout.BeginVertical();
+                                        GUILayout.Label("Element:");
+                                        if (itemSize > 0)
+                                        {
+                                            item[index].selectedElementIndex = EditorGUILayout.Popup(item[index].selectedElementIndex, itemElement, GUILayout.Height(damageBox.height / 3 - 35), GUILayout.Width(damageBox.width / 2 - 5));
+                                        }
+                                        else
+                                        {
+                                            EditorGUILayout.Popup(0, itemElement, GUILayout.Height(damageBox.height / 3 - 35), GUILayout.Width(damageBox.width / 2 - 5));
+                                        }
+                                    GUILayout.EndVertical();
+                                    #endregion
+
+                                GUILayout.EndHorizontal();
+                                #endregion
+
+                                #region Formula
+                                GUILayout.Label("Formula:");
+                                if (itemSize > 0)
+                                {
+                                    item[index].itemFormula = GUILayout.TextField(item[index].itemFormula, GUILayout.Width(damageBox.width - 8), GUILayout.Height(damageBox.height / 4 - 17));
+                                }
+                                else
+                                {
+                                    GUILayout.TextField("Null", GUILayout.Width(damageBox.width - 8), GUILayout.Height(damageBox.height / 4 - 17));
+                                }
+                                #endregion
+
+                                #endregion
+                                #region Variance CriticalHits
+                                GUILayout.BeginHorizontal();
+
+                                    #region Variance
+                                    GUILayout.BeginVertical();
+                                        GUILayout.Label("Variance:");
+                                        if (itemSize > 0)
+                                        {
+                                            item[index].itemVariance = EditorGUILayout.IntField(item[index].itemVariance, GUILayout.Width(.25f * (damageBox.width - 8)), GUILayout.Height(damageBox.height / 4 - 17));
+                                        }
+                                        else
+                                        {
+                                            EditorGUILayout.IntField(-1, GUILayout.Width(.25f * (damageBox.width - 8)), GUILayout.Height(damageBox.height / 4 - 17));
+                                        }
+                                    GUILayout.EndVertical();
+                                    #endregion
+
+                                    #region CriticalHits
+                                    GUILayout.BeginVertical();
+                                        GUILayout.Label("Critical Hits:");
+                                        if (itemSize > 0)
+                                        {
+                                            item[index].selectedCriticalHits = EditorGUILayout.Popup(item[index].selectedCriticalHits, itemBool, GUILayout.Height(damageBox.height / 3 - 35), GUILayout.Width(.25f * (damageBox.width - 8)));
+                                        }
+                                        else
+                                        {
+                                            EditorGUILayout.Popup(0, itemBool, GUILayout.Height(damageBox.height / 3 - 35), GUILayout.Width(.25f * (damageBox.width - 8)));
+                                        }
+                                    GUILayout.EndVertical();
+
+                                    GUILayout.Space(damageBox.width - (2 * .25f * (damageBox.width - 8)) - 20);
+                                    #endregion
+
+                                GUILayout.EndHorizontal();
+                                #endregion
+                            GUILayout.EndVertical();
+
+                        GUILayout.EndArea();
+                        #endregion
+
+                    Rect effectsBox = new Rect(5, damageBox.height + 10, firstTabWidth + 15, position.height / 3);
+                        #region Effects
+                        GUILayout.BeginArea(effectsBox, tabStyle);
+                            GUILayout.Label("Effects", EditorStyles.boldLabel);
+                            GUILayout.Space(2);
+
+                            #region Horizontal For Type And Content
+                            GUILayout.BeginHorizontal();
+                                GUILayout.Label("Type", GUILayout.Width(effectsBox.width * 3 / 8));
+                                GUILayout.Label("Content", GUILayout.Width(effectsBox.width * 5 / 8));
+                            GUILayout.EndHorizontal();
+                            #endregion
+
+                            #region ScrollView
+                            effectsScrollPos = GUILayout.BeginScrollView(
+                                effectsScrollPos,
+                                false,
+                                true,
+                                GUILayout.Width(firstTabWidth + 5),
+                                GUILayout.Height(effectsBox.height * 0.80f)
+                                );
+                            GUILayout.EndScrollView();
+                            #endregion
+                        GUILayout.EndArea();
+                        #endregion
+
+                    Rect notesBox = new Rect(5, damageBox.height + effectsBox.height + 17, firstTabWidth + 15, position.height - (damageBox.height + effectsBox.height + 17) - 40);
+                        #region NoteBox
+                        GUILayout.BeginArea(notesBox, tabStyle);
+                            GUILayout.Space(2);
+                            GUILayout.Label("Notes", EditorStyles.boldLabel);
+                            GUILayout.Space(notesBox.height / 50);
+                            if (itemSize > 0)
+                            {
+                                item[index].notes = GUILayout.TextArea(item[index].notes, GUILayout.Width(notesBox.width - 5), GUILayout.Height(notesBox.height * 0.9f));
+                            }
+                            else
+                            {
+                                GUILayout.TextArea("Null", GUILayout.Width(notesBox.width - 5), GUILayout.Height(notesBox.height * .85f + 8));
+                            }
+                        GUILayout.EndArea();
+                        #endregion //End of notebox area
+
+                GUILayout.EndArea();
+                #endregion // End of Third Tab
 
 
         GUILayout.EndArea(); //End drawing the ItemTab
