@@ -21,6 +21,10 @@ public class SkillData : ScriptableObject
     public int selectedSkillWeaponOneIndex;
     public int selectedSkillWeaponTwoIndex;
 
+    public int selectedTypeIndex;
+    public int selectedElementIndex;
+    public int selectedCriticalHits;
+
     //skillType
     public int skillMPCost;
     public int skillTPCost;
