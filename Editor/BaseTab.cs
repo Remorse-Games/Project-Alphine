@@ -105,6 +105,8 @@ public abstract class BaseTab
             return sprite.texture;
     }
 
+    int counter = 0;
+
     /// <summary>
     /// Change Maximum function , when we change the size
     /// and click Change Maximum button in Editor, it will update
@@ -115,7 +117,6 @@ public abstract class BaseTab
     /// <param name="itemTabName">get size from actorSize</param>
     public void ChangeMaximum(int actorSize, List<ActorData> listTabItem, List<string> itemTabName)
     {
-        int counter = 0;
 
         //This count only useful when we doesn't have a name yet.
         //you can remove this when decide a new format later.
