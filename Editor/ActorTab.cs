@@ -113,7 +113,7 @@ public class ActorTab : BaseTab
                         actorDisplayName.ToArray(), 
                         1, 
                         GUILayout.Width(firstTabWidth - 20), 
-                        GUILayout.Height(position.height / 24 * actorSizeTemp
+                        GUILayout.Height(position.height / 24 * actorSize
                         ));
                 GUILayout.EndScrollView();
                 #endregion
