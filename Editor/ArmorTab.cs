@@ -393,7 +393,6 @@ public class ArmorTab : BaseTab
             GUILayout.EndArea();
             #endregion // End of third column
 
-
         GUILayout.EndArea(); // End drawing the whole ArmorTab
         #endregion
 
