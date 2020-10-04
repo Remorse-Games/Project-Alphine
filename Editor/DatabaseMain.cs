@@ -13,6 +13,7 @@ public class DatabaseMain : EditorWindow
     SkillsTab skillTab;
     ItemTab itemTab;
     WeaponTab weaponTab;
+    ArmorTab armorTab;
 
     //Tab Area. DO NOT CHANGE anything in here.
     public static float tabAreaWidth;
@@ -56,6 +57,7 @@ public class DatabaseMain : EditorWindow
         skillTab.FolderChecker();
         itemTab.FolderChecker();
         weaponTab.FolderChecker();
+        armorTab.FolderChecker();
     }
 
     //////////////////////////////////////////////////
@@ -82,6 +84,7 @@ public class DatabaseMain : EditorWindow
         skillTab = new SkillsTab();
         itemTab = new ItemTab();
         weaponTab = new WeaponTab();
+        armorTab = new ArmorTab();
     }
 
     //////////////////////////////////////////////////
@@ -141,7 +144,7 @@ public class DatabaseMain : EditorWindow
                 actorTab.Init(position);
                 break;
             case 5:
-                actorTab.Init(position);
+                armorTab.Init(position);
                 break;
             case 4:
                 weaponTab.Init(position);
