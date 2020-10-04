@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
 
 [CreateAssetMenu(menuName = "Database/ActorData")]
-public class ActorData : ScriptableObject
+public class ActorData : BaseData
 {
-    public string actorName;
     public string actorNickname;
     //public ActorClass actorClass;
     public int initLevel;
@@ -27,7 +26,7 @@ public class ActorData : ScriptableObject
     {
         Sprite sp = Resources.Load<Sprite>("Image");
 
-        actorName = "player";
+        dataName = "player";
         actorNickname = "actorNickname";
         initLevel = 1;
         maxLevel = 99;

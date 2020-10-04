@@ -3,11 +3,12 @@ using UnityEngine;
 using UnityEditor;
 using System.IO;
 using SFB;
+using System.Linq;
 public class ActorTab : BaseTab
 {
     //Having list of all player exist in data.
     public List<ActorData> player = new List<ActorData>();
-
+    
     //List of names. Why you ask? because selectionGrid require
     //array of string, which we cannot obtain in ActorData.
     //I hope later got better solution about this to not do
@@ -59,8 +60,15 @@ public class ActorTab : BaseTab
     public int actorSizeTemp;
     #endregion
 
+    //dataPath where the game data will be saved as a .assets
+    private string dataPath = "Assets/Resources/Data/ActorData/Actor_";
+
     public void Init(Rect position)
     {
+        //This use linq namespaces.
+        //Use this variable to convert list of data to the base data.
+        List<BaseData> baseData = new List<ActorData>().Cast<BaseData>().ToList();
+
         #region A Bit Explanation About Local Tab
         ///So there is 2 types of Tab,
         ///One is in Database that not included here.
@@ -72,7 +80,7 @@ public class ActorTab : BaseTab
         ////////////////////////////////////////////////////////////////////////////////////////
         /////////////////////////////START REGION OF VALUE INIT/////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////////////////
-        
+
         float tabWidth = position.width * .85f;
         float tabHeight = position.height - 10f;
 
@@ -131,7 +139,7 @@ public class ActorTab : BaseTab
                 if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
                 {
                     actorSize = actorSizeTemp;
-                    ChangeMaximum(actorSize, player, actorDisplayName);
+                    ChangeMaximum(actorSize, baseData, actorDisplayName, dataPath);
                 }
             GUILayout.EndArea();
             #endregion
@@ -155,8 +163,8 @@ public class ActorTab : BaseTab
                                 GUILayout.Label("Name:");
                                 if (actorSize > 0)
                                 {
-                                    player[index].actorName = GUILayout.TextField(player[index].actorName, GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 8));
-                                    actorDisplayName[index] = player[index].actorName;
+                                    player[index].dataName = GUILayout.TextField(player[index].dataName, GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 8));
+                                    actorDisplayName[index] = player[index].dataName;
                                 }
                                 else
                                 { 
