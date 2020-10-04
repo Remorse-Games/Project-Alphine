@@ -11,8 +11,8 @@ public class ArmorData : ScriptableObject
     public string armorDescription;
 
     //Index for selected Class.
-    public int selectedarmorTypeIndex;
-    public int selectedarmorAnimationIndex;
+    public int selectedArmorTypeIndex;
+    public int selectedArmorEquipmentIndex;
 
     public int armorPrice;
     public int armorAttack;

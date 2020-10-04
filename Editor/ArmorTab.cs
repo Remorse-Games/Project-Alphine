@@ -25,6 +25,24 @@ public class ArmorTab : BaseTab
     public int armorSize;
     public int armorSizeTemp;
 
+    public string[] armorTypeList =
+   {
+        "None",
+        "General Armor",
+        "Magic Armor",
+        "Light Armor",
+        "Heavy Armor",
+        "Small Shield",
+        "Large Shield",
+    };
+
+    public string[] armorEquipmentList =
+    {
+        "Shield",
+        "Head",
+        "Body",
+        "Accessory",
+    };
 
     //i don't know about this but i leave this to handle later.
     int index = 0;
@@ -112,6 +130,130 @@ public class ArmorTab : BaseTab
             GUILayout.EndArea();
             #endregion // End Of First Tab
 
+
+            #region Tab 2/3
+            GUILayout.BeginArea(new Rect(firstTabWidth + 5, 0, firstTabWidth + 70, tabHeight - 25), columnStyle);
+
+                Rect generalBox = new Rect(5, 5, firstTabWidth + 60, position.height / 4 + 120);
+                    #region GeneralSettings
+                    GUILayout.BeginArea(generalBox, tabStyle); // Start of General Settings tab
+                        GUILayout.Label("General Settings", EditorStyles.boldLabel); // General Settings label
+                        #region Vertical
+                        GUILayout.BeginVertical();
+                            #region Horizontal
+                            GUILayout.BeginHorizontal();
+                                #region Name
+                                GUILayout.BeginVertical();
+                                    GUILayout.Label("Name:"); // Name label
+                                    if (armorSize > 0)
+                                    {
+                                        armor[index].armorName = GUILayout.TextField(armor[index].armorName, GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 8));
+                                        armorDisplayName[index] = armor[index].armorName;
+                                    }
+                                    else
+                                    {
+                                        GUILayout.TextField("Null", GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 8));
+                                    }
+                                GUILayout.EndVertical();
+                                #endregion
+                                #region Icon
+                                GUILayout.BeginArea(new Rect(generalBox.width / 2 - 3, generalBox.height * .05f + 5, firstTabWidth - 220, position.height / 2)); // Icon Area
+                                    GUILayout.BeginHorizontal();
+                                        GUILayout.BeginVertical();
+                                            GUILayout.Label("Icon:"); // Icon label
+                                        GUILayout.EndVertical();
+
+                                        GUILayout.BeginVertical();
+                                            GUILayout.Box(armorIcon, GUILayout.Width(61), GUILayout.Height(61)); // Icon Box preview
+                                            if (GUILayout.Button("Edit Icon", GUILayout.Height(20), GUILayout.Width(61))) // Icon changer Button
+                                            {
+                                                armor[index].Icon = ImageChanger(
+                                                index,
+                                                "Choose Icon",
+                                                "Assets/Resources/Image"
+                                                );
+                                                ItemTabLoader(index);
+                                            }
+                                        GUILayout.EndVertical();
+                                    GUILayout.EndHorizontal();
+                                GUILayout.EndArea();
+                                #endregion
+                            GUILayout.EndHorizontal();
+                            #endregion
+
+                            GUILayout.Space(30);
+
+                            #region Description
+                            GUILayout.Label("Description:"); // Description label
+                            if (armorSize > 0)
+                            {
+                                armor[index].armorDescription = GUILayout.TextArea(armor[index].armorDescription, GUILayout.Width(firstTabWidth + 53), GUILayout.Height(generalBox.height / 5 + 5));
+                            }
+                            else
+                            {
+                                GUILayout.TextArea("Null", GUILayout.Width(firstTabWidth + 53), GUILayout.Height(generalBox.height / 5 + 5));
+                            }
+                            #endregion
+                            GUILayout.Space(5);
+
+                            #region Price ArmorType 
+                            GUILayout.BeginHorizontal();
+                                #region armorType
+                                GUILayout.BeginVertical();
+                                    GUILayout.Label("Armor Type:"); // Armor Type class label
+                                    if (armorSize > 0)
+                                    {
+                                        armor[index].selectedArmorTypeIndex = EditorGUILayout.Popup(armor[index].selectedArmorTypeIndex, armorTypeList, GUILayout.Height(generalBox.height / 8 - 15), GUILayout.Width(generalBox.width / 2 - 15));
+                                    }
+                                    else
+                                    {
+                                        EditorGUILayout.Popup(0, armorTypeList, GUILayout.Height(generalBox.height / 8 - 15), GUILayout.Width(generalBox.width / 2 - 15));
+                                    }
+                                GUILayout.EndVertical();
+                                #endregion
+                                #region Price
+                                GUILayout.BeginVertical();
+                                    GUILayout.Label("Price:"); // Price label
+                                    if (armorSize > 0)
+                                    {
+                                        armor[index].armorPrice = EditorGUILayout.IntField(armor[index].armorPrice, GUILayout.Width(generalBox.width / 4 - 2), GUILayout.Height(generalBox.height / 8 - 9));
+                                    }
+                                    else
+                                    {
+                                        EditorGUILayout.IntField(-1, GUILayout.Width(generalBox.width / 4 - 2), GUILayout.Height(generalBox.height / 8 - 9));
+                                    }
+                                GUILayout.EndVertical();
+
+                                GUILayout.Space(generalBox.width / 4 - 2);
+                            GUILayout.EndHorizontal();
+                            #endregion
+                            #endregion
+
+                            #region Animation
+                            GUILayout.BeginHorizontal();
+                                GUILayout.BeginVertical();
+                                    GUILayout.Label("Equipment Type:"); // Animation class label
+                                    if (armorSize > 0)
+                                    {
+                                        armor[index].selectedArmorEquipmentIndex = EditorGUILayout.Popup(armor[index].selectedArmorEquipmentIndex, armorEquipmentList, GUILayout.Height(generalBox.height / 8 - 15), GUILayout.Width(generalBox.width / 2 - 15));
+                                    }
+                                    else
+                                    {
+                                        EditorGUILayout.Popup(0, armorEquipmentList, GUILayout.Height(generalBox.height / 8 - 15), GUILayout.Width(generalBox.width / 2 - 15));
+                                    }
+                                GUILayout.EndVertical();
+                            GUILayout.EndHorizontal();
+                            #endregion
+
+                        GUILayout.EndVertical();
+                        #endregion
+                    GUILayout.EndArea(); // End of GeneralSettings Tab
+                    #endregion
+
+            GUILayout.EndArea();
+            #endregion // End of Second Tab
+
+
         GUILayout.EndArea(); // End drawing the whole ArmorTab
         #endregion
 
@@ -159,7 +301,13 @@ public class ArmorTab : BaseTab
         Texture2D defTex = new Texture2D(256, 256);
         if (index != -1)
         {
-           
+            if (armorSize > 0)
+            {
+                if (armor[index].Icon == null)
+                    armorIcon = defTex;
+                else
+                    armorIcon = TextureToSprite(armor[index].Icon);
+            }
         }
     }
 
