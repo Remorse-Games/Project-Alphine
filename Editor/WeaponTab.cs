@@ -21,6 +21,31 @@ public class WeaponTab : BaseTab
     GUIStyle columnStyle;
     GUIStyle weaponStyle;
 
+    public string[] weaponTypeList =
+    {
+        "None",
+        "Dagger",
+        "Sword",
+        "Flail",
+        "Axe",
+        "Whip",
+        "Cane",
+        "Bow",
+        "Crossbow",
+        "Gun",
+        "Claw",
+        "Glove",
+        "Spear",
+    };
+
+    public string[] weaponAnimationList =
+    {
+        "Normal Attack",
+        "None",
+        "Hit Pyhsical",
+        "Other... (Add More Manually)",
+    };
+
     //How many weapon in ChangeMaximum Func
     public int weaponSize;
     public int weaponSizeTemp;
@@ -111,6 +136,130 @@ public class WeaponTab : BaseTab
             GUILayout.EndArea();
             #endregion // End Of First Tab
 
+            #region Tab 2/3
+            GUILayout.BeginArea(new Rect(firstTabWidth + 5, 0, firstTabWidth + 70, tabHeight - 25), columnStyle);
+
+                Rect generalBox = new Rect(5, 5, firstTabWidth + 60, position.height / 4 + 120);
+                    #region GeneralSettings
+                    GUILayout.BeginArea(generalBox, tabStyle); // Start of General Settings tab
+                        GUILayout.Label("General Settings", EditorStyles.boldLabel); // General Settings label
+                        #region Vertical
+                        GUILayout.BeginVertical();
+                            #region Horizontal
+                            GUILayout.BeginHorizontal();
+                                #region Name
+                                GUILayout.BeginVertical();
+                                    GUILayout.Label("Name:"); // Name label
+                                    if (weaponSize > 0)
+                                    {
+                                        weapon[index].weaponName = GUILayout.TextField(weapon[index].weaponName, GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 8));
+                                        weaponDisplayName[index] = weapon[index].weaponName;
+                                    }
+                                    else
+                                    {
+                                        GUILayout.TextField("Null", GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 8));
+                                    }
+                                GUILayout.EndVertical();
+                                #endregion
+                                #region Icon
+                                GUILayout.BeginArea(new Rect(generalBox.width / 2 - 3, generalBox.height * .05f + 5, firstTabWidth - 220, position.height / 2)); // Icon Area
+                                    GUILayout.BeginHorizontal();
+                                        GUILayout.BeginVertical();
+                                            GUILayout.Label("Icon:"); // Icon label
+                                        GUILayout.EndVertical();
+
+                                        GUILayout.BeginVertical();
+                                            GUILayout.Box(weaponIcon, GUILayout.Width(61), GUILayout.Height(61)); // Icon Box preview
+                                            if (GUILayout.Button("Edit Icon", GUILayout.Height(20), GUILayout.Width(61))) // Icon changer Button
+                                            {
+                                                weapon[index].Icon = ImageChanger(
+                                                index,
+                                                "Choose Icon",
+                                                "Assets/Resources/Image"
+                                                );
+                                                ItemTabLoader(index);
+                                            }
+                                        GUILayout.EndVertical();
+                                    GUILayout.EndHorizontal();
+                                GUILayout.EndArea();
+                                #endregion
+                            GUILayout.EndHorizontal();
+                            #endregion
+
+                            GUILayout.Space(30);
+
+                            #region Description
+                            GUILayout.Label("Description:"); // Description label
+                            if (weaponSize > 0)
+                            {
+                                weapon[index].weaponDescription = GUILayout.TextArea(weapon[index].weaponDescription, GUILayout.Width(firstTabWidth + 53), GUILayout.Height(generalBox.height / 5 + 5));
+                            }
+                            else
+                            {
+                                GUILayout.TextArea("Null", GUILayout.Width(firstTabWidth + 53), GUILayout.Height(generalBox.height / 5 + 5));
+                            }
+                            #endregion
+                            GUILayout.Space(5);
+
+                            #region weaponType 
+                            GUILayout.BeginHorizontal();
+                                GUILayout.BeginVertical();
+                                    GUILayout.Label("Weapon Type:"); // Weapon Type class label
+                                    if (weaponSize > 0)
+                                    {
+                                        weapon[index].selectedweaponTypeIndex = EditorGUILayout.Popup(weapon[index].selectedweaponTypeIndex, weaponTypeList, GUILayout.Height(generalBox.height / 8 - 15), GUILayout.Width(generalBox.width / 2 - 15));
+                                    }
+                                    else
+                                    {
+                                        EditorGUILayout.Popup(0, weaponTypeList, GUILayout.Height(generalBox.height / 8 - 15), GUILayout.Width(generalBox.width / 2 - 15));
+                                    }
+                                GUILayout.EndVertical();
+                                #endregion
+                                #region Price
+                                GUILayout.BeginVertical();
+                                    GUILayout.Label("Price:"); // Price label
+                                    if (weaponSize > 0)
+                                    { 
+                                        weapon[index].weaponPrice = EditorGUILayout.IntField(weapon[index].weaponPrice, GUILayout.Width(generalBox.width / 4 - 2), GUILayout.Height(generalBox.height / 8 - 9)); 
+                                    }
+                                    else
+                                    { 
+                                        EditorGUILayout.IntField(-1, GUILayout.Width(generalBox.width / 4 - 2), GUILayout.Height(generalBox.height / 8 - 9)); 
+                                    }
+                                GUILayout.EndVertical();
+                                
+                                GUILayout.Space(generalBox.width / 4 - 2);
+                            GUILayout.EndHorizontal();
+                            #endregion
+
+                            #region Animation
+                            GUILayout.BeginHorizontal();
+                                GUILayout.BeginVertical();
+                                    GUILayout.Label("Animation:"); // Animation class label
+                                    if (weaponSize > 0)
+                                    {
+                                        weapon[index].selectedweaponAnimationIndex = EditorGUILayout.Popup(weapon[index].selectedweaponAnimationIndex, weaponAnimationList, GUILayout.Height(generalBox.height / 8 - 15), GUILayout.Width(generalBox.width / 2 - 15));
+                                    }
+                                    else
+                                    {
+                                        EditorGUILayout.Popup(0, weaponAnimationList, GUILayout.Height(generalBox.height / 8 - 15), GUILayout.Width(generalBox.width / 2 - 15));
+                                    }
+                                GUILayout.EndVertical();
+                            GUILayout.EndHorizontal();
+                            #endregion
+
+                        GUILayout.EndVertical();
+                        #endregion
+                    GUILayout.EndArea(); // End of GeneralSettings Tab
+                    #endregion
+
+
+            GUILayout.EndArea();
+            #endregion // End of Second Tab
+
+
+
+
         GUILayout.EndArea(); // End of drawing WeaponTab
         #endregion
     }
@@ -158,7 +307,13 @@ public class WeaponTab : BaseTab
         Texture2D defTex = new Texture2D(256, 256);
         if (index != -1)
         {
-            
+            if(weaponSize > 0)
+            {
+                if (weapon[index].Icon == null)
+                    weaponIcon = defTex;
+                else
+                    weaponIcon = TextureToSprite(weapon[index].Icon);
+            }
         }
     }
 
