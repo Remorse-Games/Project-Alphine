@@ -54,10 +54,6 @@ public class DatabaseMain : EditorWindow
     {
         ValueInit();
         actorTab.FolderChecker();
-        skillTab.FolderChecker();
-        itemTab.FolderChecker();
-        weaponTab.FolderChecker();
-        armorTab.FolderChecker();
     }
 
     //////////////////////////////////////////////////

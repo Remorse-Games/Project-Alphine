@@ -25,6 +25,19 @@ public class ArmorTab : BaseTab
     public int armorSize;
     public int armorSizeTemp;
 
+
+    //i don't know about this but i leave this to handle later.
+    int index = 0;
+    int indexTemp = -1;
+
+    //Scroll position. Is this necessary?
+    Vector2 scrollPos = Vector2.zero;
+    Vector2 equipmentScrollPos = Vector2.zero;
+    Vector2 traitsScrollPos = Vector2.zero;
+
+    //Image Area.
+    Texture2D armorIcon;
+
     public void Init(Rect position)
     {
         #region A Bit Explanation About Local Tab
@@ -66,6 +79,38 @@ public class ArmorTab : BaseTab
 
             //The black box behind the armorsTab? yes, this one.
             GUILayout.Box(" ", armorStyle, GUILayout.Width(position.width - DatabaseMain.tabAreaWidth), GUILayout.Height(position.height - 25f));
+
+
+            #region Tab 1/3
+            //First Tab of three
+            GUILayout.BeginArea(new Rect(0, 0, tabWidth, tabHeight));
+
+                GUILayout.Box("Armors", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15));
+
+                //Scroll View
+                #region ScrollView
+                scrollPos = GUILayout.BeginScrollView(scrollPos, false, true, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .82f));
+                index = GUILayout.SelectionGrid(index, armorDisplayName.ToArray(), 1, GUILayout.Width(firstTabWidth - 20), GUILayout.Height(position.height / 24 * armorSize));
+                GUILayout.EndScrollView();
+                #endregion
+
+                //Happen everytime selection grid is updated
+                if (GUI.changed && index != indexTemp)
+                {
+                    indexTemp = index;
+                    ItemTabLoader(indexTemp);
+                    indexTemp = -1;
+                }
+
+                // Change Maximum field and button
+                armorSizeTemp = EditorGUILayout.IntField(armorSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
+                if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
+                {
+                    ChangeMaximumPrivate(armorSize);
+                }
+
+            GUILayout.EndArea();
+            #endregion // End Of First Tab
 
         GUILayout.EndArea(); // End drawing the whole ArmorTab
         #endregion
