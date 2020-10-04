@@ -129,7 +129,7 @@ public class EnemyTab : BaseTab
         while (counter <= enemySize)
         {
             enemy.Add(ScriptableObject.CreateInstance<EnemyData>());
-            AssetDatabase.CreateAsset(enemy[counter], "Assets/Resources/Data/enemyData/enemy_" + counter + ".asset");
+            AssetDatabase.CreateAsset(enemy[counter], "Assets/Resources/Data/EnemyData/Enemy_" + counter + ".asset");
             AssetDatabase.SaveAssets();
             enemyDisplayName.Add(enemy[counter].enemyName);
             counter++;
@@ -140,7 +140,7 @@ public class EnemyTab : BaseTab
             enemyDisplayName.RemoveRange(enemySize, enemyDisplayName.Count - enemySize);
             for (int i = enemySize; i <= counter; i++)
             {
-                AssetDatabase.DeleteAsset("Assets/Resources/Data/enemyData/enemy_" + i + ".asset");
+                AssetDatabase.DeleteAsset("Assets/Resources/Data/EnemyData/Enemy_" + i + ".asset");
             }
             AssetDatabase.SaveAssets();
             counter = enemySize;
