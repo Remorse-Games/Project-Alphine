@@ -57,7 +57,7 @@ public class WeaponTab : BaseTab
     //Scroll position. Is this necessary?
     Vector2 scrollPos = Vector2.zero;
     Vector2 equipmentScrollPos = Vector2.zero;
-    Vector2 effectsScrollPos = Vector2.zero;
+    Vector2 traitsScrollPos = Vector2.zero;
 
     //Image Area.
     Texture2D weaponIcon;
@@ -342,8 +342,59 @@ public class WeaponTab : BaseTab
 
 
             GUILayout.EndArea();
-            #endregion // End of Second Tab
+        #endregion // End of Second Tab
 
+            #region Tab 3/3
+            //Third Column
+            GUILayout.BeginArea(new Rect(position.width - (position.width - firstTabWidth * 2) + 77, 0, firstTabWidth + 25, tabHeight - 15), columnStyle);
+
+                //Traits
+                Rect traitsBox = new Rect(5, 5, firstTabWidth + 15, position.height * 5 / 8);
+                    #region Traits
+                    GUILayout.BeginArea(traitsBox, tabStyle);
+                        GUILayout.Space(2);
+                        GUILayout.Label("Traits", EditorStyles.boldLabel);
+                        GUILayout.Space(traitsBox.height / 30);
+                        #region Horizontal For Type And Content
+                        GUILayout.BeginHorizontal();
+                            GUILayout.Label("Type", GUILayout.Width(traitsBox.width * 3 / 8));
+                            GUILayout.Label("Content", GUILayout.Width(traitsBox.width * 5 / 8));
+                        GUILayout.EndHorizontal();
+                        #endregion
+                        #region ScrollView
+                        traitsScrollPos = GUILayout.BeginScrollView(
+                            traitsScrollPos,
+                            false,
+                            true,
+                            GUILayout.Width(firstTabWidth + 5),
+                            GUILayout.Height(traitsBox.height * 0.87f)
+                            );
+                        GUILayout.EndScrollView();
+                        #endregion
+                    GUILayout.EndArea();
+                    #endregion //End of TraitboxArea
+
+
+                //Notes
+                Rect notesBox = new Rect(5, traitsBox.height + 15, firstTabWidth + 15, position.height * 2.5f / 8);
+                    #region NoteBox
+                    GUILayout.BeginArea(notesBox, tabStyle);
+                        GUILayout.Space(2);
+                        GUILayout.Label("Notes", EditorStyles.boldLabel);
+                        GUILayout.Space(notesBox.height / 50);
+                        if (weaponSize > 0)
+                        {
+                            weapon[index].notes = GUILayout.TextArea(weapon[index].notes, GUILayout.Width(notesBox.width - 5), GUILayout.Height(notesBox.height * 0.9f));
+                        }
+                        else
+                        {
+                            GUILayout.TextArea("Null", GUILayout.Width(notesBox.width - 5), GUILayout.Height(notesBox.height * 0.85f));
+                        }
+                    GUILayout.EndArea();
+                    #endregion //End of notebox area
+
+            GUILayout.EndArea();
+            #endregion // End of third column
 
 
 
