@@ -341,21 +341,74 @@ public class ArmorTab : BaseTab
             #endregion // End of Second Tab
 
 
+            #region Tab 3/3
+            //Third Column
+            GUILayout.BeginArea(new Rect(position.width - (position.width - firstTabWidth * 2) + 77, 0, firstTabWidth + 25, tabHeight - 15), columnStyle);
+
+                //Traits
+                Rect traitsBox = new Rect(5, 5, firstTabWidth + 15, position.height * 5 / 8);
+                    #region Traits
+                    GUILayout.BeginArea(traitsBox, tabStyle);
+                        GUILayout.Space(2);
+                        GUILayout.Label("Traits", EditorStyles.boldLabel);
+                        GUILayout.Space(traitsBox.height / 30);
+                        #region Horizontal For Type And Content
+                        GUILayout.BeginHorizontal();
+                        GUILayout.Label("Type", GUILayout.Width(traitsBox.width * 3 / 8));
+                        GUILayout.Label("Content", GUILayout.Width(traitsBox.width * 5 / 8));
+                        GUILayout.EndHorizontal();
+                        #endregion
+                        #region ScrollView
+                        traitsScrollPos = GUILayout.BeginScrollView(
+                            traitsScrollPos,
+                            false,
+                            true,
+                            GUILayout.Width(firstTabWidth + 5),
+                            GUILayout.Height(traitsBox.height * 0.87f)
+                            );
+                        GUILayout.EndScrollView();
+                        #endregion
+                    GUILayout.EndArea();
+                    #endregion //End of TraitboxArea
+
+
+                //Notes
+                Rect notesBox = new Rect(5, traitsBox.height + 15, firstTabWidth + 15, position.height * 2.5f / 8);
+                    #region NoteBox
+                    GUILayout.BeginArea(notesBox, tabStyle);
+                        GUILayout.Space(2);
+                        GUILayout.Label("Notes", EditorStyles.boldLabel);
+                        GUILayout.Space(notesBox.height / 50);
+                        if (armorSize > 0)
+                        {
+                            armor[index].notes = GUILayout.TextArea(armor[index].notes, GUILayout.Width(notesBox.width - 5), GUILayout.Height(notesBox.height * 0.9f));
+                        }
+                        else
+                        {
+                            GUILayout.TextArea("Null", GUILayout.Width(notesBox.width - 5), GUILayout.Height(notesBox.height * 0.85f));
+                        }
+                    GUILayout.EndArea();
+                    #endregion //End of notebox area
+
+            GUILayout.EndArea();
+            #endregion // End of third column
+
+
         GUILayout.EndArea(); // End drawing the whole ArmorTab
         #endregion
 
     }
 
-        #region Features
+    #region Features
 
-        /// <summary>
-        /// Change Maximum function , when we change the size
-        /// and click Change Maximum button in Editor, it will update
-        /// and change the size while creating new data.
-        /// </summary>
-        /// <param name="size">get size from armorSize</param>
+    /// <summary>
+    /// Change Maximum function , when we change the size
+    /// and click Change Maximum button in Editor, it will update
+    /// and change the size while creating new data.
+    /// </summary>
+    /// <param name="size">get size from armorSize</param>
 
-        int counter = 0;
+    int counter = 0;
     private void ChangeMaximumPrivate(int size)
     {
         armorSize = armorSizeTemp;
