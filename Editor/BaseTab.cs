@@ -26,7 +26,7 @@ public abstract class BaseTab
     ///<summary>
     /// Folder checker, create folder if it doesnt exist already, Might refactor into one liner if
     ///</summary>
-    public void FolderChecker()
+    public static void FolderChecker()
     {
         if (!AssetDatabase.IsValidFolder("Assets/Resources"))
         {
@@ -122,19 +122,18 @@ public abstract class BaseTab
     /// <param name="size">get size from actorSize</param>
     /// <param name="listTabData">list of item that you want to display.</param>
     /// <param name="dataTabName">get size from actorSize</param>
-    public void ChangeMaximum(int dataSize, List<ActorData> listTabData, List<string> dataTabName, string dataPath)
+    public void ChangeMaximum(int dataSize, List<BaseData> listTabData, List<string> dataTabName, string dataPath)
     {
 
         //This count only useful when we doesn't have a name yet.
         //you can remove this when decide a new format later.
         while (counter <= dataSize)
         {
-            listTabData.Add(ScriptableObject.CreateInstance<ActorData>());
+            listTabData.Add(ScriptableObject.CreateInstance<BaseData>());
 
- //           AssetDatabase.CreateAsset(listTabData[counter], "Assets/Resources/Data/ActorData/Actor_" + counter + ".asset");
             AssetDatabase.CreateAsset(listTabData[counter], dataPath + counter + ".asset");
             AssetDatabase.SaveAssets();
-            dataTabName.Add(listTabData[counter].actorName);
+            dataTabName.Add(listTabData[counter].dataName);
             counter++;
         }
         if (counter > dataSize)

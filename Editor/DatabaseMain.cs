@@ -53,7 +53,7 @@ public class DatabaseMain : EditorWindow
     public void OnEnable()
     {
         ValueInit();
-        actorTab.FolderChecker();
+        BaseTab.FolderChecker();
     }
 
     //////////////////////////////////////////////////
