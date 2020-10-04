@@ -14,6 +14,7 @@ public class DatabaseMain : EditorWindow
     ItemTab itemTab;
     WeaponTab weaponTab;
     ArmorTab armorTab;
+    EnemyTab enemyTab;
 
     //Tab Area. DO NOT CHANGE anything in here.
     public static float tabAreaWidth;
@@ -81,6 +82,7 @@ public class DatabaseMain : EditorWindow
         itemTab = new ItemTab();
         weaponTab = new WeaponTab();
         armorTab = new ArmorTab();
+        enemyTab = new EnemyTab();
     }
 
     //////////////////////////////////////////////////
@@ -137,7 +139,7 @@ public class DatabaseMain : EditorWindow
                 actorTab.Init(position);
                 break;
             case 6:
-                actorTab.Init(position);
+                enemyTab.Init(position);
                 break;
             case 5:
                 armorTab.Init(position);
