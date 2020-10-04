@@ -14,6 +14,7 @@ public class ActorTab : BaseTab
     //a double List for this kind of thing.
     public List<string> actorDisplayName = new List<string>();
 
+    private string dataPath = "Assets/Resources/Data/ActorData/Actor_";
     //All GUIStyle variable initialization.
     GUIStyle actorStyle;
     GUIStyle tabStyle;
@@ -131,7 +132,7 @@ public class ActorTab : BaseTab
                 if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
                 {
                     actorSize = actorSizeTemp;
-                    ChangeMaximum(actorSize, player, actorDisplayName);
+                    ChangeMaximum(actorSize, player, actorDisplayName, dataPath);
                 }
             GUILayout.EndArea();
             #endregion
