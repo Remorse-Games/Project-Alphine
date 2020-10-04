@@ -250,6 +250,93 @@ public class ArmorTab : BaseTab
                     GUILayout.EndArea(); // End of GeneralSettings Tab
                     #endregion
 
+                Rect parameterChangesBox = new Rect(5, generalBox.height + 10, firstTabWidth + 60, position.height / 4 - 65);
+                    #region ParameterChangesBox
+                    GUILayout.BeginArea(parameterChangesBox, tabStyle);
+                        #region Vertical
+                        GUILayout.BeginVertical();
+                            GUILayout.Label("Parameter Changes", EditorStyles.boldLabel);
+
+                            #region InitialLevel Success Repeat TPGain
+                            GUILayout.BeginHorizontal();
+                                GUILayout.BeginVertical();
+                                    GUILayout.Label("Attack:");
+                                    if (armorSize > 0)
+                                    { armor[index].armorAttack = EditorGUILayout.IntField(armor[index].armorAttack, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                    else
+                                    { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                GUILayout.EndVertical();
+
+                                GUILayout.BeginVertical();
+                                    GUILayout.Label("Defense:");
+                                    if (armorSize > 0)
+                                    { armor[index].armorDefense = EditorGUILayout.IntField(armor[index].armorDefense, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                    else
+                                    { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                GUILayout.EndVertical();
+
+                                GUILayout.BeginVertical();
+                                    GUILayout.Label("M.Attack:");
+                                    if (armorSize > 0)
+                                    { armor[index].armorMAttack = EditorGUILayout.IntField(armor[index].armorMAttack, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                    else
+                                    { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                GUILayout.EndVertical();
+
+                                GUILayout.BeginVertical();
+                                    GUILayout.Label("M.Defense:");
+                                    if (armorSize > 0)
+                                    { armor[index].armorMDefense = EditorGUILayout.IntField(armor[index].armorMDefense, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                    else
+                                    { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                GUILayout.EndVertical();
+
+                            GUILayout.EndHorizontal();
+                            #endregion
+
+                            #region Agility Luck MaxHP MaxMP
+                            GUILayout.BeginHorizontal();
+                                GUILayout.BeginVertical();
+                                    GUILayout.Label("Agility:");
+                                    if (armorSize > 0)
+                                    { armor[index].armorAgility = EditorGUILayout.IntField(armor[index].armorAgility, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                    else
+                                    { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                GUILayout.EndVertical();
+
+                                GUILayout.BeginVertical();
+                                    GUILayout.Label("Luck:");
+                                    if (armorSize > 0)
+                                    { armor[index].armorLuck = EditorGUILayout.IntField(armor[index].armorLuck, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                    else
+                                    { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                GUILayout.EndVertical();
+
+                                GUILayout.BeginVertical();
+                                    GUILayout.Label("Max HP:");
+                                    if (armorSize > 0)
+                                    { armor[index].armorMaxHP = EditorGUILayout.IntField(armor[index].armorMaxHP, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                    else
+                                    { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                GUILayout.EndVertical();
+
+                                GUILayout.BeginVertical();
+                                    GUILayout.Label("Max MP:");
+                                    if (armorSize > 0)
+                                    { armor[index].armorMaxMP = EditorGUILayout.IntField(armor[index].armorMaxMP, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                    else
+                                    { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                GUILayout.EndVertical();
+
+                            GUILayout.EndHorizontal();
+                            #endregion
+
+                        GUILayout.EndVertical();
+                        #endregion
+
+                    GUILayout.EndArea();
+                    #endregion // End Of ParameterChanges Settings
+
             GUILayout.EndArea();
             #endregion // End of Second Tab
 
