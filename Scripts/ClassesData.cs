@@ -93,7 +93,8 @@ public class ClassesData : ScriptableObject
         }
         else
         {
-            return Mathf.RoundToInt(((maxVal - minVal) / 99) * level + minVal);
+
+            return Mathf.RoundToInt((((level-1)*(maxVal - minVal))/99)+minVal);
         }
     }
 
