@@ -9,6 +9,7 @@ public class ActorTab : BaseTab
     //Having list of all player exist in data.
     public List<ActorData> player = new List<ActorData>();
     
+
     //List of names. Why you ask? because selectionGrid require
     //array of string, which we cannot obtain in ActorData.
     //I hope later got better solution about this to not do
@@ -65,23 +66,19 @@ public class ActorTab : BaseTab
 
     public void Init(Rect position)
     {
-        //This use linq namespaces.
-        //Use this variable to convert list of data to the base data.
-        List<BaseData> baseData = new List<ActorData>().Cast<BaseData>().ToList();
-
         #region A Bit Explanation About Local Tab
-        ///So there is 2 types of Tab,
-        ///One is in Database that not included here.
-        ///Second, there is 3 tab slicing in ActorTab itself.
-        ///So make sure you understand that tabbing in here does not
-        ///have any corelation with DatabaseMain.cs Tab system.
+    ///So there is 2 types of Tab,
+    ///One is in Database that not included here.
+    ///Second, there is 3 tab slicing in ActorTab itself.
+    ///So make sure you understand that tabbing in here does not
+    ///have any corelation with DatabaseMain.cs Tab system.
         #endregion
 
-        ////////////////////////////////////////////////////////////////////////////////////////
-        /////////////////////////////START REGION OF VALUE INIT/////////////////////////////////
-        ////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////START REGION OF VALUE INIT/////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////
 
-        float tabWidth = position.width * .85f;
+    float tabWidth = position.width * .85f;
         float tabHeight = position.height - 10f;
 
         float firstTabWidth = tabWidth * 3 / 10;
@@ -139,8 +136,13 @@ public class ActorTab : BaseTab
                 if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
                 {
                     actorSize = actorSizeTemp;
-                    ChangeMaximum(actorSize, baseData, actorDisplayName, dataPath);
-                }
+                    ChangeMaximum<ActorData>(actorSize, player, dataPath);
+                    //TODO: Please change this. this only prevent bug for now.
+                    for (int i = 0; i < actorSize; i++)
+                    {
+                        actorDisplayName.Add("Player");
+                    }
+        }
             GUILayout.EndArea();
             #endregion
 
@@ -163,8 +165,8 @@ public class ActorTab : BaseTab
                                 GUILayout.Label("Name:");
                                 if (actorSize > 0)
                                 {
-                                    player[index].dataName = GUILayout.TextField(player[index].dataName, GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 8));
-                                    actorDisplayName[index] = player[index].dataName;
+                                    player[index].actorName = GUILayout.TextField(player[index].actorName, GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 8));
+                                    actorDisplayName[index] = player[index].actorName;
                                 }
                                 else
                                 { 
@@ -211,9 +213,22 @@ public class ActorTab : BaseTab
                         #endregion
                         GUILayout.Label("Profile:");
                         if (actorSize > 0)
-                            {player[index].description = GUILayout.TextArea(player[index].description, GUILayout.Width(firstTabWidth + 50), GUILayout.Height(generalBox.height / 5));}
+                            {
+                                player[index].description = GUILayout.TextArea
+                                    (
+                                    player[index].description,
+                                    GUILayout.Width(firstTabWidth + 50), 
+                                    GUILayout.Height(generalBox.height / 5)
+                                    );
+                            }
                         else
-                            {GUILayout.TextArea("Null", GUILayout.Width(firstTabWidth + 50), GUILayout.Height(generalBox.height / 5));}
+                            {
+                                GUILayout.TextArea
+                                ("Null", 
+                                GUILayout.Width(firstTabWidth + 50), 
+                                GUILayout.Height(generalBox.height / 5)
+                                );
+                            }
                     GUILayout.EndVertical();
                     #endregion
                 GUILayout.EndArea();

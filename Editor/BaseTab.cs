@@ -122,24 +122,22 @@ public abstract class BaseTab
     /// <param name="size">get size from actorSize</param>
     /// <param name="listTabData">list of item that you want to display.</param>
     /// <param name="dataTabName">get size from actorSize</param>
-    public void ChangeMaximum(int dataSize, List<BaseData> listTabData, List<string> dataTabName, string dataPath)
+    public void ChangeMaximum<GameData>(int dataSize, List<GameData> listTabData, string dataPath) where GameData : ScriptableObject
     {
 
         //This count only useful when we doesn't have a name yet.
         //you can remove this when decide a new format later.
         while (counter <= dataSize)
         {
-            listTabData.Add(ScriptableObject.CreateInstance<BaseData>());
+            listTabData.Add(ScriptableObject.CreateInstance<GameData>());
 
             AssetDatabase.CreateAsset(listTabData[counter], dataPath + counter + ".asset");
             AssetDatabase.SaveAssets();
-            dataTabName.Add(listTabData[counter].dataName);
             counter++;
         }
         if (counter > dataSize)
         {
             listTabData.RemoveRange(dataSize, listTabData.Count - dataSize);
-            dataTabName.RemoveRange(dataSize, dataTabName.Count - dataSize);
             for (int i = dataSize; i <= counter; i++)
             {
                 AssetDatabase.DeleteAsset(dataPath + i + ".asset");
