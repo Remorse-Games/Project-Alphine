@@ -138,11 +138,8 @@ public class ActorTab : BaseTab
                     actorSize = actorSizeTemp;
                     ChangeMaximum<ActorData>(actorSize, player, dataPath);
                     //TODO: Please change this. this only prevent bug for now.
-                    for (int i = 0; i < actorSize; i++)
-                    {
-                        actorDisplayName.Add("Player");
-                    }
-        }
+                    ListReset();
+                }
             GUILayout.EndArea();
             #endregion
 
@@ -384,6 +381,18 @@ public class ActorTab : BaseTab
 
         GUILayout.EndArea();
         #endregion
+    }
+
+    ///<summary>
+    ///Clears out the displayName list and add it with new value
+    ///</summary>
+    private void ListReset()
+    {
+        actorDisplayName.Clear();
+        for(int i = 0; i<actorSize; i++)
+        {
+            actorDisplayName.Add(player[i].actorName);
+        }
     }
 
     public override void ItemTabLoader(int index)
