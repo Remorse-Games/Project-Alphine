@@ -140,18 +140,17 @@ public abstract class BaseTab
     public void ChangeMaximum<GameData>(int dataSize, List<GameData> listTabData, string dataPath) where GameData : ScriptableObject
     {
         int counter = 0;
-
         //This count only useful when we doesn't have a name yet.
         //you can remove this when decide a new format later.
-        while (counter <= dataSize)
+        while (dataSize > listTabData.Count)
         {
             listTabData.Add(ScriptableObject.CreateInstance<GameData>());
-
-            AssetDatabase.CreateAsset(listTabData[counter], dataPath + counter + ".asset");
+            counter = listTabData.Count;
+            AssetDatabase.CreateAsset(listTabData[listTabData.Count - 1], dataPath + counter + ".asset");
             AssetDatabase.SaveAssets();
             counter++;
         }
-        if (counter > dataSize)
+        if (listTabData.Count > dataSize)
         {
             listTabData.RemoveRange(dataSize, listTabData.Count - dataSize);
             for (int i = dataSize; i <= counter; i++)
@@ -159,7 +158,6 @@ public abstract class BaseTab
                 AssetDatabase.DeleteAsset(dataPath + i + ".asset");
             }
             AssetDatabase.SaveAssets();
-            counter = dataSize;
         }
     }
 
