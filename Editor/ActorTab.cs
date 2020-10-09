@@ -63,8 +63,16 @@ public class ActorTab : BaseTab
 
     //dataPath where the game data will be saved as a .assets
     private string dataPath = "Assets/Resources/Data/ActorData/Actor_";
+    private string _dataPath = "Data/ActorData";
 
-    public void Init(Rect position)
+    public void Init()
+    {
+        LoadGameData<ActorData>(ref actorSize, player, _dataPath);
+        Debug.Log("Actor Size:" + actorSize);
+        ListReset();
+    }
+
+    public void OnRender(Rect position)
     {
         #region A Bit Explanation About Local Tab
     ///So there is 2 types of Tab,
@@ -78,7 +86,7 @@ public class ActorTab : BaseTab
     /////////////////////////////START REGION OF VALUE INIT/////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////
 
-    float tabWidth = position.width * .85f;
+        float tabWidth = position.width * .85f;
         float tabHeight = position.height - 10f;
 
         float firstTabWidth = tabWidth * 3 / 10;
@@ -137,7 +145,6 @@ public class ActorTab : BaseTab
                 {
                     actorSize = actorSizeTemp;
                     ChangeMaximum<ActorData>(actorSize, player, dataPath);
-                    //TODO: Please change this. this only prevent bug for now.
                     ListReset();
                 }
             GUILayout.EndArea();
@@ -389,7 +396,7 @@ public class ActorTab : BaseTab
     private void ListReset()
     {
         actorDisplayName.Clear();
-        for(int i = 0; i<actorSize; i++)
+        for (int i = 0; i < actorSize; i++)
         {
             actorDisplayName.Add(player[i].actorName);
         }
@@ -397,7 +404,6 @@ public class ActorTab : BaseTab
 
     public override void ItemTabLoader(int index)
     {
-        Debug.Log(index + "index");
         Texture2D defTex = new Texture2D(256, 256);
         if (index != -1)
         {

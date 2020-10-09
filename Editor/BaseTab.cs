@@ -116,7 +116,18 @@ public abstract class BaseTab
             return sprite.texture;
     }
 
-    int counter = 0;
+    public void LoadGameData<GameData>(ref int dataSize, List<GameData> listTabData, string dataPath) where GameData : ScriptableObject
+    {
+        GameData[] list = Resources.LoadAll<GameData>(dataPath);
+        dataSize = list.Length;
+        Debug.Log(list.Length);
+
+        foreach (GameData gd in list)
+        {
+            listTabData.Add(gd);
+        }
+    }
+
 
     /// <summary>
     /// Change Maximum function , when we change the size
@@ -128,6 +139,7 @@ public abstract class BaseTab
     /// <param name="dataTabName">get size from actorSize</param>
     public void ChangeMaximum<GameData>(int dataSize, List<GameData> listTabData, string dataPath) where GameData : ScriptableObject
     {
+        int counter = 0;
 
         //This count only useful when we doesn't have a name yet.
         //you can remove this when decide a new format later.
