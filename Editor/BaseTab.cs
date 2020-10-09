@@ -120,7 +120,6 @@ public abstract class BaseTab
     {
         GameData[] list = Resources.LoadAll<GameData>(dataPath);
         dataSize = list.Length;
-        Debug.Log(list.Length);
 
         foreach (GameData gd in list)
         {
@@ -142,18 +141,20 @@ public abstract class BaseTab
         int counter = 0;
         //This count only useful when we doesn't have a name yet.
         //you can remove this when decide a new format later.
-        while (dataSize > listTabData.Count)
+        if (dataSize > listTabData.Count)
+            while (dataSize > listTabData.Count)
+            {
+                listTabData.Add(ScriptableObject.CreateInstance<GameData>());
+                counter = listTabData.Count;
+                AssetDatabase.CreateAsset(listTabData[listTabData.Count - 1], dataPath + counter + ".asset");
+                AssetDatabase.SaveAssets();
+                counter++;
+            }
+        else
         {
-            listTabData.Add(ScriptableObject.CreateInstance<GameData>());
-            counter = listTabData.Count;
-            AssetDatabase.CreateAsset(listTabData[listTabData.Count - 1], dataPath + counter + ".asset");
-            AssetDatabase.SaveAssets();
-            counter++;
-        }
-        if (listTabData.Count > dataSize)
-        {
+            int tempListTabData = listTabData.Count;
             listTabData.RemoveRange(dataSize, listTabData.Count - dataSize);
-            for (int i = dataSize; i <= counter; i++)
+            for (int i = tempListTabData; i > dataSize; i--)
             {
                 AssetDatabase.DeleteAsset(dataPath + i + ".asset");
             }
@@ -171,7 +172,7 @@ public abstract class BaseTab
     {
         string relativepath;
         string[] path = StandaloneFileBrowser.OpenFilePanel(panelName, assetPath, fileExtensions, false);
-        
+
         if (path.Length != 0)
         {
             relativepath = "Image/";

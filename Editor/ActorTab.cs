@@ -68,7 +68,6 @@ public class ActorTab : BaseTab
     public void Init()
     {
         LoadGameData<ActorData>(ref actorSize, player, _dataPath);
-        Debug.Log("Actor Size:" + actorSize);
         ListReset();
     }
 
