@@ -75,7 +75,9 @@ public class EnemyDropWindow : EditorWindow
                             if (EditorGUILayout.Toggle("Armor", itemsToggle[3], EditorStyles.radioButton))
                             {
                                 MemsetArray(3);
+                                thisClass.selectedIndex[windowOrder] = EditorGUILayout.Popup(thisClass.selectedIndex[windowOrder], thisClass.enemyArmor, GUILayout.Height(15), GUILayout.Width(170));
                                 thisClass.selectedToggle[windowOrder] = 3;
+                                GUILayout.Space(5);
                             }
 
                     GUILayout.EndArea();

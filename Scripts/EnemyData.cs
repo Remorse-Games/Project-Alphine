@@ -11,6 +11,15 @@ public class EnemyData : ScriptableObject
         "Add other manually.",
     };
 
+    public string[] enemyArmor =
+    {
+        "Shield",
+        "Hat",
+        "Cloth",
+        "Ring",
+        "Add other manually.",
+    };
+
     public string[] enemyWeapon =
     {
         "Sword",

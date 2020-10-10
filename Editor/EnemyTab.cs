@@ -354,7 +354,7 @@ public class EnemyTab : BaseTab
             }
             else
             {
-                outputString = "Armor Name (Change and Fix Later)";
+                outputString = enemy[index].enemyArmor[enemy[index].selectedIndex[indexx]];
             }
             outputString += " : 1/" + enemy[index].enemyProbability[indexx].ToString();
         }
