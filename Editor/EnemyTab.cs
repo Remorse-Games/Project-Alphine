@@ -65,7 +65,7 @@ public class EnemyTab : BaseTab
             tabStyle.normal.background = CreateTexture(1, 1, new Color32(76, 76, 76, 200));
         else
             tabStyle.normal.background = CreateTexture(1, 1, new Color32(200, 200, 200, 200));
-
+        
 
         ////////////////////////////////////////////////////////////////////////////////////////
         /////////////////////////////END REGION OF VALUE INIT///////////////////////////////////
@@ -232,6 +232,69 @@ public class EnemyTab : BaseTab
                     GUILayout.EndArea(); // End of GeneralSettings Tab
                     #endregion
 
+                Rect rewardsBox = new Rect(5, generalBox.height + 10, firstTabWidth - 200, tabHeight / 5 - 10);
+                    #region RewardsBox
+                    GUILayout.BeginArea(rewardsBox, tabStyle);
+                        GUILayout.BeginVertical();
+                            GUILayout.Label("Rewards", EditorStyles.boldLabel);
+                            GUILayout.Label("EXP:");
+                            if (enemySize > 0)
+                            {
+                                enemy[index].enemyEXP = EditorGUILayout.IntField(enemy[index].enemyEXP, GUILayout.Width(firstTabWidth - 210), GUILayout.Height(generalBox.height / 8));
+                            }
+                            else
+                            {
+                                EditorGUILayout.IntField(-1, GUILayout.Width(firstTabWidth - 210), GUILayout.Height(generalBox.height / 8));
+                            }
+                            GUILayout.Label("Gold:");
+                            if (enemySize > 0)
+                            {
+                                enemy[index].enemyGold = EditorGUILayout.IntField(enemy[index].enemyGold, GUILayout.Width(firstTabWidth - 210), GUILayout.Height(generalBox.height / 8));
+                            }
+                            else
+                            {
+                                EditorGUILayout.IntField(-1, GUILayout.Width(firstTabWidth - 210), GUILayout.Height(generalBox.height / 8));
+                            }
+                        GUILayout.EndVertical();
+                    GUILayout.EndArea();
+                    #endregion
+
+                Rect dropItemBox = new Rect(rewardsBox.width + 10, generalBox.height + 10, firstTabWidth + 55 - rewardsBox.width, tabHeight / 5 - 10);
+                    #region DropItems
+                    GUILayout.BeginArea(dropItemBox, tabStyle);
+                        GUILayout.Label("Drop Items", EditorStyles.boldLabel);
+                        GUILayout.Space(10);
+                        if (enemySize > 0)
+                        {
+                            if (GUILayout.Button(StringMaker(0), GUILayout.Width(dropItemBox.width - 10), GUILayout.Height(dropItemBox.height / 3 - 15)))
+                            {
+                                EnemyDropWindow.ShowWindow(enemy[index], 0);
+                            }
+                            if (GUILayout.Button(StringMaker(1), GUILayout.Width(dropItemBox.width - 10), GUILayout.Height(dropItemBox.height / 3 - 15)))
+                            {
+                                EnemyDropWindow.ShowWindow(enemy[index], 1);
+                            }
+                            if (GUILayout.Button(StringMaker(2), GUILayout.Width(dropItemBox.width - 10), GUILayout.Height(dropItemBox.height / 3 - 15)))
+                            {
+                                EnemyDropWindow.ShowWindow(enemy[index], 2);
+                            }
+                        }
+                        else
+                        {
+                            if (GUILayout.Button("None", GUILayout.Width(dropItemBox.width - 10), GUILayout.Height(dropItemBox.height / 3 - 15)))
+                            {
+                            }
+                            if (GUILayout.Button("None", GUILayout.Width(dropItemBox.width - 10), GUILayout.Height(dropItemBox.height / 3 - 15)))
+                            {
+                            }
+                            if (GUILayout.Button("None", GUILayout.Width(dropItemBox.width - 10), GUILayout.Height(dropItemBox.height / 3 - 15)))
+                            {
+                            }
+                        }
+    
+                    GUILayout.EndArea();
+                    #endregion
+
             GUILayout.EndArea();
             #endregion // End of Second Tab
 
@@ -274,6 +337,30 @@ public class EnemyTab : BaseTab
         }
     }
 
+    public string StringMaker(int indexx)
+    {
+        string outputString = "None";
+        int selectedToggle = enemy[index].selectedToggle[indexx];
+
+        if (selectedToggle > 0)
+        {
+            if (selectedToggle == 1)
+            {
+                outputString = enemy[index].enemyItem[enemy[index].selectedIndex[indexx]];
+            }
+            else if (selectedToggle == 2)
+            {
+                outputString = enemy[index].enemyWeapon[enemy[index].selectedIndex[indexx]];
+            }
+            else
+            {
+                outputString = "Armor Name (Change and Fix Later)";
+            }
+            outputString += " : 1/" + enemy[index].enemyProbability[indexx].ToString();
+        }
+
+        return outputString;
+    }
     public override void ItemTabLoader(int index)
     {
         Debug.Log(index + "index");
