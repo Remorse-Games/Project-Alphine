@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using UnityEditor.AnimatedValues;
 
 public class EnemyDropWindow : EditorWindow
 {
@@ -10,31 +11,38 @@ public class EnemyDropWindow : EditorWindow
     GUIStyle tabStyle;
     GUIStyle columnStyle;
 
-
+    int i = 0;
+    int firstSelectedToggle;
+    int firstSelectedIndex;
+    int firstProbabilityValue;
     //Arrays
     bool[] itemsToggle = new bool[4] { true, false, false, false };
-
-    
 
     //The i-th Window
     static int windowOrder;
 
+    //Data(s) reference
     static EnemyData thisClass;
     public static void ShowWindow(EnemyData enemyData, int size)
     {
         var window = GetWindow<EnemyDropWindow>();
+        var position = window.position;
         //Sizing
-        window.maxSize = new Vector2(190, 189);
-        window.minSize = new Vector2(190, 189);
+        window.maxSize = new Vector2(190, 220);
+        window.minSize = new Vector2(190, 220);
         window.titleContent = new GUIContent("Drop Item");
         thisClass = enemyData;
         windowOrder = size;
+        position.center = new Rect(Screen.width * -1 * .05f, Screen.height * -1 * .05f, Screen.currentResolution.width, Screen.currentResolution.height).center;
+        window.position = position;
         window.Show();
     }
 
     private void OnGUI()
     {
         MemsetArray(thisClass.selectedToggle[windowOrder]);
+        BaseValue(i);
+        i++;
         windowStyle = new GUIStyle(GUI.skin.box);
         windowStyle.normal.background = CreateTexture(1, 1, Color.gray);
         columnStyle = new GUIStyle(GUI.skin.box);
@@ -46,7 +54,7 @@ public class EnemyDropWindow : EditorWindow
             tabStyle.normal.background = CreateTexture(1, 1, new Color32(200, 200, 200, 100));
 
         #region PrimaryTab
-        Rect primaryBox = new Rect(0, 0, 190, 193);
+        Rect primaryBox = new Rect(0, 0, 190, 225);
                 GUILayout.BeginArea(primaryBox, windowStyle);
 
                     #region DropItem
@@ -91,18 +99,46 @@ public class EnemyDropWindow : EditorWindow
                                 GUILayout.Space(5);
                                 GUILayout.BeginHorizontal();
                                     GUILayout.Label("  1 / ");
-                                    thisClass.enemyProbability[windowOrder] = EditorGUILayout.IntField(
-                                                                                                    thisClass.enemyProbability[windowOrder], 
-                                                                                                    GUILayout.Width(probabilityBox.width - 40), 
-                                                                                                    GUILayout.Height(20)
-                                                                                                    ); 
+
+                                    if(thisClass.selectedToggle[windowOrder] > 0)
+                                    {     
+                                        thisClass.enemyProbability[windowOrder] = EditorGUILayout.IntField(
+                                                                                                        thisClass.enemyProbability[windowOrder], 
+                                                                                                        GUILayout.Width(probabilityBox.width - 40), 
+                                                                                                        GUILayout.Height(20)
+                                                                                                        );
+                                    }
+                                    else
+                                    {
+                                        EditorGUILayout.IntField(-1, GUILayout.Width(probabilityBox.width - 40), GUILayout.Height(20));
+                                    }
                                 GUILayout.EndHorizontal();
                             GUILayout.EndVertical();
                         GUILayout.EndArea();
                         #endregion
 
-        GUILayout.EndArea();
-        #endregion
+                    #region OkCancel
+                    Rect okCancelBox = new Rect(.33f * primaryBox.width, 17 + dropItem.height + probabilityBox.height, .65f * primaryBox.width, 30);
+                        GUILayout.BeginArea(okCancelBox, tabStyle);
+                            GUILayout.BeginHorizontal();
+                                if (GUILayout.Button("OK", GUILayout.Width(okCancelBox.width * .5f - 5), GUILayout.Height(okCancelBox.height * .8f)))
+                                {
+                                    this.Close();
+                                }
+                                if (GUILayout.Button("Cancel", GUILayout.Width(okCancelBox.width * .5f - 5), GUILayout.Height(okCancelBox.height * .8f)))
+                                {
+                                    thisClass.selectedToggle[windowOrder] = firstSelectedToggle;
+                                    thisClass.selectedIndex[windowOrder] = firstSelectedIndex;
+                                    thisClass.enemyProbability[windowOrder] = firstProbabilityValue;
+                                    this.Close();
+                                }
+                            GUILayout.EndHorizontal();
+                        GUILayout.EndArea();
+                        #endregion
+
+                GUILayout.EndArea();
+                #endregion
+
     }
 
 
@@ -121,6 +157,16 @@ public class EnemyDropWindow : EditorWindow
             itemsToggle[i] = false;
         }
         itemsToggle[(checkedTrue)] = true;
+    }
+
+    public void BaseValue(int i)
+    {
+        if (i == 0)
+        {
+            firstSelectedToggle = thisClass.selectedToggle[windowOrder];
+            firstSelectedIndex = thisClass.selectedIndex[windowOrder];
+            firstProbabilityValue = thisClass.enemyProbability[windowOrder];
+        }
     }
     /// <summary>
     /// Create Texture for GUI skin.
