@@ -55,7 +55,8 @@ public class DatabaseMain : EditorWindow
     public void OnEnable()
     {
         ValueInit();
-        actorTab.FolderChecker();
+        BaseTab.FolderChecker();
+        actorTab.Init();
     }
 
     //////////////////////////////////////////////////
@@ -98,7 +99,7 @@ public class DatabaseMain : EditorWindow
         tabAreaWidth = position.width / 8;
         tabAreaHeight = position.height * .75f;
         
-        #region  ActorBoxUI
+        #region  BoxUI
         GUILayout.BeginVertical("Box");
         selectedTab = GUILayout.SelectionGrid(selectedTab, tabNames, 1, GUILayout.Width(tabAreaWidth), GUILayout.Height(tabAreaHeight));
         GUILayout.EndVertical();
@@ -117,25 +118,25 @@ public class DatabaseMain : EditorWindow
         switch (selectedTab)
         {
             case 14:
-                actorTab.Init(position);
+                actorTab.OnRender(position);
                 break;
             case 13:
-                actorTab.Init(position);
+                actorTab.OnRender(position);
                 break;
             case 12:
-                actorTab.Init(position);
+                actorTab.OnRender(position);
                 break;
             case 11:
-                actorTab.Init(position);
+                actorTab.OnRender(position);
                 break;
             case 10:
-                actorTab.Init(position);
+                actorTab.OnRender(position);
                 break;
             case 9:
-                actorTab.Init(position);
+                actorTab.OnRender(position);
                 break;
             case 8:
-                actorTab.Init(position);
+                actorTab.OnRender(position);
                 break;
             case 7:
                 troopTab.Init(position);
@@ -159,7 +160,7 @@ public class DatabaseMain : EditorWindow
                 classTab.Init(position);
                 break;
             case 0:
-                actorTab.Init(position);
+                actorTab.OnRender(position);
                 break;
         }
     }

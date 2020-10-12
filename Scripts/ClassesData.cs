@@ -3,6 +3,7 @@
 public class ClassesData : ScriptableObject
 {
     public string className;
+    public string notes;
 
     #region ExpVar    
     public AnimationCurve expCurve;
@@ -92,7 +93,8 @@ public class ClassesData : ScriptableObject
         }
         else
         {
-            return Mathf.RoundToInt(((maxVal - minVal) / 99) * level + minVal);
+
+            return Mathf.RoundToInt((((level-1)*(maxVal - minVal))/99)+minVal);
         }
     }
 

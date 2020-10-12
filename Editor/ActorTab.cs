@@ -3,10 +3,12 @@ using UnityEngine;
 using UnityEditor;
 using System.IO;
 using SFB;
+using System.Linq;
 public class ActorTab : BaseTab
 {
     //Having list of all player exist in data.
     public List<ActorData> player = new List<ActorData>();
+    
 
     //List of names. Why you ask? because selectionGrid require
     //array of string, which we cannot obtain in ActorData.
@@ -59,20 +61,30 @@ public class ActorTab : BaseTab
     public int actorSizeTemp;
     #endregion
 
-    public void Init(Rect position)
+    //dataPath where the game data will be saved as a .assets
+    private string dataPath = "Assets/Resources/Data/ActorData/Actor_";
+    private string _dataPath = "Data/ActorData";
+
+    public void Init()
+    {
+        LoadGameData<ActorData>(ref actorSize, player, _dataPath);
+        ListReset();
+    }
+
+    public void OnRender(Rect position)
     {
         #region A Bit Explanation About Local Tab
-        ///So there is 2 types of Tab,
-        ///One is in Database that not included here.
-        ///Second, there is 3 tab slicing in ActorTab itself.
-        ///So make sure you understand that tabbing in here does not
-        ///have any corelation with DatabaseMain.cs Tab system.
+    ///So there is 2 types of Tab,
+    ///One is in Database that not included here.
+    ///Second, there is 3 tab slicing in ActorTab itself.
+    ///So make sure you understand that tabbing in here does not
+    ///have any corelation with DatabaseMain.cs Tab system.
         #endregion
 
-        ////////////////////////////////////////////////////////////////////////////////////////
-        /////////////////////////////START REGION OF VALUE INIT/////////////////////////////////
-        ////////////////////////////////////////////////////////////////////////////////////////
-        
+    ////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////START REGION OF VALUE INIT/////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////
+
         float tabWidth = position.width * .85f;
         float tabHeight = position.height - 10f;
 
@@ -113,7 +125,7 @@ public class ActorTab : BaseTab
                         actorDisplayName.ToArray(), 
                         1, 
                         GUILayout.Width(firstTabWidth - 20), 
-                        GUILayout.Height(position.height / 24 * actorSizeTemp
+                        GUILayout.Height(position.height / 24 * actorSize
                         ));
                 GUILayout.EndScrollView();
                 #endregion
@@ -131,7 +143,8 @@ public class ActorTab : BaseTab
                 if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
                 {
                     actorSize = actorSizeTemp;
-                    ChangeMaximum(actorSize, player, actorDisplayName);
+                    ChangeMaximum<ActorData>(actorSize, player, dataPath);
+                    ListReset();
                 }
             GUILayout.EndArea();
             #endregion
@@ -203,9 +216,22 @@ public class ActorTab : BaseTab
                         #endregion
                         GUILayout.Label("Profile:");
                         if (actorSize > 0)
-                            {player[index].description = GUILayout.TextArea(player[index].description, GUILayout.Width(firstTabWidth + 50), GUILayout.Height(generalBox.height / 5));}
+                            {
+                                player[index].description = GUILayout.TextArea
+                                    (
+                                    player[index].description,
+                                    GUILayout.Width(firstTabWidth + 50), 
+                                    GUILayout.Height(generalBox.height / 5)
+                                    );
+                            }
                         else
-                            {GUILayout.TextArea("Null", GUILayout.Width(firstTabWidth + 50), GUILayout.Height(generalBox.height / 5));}
+                            {
+                                GUILayout.TextArea
+                                ("Null", 
+                                GUILayout.Width(firstTabWidth + 50), 
+                                GUILayout.Height(generalBox.height / 5)
+                                );
+                            }
                     GUILayout.EndVertical();
                     #endregion
                 GUILayout.EndArea();
@@ -361,11 +387,24 @@ public class ActorTab : BaseTab
 
         GUILayout.EndArea();
         #endregion
+
+        EditorUtility.SetDirty(player[index]);
+    }
+
+    ///<summary>
+    ///Clears out the displayName list and add it with new value
+    ///</summary>
+    private void ListReset()
+    {
+        actorDisplayName.Clear();
+        for (int i = 0; i < actorSize; i++)
+        {
+            actorDisplayName.Add(player[i].actorName);
+        }
     }
 
     public override void ItemTabLoader(int index)
     {
-        Debug.Log(index + "index");
         Texture2D defTex = new Texture2D(256, 256);
         if (index != -1)
         {

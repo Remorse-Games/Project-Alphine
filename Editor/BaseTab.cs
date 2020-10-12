@@ -26,7 +26,7 @@ public abstract class BaseTab
     ///<summary>
     /// Folder checker, create folder if it doesnt exist already, Might refactor into one liner if
     ///</summary>
-    public void FolderChecker()
+    public static void FolderChecker()
     {
         if (!AssetDatabase.IsValidFolder("Assets/Resources"))
         {
@@ -116,39 +116,49 @@ public abstract class BaseTab
             return sprite.texture;
     }
 
+    public void LoadGameData<GameData>(ref int dataSize, List<GameData> listTabData, string dataPath) where GameData : ScriptableObject
+    {
+        GameData[] list = Resources.LoadAll<GameData>(dataPath);
+        dataSize = list.Length;
+
+        foreach (GameData gd in list)
+        {
+            listTabData.Add(gd);
+        }
+    }
+
+
     /// <summary>
     /// Change Maximum function , when we change the size
     /// and click Change Maximum button in Editor, it will update
     /// and change the size while creating new data.
     /// </summary>
     /// <param name="size">get size from actorSize</param>
-    /// <param name="listTabItem">list of item that you want to display.</param>
-    /// <param name="itemTabName">get size from actorSize</param>
-    public void ChangeMaximum(int actorSize, List<ActorData> listTabItem, List<string> itemTabName)
+    /// <param name="listTabData">list of item that you want to display.</param>
+    /// <param name="dataTabName">get size from actorSize</param>
+    public void ChangeMaximum<GameData>(int dataSize, List<GameData> listTabData, string dataPath) where GameData : ScriptableObject
     {
         int counter = 0;
-
         //This count only useful when we doesn't have a name yet.
         //you can remove this when decide a new format later.
-        while (counter <= actorSize)
-        {
-            listTabItem.Add(ScriptableObject.CreateInstance<ActorData>());
-
-            AssetDatabase.CreateAsset(listTabItem[counter], "Assets/Resources/Data/ActorData/Actor_" + counter + ".asset");
-            AssetDatabase.SaveAssets();
-            itemTabName.Add(listTabItem[counter].actorName);
-            counter++;
-        }
-        if (counter > actorSize)
-        {
-            listTabItem.RemoveRange(actorSize, listTabItem.Count - actorSize);
-            itemTabName.RemoveRange(actorSize, itemTabName.Count - actorSize);
-            for (int i = actorSize; i <= counter; i++)
+        if (dataSize > listTabData.Count)
+            while (dataSize > listTabData.Count)
             {
-                AssetDatabase.DeleteAsset("Assets/Resources/Data/ActorData/Actor_" + i + ".asset");
+                listTabData.Add(ScriptableObject.CreateInstance<GameData>());
+                counter = listTabData.Count;
+                AssetDatabase.CreateAsset(listTabData[listTabData.Count - 1], dataPath + counter + ".asset");
+                AssetDatabase.SaveAssets();
+                counter++;
+            }
+        else
+        {
+            int tempListTabData = listTabData.Count;
+            listTabData.RemoveRange(dataSize, listTabData.Count - dataSize);
+            for (int i = tempListTabData; i > dataSize; i--)
+            {
+                AssetDatabase.DeleteAsset(dataPath + i + ".asset");
             }
             AssetDatabase.SaveAssets();
-            counter = actorSize;
         }
     }
 
@@ -162,7 +172,7 @@ public abstract class BaseTab
     {
         string relativepath;
         string[] path = StandaloneFileBrowser.OpenFilePanel(panelName, assetPath, fileExtensions, false);
-        
+
         if (path.Length != 0)
         {
             relativepath = "Image/";
