@@ -1,12 +1,37 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class EnemyData : ScriptableObject
 {
+    public string[] enemyItem =
+       {
+        "Potion",
+        "Add other manually.",
+    };
+
+    public string[] enemyArmor =
+    {
+        "Shield",
+        "Hat",
+        "Cloth",
+        "Ring",
+        "Add other manually.",
+    };
+
+    public string[] enemyWeapon =
+    {
+        "Sword",
+        "Add other manually.",
+    };
     public string enemyName;
     public Sprite Image;
 
+    public int[] selectedToggle = new int[3];
+    public int[] selectedIndex = new int[3];
+
+    public int[] enemyProbability = new int[3] {1, 1, 1};
     public int enemyAttack;
     public int enemyDefense;
     public int enemyMAttack;
