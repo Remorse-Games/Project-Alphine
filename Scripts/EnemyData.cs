@@ -43,6 +43,9 @@ public class EnemyData : ScriptableObject
     public int enemyEXP;
     public int enemyGold;
 
+    [TextArea]
+    public string notes;
+
     public void OnEnable()
     {
         Sprite sp = Resources.Load<Sprite>("Image");
@@ -58,5 +61,6 @@ public class EnemyData : ScriptableObject
         enemyMaxHP = 500;
         enemyGold = 0;
         Image = sp;
+        notes = "write your notes here, it won't affect the game though.";
     }
 }
