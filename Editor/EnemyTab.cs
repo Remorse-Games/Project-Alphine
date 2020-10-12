@@ -24,8 +24,7 @@ public class EnemyTab : BaseTab
 
     //Scroll position. Is this necessary?
     Vector2 scrollPos = Vector2.zero;
-    Vector2 equipmentScrollPos = Vector2.zero;
-    Vector2 traitsScrollPos = Vector2.zero;
+    Vector2 actionScrollPos = Vector2.zero;
 
     //How many enemy in ChangeMaximum Func
     public int enemySize;
@@ -294,6 +293,34 @@ public class EnemyTab : BaseTab
     
                     GUILayout.EndArea();
                     #endregion
+
+                Rect actionBox = new Rect(5, dropItemBox.height + generalBox.height + 15, firstTabWidth + 60, position.height - (generalBox.height + rewardsBox.height + 60));
+                    #region Effects
+                    GUILayout.BeginArea(actionBox, tabStyle);
+                        GUILayout.Label("Action Patterns", EditorStyles.boldLabel);
+                        GUILayout.Space(2);
+
+                        #region Horizontal For Type And Content
+                        GUILayout.BeginHorizontal();
+                            GUILayout.Label("Skill", GUILayout.Width(actionBox.width * .44f));
+                            GUILayout.Label("Condition", GUILayout.Width(actionBox.width * .44f));
+                            GUILayout.Label("R", GUILayout.Width(actionBox.width * .12f));
+
+                        GUILayout.EndHorizontal();
+                        #endregion
+                        
+                        #region ScrollView
+                        actionScrollPos = GUILayout.BeginScrollView(
+                            actionScrollPos,
+                            false,
+                            true,
+                            GUILayout.Width(actionBox.width - 8),
+                            GUILayout.Height(actionBox.height * 0.80f)
+                            );
+                        GUILayout.EndScrollView();
+                        #endregion
+                    GUILayout.EndArea();
+                    #endregion        
 
             GUILayout.EndArea();
             #endregion // End of Second Tab
