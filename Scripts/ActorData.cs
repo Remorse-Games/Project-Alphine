@@ -25,6 +25,15 @@ public class ActorData : ScriptableObject
 
     public void OnEnable()
     {
+        if (actorName == null &&
+            actorNickname == null)
+        {
+            Init();
+        }
+    }
+
+    public void Init()
+    {
         Sprite sp = Resources.Load<Sprite>("Image");
 
         actorName = "player";

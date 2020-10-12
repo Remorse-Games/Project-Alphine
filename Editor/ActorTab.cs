@@ -387,6 +387,8 @@ public class ActorTab : BaseTab
 
         GUILayout.EndArea();
         #endregion
+
+        EditorUtility.SetDirty(player[index]);
     }
 
     ///<summary>
