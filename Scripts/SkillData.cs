@@ -3,6 +3,7 @@
 [CreateAssetMenu(menuName = "Database/SkillData")]
 public class SkillData : ScriptableObject
 {
+    //Skill Name and Icon
     public string skillName;
     public Sprite Icon;
 
@@ -39,12 +40,18 @@ public class SkillData : ScriptableObject
     public string skillFormula;
     public int skillVariance;
 
-    //TODO: Effects
-
     [TextArea]
     public string notes;
 
     public void OnEnable()
+    {
+        if (skillName == null)
+        {
+            Init();
+        }
+    }
+
+    public void Init()
     {
         Sprite sp = Resources.Load<Sprite>("Image");
 

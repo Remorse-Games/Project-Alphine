@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEditor;
 using System.IO;
 using SFB;
-using System.ComponentModel;
+using System.Linq;
 
 public class SkillsTab : BaseTab
 {
@@ -111,6 +111,10 @@ public class SkillsTab : BaseTab
     //How many skill in ChangeMaximum Func
     public int skillSize;
 
+    //dataPath where the game data will be saved as a .assets
+    private string dataPath = "Assets/Resources/Data/SkillData/Skill_";
+    private string _dataPath = "Data/SkillData";
+
     //i don't know about this but i leave this to handle later.
     int index = 0;
     int indexTemp = -1;
@@ -124,8 +128,13 @@ public class SkillsTab : BaseTab
     Texture2D skillIcon;
 
     public int skillSizeTemp;
+    public void Init()
+    {
+        LoadGameData<SkillData>(ref skillSize, skill, _dataPath);
+        ListReset();
+    }
 
-    public void Init(Rect position)
+    public void OnRender(Rect position)
     {
         #region A Bit Explanation About Local Tab
         ///So there is 2 types of Tab,
@@ -191,7 +200,9 @@ public class SkillsTab : BaseTab
             skillSizeTemp = EditorGUILayout.IntField(skillSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
             if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
             {
-                ChangeMaximumPrivate(skillSize);
+                skillSize = skillSizeTemp;
+                ChangeMaximum<SkillData>(skillSize, skill, dataPath);
+                ListReset();
             }
 
             GUILayout.EndArea();
@@ -335,7 +346,7 @@ public class SkillsTab : BaseTab
                     GUILayout.EndVertical();
                     #endregion
                 GUILayout.EndArea();
-        #endregion
+                #endregion
   
             Rect invocationBox = new Rect(5, generalBox.height + 10, firstTabWidth + 60, position.height / 4 - 70);
                 #region InvocationSettings
@@ -417,7 +428,7 @@ public class SkillsTab : BaseTab
                 #endregion
                 
                 GUILayout.EndArea();
-        #endregion // End Of Invocation Settings
+                #endregion // End Of Invocation Settings
 
             Rect messageBox = new Rect(5, generalBox.height + invocationBox.height + 15, firstTabWidth + 60, position.height / 4 + 10);
                 #region messageBox
@@ -513,7 +524,7 @@ public class SkillsTab : BaseTab
                     #endregion
 
             GUILayout.EndArea();
-        #endregion // End of Second Tab
+            #endregion // End of Second Tab
 
             #region Tab 3/3
             GUILayout.BeginArea(new Rect(firstTabWidth * 2 + 77, 0, firstTabWidth + 25, tabHeight - 25), columnStyle);
@@ -634,7 +645,7 @@ public class SkillsTab : BaseTab
                         GUILayout.EndScrollView();
                         #endregion
                     GUILayout.EndArea();
-        #endregion
+                    #endregion
 
                 Rect notesBox = new Rect(5, damageBox.height + effectsBox.height + 17, firstTabWidth + 15, position.height - (damageBox.height + effectsBox.height + 17) - 40);
                     #region NoteBox
@@ -658,40 +669,21 @@ public class SkillsTab : BaseTab
 
         GUILayout.EndArea();
         #endregion // End of SkillTab
+
+        EditorUtility.SetDirty(skill[index]);
     }
 
     #region Features
-    /// <summary>
-    /// Change Maximum function , when we change the size
-    /// and click Change Maximum button in Editor, it will update
-    /// and change the size while creating new data.
-    /// </summary>
-    /// <param name="size">get size from skillSize</param>
 
-    int counter = 0;
-    private void ChangeMaximumPrivate(int size)
+    ///<summary>
+    ///Clears out the displayName list and add it with new value
+    ///</summary>
+    private void ListReset()
     {
-        skillSize = skillSizeTemp;
-        //This count only useful when we doesn't have a name yet.
-        //you can remove this when decide a new format later.
-        while (counter <= skillSize)
+        skillDisplayName.Clear();
+        for (int i = 0; i < skillSize; i++)
         {
-            skill.Add(ScriptableObject.CreateInstance<SkillData>());
-            AssetDatabase.CreateAsset(skill[counter], "Assets/Resources/Data/SkillData/Skill_" + counter + ".asset");
-            AssetDatabase.SaveAssets();
-            skillDisplayName.Add(skill[counter].skillName);
-            counter++;
-        }
-        if (counter > skillSize)
-        {
-            skill.RemoveRange(skillSize, skill.Count - skillSize);
-            skillDisplayName.RemoveRange(skillSize, skillDisplayName.Count - skillSize);
-            for (int i = skillSize; i <= counter; i++)
-            {
-                AssetDatabase.DeleteAsset("Assets/Resources/Data/SkillData/Skill_" + i + ".asset");
-            }
-            AssetDatabase.SaveAssets();
-            counter = skillSize;
+            skillDisplayName.Add(skill[i].skillName);
         }
     }
 
