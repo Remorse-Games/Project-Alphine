@@ -82,15 +82,15 @@ public class DatabaseMain : EditorWindow
     /// </summary>
     private void ValueInit()
     {
-        actorTab = new ActorTab();
-        classTab = new ClassTab();
-        skillTab = new SkillsTab();
-        itemTab = new ItemTab();
+        actorTab  = new ActorTab();
+        classTab  = new ClassTab();
+        skillTab  = new SkillsTab();
+        itemTab   = new ItemTab();
         weaponTab = new WeaponTab();
-        armorTab = new ArmorTab();
-        enemyTab = new EnemyTab();
-        troopTab = new TroopTab();
-        stateTab = new StateTab();
+        armorTab  = new ArmorTab();
+        enemyTab  = new EnemyTab();
+        troopTab  = new TroopTab();
+        stateTab  = new StateTab();
     }
 
     //////////////////////////////////////////////////
