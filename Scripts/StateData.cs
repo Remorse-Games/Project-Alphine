@@ -10,6 +10,16 @@ public class StateData : ScriptableObject
     public int selectedRestriction;
     public int selectedSVMotion;
     public int selectedSVOverlay;
+    public int selectedAutoRemoval;
+    public int durationInTurnsA;
+    public int durationInTurnsB;
+    public int removeByDamageValue;
+    public int removeByWalkingValue;
+
+    public bool stateRemoveAt;
+    public bool stateRemoveByRestriction;
+    public bool stateRemoveByDamage;
+    public bool stateRemoveByWalking;
 
     [TextArea]
     public string notes;
@@ -28,5 +38,12 @@ public class StateData : ScriptableObject
 
         stateName = "state";
         icon = sp;
+
+        statePriority = 100;
+
+        durationInTurnsA = 1;
+        durationInTurnsB = 1;
+
+            
     }
 }

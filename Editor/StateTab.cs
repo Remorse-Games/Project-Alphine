@@ -47,6 +47,13 @@ public class StateTab : BaseTab
         "Add Other Manually..",
     };
 
+    public string[] stateAutoRemovalList =
+    {
+        "None",
+        "Action End",
+        "Turn End",
+    };
+
     //How many state in ChangeMaximum Func
     public int stateSize;
     public int stateSizeTemp;
@@ -149,7 +156,7 @@ public class StateTab : BaseTab
             #region Tab 2/3
             GUILayout.BeginArea(new Rect(firstTabWidth + 5, 0, firstTabWidth + 70, tabHeight - 25), columnStyle);
 
-                Rect generalBox = new Rect(5, 5, firstTabWidth + 60, position.height * .27f);
+                Rect generalBox = new Rect(5, 5, firstTabWidth + 60, position.height * .28f);
                     #region GeneralSettings
                     GUILayout.BeginArea(generalBox, tabStyle); // Start of General Settings tab
                         GUILayout.Label("General Settings", EditorStyles.boldLabel); // General Settings label
@@ -224,12 +231,12 @@ public class StateTab : BaseTab
                                     { 
                                         state[index].statePriority = EditorGUILayout.IntField(state[index].statePriority, 
                                                                                                 GUILayout.Width(generalBox.width / 4 - 2), 
-                                                                                                GUILayout.Height(generalBox.height / 8 - 9)
+                                                                                                GUILayout.Height(generalBox.height / 8 )
                                                                                              ); 
                                     }
                                     else
                                     { 
-                                        EditorGUILayout.IntField(-1, GUILayout.Width(generalBox.width / 4 - 2), GUILayout.Height(generalBox.height / 8 - 9)); 
+                                        EditorGUILayout.IntField(-1, GUILayout.Width(generalBox.width / 4 - 2), GUILayout.Height(generalBox.height / 8 )); 
                                     }
                                     GUILayout.BeginHorizontal();
                                         GUILayout.Space(generalBox.width * .5f);
@@ -275,6 +282,103 @@ public class StateTab : BaseTab
                     GUILayout.EndArea();
                     #endregion
 
+                Rect removalConditions = new Rect(5, generalBox.height + 10, firstTabWidth + 60, position.height * .27f);
+                    #region RemovalCondition
+                    GUILayout.BeginArea(removalConditions, tabStyle);
+                        GUILayout.Label("Removal Conditions", EditorStyles.boldLabel);
+
+                        GUILayout.BeginVertical();
+                            GUILayout.BeginHorizontal();
+                                if (EditorGUILayout.Toggle("Remove At Battle End", state[index].stateRemoveAt))
+                                {
+                                    state[index].stateRemoveAt = true;
+                                }
+                                else
+                                {
+                                    state[index].stateRemoveAt = false;
+                                }
+                                if (EditorGUILayout.Toggle("Remove By Restriction", state[index].stateRemoveByRestriction))
+                                {
+                                    state[index].stateRemoveByRestriction = true;
+                                }
+                                else
+                                {
+                                    state[index].stateRemoveByRestriction = false;
+                                }
+       
+                            GUILayout.EndHorizontal();
+                            
+                            GUILayout.Space(5);
+                            DrawUILine(Color.gray, 2, 5);
+                            GUILayout.Space(5);
+                            
+                            GUILayout.BeginVertical();
+
+                                GUILayout.BeginHorizontal();
+                                    GUILayout.Label("Auto-Removal Timing:");
+                                    if (stateSize > 0)
+                                    {
+                                        state[index].selectedAutoRemoval = EditorGUILayout.Popup(state[index].selectedAutoRemoval, stateAutoRemovalList, GUILayout.Height(generalBox.height / 8 ), GUILayout.Width((generalBox.width /2)));
+                                    }
+                                    else
+                                    {
+                                        EditorGUILayout.Popup(0, stateAutoRemovalList, GUILayout.Height(generalBox.height / 8 ), GUILayout.Width(generalBox.width / 2));
+                                    }
+
+                                GUILayout.EndHorizontal();
+
+                                GUILayout.BeginHorizontal();
+                                    GUILayout.Label("Duration in Turns:");
+                                    GUILayout.Space(generalBox.width * .20f);
+                                    if(state[index].selectedAutoRemoval > 0)
+                                    {
+                                        state[index].durationInTurnsA = EditorGUILayout.IntField(state[index].durationInTurnsA, GUILayout.Width(generalBox.width / 2 * .4f), GUILayout.Height(generalBox.height / 8));
+                                        GUILayout.Label(" ~");
+                                        state[index].durationInTurnsB = EditorGUILayout.IntField(state[index].durationInTurnsB, GUILayout.Width(generalBox.width / 2 * .4f), GUILayout.Height(generalBox.height / 8));
+                                    }
+                                    else
+                                    {
+                                        EditorGUILayout.IntField(-1, GUILayout.Width(generalBox.width / 2 * .4f), GUILayout.Height(generalBox.height / 8));
+                                        GUILayout.Label(" ~");
+                                        EditorGUILayout.IntField(-1, GUILayout.Width(generalBox.width / 2 * .4f), GUILayout.Height(generalBox.height / 8 ));
+                                    }
+                                GUILayout.EndHorizontal();
+                               
+                                GUILayout.Space(5);
+                                DrawUILine(Color.gray, 2, 5);
+                                GUILayout.Space(5);
+                                
+                                GUILayout.BeginHorizontal();
+                                    if (EditorGUILayout.Toggle("Remove By Damage", state[index].stateRemoveByDamage))
+                                    {
+                                        state[index].stateRemoveByDamage = true;
+                                        state[index].removeByDamageValue = EditorGUILayout.IntField(state[index].removeByDamageValue, GUILayout.Width(generalBox.width / 2 * .4f), GUILayout.Height(generalBox.height / 8));
+                                    }
+                                    else
+                                    {
+                                        state[index].stateRemoveByDamage = false;
+                                    }
+                                GUILayout.EndHorizontal();
+                                
+                                GUILayout.BeginHorizontal();
+                                    if (EditorGUILayout.Toggle("Remove By Walking", state[index].stateRemoveByWalking))
+                                    {
+                                        state[index].stateRemoveByWalking = true;
+                                        state[index].removeByWalkingValue = EditorGUILayout.IntField(state[index].removeByWalkingValue, GUILayout.Width(generalBox.width / 2 * .4f), GUILayout.Height(generalBox.height / 8));
+                                    }
+                                    else
+                                    {
+                                        state[index].stateRemoveByDamage = false;
+                                    }
+                                GUILayout.EndHorizontal();
+
+                            GUILayout.EndVertical();
+
+                        GUILayout.EndVertical();
+
+                GUILayout.EndArea();
+                #endregion
+
             GUILayout.EndArea();
             #endregion
 
@@ -313,6 +417,8 @@ public class StateTab : BaseTab
             stateDisplayName.Add(state[i].stateName);
         }
     }
+
+    
 
     #endregion
 }
