@@ -15,6 +15,18 @@ public class TroopTab : BaseTab
     //a double List for this kind of thing.
     List<string> troopDisplayName = new List<string>();
 
+    //Unique List
+    List<string> troopAvailableList = new List<string>
+    (
+        new string[]
+        {
+            "Bat",
+            "Slime",
+            "Orc",
+            "Minotaur",
+        }
+    );
+
     //All GUIStyle variable initialization.
     GUIStyle tabStyle;
     GUIStyle columnStyle;
@@ -33,6 +45,8 @@ public class TroopTab : BaseTab
 
     //Scroll position. Is this necessary?
     Vector2 scrollPos = Vector2.zero;
+    Vector2 scrollAddedListPos = Vector2.zero;
+    Vector2 scrollAvailableTroopListPos = Vector2.zero;
 
     Texture2D background;
     public int troopSizeTemp;
@@ -84,39 +98,116 @@ public class TroopTab : BaseTab
             //The black box behind the troopsTab? yes, this one.
             GUILayout.Box(" ", troopStyle, GUILayout.Width(position.width - DatabaseMain.tabAreaWidth), GUILayout.Height(position.height - 25f));
 
-            #region Tab 1/3
+            #region Tab 1/2
 
             //First Tab of three
             GUILayout.BeginArea(new Rect(0, 0, tabWidth, tabHeight));
-            GUILayout.Box("Troops", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15));
+                GUILayout.Box("Troops", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15));
 
-            //Scroll View
-            #region ScrollView
-            scrollPos = GUILayout.BeginScrollView(scrollPos, false, true, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .82f));
-            index = GUILayout.SelectionGrid(index, troopDisplayName.ToArray(), 1, GUILayout.Width(firstTabWidth - 20), GUILayout.Height(position.height / 24 * troopSize));
-            GUILayout.EndScrollView();
-            #endregion
+                //Scroll View
+                #region ScrollView
+                scrollPos = GUILayout.BeginScrollView(scrollPos, false, true, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .82f));
+                index = GUILayout.SelectionGrid(index, troopDisplayName.ToArray(), 1, GUILayout.Width(firstTabWidth - 20), GUILayout.Height(position.height / 24 * troopSize));
+                GUILayout.EndScrollView();
+                #endregion
 
-            //Happen everytime selection grid is updated
-            if (GUI.changed && index != indexTemp)
-            {
-                indexTemp = index;
-                ItemTabLoader(indexTemp);
-                indexTemp = -1;
-            }
+                //Happen everytime selection grid is updated
+                if (GUI.changed && index != indexTemp)
+                {
+                    indexTemp = index;
+                    ItemTabLoader(indexTemp);
+                    indexTemp = -1;
+                }
 
-            // Change Maximum field and button
-            troopSizeTemp = EditorGUILayout.IntField(troopSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
-            if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
-            {
-                troopSize = troopSizeTemp;
-                ChangeMaximum<TroopData>(troopSize, troop, dataPath);
-                ListReset();
-            }
+                // Change Maximum field and button
+                troopSizeTemp = EditorGUILayout.IntField(troopSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
+                if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
+                {
+                    troopSize = troopSizeTemp;
+                    ChangeMaximum<TroopData>(troopSize, troop, dataPath);
+                    ListReset();
+                }
 
             GUILayout.EndArea();
             #endregion // End Of First Tab
 
+            #region Tab 2/2
+            GUILayout.BeginArea(new Rect(firstTabWidth + 5, 0, tabWidth - firstTabWidth - 15, tabHeight - 25), columnStyle);
+
+                Rect generalBox = new Rect(5, 5, .7f * (tabWidth - firstTabWidth - 15), position.height / 4 + 125);
+                    #region GeneralSettings
+                    GUILayout.BeginArea(generalBox, tabStyle);
+                        GUILayout.Label("General Settings", EditorStyles.boldLabel);
+                        GUILayout.BeginVertical();
+                            GUILayout.Label("Name:");
+                            if (troopSize > 0)
+                            {
+                                troop[index].troopName = GUILayout.TextField(troop[index].troopName, GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 8));
+                                troopDisplayName[index] = troop[index].troopName;
+                            }
+                            else
+                            {
+                                GUILayout.TextField("Null", GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 8));
+                            }
+                        GUILayout.EndVertical();
+
+                        GUILayout.BeginHorizontal();
+                            GUILayout.BeginVertical();
+
+                                GUILayout.BeginArea(new Rect(5, 45+generalBox.height/8, 25 + (firstTabWidth * .4f), position.height * .30f), troopStyle);
+                                #region ScrollView
+                                scrollAddedListPos = GUILayout.BeginScrollView(scrollAddedListPos, false, true, GUILayout.Width(20 + (firstTabWidth * .4f)), GUILayout.Height(position.height * .30f));
+                                troop[index].indexAddedList = GUILayout.SelectionGrid(troop[index].indexAddedList, troop[index].troopAddedList.ToArray(), 1, GUILayout.Width(firstTabWidth * .4f), GUILayout.Height(position.height / 30 * troop[index].troopAddedList.Count));
+                                GUILayout.EndScrollView();
+                                #endregion
+
+                                //Happen everytime selection grid is updated
+                                if (GUI.changed && troop[index].indexAddedList != troop[index].indexAddedListTemp)
+                                {
+                                    troop[index].indexAddedListTemp = troop[index].indexAddedList;
+                                    troop[index].indexAddedListTemp = -1;
+                                }
+                            GUILayout.EndArea();
+
+                            GUILayout.Space(generalBox.width * .30f);
+                            GUILayout.EndVertical();
+                            GUILayout.BeginVertical();
+                                GUILayout.Space(generalBox.height * .20f);
+                                if(GUILayout.Button("< Add",GUILayout.Width(firstTabWidth * .4f),GUILayout.Height(position.height * .3f / 8)))
+                                {
+                                    troop[index].troopAddedList.Add(troopAvailableList[troop[index].indexAvailableList]);
+                                }
+                                if (GUILayout.Button("Remove >", GUILayout.Width(firstTabWidth * .4f), GUILayout.Height(position.height * .3f / 8)))
+                                {
+                                    troop[index].troopAddedList.RemoveAt(troop[index].indexAddedList);
+                                }
+                                if (GUILayout.Button("Clear", GUILayout.Width(firstTabWidth * .4f), GUILayout.Height(position.height * .3f / 8)))
+                                {
+                                    troop[index].troopAddedList.Clear();
+                                }
+                            GUILayout.EndVertical();
+
+                            GUILayout.BeginArea(new Rect(generalBox.width - (30 + (firstTabWidth * .4f)), 45 + generalBox.height / 8, 25 + (firstTabWidth * .4f), position.height * .30f), troopStyle);
+                                #region ScrollView
+                                scrollAvailableTroopListPos = GUILayout.BeginScrollView(scrollAvailableTroopListPos, false, true, GUILayout.Width(20 + (firstTabWidth * .4f)), GUILayout.Height(position.height * .30f));
+                                troop[index].indexAvailableList = GUILayout.SelectionGrid(troop[index].indexAvailableList, troopAvailableList.ToArray(), 1, GUILayout.Width(firstTabWidth * .4f), GUILayout.Height(position.height / 30 * troopAvailableList.Count));
+                                GUILayout.EndScrollView();
+                                #endregion
+
+                                //Happen everytime selection grid is updated
+                                if (GUI.changed && troop[index].indexAvailableList != troop[index].indexAvailableListTemp)
+                                {
+                                    troop[index].indexAvailableListTemp = troop[index].indexAvailableList;
+                                    troop[index].indexAvailableListTemp = -1;
+                                }
+                            GUILayout.EndArea();
+                        GUILayout.EndHorizontal();
+
+                    GUILayout.EndArea();
+                    #endregion
+
+            GUILayout.EndArea();
+            #endregion
         GUILayout.EndArea(); //End drawing the whole EnemyTab
         #endregion
 
