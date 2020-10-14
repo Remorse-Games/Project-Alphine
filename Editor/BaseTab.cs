@@ -68,6 +68,10 @@ public abstract class BaseTab
         {
             AssetDatabase.CreateFolder("Assets/Resources/Data", "EnemyData");
         }
+        if (!AssetDatabase.IsValidFolder("Assets/Resources/Data/TroopData"))
+        {
+            AssetDatabase.CreateFolder("Assets/Resources/Data", "TroopData");
+        }
     }
 
     /// <summary>
