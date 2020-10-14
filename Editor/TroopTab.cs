@@ -154,10 +154,10 @@ public class TroopTab : BaseTab
                         GUILayout.BeginHorizontal();
                             GUILayout.BeginVertical();
 
-                                GUILayout.BeginArea(new Rect(5, 45+generalBox.height/8, 25 + (firstTabWidth * .4f), position.height * .30f), troopStyle);
+                                GUILayout.BeginArea(new Rect(5, 45+generalBox.height/8, 25 + (firstTabWidth * .4f), generalBox.height * .725f), troopStyle);
                                 #region ScrollView
-                                scrollAddedListPos = GUILayout.BeginScrollView(scrollAddedListPos, false, true, GUILayout.Width(20 + (firstTabWidth * .4f)), GUILayout.Height(position.height * .30f));
-                                troop[index].indexAddedList = GUILayout.SelectionGrid(troop[index].indexAddedList, troop[index].troopAddedList.ToArray(), 1, GUILayout.Width(firstTabWidth * .4f), GUILayout.Height(position.height / 30 * troop[index].troopAddedList.Count));
+                                scrollAddedListPos = GUILayout.BeginScrollView(scrollAddedListPos, false, true, GUILayout.Width(20 + (firstTabWidth * .4f)), GUILayout.Height(generalBox.height * .725f));
+                                troop[index].indexAddedList = GUILayout.SelectionGrid(troop[index].indexAddedList, troop[index].troopAddedList.ToArray(), 1, GUILayout.Width(firstTabWidth * .4f), GUILayout.Height(generalBox.height * .72f / 10 * troop[index].troopAddedList.Count));
                                 GUILayout.EndScrollView();
                                 #endregion
 
@@ -187,10 +187,10 @@ public class TroopTab : BaseTab
                                 }
                             GUILayout.EndVertical();
 
-                            GUILayout.BeginArea(new Rect(generalBox.width - (30 + (firstTabWidth * .4f)), 45 + generalBox.height / 8, 25 + (firstTabWidth * .4f), position.height * .30f), troopStyle);
+                            GUILayout.BeginArea(new Rect(generalBox.width - (30 + (firstTabWidth * .4f)), 45 + generalBox.height / 8, 25 + (firstTabWidth * .4f), generalBox.height * .725f), troopStyle);
                                 #region ScrollView
-                                scrollAvailableTroopListPos = GUILayout.BeginScrollView(scrollAvailableTroopListPos, false, true, GUILayout.Width(20 + (firstTabWidth * .4f)), GUILayout.Height(position.height * .30f));
-                                troop[index].indexAvailableList = GUILayout.SelectionGrid(troop[index].indexAvailableList, troopAvailableList.ToArray(), 1, GUILayout.Width(firstTabWidth * .4f), GUILayout.Height(position.height / 30 * troopAvailableList.Count));
+                                scrollAvailableTroopListPos = GUILayout.BeginScrollView(scrollAvailableTroopListPos, false, true, GUILayout.Width(20 + (firstTabWidth * .4f)), GUILayout.Height(generalBox.height * .725f));
+                                troop[index].indexAvailableList = GUILayout.SelectionGrid(troop[index].indexAvailableList, troopAvailableList.ToArray(), 1, GUILayout.Width(firstTabWidth * .4f), GUILayout.Height(generalBox.height * .72f / 10 * troopAvailableList.Count));
                                 GUILayout.EndScrollView();
                                 #endregion
 
@@ -206,7 +206,17 @@ public class TroopTab : BaseTab
                     GUILayout.EndArea();
                     #endregion
 
-            GUILayout.EndArea();
+                Rect battleEvent = new Rect(5, generalBox.height + 10, tabWidth - firstTabWidth - 25, position.height - generalBox.height - 50);
+                    #region BattleEvent
+                    GUILayout.BeginArea(battleEvent, tabStyle);
+                    GUILayout.Label("Battle Event", EditorStyles.boldLabel);
+
+
+                    GUILayout.EndArea();
+                    #endregion
+
+
+        GUILayout.EndArea();
             #endregion
         GUILayout.EndArea(); //End drawing the whole EnemyTab
         #endregion
