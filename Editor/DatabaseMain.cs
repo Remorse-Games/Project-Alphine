@@ -58,6 +58,7 @@ public class DatabaseMain : EditorWindow
         BaseTab.FolderChecker();
         actorTab.Init();
         skillTab.Init();
+        troopTab.Init();
     }
 
     //////////////////////////////////////////////////
@@ -140,7 +141,7 @@ public class DatabaseMain : EditorWindow
                 actorTab.OnRender(position);
                 break;
             case 7:
-                troopTab.Init(position);
+                troopTab.OnRender(position);
                 break;
             case 6:
                 enemyTab.Init(position);
