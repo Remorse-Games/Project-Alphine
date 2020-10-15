@@ -359,7 +359,7 @@ public class StateTab : BaseTab
                                         state[index].stateRemoveByDamage = false;
                                     }
                                 GUILayout.EndHorizontal();
-                                
+                                GUILayout.Space(removalConditions.height * .03f);
                                 GUILayout.BeginHorizontal();
                                     if (EditorGUILayout.Toggle("Remove By Walking", state[index].stateRemoveByWalking))
                                     {
@@ -368,7 +368,7 @@ public class StateTab : BaseTab
                                     }
                                     else
                                     {
-                                        state[index].stateRemoveByDamage = false;
+                                        state[index].stateRemoveByWalking = false;
                                     }
                                 GUILayout.EndHorizontal();
 
@@ -378,6 +378,87 @@ public class StateTab : BaseTab
 
                 GUILayout.EndArea();
                 #endregion
+
+                Rect messageBox = new Rect(5, generalBox.height + removalConditions.height + 15, firstTabWidth + 60, position.height * .375f);
+                    #region Message
+                    GUILayout.BeginArea(messageBox, tabStyle);
+                        GUILayout.BeginVertical();
+                            GUILayout.Label("Messages", EditorStyles.boldLabel);
+
+                            float textFieldWidth = messageBox.width * .60f;
+                            float textFieldHeight = messageBox.height * .14f;
+                            float leftSpaceWidth = messageBox.width * .08f;
+
+                            GUILayout.Label("If an actor is inflicted with the state:");
+                            GUILayout.BeginHorizontal();
+                                GUILayout.Space(leftSpaceWidth);
+                                GUILayout.Label("(Target Name)");
+                                if (stateSize > 0)
+                                {
+                                    state[index].firstMessageTarget = GUILayout.TextField(state[index].firstMessageTarget, 
+                                                                                            GUILayout.Width(textFieldWidth), 
+                                                                                            GUILayout.Height(textFieldHeight)
+                                                                                          );
+                                }
+                                else
+                                {
+                                    GUILayout.TextField("Null", GUILayout.Width(textFieldWidth), GUILayout.Height(textFieldHeight));
+                                }
+                            GUILayout.EndHorizontal();
+
+                            GUILayout.Label("If an enemy is inflicted with the state:");
+                            GUILayout.BeginHorizontal();
+                                GUILayout.Space(leftSpaceWidth);
+                                GUILayout.Label("(Target Name)");
+                                if (stateSize > 0)
+                                {
+                                    state[index].secondMessageTarget = GUILayout.TextField(state[index].secondMessageTarget, 
+                                                                                            GUILayout.Width(textFieldWidth), 
+                                                                                            GUILayout.Height(textFieldHeight)
+                                                                                           );
+                                }
+                                else
+                                {
+                                    GUILayout.TextField("Null", GUILayout.Width(textFieldWidth), GUILayout.Height(textFieldHeight));
+                                }
+                            GUILayout.EndHorizontal();
+
+                            GUILayout.Label("If the state persists:");
+                            GUILayout.BeginHorizontal();
+                                GUILayout.Space(leftSpaceWidth);
+                                GUILayout.Label("(Target Name)");
+                                if (stateSize > 0)
+                                {
+                                    state[index].thirdMessageTarget = GUILayout.TextField(state[index].thirdMessageTarget, 
+                                                                                            GUILayout.Width(textFieldWidth), 
+                                                                                            GUILayout.Height(textFieldHeight)
+                                                                                          );
+                                }
+                                else
+                                {
+                                    GUILayout.TextField("Null", GUILayout.Width(textFieldWidth), GUILayout.Height(textFieldHeight));
+                                }
+                            GUILayout.EndHorizontal();
+
+                            GUILayout.Label("If the state is removed:");
+                            GUILayout.BeginHorizontal();
+                                GUILayout.Space(leftSpaceWidth);
+                                GUILayout.Label("(Target Name)");
+                                if (stateSize > 0)
+                                {
+                                    state[index].fourthMessageTarget = GUILayout.TextField(state[index].fourthMessageTarget, 
+                                                                                            GUILayout.Width(textFieldWidth), 
+                                                                                            GUILayout.Height(textFieldHeight)
+                                                                                           );
+                                }
+                                else
+                                {
+                                    GUILayout.TextField("Null", GUILayout.Width(textFieldWidth), GUILayout.Height(textFieldHeight));
+                                }
+                            GUILayout.EndHorizontal();
+                        GUILayout.EndVertical();
+                    GUILayout.EndArea();
+                    #endregion
 
             GUILayout.EndArea();
             #endregion
