@@ -17,6 +17,7 @@ public class DatabaseMain : EditorWindow
     EnemyTab enemyTab;
     TroopTab troopTab;
     StateTab stateTab;
+    AnimationTab animationTab;
 
     //Tab Area. DO NOT CHANGE anything in here.
     public static float tabAreaWidth;
@@ -91,6 +92,7 @@ public class DatabaseMain : EditorWindow
         enemyTab = new EnemyTab();
         troopTab = new TroopTab();
         stateTab = new StateTab();
+        animationTab = new AnimationTab();
     }
 
     //////////////////////////////////////////////////
@@ -138,7 +140,7 @@ public class DatabaseMain : EditorWindow
                 actorTab.OnRender(position);
                 break;
             case 9:
-                actorTab.OnRender(position);
+                animationTab.OnRender(position);
                 break;
             case 8:
                 stateTab.OnRender(position);
