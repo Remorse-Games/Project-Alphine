@@ -49,84 +49,86 @@ public class SystemTab : BaseTab
                 
                 #region UpperTab
                     GUILayout.BeginArea(new Rect(5, 5, tabWidth-10, tabHeight/2-10), columnStyle);
+                        
+                        GUILayout.BeginHorizontal();
 
-                        #region Begin Starting Party Tab
-                        Rect startingPartyTab = new Rect(5,5, tabWidth*1/4, tabHeight*2/4 - 10);
-                        GUILayout.BeginArea(startingPartyTab, tabStyle);
-                            GUILayout.Space(2);
-                            GUILayout.BeginVertical();
-                                GUILayout.Label("Starting Party", EditorStyles.boldLabel);
-                                GUILayout.Space(2);
-                                scrollStartParty = GUILayout.BeginScrollView(scrollStartParty, false, true, GUILayout.Width(startingPartyTab.width-5), GUILayout.Height(startingPartyTab.height-30));
-                                    GUILayout.Button("Placeholder");
-                                    GUILayout.Button("Placeholder");
-                                    GUILayout.Button("Placeholder");
-                                    GUILayout.Button("Placeholder");
-                                    GUILayout.Button("Placeholder");
-                                    GUILayout.Button("Placeholder");
-                                    GUILayout.Button("Placeholder");
-                                    GUILayout.Button("Placeholder");
-                                    GUILayout.Button("Placeholder");
-                                    GUILayout.Button("Placeholder");
-                                GUILayout.EndScrollView();
-                            GUILayout.EndVertical();
-                        GUILayout.EndArea();
-                        #endregion
-
-                        GUILayout.BeginVertical();
-                            #region Begin GameName Tab
-                            Rect gameTitleTab = new Rect(startingPartyTab.width + 10, 5, tabWidth*2/4-20, tabHeight*1/6 - 10);
-                            GUILayout.BeginArea(gameTitleTab, tabStyle);
+                            #region Begin Starting Party Tab
+                            Rect startingPartyTab = new Rect(5,5, tabWidth*1/4, tabHeight*2/4 - 10);
+                            GUILayout.BeginArea(startingPartyTab, tabStyle);
                                 GUILayout.Space(2);
                                 GUILayout.BeginVertical();
-                                    GUILayout.Label("Game Title", EditorStyles.boldLabel);
-                                    GUILayout.Space(gameTitleTab.height/3);
-                                    GUILayout.TextArea("Null", GUILayout.Width(gameTitleTab.width - 30), GUILayout.Height(gameTitleTab.height/6));
+                                    GUILayout.Label("Starting Party", EditorStyles.boldLabel);
+                                    GUILayout.Space(2);
+                                    scrollStartParty = GUILayout.BeginScrollView(scrollStartParty, false, true, GUILayout.Width(startingPartyTab.width-5), GUILayout.Height(startingPartyTab.height-30));
+                                        GUILayout.Button("Placeholder");
+                                        GUILayout.Button("Placeholder");
+                                        GUILayout.Button("Placeholder");
+                                        GUILayout.Button("Placeholder");
+                                        GUILayout.Button("Placeholder");
+                                        GUILayout.Button("Placeholder");
+                                        GUILayout.Button("Placeholder");
+                                        GUILayout.Button("Placeholder");
+                                        GUILayout.Button("Placeholder");
+                                        GUILayout.Button("Placeholder");
+                                    GUILayout.EndScrollView();
                                 GUILayout.EndVertical();
                             GUILayout.EndArea();
                             #endregion
 
-                            #region Begin Currency Tab
-                            Rect currencyTab = new Rect(startingPartyTab.width + 10, gameTitleTab.height+10, tabWidth*2/4-20, tabHeight*1/6-10);
-                            GUILayout.BeginArea(currencyTab, tabStyle);
+                            GUILayout.BeginVertical();
+                                #region Begin GameName Tab
+                                Rect gameTitleTab = new Rect(startingPartyTab.width + 10, 5, tabWidth*2/4-20, tabHeight*1/6 - 10);
+                                GUILayout.BeginArea(gameTitleTab, tabStyle);
+                                    GUILayout.Space(2);
+                                    GUILayout.BeginVertical();
+                                        GUILayout.Label("Game Title", EditorStyles.boldLabel);
+                                        GUILayout.Space(gameTitleTab.height/3);
+                                        GUILayout.TextArea("Null", GUILayout.Width(gameTitleTab.width - 30), GUILayout.Height(gameTitleTab.height/6));
+                                    GUILayout.EndVertical();
+                                GUILayout.EndArea();
+                                #endregion
+
+                                #region Begin Currency Tab
+                                Rect currencyTab = new Rect(startingPartyTab.width + 10, gameTitleTab.height+10, tabWidth*2/4-20, tabHeight*1/6-10);
+                                GUILayout.BeginArea(currencyTab, tabStyle);
+                                    GUILayout.Space(2);
+                                    GUILayout.BeginVertical();
+                                        GUILayout.Label("Currency",EditorStyles.boldLabel);
+                                        GUILayout.Space(currencyTab.height/3);
+                                        GUILayout.TextArea("Null", GUILayout.Width(currencyTab.width-30), GUILayout.Height(currencyTab.height/6));
+                                    GUILayout.EndVertical();
+                                GUILayout.EndArea();
+                                #endregion
+
+                                #region Begin Window Color
+                                Rect windowColorTab = new Rect(startingPartyTab.width + 10, gameTitleTab.height+currencyTab.height +15, tabWidth*2/4-20, tabHeight*1/6-10);
+                                GUILayout.BeginArea(windowColorTab, tabStyle);
+                                    GUILayout.Space(2);
+                                    GUILayout.Label("Window Color", EditorStyles.boldLabel);
+                                    GUILayout.Space(windowColorTab.height/10);
+                                    //put colored box
+                                GUILayout.EndArea();
+                                #endregion
+                            GUILayout.EndVertical();
+
+                            #region SV Magic Skills
+                            Rect svMagicSkillsTab = new Rect(startingPartyTab.width +gameTitleTab.width +15, 5, tabWidth*1/4, tabHeight*2/4 - 15);
+                            GUILayout.BeginArea(svMagicSkillsTab, tabStyle);
                                 GUILayout.Space(2);
                                 GUILayout.BeginVertical();
-                                    GUILayout.Label("Currency",EditorStyles.boldLabel);
-                                    GUILayout.Space(currencyTab.height/3);
-                                    GUILayout.TextArea("Null", GUILayout.Width(currencyTab.width-30), GUILayout.Height(currencyTab.height/6));
+                                    GUILayout.Label("[SV] Magic Skills", EditorStyles.boldLabel);
+                                    GUILayout.Space(2);
+                                    scrollSVMagic = GUILayout.BeginScrollView(scrollSVMagic, false, true, GUILayout.Width(svMagicSkillsTab.width-5), GUILayout.Height(svMagicSkillsTab.height-30));
+                                        GUILayout.Button("Placeholder");
+                                        GUILayout.Button("Placeholder");
+                                        GUILayout.Button("Placeholder");
+                                        GUILayout.Button("Placeholder");
+                                    GUILayout.EndScrollView();
                                 GUILayout.EndVertical();
                             GUILayout.EndArea();
                             #endregion
 
-                            #region Begin Window Color
-                            Rect windowColorTab = new Rect(startingPartyTab.width + 10, gameTitleTab.height+currencyTab.height +15, tabWidth*2/4-20, tabHeight*1/6-10);
-                            GUILayout.BeginArea(windowColorTab, tabStyle);
-                                GUILayout.Space(2);
-                                GUILayout.Label("Window Color", EditorStyles.boldLabel);
-                                GUILayout.Space(windowColorTab.height/10);
-                                //put colored box
-                            GUILayout.EndArea();
-                            #endregion
-                        GUILayout.EndVertical();
-
-
-                        #region SV Magic Skills
-                        Rect svMagicSkillsTab = new Rect(startingPartyTab.width +gameTitleTab.width +10, 5, tabWidth*1/4, tabHeight*2/4 - 10);
-                        GUILayout.BeginArea(svMagicSkillsTab, tabStyle);
-                            GUILayout.Space(2);
-                            GUILayout.BeginVertical();
-                                GUILayout.Label("[SV] Magic Skills", EditorStyles.boldLabel);
-                                GUILayout.Space(2);
-                                scrollSVMagic = GUILayout.BeginScrollView(scrollSVMagic, false, true, GUILayout.Width(svMagicSkillsTab.width-5), GUILayout.Height(svMagicSkillsTab.height-30));
-                                    GUILayout.Button("Placeholder");
-                                    GUILayout.Button("Placeholder");
-                                    GUILayout.Button("Placeholder");
-                                    GUILayout.Button("Placeholder");
-                                GUILayout.EndScrollView();
-                            GUILayout.EndVertical();
-                        GUILayout.EndArea();
-                        #endregion
-
+                        GUILayout.EndHorizontal();             
 
                     GUILayout.EndArea();
                     #endregion
