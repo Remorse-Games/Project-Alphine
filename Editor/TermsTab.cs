@@ -156,8 +156,8 @@ public class TermTab : BaseTab
                     GUILayout.EndArea();
         #endregion
 
-                #region Commands
-                Rect commandBox = new Rect(5, parameterBox.height + 10, firstTab.width - 10, firstTab.height * .55f);
+            #region Commands
+            Rect commandBox = new Rect(5, parameterBox.height + 10, firstTab.width - 14, firstTab.height * .55f);
                 GUILayout.BeginArea(commandBox, columnStyle);
                     float secondFieldWidth = commandBox.width * .24f;
                     float secondFieldHeight = commandBox.height * .09f;
@@ -268,6 +268,35 @@ public class TermTab : BaseTab
                 #endregion
 
             GUILayout.EndArea();
+        #endregion
+
+            #region Tab 2/2
+            Rect messageBox = new Rect(firstTab.width + 5, 5, tabWidth * .24f, tabHeight - 23.5f);
+                #region Traits
+                GUILayout.BeginArea(messageBox, tabStyle);
+                    GUILayout.Space(2);
+                    GUILayout.Label("Messages", EditorStyles.boldLabel);
+                    GUILayout.Space(messageBox.height / 30);
+                    #region Horizontal For Type And Content
+                    GUILayout.BeginHorizontal();
+                        GUILayout.Label("Type", GUILayout.Width(messageBox.width * 3 / 8));
+                        GUILayout.Label("Text", GUILayout.Width(messageBox.width * 5 / 8));
+                    GUILayout.EndHorizontal();
+                    #endregion
+                    #region ScrollView
+                    traitsScrollPos = GUILayout.BeginScrollView(
+                        traitsScrollPos,
+                        false,
+                        true,
+                        GUILayout.Width(messageBox.width - 7),
+                        GUILayout.Height(messageBox.height * .9f)
+                        );
+                    GUILayout.EndScrollView();
+                    #endregion
+                GUILayout.EndArea();
+                #endregion //End of TraitboxArea
+    
+
             #endregion
 
         GUILayout.EndArea();
