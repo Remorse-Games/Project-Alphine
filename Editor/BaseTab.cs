@@ -76,6 +76,10 @@ public abstract class BaseTab
         {
             AssetDatabase.CreateFolder("Assets/Resources/Data", "StateData");
         }
+        if (!AssetDatabase.IsValidFolder("Assets/Resources/Data/TermData"))
+        {
+            AssetDatabase.CreateFolder("Assets/Resources/Data", "TermData");
+        }
         if (!AssetDatabase.IsValidFolder("Assets/Resources/Data/SystemData"))
         {
             AssetDatabase.CreateFolder("Assets/Resources/Data", "SystemData");

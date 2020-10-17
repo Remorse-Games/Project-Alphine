@@ -17,6 +17,7 @@ public class DatabaseMain : EditorWindow
     EnemyTab enemyTab;
     TroopTab troopTab;
     StateTab stateTab;
+    TermTab termTab;
     SystemTab systemTab;
 
     //Tab Area. DO NOT CHANGE anything in here.
@@ -62,6 +63,7 @@ public class DatabaseMain : EditorWindow
         skillTab.Init();
         troopTab.Init();
         stateTab.Init();
+        termTab.Init();
         systemTab.Init();
     }
 
@@ -88,11 +90,12 @@ public class DatabaseMain : EditorWindow
         classTab  = new ClassTab();
         skillTab  = new SkillsTab();
         itemTab   = new ItemTab();
-        weaponTab = new WeaponTab();
+        weaponTab = new WeaponTab();   
         armorTab  = new ArmorTab();
         enemyTab  = new EnemyTab();
         troopTab  = new TroopTab();
         stateTab  = new StateTab();
+         termTab = new TermTab();
         systemTab = new SystemTab();
     }
 
@@ -126,7 +129,7 @@ public class DatabaseMain : EditorWindow
         switch (selectedTab)
         {
             case 14:
-                actorTab.OnRender(position);
+                termTab.OnRender(position);
                 break;
             case 13:
                 actorTab.OnRender(position);

@@ -68,6 +68,7 @@ public class StateTab : BaseTab
 
     //Scroll position. Is this necessary?
     Vector2 scrollPos = Vector2.zero;
+    Vector2 traitsScrollPos = Vector2.zero; 
 
     //Icon
     Texture2D stateIcon;
@@ -359,7 +360,7 @@ public class StateTab : BaseTab
                                         state[index].stateRemoveByDamage = false;
                                     }
                                 GUILayout.EndHorizontal();
-                                
+                                GUILayout.Space(removalConditions.height * .03f);
                                 GUILayout.BeginHorizontal();
                                     if (EditorGUILayout.Toggle("Remove By Walking", state[index].stateRemoveByWalking))
                                     {
@@ -368,7 +369,7 @@ public class StateTab : BaseTab
                                     }
                                     else
                                     {
-                                        state[index].stateRemoveByDamage = false;
+                                        state[index].stateRemoveByWalking = false;
                                     }
                                 GUILayout.EndHorizontal();
 
@@ -379,8 +380,142 @@ public class StateTab : BaseTab
                 GUILayout.EndArea();
                 #endregion
 
+                Rect messageBox = new Rect(5, generalBox.height + removalConditions.height + 15, firstTabWidth + 60, position.height * .375f);
+                    #region Message
+                    GUILayout.BeginArea(messageBox, tabStyle);
+                        GUILayout.BeginVertical();
+                            GUILayout.Label("Messages", EditorStyles.boldLabel);
+
+                            float textFieldWidth = messageBox.width * .60f;
+                            float textFieldHeight = messageBox.height * .14f;
+                            float leftSpaceWidth = messageBox.width * .08f;
+
+                            GUILayout.Label("If an actor is inflicted with the state:");
+                            GUILayout.BeginHorizontal();
+                                GUILayout.Space(leftSpaceWidth);
+                                GUILayout.Label("(Target Name)");
+                                if (stateSize > 0)
+                                {
+                                    state[index].firstMessageTarget = GUILayout.TextField(state[index].firstMessageTarget, 
+                                                                                            GUILayout.Width(textFieldWidth), 
+                                                                                            GUILayout.Height(textFieldHeight)
+                                                                                          );
+                                }
+                                else
+                                {
+                                    GUILayout.TextField("Null", GUILayout.Width(textFieldWidth), GUILayout.Height(textFieldHeight));
+                                }
+                            GUILayout.EndHorizontal();
+
+                            GUILayout.Label("If an enemy is inflicted with the state:");
+                            GUILayout.BeginHorizontal();
+                                GUILayout.Space(leftSpaceWidth);
+                                GUILayout.Label("(Target Name)");
+                                if (stateSize > 0)
+                                {
+                                    state[index].secondMessageTarget = GUILayout.TextField(state[index].secondMessageTarget, 
+                                                                                            GUILayout.Width(textFieldWidth), 
+                                                                                            GUILayout.Height(textFieldHeight)
+                                                                                           );
+                                }
+                                else
+                                {
+                                    GUILayout.TextField("Null", GUILayout.Width(textFieldWidth), GUILayout.Height(textFieldHeight));
+                                }
+                            GUILayout.EndHorizontal();
+
+                            GUILayout.Label("If the state persists:");
+                            GUILayout.BeginHorizontal();
+                                GUILayout.Space(leftSpaceWidth);
+                                GUILayout.Label("(Target Name)");
+                                if (stateSize > 0)
+                                {
+                                    state[index].thirdMessageTarget = GUILayout.TextField(state[index].thirdMessageTarget, 
+                                                                                            GUILayout.Width(textFieldWidth), 
+                                                                                            GUILayout.Height(textFieldHeight)
+                                                                                          );
+                                }
+                                else
+                                {
+                                    GUILayout.TextField("Null", GUILayout.Width(textFieldWidth), GUILayout.Height(textFieldHeight));
+                                }
+                            GUILayout.EndHorizontal();
+
+                            GUILayout.Label("If the state is removed:");
+                            GUILayout.BeginHorizontal();
+                                GUILayout.Space(leftSpaceWidth);
+                                GUILayout.Label("(Target Name)");
+                                if (stateSize > 0)
+                                {
+                                    state[index].fourthMessageTarget = GUILayout.TextField(state[index].fourthMessageTarget, 
+                                                                                            GUILayout.Width(textFieldWidth), 
+                                                                                            GUILayout.Height(textFieldHeight)
+                                                                                           );
+                                }
+                                else
+                                {
+                                    GUILayout.TextField("Null", GUILayout.Width(textFieldWidth), GUILayout.Height(textFieldHeight));
+                                }
+                            GUILayout.EndHorizontal();
+                        GUILayout.EndVertical();
+                    GUILayout.EndArea();
+                    #endregion
+
             GUILayout.EndArea();
             #endregion
+
+            
+            #region Tab 3/3
+            //Third Column
+            GUILayout.BeginArea(new Rect(position.width - (position.width - firstTabWidth * 2) + 77, 0, firstTabWidth + 25, tabHeight - 25), columnStyle);
+
+                //Traits
+                Rect traitsBox = new Rect(5, 5, firstTabWidth + 15, position.height * 5 / 8);
+                #region Traits
+                GUILayout.BeginArea(traitsBox, tabStyle);
+                    GUILayout.Space(2);
+                    GUILayout.Label("Traits", EditorStyles.boldLabel);
+                    GUILayout.Space(traitsBox.height / 30);
+                    #region Horizontal For Type And Content
+                    GUILayout.BeginHorizontal();
+                        GUILayout.Label("Type", GUILayout.Width(traitsBox.width * 3 / 8));
+                        GUILayout.Label("Content", GUILayout.Width(traitsBox.width * 5 / 8));
+                    GUILayout.EndHorizontal();
+                    #endregion
+                    #region ScrollView
+                    traitsScrollPos = GUILayout.BeginScrollView(
+                        traitsScrollPos,
+                        false,
+                        true,
+                        GUILayout.Width(firstTabWidth + 5),
+                        GUILayout.Height(traitsBox.height * 0.87f)
+                        );
+                    GUILayout.EndScrollView();
+                    #endregion
+                GUILayout.EndArea();
+                #endregion //End of TraitboxArea
+
+
+                //Notes
+                Rect notesBox = new Rect(5, traitsBox.height + 10, firstTabWidth + 15, position.height * 2.5f / 8 - 7);
+                #region NoteBox
+                GUILayout.BeginArea(notesBox, tabStyle);
+                    GUILayout.Space(2);
+                    GUILayout.Label("Notes", EditorStyles.boldLabel);
+                    GUILayout.Space(notesBox.height / 50);
+                    if (stateSize > 0)
+                    {
+                        state[index].notes = GUILayout.TextArea(state[index].notes, GUILayout.Width(notesBox.width - 5), GUILayout.Height(notesBox.height * .85f));
+                    }
+                    else
+                    {
+                        GUILayout.TextArea("Null", GUILayout.Width(notesBox.width - 5), GUILayout.Height(notesBox.height * 0.85f));
+                    }
+                GUILayout.EndArea();
+                #endregion //End of notebox area
+
+            GUILayout.EndArea();
+            #endregion // End of third column
 
         GUILayout.EndArea(); //End drawing the whole StateTab
         #endregion 

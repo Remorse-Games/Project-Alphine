@@ -16,6 +16,11 @@ public class StateData : ScriptableObject
     public int removeByDamageValue;
     public int removeByWalkingValue;
 
+    public string firstMessageTarget;
+    public string secondMessageTarget;
+    public string thirdMessageTarget;
+    public string fourthMessageTarget;
+
     public bool stateRemoveAt;
     public bool stateRemoveByRestriction;
     public bool stateRemoveByDamage;
@@ -44,6 +49,8 @@ public class StateData : ScriptableObject
         durationInTurnsA = 1;
         durationInTurnsB = 1;
 
-            
+        firstMessageTarget = "Is fallen!";
+        secondMessageTarget = "Is slain!";
+        fourthMessageTarget = "Revives!";
     }
 }
