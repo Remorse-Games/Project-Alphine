@@ -7,6 +7,11 @@ using System.ComponentModel;
 
 public class TermTab : BaseTab
 {
+    public List<TermData> term = new List<TermData>();
+
+    public int termSize = 1;
+    public int index = 0;
+
     //All GUIStyle variable initialization.
     GUIStyle tabStyle;
     GUIStyle columnStyle;
@@ -14,6 +19,14 @@ public class TermTab : BaseTab
 
     //Scroll position. Is this necessary
     Vector2 traitsScrollPos = Vector2.zero;
+
+    //dataPath where the game data will be saved as a .assets
+    private string _dataPath = "Data/TermData";
+
+    public void Init()
+    {
+        LoadGameData<TermData>(ref termSize, term, _dataPath);
+    }
 
     public void OnRender(Rect position)
     {
@@ -32,7 +45,6 @@ public class TermTab : BaseTab
         float tabWidth = position.width * .85f;
         float tabHeight = position.height - 10f;
         float firstTabWidth = tabWidth * 3 / 10;
-
         //Style area.
         enemyStyle = new GUIStyle(GUI.skin.box);
         enemyStyle.normal.background = CreateTexture(1, 1, Color.gray);
@@ -55,9 +67,57 @@ public class TermTab : BaseTab
 
             //The black box behind the enemysTab? yes, this one.
             GUILayout.Box(" ", enemyStyle, GUILayout.Width(position.width - DatabaseMain.tabAreaWidth), GUILayout.Height(position.height - 25f));
-            
+
+            #region Tab 1/2
+            Rect firstTab = new Rect(0, 0, tabWidth * .75f, tabHeight - 18);
+                GUILayout.BeginArea(firstTab, columnStyle);
+                    Rect basicStatuses = new Rect(5, 5, firstTab.width * .48f, firstTab.height * .43f);
+                    GUILayout.BeginArea(basicStatuses, tabStyle);
+                        GUILayout.Label("Basic Statuses", EditorStyles.boldLabel);
+                        GUILayout.BeginHorizontal();
+                            float fieldWidth = basicStatuses.width * .48f;
+                            float fieldHeight = basicStatuses.height * .11f;
+                            GUILayout.BeginVertical();
+                                GUILayout.Label("Level:");
+                                term[index].termLevel = GUILayout.TextField(term[index].termLevel, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+
+                                GUILayout.Label("HP:");
+                                term[index].termHP = GUILayout.TextField(term[index].termHP, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+
+                                GUILayout.Label("MP:");
+                                term[index].termMP = GUILayout.TextField(term[index].termMP, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+
+                                GUILayout.Label("TP:");
+                                term[index].termTP = GUILayout.TextField(term[index].termTP, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+
+                                GUILayout.Label("EXP:");
+                                term[index].termEXP = GUILayout.TextField(term[index].termEXP, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                            GUILayout.EndVertical();
+                            GUILayout.BeginVertical();
+                                GUILayout.Label("Level (abbr.):");
+                                term[index].termLevelabbr = GUILayout.TextField(term[index].termLevelabbr, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+
+                                GUILayout.Label("HP (abbr.):");
+                                term[index].termHPabbr = GUILayout.TextField(term[index].termHPabbr, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+
+                                GUILayout.Label("MP (abbr.):");
+                                term[index].termMPabbr = GUILayout.TextField(term[index].termMPabbr, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+
+                                GUILayout.Label("TP (abbr.):");
+                                term[index].termTPabbr = GUILayout.TextField(term[index].termTPabbr, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+
+                                GUILayout.Label("EXP (abbr.):");
+                                term[index].termEXPabbr = GUILayout.TextField(term[index].termEXPabbr, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                            GUILayout.EndVertical();
+                        GUILayout.EndHorizontal();
+
+                    GUILayout.EndArea();
+                GUILayout.EndArea();
+                #endregion
+
         GUILayout.EndArea();
         #endregion
+        EditorUtility.SetDirty(term[index]);
     }
 
     #region Features
@@ -70,5 +130,6 @@ public class TermTab : BaseTab
 
         }
     }
+
     #endregion
 }

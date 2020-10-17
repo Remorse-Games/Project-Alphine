@@ -80,6 +80,10 @@ public abstract class BaseTab
         {
             AssetDatabase.CreateFolder("Assets/Resources/Data", "AnimationData");
         }
+        if (!AssetDatabase.IsValidFolder("Assets/Resources/Data/TermData"))
+        {
+            AssetDatabase.CreateFolder("Assets/Resources/Data", "TermData");
+        }
     }
 
     public void DrawUILine(Color color, int thickness = 2, int padding = 10)
