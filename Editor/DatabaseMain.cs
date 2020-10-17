@@ -8,17 +8,17 @@ public class DatabaseMain : EditorWindow
 {
     #region Init Values
     //Editor Classes
-    ActorTab actorTab;
-    ClassTab classTab;
-    SkillsTab skillTab;
-    ItemTab itemTab;
-    WeaponTab weaponTab;
-    ArmorTab armorTab;
-    EnemyTab enemyTab;
-    TroopTab troopTab;
-    StateTab stateTab;
-    TermTab termTab;
-    SystemTab systemTab;
+    ActorTab    actorTab;
+    ClassTab    classTab;
+    SkillsTab   skillTab;
+    ItemTab     itemTab;
+    WeaponTab   weaponTab;
+    ArmorTab    armorTab;
+    EnemyTab    enemyTab;
+    TroopTab    troopTab;
+    StateTab    stateTab;
+    TermTab     termTab;
+    SystemTab   systemTab;
 
     //Tab Area. DO NOT CHANGE anything in here.
     public static float tabAreaWidth;
@@ -95,8 +95,9 @@ public class DatabaseMain : EditorWindow
         enemyTab  = new EnemyTab();
         troopTab  = new TroopTab();
         stateTab  = new StateTab();
-         termTab = new TermTab();
         systemTab = new SystemTab();
+        termTab   = new TermTab();
+
     }
 
     //////////////////////////////////////////////////
@@ -128,23 +129,14 @@ public class DatabaseMain : EditorWindow
     {
         switch (selectedTab)
         {
-            case 14:
-                termTab.OnRender(position);
-                break;
-            case 13:
-                actorTab.OnRender(position);
-                break;
-            case 12:
-                systemTab.OnRender(position);
-                break;
             case 11:
-                actorTab.OnRender(position);
+                termTab.OnRender(position);
                 break;
             case 10:
                 actorTab.OnRender(position);
                 break;
             case 9:
-                actorTab.OnRender(position);
+                systemTab.OnRender(position);
                 break;
             case 8:
                 stateTab.OnRender(position);

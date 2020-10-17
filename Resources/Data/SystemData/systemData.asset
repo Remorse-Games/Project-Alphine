@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14508003e68858d40966cc741df92dfb, type: 3}
+  m_Script: {fileID: 11500000, guid: b7f54798ebbc9e346b8e315766e08547, type: 3}
   m_Name: systemData
   m_EditorClassIdentifier: 
   startingParty:
@@ -18,3 +18,6 @@ MonoBehaviour:
   currencyUnit: G
   magicSkills:
   - hit
+  windowColor:
+    serializedVersion: 2
+    rgba: 4286611584

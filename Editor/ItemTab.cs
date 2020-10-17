@@ -566,7 +566,6 @@ public class ItemTab : BaseTab
     #region Features
     public override void ItemTabLoader(int index)
     {
-        Debug.Log(index + "index");
         Texture2D defTex = new Texture2D(256, 256);
         if (index != -1)
         {

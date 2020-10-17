@@ -19,13 +19,13 @@ public class SystemTab : BaseTab
     public void Init()
     {
 
-        system = Resources.Load<SystemData>("Data/SystemData/systemData");
+        system = Resources.Load<SystemData>("Data/SystemData/SystemData");
         if(system == null)
         {
             ScriptableObject newSystemData = ScriptableObject.CreateInstance<SystemData>();
-            AssetDatabase.CreateAsset(newSystemData, "Assets/Resources/Data/SystemData/systemData.asset");
+            AssetDatabase.CreateAsset(newSystemData, "Assets/Resources/Data/SystemData/SystemData.asset");
             AssetDatabase.SaveAssets();
-            system = Resources.Load<SystemData>("Data/SystemData/systemData");
+            system = Resources.Load<SystemData>("Data/SystemData/SystemData");
 
         }
     }
