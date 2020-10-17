@@ -22,3 +22,37 @@ MonoBehaviour:
   termMPabbr: MP
   termTPabbr: TP
   termEXPabbr: EXP
+  termMaxHP: MaxHP
+  termAttack: Attack
+  termMAttack: M.Attack
+  termAgility: Agility
+  termHitRate: Hit Rate
+  termMaxMP: MaxMP
+  termDefense: Defense
+  termMDefense: M.Defense
+  termLuck: Luck
+  termEvasionRate: EvasionRate
+  commandFight: Fight
+  commandItem: Item
+  commandFormation: Formation
+  commandEscape: Escape
+  commandSkill: Skill
+  commandOption: Options
+  commandAttack: Attack
+  commandEquip: Equip
+  commandSave: Save
+  commandGuard: Guard
+  commandStatus: Status
+  commandGameEnd: GameEnd
+  commandWeapon: Weapon
+  commandOptimize: Optimize
+  commandNewGame: NewGame
+  commandArmor: Armor
+  commandClear: Clear
+  commandContinue: Continue
+  commandKeyItem: KeyItem
+  commandBuy: Buy
+  commandToTitle: ToTitle
+  commandEquip2: Equip
+  commandSell: Sell
+  commandCancel: Cancel

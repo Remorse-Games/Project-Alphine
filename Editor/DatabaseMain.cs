@@ -26,7 +26,7 @@ public class DatabaseMain : EditorWindow
     //Here we setup the tab selection button.
     private int selectedTab = 0;
     private string[] tabNames = {
-        "Actors",
+         "Actors",
         "Classes" ,
         "Skills",
         "Item",
@@ -35,9 +35,6 @@ public class DatabaseMain : EditorWindow
         "Enemies",
         "Troops",
         "States",
-        "Animations",
-        "Tilesets",
-        "Common Events",
         "System",
         "Types",
         "Terms"
