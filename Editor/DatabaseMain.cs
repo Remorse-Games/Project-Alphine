@@ -62,6 +62,7 @@ public class DatabaseMain : EditorWindow
         skillTab.Init();
         troopTab.Init();
         stateTab.Init();
+        systemTab.Init();
     }
 
     //////////////////////////////////////////////////

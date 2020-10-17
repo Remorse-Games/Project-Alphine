@@ -12,11 +12,23 @@ public class SystemTab : BaseTab
     GUIStyle systemStyle;
     GUIStyle tabStyle;
     GUIStyle columnStyle;
+
+    int selectedStartingPartyIndex = 0;
+    int selectedMagicSkillIndex = 0;
+    public SystemData system;
     public void Init()
     {
 
-    }
+        system = Resources.Load<SystemData>("Data/SystemData/systemData");
+        if(system == null)
+        {
+            ScriptableObject newSystemData = ScriptableObject.CreateInstance<SystemData>();
+            AssetDatabase.CreateAsset(newSystemData, "Assets/Resources/Data/SystemData/systemData.asset");
+            AssetDatabase.SaveAssets();
+            system = Resources.Load<SystemData>("Data/SystemData/systemData");
 
+        }
+    }
     public void OnRender(Rect position)
     {
         ////////////////////////////////////////////////////////////////////////////////////////
@@ -47,7 +59,7 @@ public class SystemTab : BaseTab
             GUILayout.BeginArea(new Rect(position.width/7, 5, tabWidth, tabHeight));
                 GUILayout.Box(" ", systemStyle, GUILayout.Width(position.width - DatabaseMain.tabAreaWidth), GUILayout.Height(position.height - 25f));
                 
-                #region UpperTab
+                    #region UpperTab
                     GUILayout.BeginArea(new Rect(5, 5, tabWidth-10, tabHeight/2-10), columnStyle);
                         
                         GUILayout.BeginHorizontal();
@@ -60,17 +72,8 @@ public class SystemTab : BaseTab
                                     GUILayout.Label("Starting Party", EditorStyles.boldLabel);
                                     GUILayout.Space(2);
                                     scrollStartParty = GUILayout.BeginScrollView(scrollStartParty, false, true, GUILayout.Width(startingPartyTab.width-5), GUILayout.Height(startingPartyTab.height-30));
-                                        GUILayout.Button("Placeholder");
-                                        GUILayout.Button("Placeholder");
-                                        GUILayout.Button("Placeholder");
-                                        GUILayout.Button("Placeholder");
-                                        GUILayout.Button("Placeholder");
-                                        GUILayout.Button("Placeholder");
-                                        GUILayout.Button("Placeholder");
-                                        GUILayout.Button("Placeholder");
-                                        GUILayout.Button("Placeholder");
-                                        GUILayout.Button("Placeholder");
-                                    GUILayout.EndScrollView();
+                                        GUILayout.SelectionGrid(selectedStartingPartyIndex, system.startingParty.ToArray(), 1, GUILayout.Height(startingPartyTab.height/10), GUILayout.Width(startingPartyTab.width*9/10));
+                                    GUILayout.EndScrollView();//
                                 GUILayout.EndVertical();
                             GUILayout.EndArea();
                             #endregion
@@ -83,7 +86,7 @@ public class SystemTab : BaseTab
                                     GUILayout.BeginVertical();
                                         GUILayout.Label("Game Title", EditorStyles.boldLabel);
                                         GUILayout.Space(gameTitleTab.height/3);
-                                        GUILayout.TextArea("Null", GUILayout.Width(gameTitleTab.width - 30), GUILayout.Height(gameTitleTab.height/6));
+                                        system.gameTitle = GUILayout.TextArea(system.gameTitle, GUILayout.Width(gameTitleTab.width - 30), GUILayout.Height(gameTitleTab.height/6));
                                     GUILayout.EndVertical();
                                 GUILayout.EndArea();
                                 #endregion
@@ -95,7 +98,7 @@ public class SystemTab : BaseTab
                                     GUILayout.BeginVertical();
                                         GUILayout.Label("Currency",EditorStyles.boldLabel);
                                         GUILayout.Space(currencyTab.height/3);
-                                        GUILayout.TextArea("Null", GUILayout.Width(currencyTab.width-30), GUILayout.Height(currencyTab.height/6));
+                                        system.currencyUnit = GUILayout.TextArea(system.currencyUnit, GUILayout.Width(currencyTab.width-30), GUILayout.Height(currencyTab.height/6));
                                     GUILayout.EndVertical();
                                 GUILayout.EndArea();
                                 #endregion
@@ -106,7 +109,9 @@ public class SystemTab : BaseTab
                                     GUILayout.Space(2);
                                     GUILayout.Label("Window Color", EditorStyles.boldLabel);
                                     GUILayout.Space(windowColorTab.height/10);
-                                    //put colored box
+                                    system.windowColor =  EditorGUILayout.ColorField(system.windowColor, GUILayout.Width(windowColorTab.width*99/100), GUILayout.Height(windowColorTab.height*65/100));
+                                    //GUILayout.Button(CreateTexture(Mathf.RoundToInt(windowColorTab.width-10),Mathf.RoundToInt(windowColorTab.height-20), system.windowColor));
+                                    //GUILayout.Box(CreateTexture(Mathf.RoundToInt(windowColorTab.width-10),Mathf.RoundToInt(windowColorTab.height-20), system.windowColor));
                                 GUILayout.EndArea();
                                 #endregion
                             GUILayout.EndVertical();
@@ -119,10 +124,7 @@ public class SystemTab : BaseTab
                                     GUILayout.Label("[SV] Magic Skills", EditorStyles.boldLabel);
                                     GUILayout.Space(2);
                                     scrollSVMagic = GUILayout.BeginScrollView(scrollSVMagic, false, true, GUILayout.Width(svMagicSkillsTab.width-5), GUILayout.Height(svMagicSkillsTab.height-30));
-                                        GUILayout.Button("Placeholder");
-                                        GUILayout.Button("Placeholder");
-                                        GUILayout.Button("Placeholder");
-                                        GUILayout.Button("Placeholder");
+                                        GUILayout.SelectionGrid(selectedMagicSkillIndex, system.magicSkills.ToArray(), 1, GUILayout.Width(svMagicSkillsTab.width*9/10), GUILayout.Height(svMagicSkillsTab.height/10));
                                     GUILayout.EndScrollView();
                                 GUILayout.EndVertical();
                             GUILayout.EndArea();
@@ -133,13 +135,23 @@ public class SystemTab : BaseTab
                     GUILayout.EndArea();
                     #endregion
 
-                    #region BottonTab
+                    #region BottomTab
                     GUILayout.BeginArea(new Rect(5, tabHeight/2, tabWidth-10, tabHeight/2-20), columnStyle);
+
                         #region MusicTab
                         Rect musicTab = new Rect(5,5,tabWidth/2-12.5f,tabHeight/2-25);
                         GUILayout.BeginArea(musicTab,tabStyle);
                             GUILayout.Space(2);
                             GUILayout.Label("Music", EditorStyles.boldLabel);
+                            GUILayout.Space(musicTab.height/15);
+                            GUILayout.BeginHorizontal();
+                                GUILayout.Label("Type");
+                                GUILayout.Label("File Name");
+                            GUILayout.EndHorizontal();
+
+                            GUILayout.BeginScrollView(Vector2.zero, false, true, GUILayout.Width(musicTab.width*99/100), GUILayout.Height(musicTab.height*8/10));
+                                //selection grid
+                            GUILayout.EndScrollView();
 
                         GUILayout.EndArea();
                         #endregion
@@ -149,7 +161,15 @@ public class SystemTab : BaseTab
                         GUILayout.BeginArea(soundTab,tabStyle);
                             GUILayout.Space(2);
                             GUILayout.Label("Sounds", EditorStyles.boldLabel);
-                            
+                            GUILayout.Space(musicTab.height/15);
+                            GUILayout.BeginHorizontal();
+                                GUILayout.Label("Type");
+                                GUILayout.Label("File Name");
+                            GUILayout.EndHorizontal();
+
+                            GUILayout.BeginScrollView(Vector2.zero, false, true, GUILayout.Width(musicTab.width*99/100), GUILayout.Height(musicTab.height*8/10));
+                                //selection grid
+                            GUILayout.EndScrollView();
                         GUILayout.EndArea();
                         #endregion
                     GUILayout.EndArea();
@@ -157,6 +177,7 @@ public class SystemTab : BaseTab
 
             GUILayout.EndArea();
         #endregion
+        EditorUtility.SetDirty(system);
     }
 
     public override void ItemTabLoader(int index)

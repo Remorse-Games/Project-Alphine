@@ -12,6 +12,8 @@ public class SystemData : ScriptableObject
 
     public List<string> magicSkills;
 
+    public Color32 windowColor;
+
     public void OnEnable()
     {
         if (gameTitle == null &&
@@ -31,6 +33,11 @@ public class SystemData : ScriptableObject
 
         currencyUnit = "G";
         magicSkills.Add("hit");
+        windowColor = new Color32(128,128,128,255);
+
+
+
+
 
     }
 }
