@@ -18,6 +18,7 @@ public class DatabaseMain : EditorWindow
     TroopTab troopTab;
     StateTab stateTab;
     TermTab termTab;
+    SystemTab systemTab;
 
     //Tab Area. DO NOT CHANGE anything in here.
     public static float tabAreaWidth;
@@ -63,6 +64,7 @@ public class DatabaseMain : EditorWindow
         troopTab.Init();
         stateTab.Init();
         termTab.Init();
+        systemTab.Init();
     }
 
     //////////////////////////////////////////////////
@@ -84,16 +86,17 @@ public class DatabaseMain : EditorWindow
     /// </summary>
     private void ValueInit()
     {
-        actorTab = new ActorTab();
-        classTab = new ClassTab();
-        skillTab = new SkillsTab();
-        itemTab = new ItemTab();
-        weaponTab = new WeaponTab();
-        armorTab = new ArmorTab();
-        enemyTab = new EnemyTab();
-        troopTab = new TroopTab();
-        stateTab = new StateTab();
-        termTab = new TermTab();
+        actorTab  = new ActorTab();
+        classTab  = new ClassTab();
+        skillTab  = new SkillsTab();
+        itemTab   = new ItemTab();
+        weaponTab = new WeaponTab();   
+        armorTab  = new ArmorTab();
+        enemyTab  = new EnemyTab();
+        troopTab  = new TroopTab();
+        stateTab  = new StateTab();
+         termTab = new TermTab();
+        systemTab = new SystemTab();
     }
 
     //////////////////////////////////////////////////
@@ -132,7 +135,7 @@ public class DatabaseMain : EditorWindow
                 actorTab.OnRender(position);
                 break;
             case 12:
-                actorTab.OnRender(position);
+                systemTab.OnRender(position);
                 break;
             case 11:
                 actorTab.OnRender(position);
