@@ -71,7 +71,8 @@ public class TermTab : BaseTab
             #region Tab 1/2
             Rect firstTab = new Rect(0, 0, tabWidth * .75f, tabHeight - 18);
                 GUILayout.BeginArea(firstTab, columnStyle);
-                    Rect basicStatuses = new Rect(5, 5, firstTab.width * .48f, firstTab.height * .43f);
+                    #region BasicStatus
+                    Rect basicStatuses = new Rect(5, 5, firstTab.width * .49f, firstTab.height * .43f);
                     GUILayout.BeginArea(basicStatuses, tabStyle);
                         GUILayout.Label("Basic Statuses", EditorStyles.boldLabel);
                         GUILayout.BeginHorizontal();
@@ -112,8 +113,52 @@ public class TermTab : BaseTab
                         GUILayout.EndHorizontal();
 
                     GUILayout.EndArea();
+                    #endregion
+
+                    #region Parameters
+                    Rect parameterBox = new Rect(basicStatuses.width + 10, 5, firstTab.width * .49f, basicStatuses.height);
+                    GUILayout.BeginArea(parameterBox, tabStyle);
+                        GUILayout.Label("Parameter", EditorStyles.boldLabel);
+                        GUILayout.BeginHorizontal();
+                            GUILayout.BeginVertical();
+                                GUILayout.Label("Max. HP:");
+                                term[index].termMaxHP = GUILayout.TextField(term[index].termMaxHP, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+
+                                GUILayout.Label("Attack:");
+                                term[index].termAttack = GUILayout.TextField(term[index].termAttack, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+
+                                GUILayout.Label("M. Attack:");
+                                term[index].termMAttack = GUILayout.TextField(term[index].termMAttack, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+
+                                GUILayout.Label("Agility:");
+                                term[index].termAgility = GUILayout.TextField(term[index].termAgility, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+
+                                GUILayout.Label("Hit Rate:");
+                                term[index].termHitRate = GUILayout.TextField(term[index].termHitRate, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                            GUILayout.EndVertical();
+                            GUILayout.BeginVertical();
+                                GUILayout.Label("Max. MP:");
+                                term[index].termMaxMP = GUILayout.TextField(term[index].termMaxMP, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+
+                                GUILayout.Label("Defense:");
+                                term[index].termDefense = GUILayout.TextField(term[index].termDefense, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+
+                                GUILayout.Label("M. Defense:");
+                                term[index].termMDefense = GUILayout.TextField(term[index].termMDefense, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+
+                                GUILayout.Label("Luck:");
+                                term[index].termLuck = GUILayout.TextField(term[index].termLuck, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+
+                                GUILayout.Label("Evasion Rate:");
+                                term[index].termEvasionRate = GUILayout.TextField(term[index].termEvasionRate, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                            GUILayout.EndVertical();
+                        GUILayout.EndHorizontal();
+                    GUILayout.EndArea();
+                    #endregion
                 GUILayout.EndArea();
                 #endregion
+
+                
 
         GUILayout.EndArea();
         #endregion
