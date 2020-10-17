@@ -27,6 +27,32 @@ public class TermData : ScriptableObject
     public string termLuck;
     public string termEvasionRate;
 
+    public string commandFight;
+    public string commandItem;
+    public string commandFormation;
+    public string commandEscape;
+    public string commandSkill;
+    public string commandOption;
+    public string commandAttack;
+    public string commandEquip;
+    public string commandSave;
+    public string commandGuard;
+    public string commandStatus;
+    public string commandGameEnd;
+
+    public string commandWeapon;
+    public string commandOptimize;
+    public string commandNewGame;
+    public string commandArmor;
+    public string commandClear;
+    public string commandContinue;
+    public string commandKeyItem;
+    public string commandBuy;
+    public string commandToTitle;
+    public string commandEquip2;
+    public string commandSell;
+    public string commandCancel;
+
     public void OnEnable()
     {
         if (termLevel == null)
@@ -59,5 +85,31 @@ public class TermData : ScriptableObject
         termDefense = "Defense";
         termMAttack = "M.Attack";
         termMDefense = "M.Defense";
-    }
+
+        commandFight = "Fight";
+        commandItem = "Item";
+        commandFormation = "Formation";
+        commandEscape = "Escape";
+        commandSkill = "Skill";
+        commandOption = "Option";
+        commandAttack = "Attack";
+        commandEquip = "Equip";
+        commandSave = "Save";
+        commandGuard = "Guard";
+        commandStatus = "Status";
+        commandGameEnd = "GameEnd";
+
+        commandWeapon = "Weapon";
+        commandOptimize = "Optimize";
+        commandNewGame = "NewGame";
+        commandArmor = "Armor";
+        commandClear = "Clear";
+        commandContinue = "Continue";
+        commandKeyItem = "KeyItem";
+        commandBuy = "Buy";
+        commandToTitle = "ToTitle";
+        commandEquip2 = "Equip";
+        commandSell = "Sell";
+        commandCancel = "Cancel";
+    }   
 }
