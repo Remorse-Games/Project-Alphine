@@ -1,20 +1,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using System.IO;
-using SFB;
-using System.Linq;
+
 public class ActorTab : BaseTab
 {
     //Having list of all player exist in data.
     public List<ActorData> player = new List<ActorData>();
     
-
     //List of names. Why you ask? because selectionGrid require
     //array of string, which we cannot obtain in ActorData.
     //I hope later got better solution about this to not do
     //a double List for this kind of thing.
     public List<string> actorDisplayName = new List<string>();
+
+    public string[] classDisplayName;
 
     //All GUIStyle variable initialization.
     GUIStyle actorStyle;
@@ -22,14 +21,6 @@ public class ActorTab : BaseTab
     GUIStyle columnStyle;
 
     #region  DeleteLater
-    //This should be removed when i have time.
-    public string[] actorClassesList =
-    {
-        "Mage",
-        "Cleric",
-        "Healer",
-        "Warrior",
-    };
 
     //Index for selected Class.
     public int selectedClassIndex;
@@ -61,13 +52,10 @@ public class ActorTab : BaseTab
     public int actorSizeTemp;
     #endregion
 
-    //dataPath where the game data will be saved as a .assets
-    private string dataPath = "Assets/Resources/Data/ActorData/Actor_";
-    private string _dataPath = "Data/ActorData";
-
     public void Init()
     {
-        LoadGameData<ActorData>(ref actorSize, player, _dataPath);
+        LoadGameData<ActorData>(ref actorSize, player, PathDatabase.ActorRelativeDataPath);
+        LoadClassList();
         ListReset();
     }
 
@@ -143,7 +131,7 @@ public class ActorTab : BaseTab
                 if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
                 {
                     actorSize = actorSizeTemp;
-                    ChangeMaximum<ActorData>(actorSize, player, dataPath);
+                    ChangeMaximum<ActorData>(actorSize, player, PathDatabase.ActorExplicitDataPath);
                     ListReset();
                 }
             GUILayout.EndArea();
@@ -177,7 +165,7 @@ public class ActorTab : BaseTab
                                 }
                                 GUILayout.Space(generalBox.height / 20);
                                 GUILayout.Label("Class:");
-                                selectedClassIndex = EditorGUILayout.Popup(selectedClassIndex, actorClassesList, GUILayout.Height(generalBox.height / 8), GUILayout.Width(generalBox.width / 2 - 15));
+                                selectedClassIndex = EditorGUILayout.Popup(selectedClassIndex, classDisplayName, GUILayout.Height(generalBox.height / 8), GUILayout.Width(generalBox.width / 2 - 15));
                             GUILayout.EndVertical(); //Name label, name field, class label, and class popup (ending)
                             #endregion
                             #region Names Classes
@@ -400,6 +388,16 @@ public class ActorTab : BaseTab
         for (int i = 0; i < actorSize; i++)
         {
             actorDisplayName.Add(player[i].actorName);
+        }
+    }
+
+    private void LoadClassList()
+    {
+        ClassesData[] classData = Resources.LoadAll<ClassesData>(PathDatabase.ClassRelativeDataPath);
+        classDisplayName = new string[classData.Length];
+        for (int i = 0; i < classDisplayName.Length; i++)
+        {
+            classDisplayName[i] = classData[i].className;
         }
     }
 

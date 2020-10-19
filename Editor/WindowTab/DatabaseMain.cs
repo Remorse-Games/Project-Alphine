@@ -25,7 +25,20 @@ public class DatabaseMain : EditorWindow
     public static float tabAreaHeight;
 
     //Here we setup the tab selection button.
-    private int selectedTab = 0;
+    private int selectedTab;
+    public int SelectedTab
+    {
+        get { return selectedTab; }
+        set
+        {
+            if (selectedTab != value)
+            {
+                InitTabSelection();
+            }
+            selectedTab = value;
+        }
+    }
+
     private string[] tabNames = {
          "Actors",
         "Classes" ,
@@ -56,6 +69,11 @@ public class DatabaseMain : EditorWindow
     {
         ValueInit();
         BaseTab.FolderChecker();
+        InitTabSelection();
+    }
+
+    private void InitTabSelection()
+    {
         actorTab.Init();
         skillTab.Init();
         troopTab.Init();
@@ -72,7 +90,7 @@ public class DatabaseMain : EditorWindow
     private void OnGUI()
     {
         DBTab();
-        TabSelection(selectedTab);        
+        TabSelection(SelectedTab);
     }
 
     //////////////////////////////////////////////////
@@ -94,7 +112,6 @@ public class DatabaseMain : EditorWindow
         stateTab  = new StateTab();
         systemTab = new SystemTab();
         termTab   = new TermTab();
-
     }
 
     //////////////////////////////////////////////////
@@ -110,7 +127,7 @@ public class DatabaseMain : EditorWindow
         
         #region  BoxUI
         GUILayout.BeginVertical("Box");
-        selectedTab = GUILayout.SelectionGrid(selectedTab, tabNames, 1, GUILayout.Width(tabAreaWidth), GUILayout.Height(tabAreaHeight));
+        SelectedTab = GUILayout.SelectionGrid(SelectedTab, tabNames, 1, GUILayout.Width(tabAreaWidth), GUILayout.Height(tabAreaHeight));
         GUILayout.EndVertical();
         #endregion
     }
@@ -164,6 +181,5 @@ public class DatabaseMain : EditorWindow
                 break;
         }
     }
-
     #endregion
 }

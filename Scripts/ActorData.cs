@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 [CreateAssetMenu(menuName = "Database/ActorData")]
 public class ActorData : ScriptableObject
 {
     public string actorName;
     public string actorNickname;
-    //public ActorClass actorClass;
+//    public ActorData[] actorClass;
     public int initLevel;
     public int maxLevel;
 
@@ -38,6 +39,7 @@ public class ActorData : ScriptableObject
 
         actorName = "player";
         actorNickname = "actorNickname";
+//        actorClass = Resources.LoadAll<ActorData>("path");
         initLevel = 1;
         maxLevel = 99;
         description = "insert your description here";
