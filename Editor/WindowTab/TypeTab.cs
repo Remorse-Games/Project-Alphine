@@ -22,6 +22,15 @@ public class TypeTab : BaseTab
     //a double List for this kind of thing.
     public List<string> skillDisplayName = new List<string>();
 
+    //Having list of all skills exist in data.
+    public List<TypeWeaponData> weapon = new List<TypeWeaponData>();
+
+    //List of names. Why you ask? because selectionGrid require
+    //array of string, which we cannot obtain in SkillData.
+    //I hope later got better solution about this to not do
+    //a double List for this kind of thing.
+    public List<string> weaponDisplayName = new List<string>();
+
     //All GUIStyle variable initialization.
     GUIStyle typeStyle;
     GUIStyle tabStyle;
@@ -34,24 +43,31 @@ public class TypeTab : BaseTab
     public int elementSizeTemp;
     public int skillSize;
     public int skillSizeTemp;
+    public int weaponSize;
+    public int weaponSizeTemp;
 
     //i don't know about this but i leave this to handle later.
     int elementIndex = 0;
     int elementIndexTemp = -1;
     int skillIndex = 0;
     int skillIndexTemp = -1;
+    int weaponIndex = 0;
+    int weaponIndexTemp = -1;
 
     //Scroll position. Is this necessary?
     Vector2 elementScrollPos = Vector2.zero;
     Vector2 skillScrollPos = Vector2.zero;
+    Vector2 weaponScrollPos = Vector2.zero;
     #endregion
 
     public void Init()
     {
         LoadGameData<TypeElementData>(ref elementSize, element, PathDatabase.ElementRelativeDataPath);
         LoadGameData<TypeSkillData>(ref skillSize, skill, PathDatabase.SkillRelativeDataPath);
+        LoadGameData<TypeWeaponData>(ref weaponSize, weapon, PathDatabase.WeaponRelativeDataPath);
         ElementListReset();
         SkillListReset();
+        WeaponListReset();
     }
 
 
@@ -72,7 +88,7 @@ public class TypeTab : BaseTab
         float tabWidth = position.width * .85f;
         float tabHeight = position.height - 10f;
 
-        float eachTabWidth = tabWidth * 3 / 10;
+        float eachTabWidth = tabWidth * .20f;
 
         //Style area.
         typeStyle = new GUIStyle(GUI.skin.box);
@@ -141,7 +157,7 @@ public class TypeTab : BaseTab
                     ElementListReset();
                 }
             GUILayout.EndArea();
-            #endregion
+            #endregion  
 
             #region Tab 2/5
             //Second Tab of five
@@ -188,11 +204,57 @@ public class TypeTab : BaseTab
             }
             GUILayout.EndArea();
             #endregion  
+            #region Tab 3/5
+            //Third Tab of five
+            GUILayout.BeginArea(new Rect(2 * eachTabWidth + 10, 0, tabWidth, tabHeight));
+            GUILayout.Box("Weapon Types", GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15));
+
+            //Scroll View
+            #region ScrollView
+            skillScrollPos = GUILayout.BeginScrollView(weaponScrollPos, false, true, GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .79f));
+            weaponIndex = GUILayout.SelectionGrid(
+                weaponIndex,
+                weaponDisplayName.ToArray(),
+                1,
+                GUILayout.Width(eachTabWidth - 20),
+                GUILayout.Height(position.height / 24 * weaponSize
+                ));
+            GUILayout.EndScrollView();
+            #endregion
+
+            //Happen everytime selection grid is updated
+            if (GUI.changed && weaponIndex != weaponIndexTemp)
+            {
+                weaponIndexTemp = weaponIndex;
+                ItemTabLoader(weaponIndexTemp);
+                weaponIndexTemp = -1;
+            }
+            //Text field to change each index name
+            if (weaponSize > 0)
+            {
+                weapon[weaponIndex].dataName = GUILayout.TextField(weapon[weaponIndex].dataName, GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
+                weaponDisplayName[weaponIndex] = weapon[weaponIndex].dataName;
+            }
+            else
+            {
+                GUILayout.TextField("Null", GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
+            }
+            //Int field of change Maximum
+            weaponSizeTemp = EditorGUILayout.IntField(weaponSizeTemp, GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
+            if (GUILayout.Button("Change Maximum", GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
+            {
+                weaponSize = weaponSizeTemp;
+                ChangeMaximum<TypeWeaponData>(weaponSize, weapon, PathDatabase.WeaponExplicitDataPath);
+                WeaponListReset();
+            }
+            GUILayout.EndArea();
+            #endregion  
         GUILayout.EndArea();
         #endregion
 
         EditorUtility.SetDirty(element[elementIndex]);
         EditorUtility.SetDirty(skill[skillIndex]);
+        EditorUtility.SetDirty(weapon[weaponIndex]);
     }
 
     ///<summary>
@@ -216,6 +278,18 @@ public class TypeTab : BaseTab
         for (int i = 0; i < skillSize; i++)
         {
             skillDisplayName.Add(skill[i].dataName);
+        }
+    }
+
+    ///<summary>
+    ///Clears out the displayName list and add it with new value
+    ///</summary>
+    private void WeaponListReset()
+    {
+        weaponDisplayName.Clear();
+        for (int i = 0; i < weaponSize; i++)
+        {
+            weaponDisplayName.Add(weapon[i].dataName);
         }
     }
 
