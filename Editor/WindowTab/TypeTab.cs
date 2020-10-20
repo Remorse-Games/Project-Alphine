@@ -22,14 +22,23 @@ public class TypeTab : BaseTab
     //a double List for this kind of thing.
     public List<string> skillDisplayName = new List<string>();
 
-    //Having list of all skills exist in data.
+    //Having list of all weapons exist in data.
     public List<TypeWeaponData> weapon = new List<TypeWeaponData>();
+
+    //List of names. Why you ask? because selectionGrid require
+    //array of string, which we cannot obtain in WeaponData.
+    //I hope later got better solution about this to not do
+    //a double List for this kind of thing.
+    public List<string> weaponDisplayName = new List<string>();
+
+    //Having list of all armors exist in data.
+    public List<TypeArmorData> armor = new List<TypeArmorData>();
 
     //List of names. Why you ask? because selectionGrid require
     //array of string, which we cannot obtain in SkillData.
     //I hope later got better solution about this to not do
     //a double List for this kind of thing.
-    public List<string> weaponDisplayName = new List<string>();
+    public List<string> armorDisplayName = new List<string>();
 
     //All GUIStyle variable initialization.
     GUIStyle typeStyle;
@@ -45,6 +54,8 @@ public class TypeTab : BaseTab
     public int skillSizeTemp;
     public int weaponSize;
     public int weaponSizeTemp;
+    public int armorSize;
+    public int armorSizeTemp;
 
     //i don't know about this but i leave this to handle later.
     int elementIndex = 0;
@@ -53,21 +64,26 @@ public class TypeTab : BaseTab
     int skillIndexTemp = -1;
     int weaponIndex = 0;
     int weaponIndexTemp = -1;
+    int armorIndex = 0;
+    int armorIndexTemp = -1;
 
     //Scroll position. Is this necessary?
     Vector2 elementScrollPos = Vector2.zero;
     Vector2 skillScrollPos = Vector2.zero;
     Vector2 weaponScrollPos = Vector2.zero;
+    Vector2 armorScrollPos = Vector2.zero;
     #endregion
 
     public void Init()
     {
         LoadGameData<TypeElementData>(ref elementSize, element, PathDatabase.ElementRelativeDataPath);
-        LoadGameData<TypeSkillData>(ref skillSize, skill, PathDatabase.SkillRelativeDataPath);
-        LoadGameData<TypeWeaponData>(ref weaponSize, weapon, PathDatabase.WeaponRelativeDataPath);
         ElementListReset();
+        LoadGameData<TypeSkillData>(ref skillSize, skill, PathDatabase.SkillRelativeDataPath);
         SkillListReset();
+        LoadGameData<TypeWeaponData>(ref weaponSize, weapon, PathDatabase.WeaponRelativeDataPath);
         WeaponListReset();
+        LoadGameData<TypeArmorData>(ref armorSize, armor, PathDatabase.ArmorRelativeDataPath);
+        ArmorListReset();
     }
 
 
@@ -204,6 +220,7 @@ public class TypeTab : BaseTab
             }
             GUILayout.EndArea();
             #endregion  
+
             #region Tab 3/5
             //Third Tab of five
             GUILayout.BeginArea(new Rect(2 * eachTabWidth + 10, 0, tabWidth, tabHeight));
@@ -211,7 +228,7 @@ public class TypeTab : BaseTab
 
             //Scroll View
             #region ScrollView
-            skillScrollPos = GUILayout.BeginScrollView(weaponScrollPos, false, true, GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .79f));
+            weaponScrollPos = GUILayout.BeginScrollView(weaponScrollPos, false, true, GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .79f));
             weaponIndex = GUILayout.SelectionGrid(
                 weaponIndex,
                 weaponDisplayName.ToArray(),
@@ -249,12 +266,59 @@ public class TypeTab : BaseTab
             }
             GUILayout.EndArea();
             #endregion  
+        
+            #region Tab 4/5
+            //Forth Tab of five
+            GUILayout.BeginArea(new Rect(3 * eachTabWidth + 15, 0, tabWidth, tabHeight));
+            GUILayout.Box("Armor Types", GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15));
+
+            //Scroll View
+            #region ScrollView
+            armorScrollPos = GUILayout.BeginScrollView(armorScrollPos, false, true, GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .79f));
+            armorIndex = GUILayout.SelectionGrid(
+                armorIndex,
+                armorDisplayName.ToArray(),
+                1,
+                GUILayout.Width(eachTabWidth - 20),
+                GUILayout.Height(position.height / 24 * armorSize
+                ));
+            GUILayout.EndScrollView();
+            #endregion
+
+            //Happen everytime selection grid is updated
+            if (GUI.changed && armorIndex != armorIndexTemp)
+            {
+                armorIndexTemp = armorIndex;
+                ItemTabLoader(armorIndexTemp);
+                armorIndexTemp = -1;
+            }
+            //Text field to change each index name
+            if (armorSize > 0)
+            {
+                armor[armorIndex].dataName = GUILayout.TextField(armor[armorIndex].dataName, GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
+                armorDisplayName[armorIndex] = armor[armorIndex].dataName;
+            }
+            else
+            {
+                GUILayout.TextField("Null", GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
+            }
+            //Int field of change Maximum
+            armorSizeTemp = EditorGUILayout.IntField(armorSizeTemp, GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
+            if (GUILayout.Button("Change Maximum", GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
+            {
+                armorSize = armorSizeTemp;
+                ChangeMaximum<TypeArmorData>(armorSize, armor, PathDatabase.ArmorExplicitDataPath);
+                ArmorListReset();
+            }
+            GUILayout.EndArea();
+            #endregion  
         GUILayout.EndArea();
         #endregion
 
         EditorUtility.SetDirty(element[elementIndex]);
         EditorUtility.SetDirty(skill[skillIndex]);
         EditorUtility.SetDirty(weapon[weaponIndex]);
+        EditorUtility.SetDirty(armor[armorIndex]);
     }
 
     ///<summary>
@@ -290,6 +354,18 @@ public class TypeTab : BaseTab
         for (int i = 0; i < weaponSize; i++)
         {
             weaponDisplayName.Add(weapon[i].dataName);
+        }
+    }
+
+    ///<summary>
+    ///Clears out the displayName list and add it with new value
+    ///</summary>
+    private void ArmorListReset()
+    {
+        armorDisplayName.Clear();
+        for (int i = 0; i < armorSize; i++)
+        {
+            armorDisplayName.Add(armor[i].dataName);
         }
     }
 

@@ -100,6 +100,10 @@ public abstract class BaseTab
         {
             AssetDatabase.CreateFolder("Assets/Resources/Data/TypeData", "WeaponData");
         }
+        if (!AssetDatabase.IsValidFolder("Assets/Resources/Data/TypeData/ArmorData"))
+        {
+            AssetDatabase.CreateFolder("Assets/Resources/Data/TypeData", "ArmorData");
+        }
     }
 
     public void DrawUILine(Color color, int thickness = 2, int padding = 10)
