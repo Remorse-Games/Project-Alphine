@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class TypeArmorData : ScriptableObject
+public class TypeEquipmentData : ScriptableObject
 {
     public string dataName;
 
@@ -14,6 +14,6 @@ public class TypeArmorData : ScriptableObject
 
     public void Init()
     {
-        dataName = "armor";
+        dataName = "equipment";
     }
 }
