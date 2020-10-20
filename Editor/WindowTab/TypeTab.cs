@@ -91,7 +91,7 @@ public class TypeTab : BaseTab
 
                 //Scroll View
                 #region ScrollView
-                elementScrollPos = GUILayout.BeginScrollView(elementScrollPos, false, true, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .82f));
+                elementScrollPos = GUILayout.BeginScrollView(elementScrollPos, false, true, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .79f));
                     elementIndex = GUILayout.SelectionGrid(
                         elementIndex, 
                         elementDisplayName.ToArray(), 
@@ -110,8 +110,10 @@ public class TypeTab : BaseTab
                     indexTemp = -1;
                 }
 
-                //Int field of change Maximum
-                elementSizeTemp = EditorGUILayout.IntField(elementSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
+        element[elementIndex].dataName = GUILayout.TextField(element[elementIndex].dataName, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
+        elementDisplayName[elementIndex] = element[elementIndex].dataName;
+        //Int field of change Maximum
+        elementSizeTemp = EditorGUILayout.IntField(elementSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
                 if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
                 {
                     elementSize = elementSizeTemp;
