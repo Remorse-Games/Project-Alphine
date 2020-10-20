@@ -4,6 +4,14 @@ using UnityEditor;
 
 public class TypeTab : BaseTab
 {
+    //Having list of all elements exist in data.
+    public List<TypeElementData> element = new List<TypeElementData>();
+
+    //List of names. Why you ask? because selectionGrid require
+    //array of string, which we cannot obtain in ElementData.
+    //I hope later got better solution about this to not do
+    //a double List for this kind of thing.
+    public List<string> elementDisplayName = new List<string>();
 
     //All GUIStyle variable initialization.
     GUIStyle typeStyle;
@@ -16,16 +24,23 @@ public class TypeTab : BaseTab
     public int selectedClassIndex;
 
     //How many type in ChangeMaximum Func
-    public int typeSize;
+    public int elementSize;
+    public int elementSizeTemp;
 
     //i don't know about this but i leave this to handle later.
-    int index = 0;
+    int elementIndex = 0;
     int indexTemp = -1;
 
     //Scroll position. Is this necessary?
-    Vector2 scrollPos = Vector2.zero;
+    Vector2 elementScrollPos = Vector2.zero;
 
     #endregion
+    public void Init()
+    {
+        LoadGameData<TypeElementData>(ref elementSize, element, PathDatabase.ElementRelativeDataPath);
+        ElementListReset();
+    }
+
 
     public void OnRender(Rect position)
     {
@@ -65,12 +80,64 @@ public class TypeTab : BaseTab
         //Start drawing the whole typeTab.
         GUILayout.BeginArea(new Rect(position.width / 7, 5, tabWidth, tabHeight));
 
-        //The black box behind the typeTab? yes, this one.
-        GUILayout.Box(" ", typeStyle, GUILayout.Width(position.width - DatabaseMain.tabAreaWidth), GUILayout.Height(position.height - 25f));
+            //The black box behind the typeTab? yes, this one.
+            GUILayout.Box(" ", typeStyle, GUILayout.Width(position.width - DatabaseMain.tabAreaWidth), GUILayout.Height(position.height - 25f));
+
+            
+            #region Tab 1/3
+            //First Tab of three
+            GUILayout.BeginArea(new Rect(0, 0, tabWidth, tabHeight));
+                GUILayout.Box("Elements", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15));
+
+                //Scroll View
+                #region ScrollView
+                elementScrollPos = GUILayout.BeginScrollView(elementScrollPos, false, true, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .82f));
+                    elementIndex = GUILayout.SelectionGrid(
+                        elementIndex, 
+                        elementDisplayName.ToArray(), 
+                        1, 
+                        GUILayout.Width(firstTabWidth - 20), 
+                        GUILayout.Height(position.height / 24 * elementSize
+                        ));
+                GUILayout.EndScrollView();
+                #endregion
+
+                //Happen everytime selection grid is updated
+                if (GUI.changed && elementIndex != indexTemp)
+                {
+                    indexTemp = elementIndex;
+                    ItemTabLoader(indexTemp);
+                    indexTemp = -1;
+                }
+
+                //Int field of change Maximum
+                elementSizeTemp = EditorGUILayout.IntField(elementSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
+                if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
+                {
+                    elementSize = elementSizeTemp;
+                    ChangeMaximum<TypeElementData>(elementSize, element, PathDatabase.ElementExplicitDataPath);
+                    ElementListReset();
+                }
+            GUILayout.EndArea();
+            #endregion
+
 
         GUILayout.EndArea();
         #endregion
 
+        EditorUtility.SetDirty(element[elementIndex]);
+    }
+
+    ///<summary>
+    ///Clears out the displayName list and add it with new value
+    ///</summary>
+    private void ElementListReset()
+    {
+        elementDisplayName.Clear();
+        for (int i = 0; i < elementSize; i++)
+        {
+            elementDisplayName.Add(element[i].dataName);
+        }
     }
 
 

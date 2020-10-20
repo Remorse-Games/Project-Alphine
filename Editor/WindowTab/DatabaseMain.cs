@@ -81,6 +81,7 @@ public class DatabaseMain : EditorWindow
         stateTab.Init();
         termTab.Init();
         systemTab.Init();
+        typeTab.Init();
     }
 
     //////////////////////////////////////////////////
