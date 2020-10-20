@@ -13,6 +13,15 @@ public class TypeTab : BaseTab
     //a double List for this kind of thing.
     public List<string> elementDisplayName = new List<string>();
 
+    //Having list of all skills exist in data.
+    public List<TypeSkillData> skill = new List<TypeSkillData>();
+
+    //List of names. Why you ask? because selectionGrid require
+    //array of string, which we cannot obtain in SkillData.
+    //I hope later got better solution about this to not do
+    //a double List for this kind of thing.
+    public List<string> skillDisplayName = new List<string>();
+
     //All GUIStyle variable initialization.
     GUIStyle typeStyle;
     GUIStyle tabStyle;
@@ -20,25 +29,29 @@ public class TypeTab : BaseTab
 
     #region  DeleteLater
 
-    //Index for selected Class.
-    public int selectedClassIndex;
-
     //How many type in ChangeMaximum Func
     public int elementSize;
     public int elementSizeTemp;
+    public int skillSize;
+    public int skillSizeTemp;
 
     //i don't know about this but i leave this to handle later.
     int elementIndex = 0;
-    int indexTemp = -1;
+    int elementIndexTemp = -1;
+    int skillIndex = 0;
+    int skillIndexTemp = -1;
 
     //Scroll position. Is this necessary?
     Vector2 elementScrollPos = Vector2.zero;
-
+    Vector2 skillScrollPos = Vector2.zero;
     #endregion
+
     public void Init()
     {
         LoadGameData<TypeElementData>(ref elementSize, element, PathDatabase.ElementRelativeDataPath);
+        LoadGameData<TypeSkillData>(ref skillSize, skill, PathDatabase.SkillRelativeDataPath);
         ElementListReset();
+        SkillListReset();
     }
 
 
@@ -59,7 +72,7 @@ public class TypeTab : BaseTab
         float tabWidth = position.width * .85f;
         float tabHeight = position.height - 10f;
 
-        float firstTabWidth = tabWidth * 3 / 10;
+        float eachTabWidth = tabWidth * 3 / 10;
 
         //Style area.
         typeStyle = new GUIStyle(GUI.skin.box);
@@ -84,37 +97,44 @@ public class TypeTab : BaseTab
             GUILayout.Box(" ", typeStyle, GUILayout.Width(position.width - DatabaseMain.tabAreaWidth), GUILayout.Height(position.height - 25f));
 
             
-            #region Tab 1/3
-            //First Tab of three
+            #region Tab 1/5
+            //First Tab of five
             GUILayout.BeginArea(new Rect(0, 0, tabWidth, tabHeight));
-                GUILayout.Box("Elements", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15));
+                GUILayout.Box("Elements", GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15));
 
                 //Scroll View
                 #region ScrollView
-                elementScrollPos = GUILayout.BeginScrollView(elementScrollPos, false, true, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .79f));
+                elementScrollPos = GUILayout.BeginScrollView(elementScrollPos, false, true, GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .79f));
                     elementIndex = GUILayout.SelectionGrid(
                         elementIndex, 
                         elementDisplayName.ToArray(), 
                         1, 
-                        GUILayout.Width(firstTabWidth - 20), 
+                        GUILayout.Width(eachTabWidth - 20), 
                         GUILayout.Height(position.height / 24 * elementSize
                         ));
                 GUILayout.EndScrollView();
                 #endregion
 
                 //Happen everytime selection grid is updated
-                if (GUI.changed && elementIndex != indexTemp)
+                if (GUI.changed && elementIndex != elementIndexTemp)
                 {
-                    indexTemp = elementIndex;
-                    ItemTabLoader(indexTemp);
-                    indexTemp = -1;
+                    elementIndexTemp = elementIndex;
+                    ItemTabLoader(elementIndexTemp);
+                    elementIndexTemp = -1;
                 }
-
-        element[elementIndex].dataName = GUILayout.TextField(element[elementIndex].dataName, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
-        elementDisplayName[elementIndex] = element[elementIndex].dataName;
-        //Int field of change Maximum
-        elementSizeTemp = EditorGUILayout.IntField(elementSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
-                if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
+                //Text field to change each index name
+                if (elementSize > 0)
+                {
+                    element[elementIndex].dataName = GUILayout.TextField(element[elementIndex].dataName, GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
+                    elementDisplayName[elementIndex] = element[elementIndex].dataName;
+                }
+                else
+                {
+                    GUILayout.TextField("Null", GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
+                }
+                //Int field of change Maximum
+                elementSizeTemp = EditorGUILayout.IntField(elementSizeTemp, GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
+                if (GUILayout.Button("Change Maximum", GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
                 {
                     elementSize = elementSizeTemp;
                     ChangeMaximum<TypeElementData>(elementSize, element, PathDatabase.ElementExplicitDataPath);
@@ -123,11 +143,56 @@ public class TypeTab : BaseTab
             GUILayout.EndArea();
             #endregion
 
+            #region Tab 2/5
+            //Second Tab of five
+            GUILayout.BeginArea(new Rect(eachTabWidth + 5, 0, tabWidth, tabHeight));
+            GUILayout.Box("Skill Types", GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15));
 
+            //Scroll View
+            #region ScrollView
+            skillScrollPos = GUILayout.BeginScrollView(skillScrollPos, false, true, GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .79f));
+            skillIndex = GUILayout.SelectionGrid(
+                skillIndex,
+                skillDisplayName.ToArray(),
+                1,
+                GUILayout.Width(eachTabWidth - 20),
+                GUILayout.Height(position.height / 24 * skillSize
+                ));
+            GUILayout.EndScrollView();
+            #endregion
+
+            //Happen everytime selection grid is updated
+            if (GUI.changed && skillIndex != skillIndexTemp)
+            {
+                skillIndexTemp = skillIndex;
+                ItemTabLoader(skillIndexTemp);
+                skillIndexTemp = -1;
+            }
+            //Text field to change each index name
+            if (skillSize > 0)
+            {
+                skill[skillIndex].dataName = GUILayout.TextField(skill[skillIndex].dataName, GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
+                skillDisplayName[skillIndex] = skill[skillIndex].dataName;
+            }
+            else
+            {
+                GUILayout.TextField("Null", GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
+            }
+            //Int field of change Maximum
+            skillSizeTemp = EditorGUILayout.IntField(skillSizeTemp, GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
+            if (GUILayout.Button("Change Maximum", GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
+            {
+                skillSize = skillSizeTemp;
+                ChangeMaximum<TypeSkillData>(skillSize, skill, PathDatabase.SkillExplicitDataPath);
+                SkillListReset();
+            }
+            GUILayout.EndArea();
+            #endregion  
         GUILayout.EndArea();
         #endregion
 
         EditorUtility.SetDirty(element[elementIndex]);
+        EditorUtility.SetDirty(skill[skillIndex]);
     }
 
     ///<summary>
@@ -142,6 +207,17 @@ public class TypeTab : BaseTab
         }
     }
 
+    ///<summary>
+    ///Clears out the displayName list and add it with new value
+    ///</summary>
+    private void SkillListReset()
+    {
+        skillDisplayName.Clear();
+        for (int i = 0; i < skillSize; i++)
+        {
+            skillDisplayName.Add(skill[i].dataName);
+        }
+    }
 
     public override void ItemTabLoader(int index)
     {

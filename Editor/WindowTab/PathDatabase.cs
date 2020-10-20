@@ -12,4 +12,7 @@ public static class PathDatabase
 
     public static string ElementExplicitDataPath = "Assets/Resources/Data/TypeData/ElementData/Element_";
     public static string ElementRelativeDataPath = "Data/TypeData/ElementData";
+
+    public static string SkillExplicitDataPath = "Assets/Resources/Data/TypeData/SkillData/Skill_";
+    public static string SkillRelativeDataPath = "Data/TypeData/SkillData";
 }
