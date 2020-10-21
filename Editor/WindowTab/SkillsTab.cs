@@ -111,10 +111,6 @@ public class SkillsTab : BaseTab
     //How many skill in ChangeMaximum Func
     public int skillSize;
 
-    //dataPath where the game data will be saved as a .assets
-    private string dataPath = "Assets/Resources/Data/SkillData/Skill_";
-    private string _dataPath = "Data/SkillData";
-
     //i don't know about this but i leave this to handle later.
     int index = 0;
     int indexTemp = -1;
@@ -130,7 +126,7 @@ public class SkillsTab : BaseTab
     public int skillSizeTemp;
     public void Init()
     {
-        LoadGameData<SkillData>(ref skillSize, skill, _dataPath);
+        LoadGameData<SkillData>(ref skillSize, skill, PathDatabase.SkillTabRelativeDataPath);
         ListReset();
     }
 
@@ -201,7 +197,7 @@ public class SkillsTab : BaseTab
             if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
             {
                 skillSize = skillSizeTemp;
-                ChangeMaximum<SkillData>(skillSize, skill, dataPath);
+                ChangeMaximum<SkillData>(skillSize, skill, PathDatabase.SkillTabExplicitDataPath);
                 ListReset();
             }
 
