@@ -424,40 +424,7 @@ public class WeaponTab : BaseTab
             weaponDisplayName.Add(weapon[i].weaponName);
         }
     }
-    /// <summary>
-    /// Change Maximum function , when we change the size
-    /// and click Change Maximum button in Editor, it will update
-    /// and change the size while creating new data.
-    /// </summary>
-    /// <param name="size">get size from weaponSize</param>
-
-    int counter = 0;
-    private void ChangeMaximumPrivate(int size)
-    {
-        weaponSize = weaponSizeTemp;
-        //This count only useful when we doesn't have a name yet.
-        //you can remove this when decide a new format later.
-        while (counter <= weaponSize)
-        {
-            weapon.Add(ScriptableObject.CreateInstance<WeaponData>());
-            AssetDatabase.CreateAsset(weapon[counter], "Assets/Resources/Data/WeaponData/Weapon_" + counter + ".asset");
-            AssetDatabase.SaveAssets();
-            weaponDisplayName.Add(weapon[counter].weaponName);
-            counter++;
-        }
-        if (counter > weaponSize)
-        {
-            weapon.RemoveRange(weaponSize, weapon.Count - weaponSize);
-            weaponDisplayName.RemoveRange(weaponSize, weaponDisplayName.Count - weaponSize);
-            for (int i = weaponSize; i <= counter; i++)
-            {
-                AssetDatabase.DeleteAsset("Assets/Resources/Data/WeaponData/Wweapon_" + i + ".asset");
-            }
-            AssetDatabase.SaveAssets();
-            counter = weaponSize;
-        }
-    }
-
+   
     public override void ItemTabLoader(int index)
     {
         Texture2D defTex = new Texture2D(256, 256);
