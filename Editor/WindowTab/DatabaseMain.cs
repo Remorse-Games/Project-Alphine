@@ -78,6 +78,7 @@ public class DatabaseMain : EditorWindow
         actorTab.Init();
         itemTab.Init();
         armorTab.Init();
+        enemyTab.Init();
         weaponTab.Init();
         skillTab.Init();
         troopTab.Init();
@@ -165,7 +166,7 @@ public class DatabaseMain : EditorWindow
                 troopTab.OnRender(position);
                 break;
             case 6:
-                enemyTab.Init(position);
+                enemyTab.OnRender(position);
                 break;
             case 5:
                 armorTab.OnRender(position);

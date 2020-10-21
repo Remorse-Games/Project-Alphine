@@ -45,8 +45,14 @@ public class EnemyData : ScriptableObject
 
     [TextArea]
     public string notes;
-
     public void OnEnable()
+    {
+        if (enemyName == null)
+        {
+            Init();
+        }
+    }
+    public void Init()
     {
         Sprite sp = Resources.Load<Sprite>("Image");
         enemyName = "enemy";
