@@ -19,6 +19,7 @@ public class DatabaseMain : EditorWindow
     StateTab    stateTab;
     TermTab     termTab;
     SystemTab   systemTab;
+    TypeTab     typeTab;
 
     //Tab Area. DO NOT CHANGE anything in here.
     public static float tabAreaWidth;
@@ -80,6 +81,7 @@ public class DatabaseMain : EditorWindow
         stateTab.Init();
         termTab.Init();
         systemTab.Init();
+        typeTab.Init();
     }
 
     //////////////////////////////////////////////////
@@ -112,6 +114,7 @@ public class DatabaseMain : EditorWindow
         stateTab  = new StateTab();
         systemTab = new SystemTab();
         termTab   = new TermTab();
+        typeTab   = new TypeTab();
     }
 
     //////////////////////////////////////////////////
@@ -147,7 +150,7 @@ public class DatabaseMain : EditorWindow
                 termTab.OnRender(position);
                 break;
             case 10:
-                actorTab.OnRender(position);
+                typeTab.OnRender(position);
                 break;
             case 9:
                 systemTab.OnRender(position);

@@ -84,6 +84,30 @@ public abstract class BaseTab
         {
             AssetDatabase.CreateFolder("Assets/Resources/Data", "SystemData");
         }
+        if (!AssetDatabase.IsValidFolder("Assets/Resources/Data/TypeData"))
+        {
+            AssetDatabase.CreateFolder("Assets/Resources/Data", "TypeData");
+        }
+        if (!AssetDatabase.IsValidFolder("Assets/Resources/Data/TypeData/ElementData"))
+        {
+            AssetDatabase.CreateFolder("Assets/Resources/Data/TypeData", "ElementData");
+        }
+        if (!AssetDatabase.IsValidFolder("Assets/Resources/Data/TypeData/SkillData"))
+        {
+            AssetDatabase.CreateFolder("Assets/Resources/Data/TypeData", "SkillData");
+        }
+        if (!AssetDatabase.IsValidFolder("Assets/Resources/Data/TypeData/WeaponData"))
+        {
+            AssetDatabase.CreateFolder("Assets/Resources/Data/TypeData", "WeaponData");
+        }
+        if (!AssetDatabase.IsValidFolder("Assets/Resources/Data/TypeData/ArmorData"))
+        {
+            AssetDatabase.CreateFolder("Assets/Resources/Data/TypeData", "ArmorData");
+        }
+        if (!AssetDatabase.IsValidFolder("Assets/Resources/Data/TypeData/EquipmentData"))
+        {
+            AssetDatabase.CreateFolder("Assets/Resources/Data/TypeData", "EquipmentData");
+        }
     }
 
     public void DrawUILine(Color color, int thickness = 2, int padding = 10)
