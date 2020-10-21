@@ -417,39 +417,6 @@ public class ArmorTab : BaseTab
         }
     }
 
-    /// <summary>
-    /// Change Maximum function , when we change the size
-    /// and click Change Maximum button in Editor, it will update
-    /// and change the size while creating new data.
-    /// </summary>
-    /// <param name="size">get size from armorSize</param>
-
-    int counter = 0;
-    private void ChangeMaximumPrivate(int size)
-    {
-        armorSize = armorSizeTemp;
-        //This count only useful when we doesn't have a name yet.
-        //you can remove this when decide a new format later.
-        while (counter <= armorSize)
-        {
-            armor.Add(ScriptableObject.CreateInstance<ArmorData>());
-            AssetDatabase.CreateAsset(armor[counter], "Assets/Resources/Data/ArmorData/Armor_" + counter + ".asset");
-            AssetDatabase.SaveAssets();
-            armorDisplayName.Add(armor[counter].armorName);
-            counter++;
-        }
-        if (counter > armorSize)
-        {
-            armor.RemoveRange(armorSize, armor.Count - armorSize);
-            armorDisplayName.RemoveRange(armorSize, armorDisplayName.Count - armorSize);
-            for (int i = armorSize; i <= counter; i++)
-            {
-                AssetDatabase.DeleteAsset("Assets/Resources/Data/ArmorData/Armor_" + i + ".asset");
-            }
-            AssetDatabase.SaveAssets();
-            counter = armorSize;
-        }
-    }
 
     public override void ItemTabLoader(int index)
     {
