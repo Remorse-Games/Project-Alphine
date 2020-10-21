@@ -100,6 +100,13 @@ public class ClassesData : ScriptableObject
 
     public void OnEnable()
     {
+        if(className == null)
+        {
+            Init();
+        }
+    }
+    public void Init()
+    {
         className = "New Class";
         expCurve = new AnimationCurve();
         maxHPCurve = new AnimationCurve();
