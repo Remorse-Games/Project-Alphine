@@ -76,6 +76,7 @@ public class DatabaseMain : EditorWindow
     private void InitTabSelection()
     {
         actorTab.Init();
+        itemTab.Init();
         skillTab.Init();
         troopTab.Init();
         stateTab.Init();
@@ -171,7 +172,7 @@ public class DatabaseMain : EditorWindow
                 weaponTab.Init(position);
                 break;
             case 3:
-                itemTab.Init(position);
+                itemTab.OnRender(position);
                 break;
             case 2:
                 skillTab.OnRender(position);
