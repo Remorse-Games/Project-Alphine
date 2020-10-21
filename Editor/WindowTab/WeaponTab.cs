@@ -62,8 +62,13 @@ public class WeaponTab : BaseTab
     //Image Area.
     Texture2D weaponIcon;
 
+    public void Init()
+    {
+        LoadGameData<WeaponData>(ref weaponSize, weapon, PathDatabase.WeaponTabRelativeDataPath);
+        ListReset();
+    }
 
-    public void Init(Rect position)
+    public void OnRender(Rect position)
     {
         #region A Bit Explanation About Local Tab
         ///So there is 2 types of Tab,
@@ -130,7 +135,9 @@ public class WeaponTab : BaseTab
                 weaponSizeTemp = EditorGUILayout.IntField(weaponSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
                 if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
                 {
-                    ChangeMaximumPrivate(weaponSize);
+                    weaponSize = weaponSizeTemp;
+                    ChangeMaximum<WeaponData>(weaponSize, weapon, PathDatabase.WeaponTabExplicitDataPath);
+                    ListReset();
                 }
 
             GUILayout.EndArea();
@@ -400,11 +407,23 @@ public class WeaponTab : BaseTab
 
         GUILayout.EndArea(); // End of drawing WeaponTab
         #endregion
+        EditorUtility.SetDirty(weapon[index]);
     }
 
 
     #region Features
 
+    ///<summary>
+    ///Clears out the displayName list and add it with new value
+    ///</summary>
+    private void ListReset()
+    {
+        weaponDisplayName.Clear();
+        for (int i = 0; i < weaponSize; i++)
+        {
+            weaponDisplayName.Add(weapon[i].weaponName);
+        }
+    }
     /// <summary>
     /// Change Maximum function , when we change the size
     /// and click Change Maximum button in Editor, it will update

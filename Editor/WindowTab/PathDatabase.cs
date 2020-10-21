@@ -13,6 +13,9 @@ public static class PathDatabase
     public static string ItemExplicitDataPath = "Assets/Resources/Data/ItemData/Item_";
     public static string ItemRelativeDataPath = "Data/ItemData";
 
+    public static string WeaponTabExplicitDataPath = "Assets/Resources/Data/WeaponData/Weapon_";
+    public static string WeaponTabRelativeDataPath = "Data/WeaponData";
+
     public static string ElementExplicitDataPath = "Assets/Resources/Data/TypeData/ElementData/Element_";
     public static string ElementRelativeDataPath = "Data/TypeData/ElementData";
 

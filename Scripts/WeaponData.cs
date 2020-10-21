@@ -26,8 +26,14 @@ public class WeaponData : ScriptableObject
 
     [TextArea]
     public string notes;
-
     public void OnEnable()
+    {
+        if (weaponName == null)
+        {
+            Init();
+        }
+    }
+    public void Init()
     {
         Sprite sp = Resources.Load<Sprite>("Image");
 
