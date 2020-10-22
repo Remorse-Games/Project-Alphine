@@ -10,6 +10,21 @@ public static class PathDatabase
     public static string ClassExplicitDataPath = "Assets/Resources/Data/ClassesData/Class_";
     public static string ClassRelativeDataPath = "Data/ClassesData";
 
+    public static string ItemExplicitDataPath = "Assets/Resources/Data/ItemData/Item_";
+    public static string ItemRelativeDataPath = "Data/ItemData";
+
+    public static string SkillTabExplicitDataPath = "Assets/Resources/Data/SkillData/Skill_";
+    public static string SkillTabRelativeDataPath = "Data/SkillData";
+
+    public static string ArmorTabExplicitDataPath = "Assets/Resources/Data/ArmorData/Armor_";
+    public static string ArmorTabRelativeDataPath = "Data/ArmorData";
+
+    public static string EnemyExplicitDataPath = "Assets/Resources/Data/EnemyData/Enemy_";
+    public static string EnemyRelativeDataPath = "Data/EnemyData";
+
+    public static string WeaponTabExplicitDataPath = "Assets/Resources/Data/WeaponData/Weapon_";
+    public static string WeaponTabRelativeDataPath = "Data/WeaponData";
+
     public static string ElementExplicitDataPath = "Assets/Resources/Data/TypeData/ElementData/Element_";
     public static string ElementRelativeDataPath = "Data/TypeData/ElementData";
 

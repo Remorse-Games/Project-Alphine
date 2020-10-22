@@ -76,12 +76,17 @@ public class DatabaseMain : EditorWindow
     private void InitTabSelection()
     {
         actorTab.Init();
+        classTab.Init();
         skillTab.Init();
+        itemTab.Init();
+        weaponTab.Init();
+        armorTab.Init();
+        enemyTab.Init();
         troopTab.Init();
         stateTab.Init();
-        termTab.Init();
         systemTab.Init();
         typeTab.Init();
+        termTab.Init();
     }
 
     //////////////////////////////////////////////////
@@ -162,22 +167,22 @@ public class DatabaseMain : EditorWindow
                 troopTab.OnRender(position);
                 break;
             case 6:
-                enemyTab.Init(position);
+                enemyTab.OnRender(position);
                 break;
             case 5:
-                armorTab.Init(position);
+                armorTab.OnRender(position);
                 break;
             case 4:
-                weaponTab.Init(position);
+                weaponTab.OnRender(position);
                 break;
             case 3:
-                itemTab.Init(position);
+                itemTab.OnRender(position);
                 break;
             case 2:
                 skillTab.OnRender(position);
                 break;
             case 1:
-                classTab.Init(position);
+                classTab.OnRender(position);
                 break;
             case 0:
                 actorTab.OnRender(position);
