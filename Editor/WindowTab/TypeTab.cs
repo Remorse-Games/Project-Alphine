@@ -185,6 +185,7 @@ public class TypeTab : BaseTab
                 elementSizeTemp = EditorGUILayout.IntField(elementSizeTemp, GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
                 if (GUILayout.Button("Change Maximum", GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
                 {
+                    elementIndex = 0;
                     elementSize = elementSizeTemp;
                     ChangeMaximum<TypeElementData>(elementSize, element, PathDatabase.ElementExplicitDataPath);
                     ElementListReset();
@@ -231,6 +232,7 @@ public class TypeTab : BaseTab
             skillSizeTemp = EditorGUILayout.IntField(skillSizeTemp, GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
             if (GUILayout.Button("Change Maximum", GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
             {
+                skillIndex = 0;
                 skillSize = skillSizeTemp;
                 ChangeMaximum<TypeSkillData>(skillSize, skill, PathDatabase.SkillExplicitDataPath);
                 SkillListReset();
@@ -277,6 +279,7 @@ public class TypeTab : BaseTab
             weaponSizeTemp = EditorGUILayout.IntField(weaponSizeTemp, GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
             if (GUILayout.Button("Change Maximum", GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
             {
+                weaponIndex = 0;
                 weaponSize = weaponSizeTemp;
                 ChangeMaximum<TypeWeaponData>(weaponSize, weapon, PathDatabase.WeaponExplicitDataPath);
                 WeaponListReset();
@@ -323,6 +326,7 @@ public class TypeTab : BaseTab
             armorSizeTemp = EditorGUILayout.IntField(armorSizeTemp, GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
             if (GUILayout.Button("Change Maximum", GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
             {
+                armorIndex = 0;
                 armorSize = armorSizeTemp;
                 ChangeMaximum<TypeArmorData>(armorSize, armor, PathDatabase.ArmorExplicitDataPath);
                 ArmorListReset();
@@ -369,6 +373,7 @@ public class TypeTab : BaseTab
             equipmentSizeTemp = EditorGUILayout.IntField(equipmentSizeTemp, GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
             if (GUILayout.Button("Change Maximum", GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
             {
+                equipmentIndex = 0;
                 equipmentSize = equipmentSizeTemp;
                 ChangeMaximum<TypeEquipmentData>(equipmentSize, equipment, PathDatabase.EquipmentExplicitDataPath);
                 EquipmentListReset();
