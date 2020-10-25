@@ -7,6 +7,9 @@ public static class PathDatabase
     public static string ActorExplicitDataPath = "Assets/Resources/Data/ActorData/Actor_";
     public static string ActorRelativeDataPath = "Data/ActorData";
 
+    public static string ActorTraitExplicitDataPath = "Assets/Resources/Data/ActorData/TraitData/Trait_";
+    public static string ActorTraitRelativeDataPath = "Data/ActorData/TraitData";
+
     public static string ClassExplicitDataPath = "Assets/Resources/Data/ClassesData/Class_";
     public static string ClassRelativeDataPath = "Data/ClassesData";
 
