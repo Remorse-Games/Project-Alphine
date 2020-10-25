@@ -53,12 +53,15 @@ public class ActorTraitWindow : EditorWindow
         "Collapse Effect",
         "Party Ability",
     };
+
     //Arrays
     bool[] tabToggle = new bool[5] { true, false, false, false , false};
+
     //All GUIStyle variable initialization.
     GUIStyle windowStyle;
     GUIStyle tabStyle;
     GUIStyle columnStyle;
+
     public float fieldWidth;
     public float fieldHeight;
     public string[] tabNames =
@@ -71,6 +74,13 @@ public class ActorTraitWindow : EditorWindow
         "Other",
     };
 
+    //Base Value
+    public int i = 0;
+    public int firstSelectedArray;
+    public int firstSelectedTab;
+    public int firstSelectedToggle;
+    public int firstValue;
+
     //Data(s) reference
     static ActorTraitsData thisClass;
     public static void ShowWindow(ActorTraitsData actorTraitData)
@@ -78,8 +88,8 @@ public class ActorTraitWindow : EditorWindow
         var window = GetWindow<ActorTraitWindow>();
         var position = window.position;
         //Sizing
-        window.maxSize = new Vector2(500, 270);
-        window.minSize = new Vector2(500, 270);
+        window.maxSize = new Vector2(500, 190);
+        window.minSize = new Vector2(500, 190);
         window.titleContent = new GUIContent("Traits");
         thisClass = actorTraitData;
         position.center = new Rect(Screen.width * -1 * .05f, Screen.height * -1 * .05f, Screen.currentResolution.width, Screen.currentResolution.height).center;
@@ -89,6 +99,7 @@ public class ActorTraitWindow : EditorWindow
 
     private void OnGUI()
     {
+        BaseValue(i++);
         windowStyle = new GUIStyle(GUI.skin.box);
         windowStyle.normal.background = CreateTexture(1, 1, Color.gray);
         columnStyle = new GUIStyle(GUI.skin.box);
@@ -105,16 +116,16 @@ public class ActorTraitWindow : EditorWindow
         LoadWeaponList();
 
         #region PrimaryTab
-        Rect primaryBox = new Rect(0, 0, 500, 270);
+        Rect primaryBox = new Rect(0, 0, 500, 190);
         GUILayout.BeginArea(primaryBox, windowStyle);
 
             #region MainTab
-            Rect generalBox = new Rect(5, 7, 490, 265);
+            Rect generalBox = new Rect(5, 7, 490, 187);
             GUILayout.BeginArea(generalBox, columnStyle);
                 GUILayout.BeginVertical("Box");
                     thisClass.selectedTabIndex = GUILayout.SelectionGrid(thisClass.selectedTabIndex, tabNames, 6, GUILayout.Width(generalBox.width * .97f), GUILayout.Height(primaryBox.height * .1f));
                     GUILayout.BeginVertical();
-        float widthSpace = generalBox.width * .37f;
+                        float widthSpace = generalBox.width * .37f;
                         switch (thisClass.selectedTabIndex)
                         {
                             case 5:
@@ -135,13 +146,35 @@ public class ActorTraitWindow : EditorWindow
                             default:
                                 RateTab(generalBox, widthSpace);
                                 break;
-        }
-        thisClass.traitName = StringMaker(thisClass.selectedTabIndex, thisClass.selectedTabToggle, thisClass.selectedArrayIndex, thisClass.traitValue);
-        GUILayout.EndVertical();
-
+                        }
+                        thisClass.traitName = StringMaker(thisClass.selectedTabIndex, thisClass.selectedTabToggle, thisClass.selectedArrayIndex, thisClass.traitValue);
+                        GUILayout.Space(5);
+                        GUILayout.BeginHorizontal();
+                            GUILayout.Space(generalBox.width * .32f);
+                            if (GUILayout.Button("OK", GUILayout.Width(generalBox.width * .17f), GUILayout.Height(20)))
+                            {
+                                this.Close();
+                            }
+                            if (GUILayout.Button("Cancel", GUILayout.Width(generalBox.width * .17f), GUILayout.Height(20)))
+                            {
+                                thisClass.selectedTabToggle = firstSelectedToggle;
+                                thisClass.selectedTabIndex = firstSelectedTab;
+                                thisClass.selectedArrayIndex = firstSelectedArray;
+                                thisClass.traitValue = firstValue;
+                                thisClass.traitName = StringMaker(thisClass.selectedTabIndex, 
+                                                                    thisClass.selectedTabToggle, 
+                                                                    thisClass.selectedArrayIndex, 
+                                                                    thisClass.traitValue
+                                                                 );
+                                this.Close();
+                            }
+                        GUILayout.EndHorizontal();
+                        GUILayout.Space(5);
+                    GUILayout.EndVertical();
                 GUILayout.EndVertical();
             GUILayout.EndArea();
-            #endregion
+        #endregion
+        
         GUILayout.EndArea();
         #endregion
     }
@@ -149,7 +182,7 @@ public class ActorTraitWindow : EditorWindow
     private void RateTab(Rect generalBox, float widthSpace)
     {
         fieldWidth = generalBox.width * .2f;
-        fieldHeight = generalBox.height * .08f;
+        fieldHeight = generalBox.height * .12f;
         MemsetArray(thisClass.selectedTabToggle, tabToggle);
         GUILayout.BeginHorizontal();
         if (EditorGUILayout.Toggle(rateTabToggleList[0], tabToggle[0], EditorStyles.radioButton))
@@ -244,7 +277,7 @@ public class ActorTraitWindow : EditorWindow
     private void ParamTab(Rect generalBox, float widthSpace)
     {
         fieldWidth = generalBox.width * .2f;
-        fieldHeight = generalBox.height * .08f;
+        fieldHeight = generalBox.height * .12f;
         MemsetArray(thisClass.selectedTabToggle, tabToggle);
         GUILayout.BeginHorizontal();
         if (EditorGUILayout.Toggle(paramTabToggleList[0], tabToggle[0], EditorStyles.radioButton))
@@ -322,7 +355,7 @@ public class ActorTraitWindow : EditorWindow
     private void AttackTab(Rect generalBox, float widthSpace)
     {
         fieldWidth = generalBox.width * .2f;
-        fieldHeight = generalBox.height * .08f;
+        fieldHeight = generalBox.height * .12f;
         MemsetArray(thisClass.selectedTabToggle, tabToggle);
         GUILayout.BeginHorizontal();
         if (EditorGUILayout.Toggle(attackTabToggleList[0], tabToggle[0], EditorStyles.radioButton))
@@ -406,7 +439,7 @@ public class ActorTraitWindow : EditorWindow
     private void SkillTab(Rect generalBox, float widthSpace)
     {
         fieldWidth = generalBox.width * .2f;
-        fieldHeight = generalBox.height * .08f;
+        fieldHeight = generalBox.height * .12f;
         MemsetArray(thisClass.selectedTabToggle, tabToggle);
         GUILayout.BeginHorizontal();
         if (EditorGUILayout.Toggle(skillTabToggleList[0], tabToggle[0], EditorStyles.radioButton))
@@ -476,7 +509,7 @@ public class ActorTraitWindow : EditorWindow
     private void EquipTab(Rect generalBox, float widthSpace)
     {
         fieldWidth = generalBox.width * .2f;
-        fieldHeight = generalBox.height * .08f;
+        fieldHeight = generalBox.height * .12f;
         MemsetArray(thisClass.selectedTabToggle, tabToggle);
         GUILayout.BeginHorizontal();
         if (EditorGUILayout.Toggle(equipTabToggleList[0], tabToggle[0], EditorStyles.radioButton))
@@ -562,7 +595,7 @@ public class ActorTraitWindow : EditorWindow
     private void Other(Rect generalBox, float widthSpace)
     {
         fieldWidth = generalBox.width * .2f;
-        fieldHeight = generalBox.height * .08f;
+        fieldHeight = generalBox.height * .12f;
         MemsetArray(thisClass.selectedTabToggle, tabToggle);
         GUILayout.BeginHorizontal();
         if (EditorGUILayout.Toggle(otherTabToggleList[0], tabToggle[0], EditorStyles.radioButton))
@@ -681,6 +714,16 @@ public class ActorTraitWindow : EditorWindow
         for (int i = 0; i < armorDisplayName.Length; i++)
         {
             armorDisplayName[i] = armorData[i].dataName;
+        }
+    }
+    public void BaseValue(int i)
+    {
+        if (i == 0)
+        {
+            firstSelectedArray = thisClass.selectedArrayIndex;
+            firstSelectedTab = thisClass.selectedTabIndex;
+            firstSelectedToggle = thisClass.selectedTabToggle;
+            firstValue = thisClass.traitValue;
         }
     }
     public string StringMaker(int selectedTabIndex, int selectedToggleIndex, int selectedArrayIndex, int value)
