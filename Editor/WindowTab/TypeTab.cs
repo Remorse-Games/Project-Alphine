@@ -6,49 +6,21 @@ using NUnit.Framework.Constraints;
 public class TypeTab : BaseTab
 {
     //Having list of all elements exist in data.
-    public List<TypeElementData> element = new List<TypeElementData>();
-
-    //List of names. Why you ask? because selectionGrid require
-    //array of string, which we cannot obtain in ElementData.
-    //I hope later got better solution about this to not do
-    //a double List for this kind of thing.
-    public List<string> elementDisplayName = new List<string>();
-
+    public List<TypeElementData> element        = new List<TypeElementData>();
     //Having list of all skills exist in data.
-    public List<TypeSkillData> skill = new List<TypeSkillData>();
-
-    //List of names. Why you ask? because selectionGrid require
-    //array of string, which we cannot obtain in SkillData.
-    //I hope later got better solution about this to not do
-    //a double List for this kind of thing.
-    public List<string> skillDisplayName = new List<string>();
-
+    public List<TypeSkillData> skill            = new List<TypeSkillData>();
     //Having list of all weapons exist in data.
-    public List<TypeWeaponData> weapon = new List<TypeWeaponData>();
-
-    //List of names. Why you ask? because selectionGrid require
-    //array of string, which we cannot obtain in WeaponData.
-    //I hope later got better solution about this to not do
-    //a double List for this kind of thing.
-    public List<string> weaponDisplayName = new List<string>();
-
+    public List<TypeWeaponData> weapon          = new List<TypeWeaponData>();
     //Having list of all armors exist in data.
-    public List<TypeArmorData> armor = new List<TypeArmorData>();
+    public List<TypeArmorData> armor            = new List<TypeArmorData>();
+    //Having list of all equipmentType exist in data.
+    public List<TypeEquipmentData> equipment    = new List<TypeEquipmentData>();
 
-    //List of names. Why you ask? because selectionGrid require
-    //array of string, which we cannot obtain in SkillData.
-    //I hope later got better solution about this to not do
-    //a double List for this kind of thing.
-    public List<string> armorDisplayName = new List<string>();
-
-    //Having list of all armors exist in data.
-    public List<TypeEquipmentData> equipment = new List<TypeEquipmentData>();
-
-    //List of names. Why you ask? because selectionGrid require
-    //array of string, which we cannot obtain in SkillData.
-    //I hope later got better solution about this to not do
-    //a double List for this kind of thing.
-    public List<string> equipmentDisplayName = new List<string>();
+    public List<string> elementDisplayName      = new List<string>();
+    public List<string> skillDisplayName        = new List<string>();
+    public List<string> weaponDisplayName       = new List<string>();
+    public List<string> armorDisplayName        = new List<string>();
+    public List<string> equipmentDisplayName    = new List<string>();
 
     //All GUIStyle variable initialization.
     GUIStyle typeStyle;

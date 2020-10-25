@@ -6,15 +6,19 @@ public class ActorTab : BaseTab
 {
     //Having list of all player exist in data.
     public List<ActorData> player = new List<ActorData>();
-    
+
+    public List<TypeEquipmentData> equipmentType = new List<TypeEquipmentData>();
     //List of names. Why you ask? because selectionGrid require
     //array of string, which we cannot obtain in ActorData.
     //I hope later got better solution about this to not do
     //a double List for this kind of thing.
     public List<string> actorDisplayName = new List<string>();
 
-    public string[] classDisplayName;
+    //List of inital Equip names.
+    public List<string> initialEquipName = new List<string>();
 
+    public string[] classDisplayName;
+    public string[] equipDisplayName;
     //All GUIStyle variable initialization.
     GUIStyle actorStyle;
     GUIStyle tabStyle;
@@ -28,9 +32,13 @@ public class ActorTab : BaseTab
     //How many actor in ChangeMaximum Func
     public int actorSize;
 
+    //How many terms of Equipment Type we had
+    public int equipmentTypeSize;
+
     //i don't know about this but i leave this to handle later.
     int index = 0;
     int indexTemp = -1;
+    int typeIndex = 0;
 
     //Scroll position. Is this necessary?
     Vector2 scrollPos = Vector2.zero;
@@ -56,6 +64,7 @@ public class ActorTab : BaseTab
     {
         LoadGameData<ActorData>(ref actorSize, player, PathDatabase.ActorRelativeDataPath);
         LoadClassList();
+        LoadTypeEquipmentList();
         ListReset();
     }
 
@@ -311,6 +320,15 @@ public class ActorTab : BaseTab
                                 GUILayout.Width(firstTabWidth + 50),
                                 GUILayout.Height(equipmentBox.height * 0.7f)
                                 );
+
+                           typeIndex = GUILayout.SelectionGrid(
+                                typeIndex, 
+                                equipDisplayName, 
+                                1, 
+                                GUILayout.Width(firstTabWidth - 20),
+                                GUILayout.Height(position.height / 24 * equipmentTypeSize)
+                                );
+
                         GUILayout.EndScrollView();
                         #endregion
                     GUILayout.EndVertical();
@@ -384,10 +402,18 @@ public class ActorTab : BaseTab
     ///</summary>
     private void ListReset()
     {
+        //Actor Reset
         actorDisplayName.Clear();
         for (int i = 0; i < actorSize; i++)
         {
             actorDisplayName.Add(player[i].actorName);
+        }
+
+        //Equip Reset
+        initialEquipName.Clear();
+        for (int i = 0; i < equipmentTypeSize; i++)
+        {
+            initialEquipName.Add(equipmentType[i].dataName);
         }
     }
 
@@ -398,6 +424,16 @@ public class ActorTab : BaseTab
         for (int i = 0; i < classDisplayName.Length; i++)
         {
             classDisplayName[i] = classData[i].className;
+        }
+    }
+
+    private void LoadTypeEquipmentList()
+    {
+        TypeEquipmentData[] typeEquipmentData = Resources.LoadAll<TypeEquipmentData>(PathDatabase.EquipmentRelativeDataPath);
+        equipDisplayName = new string[typeEquipmentData.Length];
+        for (int i = 0; i < equipDisplayName.Length; i++)
+        {
+            equipDisplayName[i] = typeEquipmentData[i].dataName;
         }
     }
 
