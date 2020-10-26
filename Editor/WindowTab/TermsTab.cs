@@ -7,7 +7,7 @@ using System.ComponentModel;
 
 public class TermTab : BaseTab
 {
-    public List<TermData> term = new List<TermData>();
+    public TermData term;
 
     public int termSize;
     public int index = 0;
@@ -20,19 +20,17 @@ public class TermTab : BaseTab
     //Scroll position. Is this necessary
     Vector2 traitsScrollPos = Vector2.zero;
 
-    //dataPath where the game data will be saved as a .assets
-    private string _dataPath = "Data/TermData";
-    private string dataPath = "Assets/Resources/Data/TermData/TermData";
-
     public void Init()
     {
-        LoadGameData<TermData>(ref termSize, term, _dataPath);
-        if (termSize == 0)
+        term = Resources.Load<TermData>("Data/TermData/TermData");
+        if (term == null)
         {
-            ChangeMaximum<TermData>(termSize + 1, term, dataPath);
-            termSize++;
+            ScriptableObject newTermData = ScriptableObject.CreateInstance<TermData>();
+            AssetDatabase.CreateAsset(newTermData, "Assets/Resources/Data/TermData/TermData.asset");
+            AssetDatabase.SaveAssets();
+            term = Resources.Load<TermData>("Data/TermData/TermData");
+
         }
-        LoadGameData<TermData>(ref termSize, term, _dataPath);
     }
 
     public void OnRender(Rect position)
@@ -87,35 +85,35 @@ public class TermTab : BaseTab
                             float fieldHeight = basicStatuses.height * .11f;
                             GUILayout.BeginVertical();
                                 GUILayout.Label("Level:");
-                                term[index].termLevel = GUILayout.TextField(term[index].termLevel, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                                term.termLevel = GUILayout.TextField(term.termLevel, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
 
                                 GUILayout.Label("HP:");
-                                term[index].termHP = GUILayout.TextField(term[index].termHP, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                                term.termHP = GUILayout.TextField(term.termHP, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
 
                                 GUILayout.Label("MP:");
-                                term[index].termMP = GUILayout.TextField(term[index].termMP, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                                term.termMP = GUILayout.TextField(term.termMP, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
 
                                 GUILayout.Label("TP:");
-                                term[index].termTP = GUILayout.TextField(term[index].termTP, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                                term.termTP = GUILayout.TextField(term.termTP, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
 
                                 GUILayout.Label("EXP:");
-                                term[index].termEXP = GUILayout.TextField(term[index].termEXP, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                                term.termEXP = GUILayout.TextField(term.termEXP, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
                             GUILayout.EndVertical();
                             GUILayout.BeginVertical();
                                 GUILayout.Label("Level (abbr.):");
-                                term[index].termLevelabbr = GUILayout.TextField(term[index].termLevelabbr, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                                term.termLevelabbr = GUILayout.TextField(term.termLevelabbr, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
 
                                 GUILayout.Label("HP (abbr.):");
-                                term[index].termHPabbr = GUILayout.TextField(term[index].termHPabbr, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                                term.termHPabbr = GUILayout.TextField(term.termHPabbr, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
 
                                 GUILayout.Label("MP (abbr.):");
-                                term[index].termMPabbr = GUILayout.TextField(term[index].termMPabbr, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                                term.termMPabbr = GUILayout.TextField(term.termMPabbr, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
 
                                 GUILayout.Label("TP (abbr.):");
-                                term[index].termTPabbr = GUILayout.TextField(term[index].termTPabbr, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                                term.termTPabbr = GUILayout.TextField(term.termTPabbr, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
 
                                 GUILayout.Label("EXP (abbr.):");
-                                term[index].termEXPabbr = GUILayout.TextField(term[index].termEXPabbr, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                                term.termEXPabbr = GUILayout.TextField(term.termEXPabbr, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
                             GUILayout.EndVertical();
                         GUILayout.EndHorizontal();
 
@@ -129,35 +127,35 @@ public class TermTab : BaseTab
                         GUILayout.BeginHorizontal();
                             GUILayout.BeginVertical();
                                 GUILayout.Label("Max. HP:");
-                                term[index].termMaxHP = GUILayout.TextField(term[index].termMaxHP, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                                term.termMaxHP = GUILayout.TextField(term.termMaxHP, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
 
                                 GUILayout.Label("Attack:");
-                                term[index].termAttack = GUILayout.TextField(term[index].termAttack, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                                term.termAttack = GUILayout.TextField(term.termAttack, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
 
                                 GUILayout.Label("M. Attack:");
-                                term[index].termMAttack = GUILayout.TextField(term[index].termMAttack, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                                term.termMAttack = GUILayout.TextField(term.termMAttack, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
 
                                 GUILayout.Label("Agility:");
-                                term[index].termAgility = GUILayout.TextField(term[index].termAgility, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                                term.termAgility = GUILayout.TextField(term.termAgility, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
 
                                 GUILayout.Label("Hit Rate:");
-                                term[index].termHitRate = GUILayout.TextField(term[index].termHitRate, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                                term.termHitRate = GUILayout.TextField(term.termHitRate, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
                             GUILayout.EndVertical();
                             GUILayout.BeginVertical();
                                 GUILayout.Label("Max. MP:");
-                                term[index].termMaxMP = GUILayout.TextField(term[index].termMaxMP, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                                term.termMaxMP = GUILayout.TextField(term.termMaxMP, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
 
                                 GUILayout.Label("Defense:");
-                                term[index].termDefense = GUILayout.TextField(term[index].termDefense, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                                term.termDefense = GUILayout.TextField(term.termDefense, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
 
                                 GUILayout.Label("M. Defense:");
-                                term[index].termMDefense = GUILayout.TextField(term[index].termMDefense, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                                term.termMDefense = GUILayout.TextField(term.termMDefense, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
 
                                 GUILayout.Label("Luck:");
-                                term[index].termLuck = GUILayout.TextField(term[index].termLuck, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                                term.termLuck = GUILayout.TextField(term.termLuck, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
 
                                 GUILayout.Label("Evasion Rate:");
-                                term[index].termEvasionRate = GUILayout.TextField(term[index].termEvasionRate, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                                term.termEvasionRate = GUILayout.TextField(term.termEvasionRate, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
                             GUILayout.EndVertical();
                         GUILayout.EndHorizontal();
                     GUILayout.EndArea();
@@ -174,46 +172,46 @@ public class TermTab : BaseTab
                     GUILayout.BeginHorizontal();
                         GUILayout.BeginVertical();
                             GUILayout.Label("Fight:");
-                            term[index].commandFight = GUILayout.TextField(term[index].commandFight, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
+                            term.commandFight = GUILayout.TextField(term.commandFight, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
 
                             GUILayout.Label("Item:");
-                            term[index].commandItem = GUILayout.TextField(term[index].commandItem, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
+                            term.commandItem = GUILayout.TextField(term.commandItem, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
 
                             GUILayout.Label("Formation:");
-                            term[index].commandFormation = GUILayout.TextField(term[index].commandFormation, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
+                            term.commandFormation = GUILayout.TextField(term.commandFormation, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
                         GUILayout.EndVertical();
 
                         GUILayout.BeginVertical();
                             GUILayout.Label("Escape:");
-                            term[index].commandEscape = GUILayout.TextField(term[index].commandEscape, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
+                            term.commandEscape = GUILayout.TextField(term.commandEscape, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
 
                             GUILayout.Label("Skill:");
-                            term[index].commandSkill = GUILayout.TextField(term[index].commandSkill, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
+                            term.commandSkill = GUILayout.TextField(term.commandSkill, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
 
                             GUILayout.Label("Options:");
-                            term[index].commandOption = GUILayout.TextField(term[index].commandOption, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
+                            term.commandOption = GUILayout.TextField(term.commandOption, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
                         GUILayout.EndVertical();
 
                         GUILayout.BeginVertical();
                             GUILayout.Label("Attack:");
-                            term[index].commandAttack = GUILayout.TextField(term[index].commandAttack, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
+                            term.commandAttack = GUILayout.TextField(term.commandAttack, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
 
                             GUILayout.Label("Equip:");
-                            term[index].commandEquip = GUILayout.TextField(term[index].commandEquip, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
+                            term.commandEquip = GUILayout.TextField(term.commandEquip, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
 
                             GUILayout.Label("Save:");
-                            term[index].commandSave = GUILayout.TextField(term[index].commandSave, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
+                            term.commandSave = GUILayout.TextField(term.commandSave, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
                         GUILayout.EndVertical();
 
                         GUILayout.BeginVertical();
                             GUILayout.Label("Guard:");
-                            term[index].commandGuard = GUILayout.TextField(term[index].commandGuard, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
+                            term.commandGuard = GUILayout.TextField(term.commandGuard, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
 
                             GUILayout.Label("Status:");
-                            term[index].commandStatus = GUILayout.TextField(term[index].commandStatus, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
+                            term.commandStatus = GUILayout.TextField(term.commandStatus, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
 
                             GUILayout.Label("Game End:");
-                            term[index].commandGameEnd = GUILayout.TextField(term[index].commandGameEnd, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
+                            term.commandGameEnd = GUILayout.TextField(term.commandGameEnd, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
                         GUILayout.EndVertical();
                     GUILayout.EndHorizontal();
                     #endregion
@@ -226,46 +224,46 @@ public class TermTab : BaseTab
 
                         GUILayout.BeginVertical();
                             GUILayout.Label("Weapon:");
-                            term[index].commandWeapon = GUILayout.TextField(term[index].commandWeapon, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
+                            term.commandWeapon = GUILayout.TextField(term.commandWeapon, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
 
                             GUILayout.Label("Optimize:");
-                            term[index].commandOptimize = GUILayout.TextField(term[index].commandOptimize, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
+                            term.commandOptimize = GUILayout.TextField(term.commandOptimize, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
 
                             GUILayout.Label("New Game:");
-                            term[index].commandNewGame = GUILayout.TextField(term[index].commandNewGame, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
+                            term.commandNewGame = GUILayout.TextField(term.commandNewGame, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
                         GUILayout.EndVertical();
 
                         GUILayout.BeginVertical();
                             GUILayout.Label("Armor:");
-                            term[index].commandArmor = GUILayout.TextField(term[index].commandArmor, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
+                            term.commandArmor = GUILayout.TextField(term.commandArmor, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
 
                             GUILayout.Label("Clear:");
-                            term[index].commandClear = GUILayout.TextField(term[index].commandClear, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
+                            term.commandClear = GUILayout.TextField(term.commandClear, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
 
                             GUILayout.Label("Continue:");
-                            term[index].commandContinue = GUILayout.TextField(term[index].commandContinue, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
+                            term.commandContinue = GUILayout.TextField(term.commandContinue, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
                         GUILayout.EndVertical();
 
                         GUILayout.BeginVertical();
                             GUILayout.Label("Key Item:");
-                            term[index].commandKeyItem = GUILayout.TextField(term[index].commandKeyItem, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
+                            term.commandKeyItem = GUILayout.TextField(term.commandKeyItem, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
 
                             GUILayout.Label("Buy:");
-                            term[index].commandBuy = GUILayout.TextField(term[index].commandBuy, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
+                            term.commandBuy = GUILayout.TextField(term.commandBuy, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
 
                             GUILayout.Label("To Title:");
-                            term[index].commandToTitle = GUILayout.TextField(term[index].commandToTitle, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
+                            term.commandToTitle = GUILayout.TextField(term.commandToTitle, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
                         GUILayout.EndVertical();
 
                         GUILayout.BeginVertical();
                             GUILayout.Label("Equip:");
-                            term[index].commandEquip2 = GUILayout.TextField(term[index].commandEquip2, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
+                            term.commandEquip2 = GUILayout.TextField(term.commandEquip2, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
 
                             GUILayout.Label("Sell:");
-                            term[index].commandSell = GUILayout.TextField(term[index].commandSell, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
+                            term.commandSell = GUILayout.TextField(term.commandSell, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
 
                             GUILayout.Label("Cancel:");
-                            term[index].commandCancel = GUILayout.TextField(term[index].commandCancel, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
+                            term.commandCancel = GUILayout.TextField(term.commandCancel, GUILayout.Width(secondFieldWidth), GUILayout.Height(secondFieldHeight));
                         GUILayout.EndVertical();
 
                     GUILayout.EndHorizontal();
@@ -308,7 +306,7 @@ public class TermTab : BaseTab
 
         GUILayout.EndArea();
         #endregion
-        EditorUtility.SetDirty(term[index]);
+        EditorUtility.SetDirty(term);
     }
 
     #region Features
