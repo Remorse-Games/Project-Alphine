@@ -9,7 +9,7 @@ public class TermTab : BaseTab
 {
     public List<TermData> term = new List<TermData>();
 
-    public int termSize = 1;
+    public int termSize;
     public int index = 0;
 
     //All GUIStyle variable initialization.
@@ -22,9 +22,16 @@ public class TermTab : BaseTab
 
     //dataPath where the game data will be saved as a .assets
     private string _dataPath = "Data/TermData";
+    private string dataPath = "Assets/Resources/Data/TermData/TermData";
 
     public void Init()
     {
+        LoadGameData<TermData>(ref termSize, term, _dataPath);
+        if (termSize == 0)
+        {
+            ChangeMaximum<TermData>(termSize + 1, term, dataPath);
+            termSize++;
+        }
         LoadGameData<TermData>(ref termSize, term, _dataPath);
     }
 

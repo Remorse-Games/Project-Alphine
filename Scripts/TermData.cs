@@ -55,10 +55,7 @@ public class TermData : ScriptableObject
 
     public void OnEnable()
     {
-        if (termLevel == null)
-        {
-            Init();
-        }
+        Init();
     }
 
     public void Init()
