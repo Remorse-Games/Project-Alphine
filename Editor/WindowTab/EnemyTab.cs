@@ -36,8 +36,12 @@ public class EnemyTab : BaseTab
     int indexTemp = -1;
 
     Texture2D enemyImage;
-
-    public void Init(Rect position)
+    public void Init()
+    {
+        LoadGameData<EnemyData>(ref enemySize, enemy, PathDatabase.EnemyRelativeDataPath);
+        ListReset();
+    }
+    public void OnRender(Rect position)
     {
         #region A Bit Explanation About Local Tab
         ///So there is 2 types of Tab,
@@ -103,7 +107,9 @@ public class EnemyTab : BaseTab
                 enemySizeTemp = EditorGUILayout.IntField(enemySizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
                 if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
                 {
-                    ChangeMaximumPrivate(enemySize);
+                    enemySize = enemySizeTemp;
+                    ChangeMaximum<EnemyData>(enemySize, enemy, PathDatabase.EnemyExplicitDataPath);
+                    ListReset();
                 }
 
             GUILayout.EndArea();
@@ -383,42 +389,22 @@ public class EnemyTab : BaseTab
 
         GUILayout.EndArea();
         #endregion
+        EditorUtility.SetDirty(enemy[index]);
     }
 
     #region Features
-    /// <summary>
-    /// Change Maximum function , when we change the size
-    /// and click Change Maximum button in Editor, it will update
-    /// and change the size while creating new data.
-    /// </summary>
-    /// <param name="size">get size from enemySize</param>
-
-    int counter = 0;
-    private void ChangeMaximumPrivate(int size)
+    ///<summary>
+    ///Clears out the displayName list and add it with new value
+    ///</summary>
+    private void ListReset()
     {
-        enemySize = enemySizeTemp;
-        //This count only useful when we doesn't have a name yet.
-        //you can remove this when decide a new format later.
-        while (counter <= enemySize)
+        enemyDisplayName.Clear();
+        for (int i = 0; i < enemySize; i++)
         {
-            enemy.Add(ScriptableObject.CreateInstance<EnemyData>());
-            AssetDatabase.CreateAsset(enemy[counter], "Assets/Resources/Data/EnemyData/Enemy_" + counter + ".asset");
-            AssetDatabase.SaveAssets();
-            enemyDisplayName.Add(enemy[counter].enemyName);
-            counter++;
-        }
-        if (counter > enemySize)
-        {
-            enemy.RemoveRange(enemySize, enemy.Count - enemySize);
-            enemyDisplayName.RemoveRange(enemySize, enemyDisplayName.Count - enemySize);
-            for (int i = enemySize; i <= counter; i++)
-            {
-                AssetDatabase.DeleteAsset("Assets/Resources/Data/EnemyData/Enemy_" + i + ".asset");
-            }
-            AssetDatabase.SaveAssets();
-            counter = enemySize;
+            enemyDisplayName.Add(enemy[i].enemyName);
         }
     }
+
 
     public string StringMaker(int indexx)
     {
@@ -446,7 +432,6 @@ public class EnemyTab : BaseTab
     }
     public override void ItemTabLoader(int index)
     {
-        Debug.Log(index + "index");
         Texture2D defTex = new Texture2D(256, 256);
         if (index != -1)
         {

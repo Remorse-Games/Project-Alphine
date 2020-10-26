@@ -62,8 +62,13 @@ public class WeaponTab : BaseTab
     //Image Area.
     Texture2D weaponIcon;
 
+    public void Init()
+    {
+        LoadGameData<WeaponData>(ref weaponSize, weapon, PathDatabase.WeaponTabRelativeDataPath);
+        ListReset();
+    }
 
-    public void Init(Rect position)
+    public void OnRender(Rect position)
     {
         #region A Bit Explanation About Local Tab
         ///So there is 2 types of Tab,
@@ -130,7 +135,9 @@ public class WeaponTab : BaseTab
                 weaponSizeTemp = EditorGUILayout.IntField(weaponSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
                 if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
                 {
-                    ChangeMaximumPrivate(weaponSize);
+                    weaponSize = weaponSizeTemp;
+                    ChangeMaximum<WeaponData>(weaponSize, weapon, PathDatabase.WeaponTabExplicitDataPath);
+                    ListReset();
                 }
 
             GUILayout.EndArea();
@@ -400,48 +407,26 @@ public class WeaponTab : BaseTab
 
         GUILayout.EndArea(); // End of drawing WeaponTab
         #endregion
+        EditorUtility.SetDirty(weapon[index]);
     }
 
 
     #region Features
 
-    /// <summary>
-    /// Change Maximum function , when we change the size
-    /// and click Change Maximum button in Editor, it will update
-    /// and change the size while creating new data.
-    /// </summary>
-    /// <param name="size">get size from weaponSize</param>
-
-    int counter = 0;
-    private void ChangeMaximumPrivate(int size)
+    ///<summary>
+    ///Clears out the displayName list and add it with new value
+    ///</summary>
+    private void ListReset()
     {
-        weaponSize = weaponSizeTemp;
-        //This count only useful when we doesn't have a name yet.
-        //you can remove this when decide a new format later.
-        while (counter <= weaponSize)
+        weaponDisplayName.Clear();
+        for (int i = 0; i < weaponSize; i++)
         {
-            weapon.Add(ScriptableObject.CreateInstance<WeaponData>());
-            AssetDatabase.CreateAsset(weapon[counter], "Assets/Resources/Data/WeaponData/Weapon_" + counter + ".asset");
-            AssetDatabase.SaveAssets();
-            weaponDisplayName.Add(weapon[counter].weaponName);
-            counter++;
-        }
-        if (counter > weaponSize)
-        {
-            weapon.RemoveRange(weaponSize, weapon.Count - weaponSize);
-            weaponDisplayName.RemoveRange(weaponSize, weaponDisplayName.Count - weaponSize);
-            for (int i = weaponSize; i <= counter; i++)
-            {
-                AssetDatabase.DeleteAsset("Assets/Resources/Data/WeaponData/Wweapon_" + i + ".asset");
-            }
-            AssetDatabase.SaveAssets();
-            counter = weaponSize;
+            weaponDisplayName.Add(weapon[i].weaponName);
         }
     }
-
+   
     public override void ItemTabLoader(int index)
     {
-        Debug.Log(index + "index");
         Texture2D defTex = new Texture2D(256, 256);
         if (index != -1)
         {

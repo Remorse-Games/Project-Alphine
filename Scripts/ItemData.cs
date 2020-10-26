@@ -39,8 +39,14 @@ public class ItemData : ScriptableObject
 
     [TextArea]
     public string notes;
-
     public void OnEnable()
+    {
+        if (itemName == null)
+        {
+            Init();
+        }
+    }
+    public void Init()
     {
         Sprite sp = Resources.Load<Sprite>("Image");
 

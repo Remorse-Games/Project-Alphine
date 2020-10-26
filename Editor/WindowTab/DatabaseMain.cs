@@ -8,23 +8,38 @@ public class DatabaseMain : EditorWindow
 {
     #region Init Values
     //Editor Classes
-    ActorTab actorTab;
-    ClassTab classTab;
-    SkillsTab skillTab;
-    ItemTab itemTab;
-    WeaponTab weaponTab;
-    ArmorTab armorTab;
-    EnemyTab enemyTab;
-    TroopTab troopTab;
-    StateTab stateTab;
-    TermTab termTab;
+    ActorTab    actorTab;
+    ClassTab    classTab;
+    SkillsTab   skillTab;
+    ItemTab     itemTab;
+    WeaponTab   weaponTab;
+    ArmorTab    armorTab;
+    EnemyTab    enemyTab;
+    TroopTab    troopTab;
+    StateTab    stateTab;
+    TermTab     termTab;
+    SystemTab   systemTab;
+    TypeTab     typeTab;
 
     //Tab Area. DO NOT CHANGE anything in here.
     public static float tabAreaWidth;
     public static float tabAreaHeight;
 
     //Here we setup the tab selection button.
-    private int selectedTab = 0;
+    private int selectedTab;
+    public int SelectedTab
+    {
+        get { return selectedTab; }
+        set
+        {
+            if (selectedTab != value)
+            {
+                InitTabSelection();
+            }
+            selectedTab = value;
+        }
+    }
+
     private string[] tabNames = {
          "Actors",
         "Classes" ,
@@ -55,10 +70,22 @@ public class DatabaseMain : EditorWindow
     {
         ValueInit();
         BaseTab.FolderChecker();
+        InitTabSelection();
+    }
+
+    private void InitTabSelection()
+    {
         actorTab.Init();
+        classTab.Init();
         skillTab.Init();
+        itemTab.Init();
+        weaponTab.Init();
+        armorTab.Init();
+        enemyTab.Init();
         troopTab.Init();
         stateTab.Init();
+        systemTab.Init();
+        typeTab.Init();
         termTab.Init();
     }
 
@@ -70,7 +97,7 @@ public class DatabaseMain : EditorWindow
     private void OnGUI()
     {
         DBTab();
-        TabSelection(selectedTab);        
+        TabSelection(SelectedTab);
     }
 
     //////////////////////////////////////////////////
@@ -81,16 +108,18 @@ public class DatabaseMain : EditorWindow
     /// </summary>
     private void ValueInit()
     {
-        actorTab = new ActorTab();
-        classTab = new ClassTab();
-        skillTab = new SkillsTab();
-        itemTab = new ItemTab();
-        weaponTab = new WeaponTab();
-        armorTab = new ArmorTab();
-        enemyTab = new EnemyTab();
-        troopTab = new TroopTab();
-        stateTab = new StateTab();
-        termTab = new TermTab();
+        actorTab  = new ActorTab();
+        classTab  = new ClassTab();
+        skillTab  = new SkillsTab();
+        itemTab   = new ItemTab();
+        weaponTab = new WeaponTab();   
+        armorTab  = new ArmorTab();
+        enemyTab  = new EnemyTab();
+        troopTab  = new TroopTab();
+        stateTab  = new StateTab();
+        systemTab = new SystemTab();
+        termTab   = new TermTab();
+        typeTab   = new TypeTab();
     }
 
     //////////////////////////////////////////////////
@@ -106,7 +135,7 @@ public class DatabaseMain : EditorWindow
         
         #region  BoxUI
         GUILayout.BeginVertical("Box");
-        selectedTab = GUILayout.SelectionGrid(selectedTab, tabNames, 1, GUILayout.Width(tabAreaWidth), GUILayout.Height(tabAreaHeight));
+        SelectedTab = GUILayout.SelectionGrid(SelectedTab, tabNames, 1, GUILayout.Width(tabAreaWidth), GUILayout.Height(tabAreaHeight));
         GUILayout.EndVertical();
         #endregion
     }
@@ -122,23 +151,14 @@ public class DatabaseMain : EditorWindow
     {
         switch (selectedTab)
         {
-            case 14:
+            case 11:
                 termTab.OnRender(position);
                 break;
-            case 13:
-                actorTab.OnRender(position);
-                break;
-            case 12:
-                actorTab.OnRender(position);
-                break;
-            case 11:
-                actorTab.OnRender(position);
-                break;
             case 10:
-                actorTab.OnRender(position);
+                typeTab.OnRender(position);
                 break;
             case 9:
-                actorTab.OnRender(position);
+                systemTab.OnRender(position);
                 break;
             case 8:
                 stateTab.OnRender(position);
@@ -147,28 +167,27 @@ public class DatabaseMain : EditorWindow
                 troopTab.OnRender(position);
                 break;
             case 6:
-                enemyTab.Init(position);
+                enemyTab.OnRender(position);
                 break;
             case 5:
-                armorTab.Init(position);
+                armorTab.OnRender(position);
                 break;
             case 4:
-                weaponTab.Init(position);
+                weaponTab.OnRender(position);
                 break;
             case 3:
-                itemTab.Init(position);
+                itemTab.OnRender(position);
                 break;
             case 2:
                 skillTab.OnRender(position);
                 break;
             case 1:
-                classTab.Init(position);
+                classTab.OnRender(position);
                 break;
             case 0:
                 actorTab.OnRender(position);
                 break;
         }
     }
-
     #endregion
 }

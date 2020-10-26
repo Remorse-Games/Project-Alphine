@@ -40,6 +40,10 @@ public abstract class BaseTab
         {
             AssetDatabase.CreateFolder("Assets/Resources/Data", "ActorData");
         }
+        if (!AssetDatabase.IsValidFolder("Assets/Resources/Data/ActorData/TraitData"))
+        {
+            AssetDatabase.CreateFolder("Assets/Resources/Data/TraitData", "TraitData");
+        }
         if (!AssetDatabase.IsValidFolder("Assets/Resources/Image"))
         {
             AssetDatabase.CreateFolder("Assets/Resources", "Image");
@@ -76,13 +80,37 @@ public abstract class BaseTab
         {
             AssetDatabase.CreateFolder("Assets/Resources/Data", "StateData");
         }
-        if (!AssetDatabase.IsValidFolder("Assets/Resources/Data/AnimationData"))
-        {
-            AssetDatabase.CreateFolder("Assets/Resources/Data", "AnimationData");
-        }
         if (!AssetDatabase.IsValidFolder("Assets/Resources/Data/TermData"))
         {
             AssetDatabase.CreateFolder("Assets/Resources/Data", "TermData");
+        }
+        if (!AssetDatabase.IsValidFolder("Assets/Resources/Data/SystemData"))
+        {
+            AssetDatabase.CreateFolder("Assets/Resources/Data", "SystemData");
+        }
+        if (!AssetDatabase.IsValidFolder("Assets/Resources/Data/TypeData"))
+        {
+            AssetDatabase.CreateFolder("Assets/Resources/Data", "TypeData");
+        }
+        if (!AssetDatabase.IsValidFolder("Assets/Resources/Data/TypeData/ElementData"))
+        {
+            AssetDatabase.CreateFolder("Assets/Resources/Data/TypeData", "ElementData");
+        }
+        if (!AssetDatabase.IsValidFolder("Assets/Resources/Data/TypeData/SkillData"))
+        {
+            AssetDatabase.CreateFolder("Assets/Resources/Data/TypeData", "SkillData");
+        }
+        if (!AssetDatabase.IsValidFolder("Assets/Resources/Data/TypeData/WeaponData"))
+        {
+            AssetDatabase.CreateFolder("Assets/Resources/Data/TypeData", "WeaponData");
+        }
+        if (!AssetDatabase.IsValidFolder("Assets/Resources/Data/TypeData/ArmorData"))
+        {
+            AssetDatabase.CreateFolder("Assets/Resources/Data/TypeData", "ArmorData");
+        }
+        if (!AssetDatabase.IsValidFolder("Assets/Resources/Data/TypeData/EquipmentData"))
+        {
+            AssetDatabase.CreateFolder("Assets/Resources/Data/TypeData", "EquipmentData");
         }
     }
 

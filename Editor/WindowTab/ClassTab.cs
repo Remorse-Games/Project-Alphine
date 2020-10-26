@@ -27,8 +27,12 @@ public class ClassTab : BaseTab
     int classSizeTemp;
     #endregion
 
-
-    public void Init(Rect position)
+    public void Init()
+    {
+        LoadGameData<ClassesData>(ref classSize, classes, PathDatabase.ClassRelativeDataPath);
+        ListReset();
+    }
+    public void OnRender(Rect position)
     {
         ////////////////////////////////////////////////////////////////////////////////////////
         /////////////////////////////START REGION OF VALUE INIT/////////////////////////////////
@@ -81,7 +85,9 @@ public class ClassTab : BaseTab
                 classSizeTemp = EditorGUILayout.IntField(classSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
                 if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
                 {
-                    ChangeMaximum(classSize);
+                    classSize = classSizeTemp;
+                    ChangeMaximum<ClassesData>(classSize, classes, PathDatabase.ClassExplicitDataPath);
+                    ListReset();
                 }
             GUILayout.EndArea();
             #endregion
@@ -391,45 +397,24 @@ public class ClassTab : BaseTab
 
         GUILayout.EndArea();
         #endregion
+        EditorUtility.SetDirty(classes[index]);
     }
 
 
 
     #region Features
-
-
-    /// <summary>
-    /// Change Maximum function , when we change the size
-    /// and click Change Maximum button in Editor, it will update
-    /// and change the size while creating new data.
-    /// </summary>
-    /// <param name="size">get size from classSize</param>
-    int counter = 0;
-    private void ChangeMaximum(int size)
+    ///<summary>
+    ///Clears out the displayName list and add it with new value
+    ///</summary>
+    private void ListReset()
     {
-        classSize = classSizeTemp;
-        //This count only useful when we doesn't have a name yet.
-        //you can remove this when decide a new format later.
-        while (counter <= classSize)
+        classesNames.Clear();
+        for (int i = 0; i < classSize; i++)
         {
-            classes.Add(ScriptableObject.CreateInstance<ClassesData>());
-            AssetDatabase.CreateAsset(classes[counter], "Assets/Resources/Data/ClassesData/Class_" + counter + ".asset");
-            AssetDatabase.SaveAssets();
-            classesNames.Add(classes[counter].className);
-            counter++;
-        }
-        if (counter > classSize)
-        {
-            classes.RemoveRange(classSize, classes.Count - classSize);
-            classesNames.RemoveRange(classSize, classesNames.Count - classSize);
-            for (int i = classSize; i <= counter; i++)
-            {
-                AssetDatabase.DeleteAsset("Assets/Resources/Data/ClassesData/Class_" + i + ".asset");
-            }
-            AssetDatabase.SaveAssets();
-            counter = classSize;
+            classesNames.Add(classes[i].className);
         }
     }
+
     #endregion
 
     private void Testing(int windowId)

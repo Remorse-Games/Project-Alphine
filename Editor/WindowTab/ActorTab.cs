@@ -8,6 +8,7 @@ public class ActorTab : BaseTab
 {
     //Having list of all player exist in data.
     public List<ActorData> player = new List<ActorData>();
+    public List<ActorTraitsData> traits = new List<ActorTraitsData>();
     
 
     //List of names. Why you ask? because selectionGrid require
@@ -15,7 +16,9 @@ public class ActorTab : BaseTab
     //I hope later got better solution about this to not do
     //a double List for this kind of thing.
     public List<string> actorDisplayName = new List<string>();
+    public List<string> traitDisplayName = new List<string>();
 
+    public string[] classDisplayName;
     //All GUIStyle variable initialization.
     GUIStyle actorStyle;
     GUIStyle tabStyle;
@@ -36,10 +39,13 @@ public class ActorTab : BaseTab
 
     //How many actor in ChangeMaximum Func
     public int actorSize;
+    public int traitSize = 3;
 
     //i don't know about this but i leave this to handle later.
     int index = 0;
+    int traitIndex = 0;
     int indexTemp = -1;
+    int traitIndexTemp = -1;
 
     //Scroll position. Is this necessary?
     Vector2 scrollPos = Vector2.zero;
@@ -61,13 +67,13 @@ public class ActorTab : BaseTab
     public int actorSizeTemp;
     #endregion
 
-    //dataPath where the game data will be saved as a .assets
-    private string dataPath = "Assets/Resources/Data/ActorData/Actor_";
-    private string _dataPath = "Data/ActorData";
 
     public void Init()
     {
-        LoadGameData<ActorData>(ref actorSize, player, _dataPath);
+        LoadGameData<ActorData>(ref actorSize, player, PathDatabase.ActorRelativeDataPath);
+        LoadGameData<ActorTraitsData>(ref traitSize, traits, PathDatabase.ActorTraitRelativeDataPath);
+        LoadClassList();
+        TraitListReset();
         ListReset();
     }
 
@@ -143,7 +149,7 @@ public class ActorTab : BaseTab
                 if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
                 {
                     actorSize = actorSizeTemp;
-                    ChangeMaximum<ActorData>(actorSize, player, dataPath);
+                    ChangeMaximum<ActorData>(actorSize, player, PathDatabase.ActorExplicitDataPath);
                     ListReset();
                 }
             GUILayout.EndArea();
@@ -336,10 +342,11 @@ public class ActorTab : BaseTab
             #region Tab 3/3
             //Third Column
             GUILayout.BeginArea(new Rect(position.width - (position.width - firstTabWidth * 2) + 77, 0, firstTabWidth + 25, tabHeight - 15), columnStyle);
-
+            
                 //Traits
                 Rect traitsBox = new Rect(5, 5, firstTabWidth + 15, position.height * 5 / 8);
                 #region Traits
+                TraitListReset();
                 GUILayout.BeginArea(traitsBox, tabStyle);
                     GUILayout.Space(2);
                     GUILayout.Label("Traits", EditorStyles.boldLabel);
@@ -358,8 +365,29 @@ public class ActorTab : BaseTab
                             GUILayout.Width(firstTabWidth + 5), 
                             GUILayout.Height(traitsBox.height * 0.87f)
                             );
+                        traitIndex = GUILayout.SelectionGrid(
+                            traitIndex,
+                            traitDisplayName.ToArray(),
+                            1,
+                            GUILayout.Width(firstTabWidth - 20),
+                            GUILayout.Height(position.height / 24 * traitSize
+                            ));
                     GUILayout.EndScrollView();
-                    #endregion
+                #endregion
+        
+                //Happen everytime selection grid is updated
+                if (GUI.changed)
+                {
+                    if (traitIndex != traitIndexTemp)
+                    {
+                        ActorTraitWindow.ShowWindow(traits[traitIndex]);
+                        traitIndexTemp = -1;
+                    }
+                    else
+                    {
+                        traitIndexTemp = traitIndex;
+                    }
+                }
                 GUILayout.EndArea();
                 #endregion //End of TraitboxArea
 
@@ -400,6 +428,27 @@ public class ActorTab : BaseTab
         for (int i = 0; i < actorSize; i++)
         {
             actorDisplayName.Add(player[i].actorName);
+        }
+    }
+
+    ///<summary>
+    ///Clears out the displayName list and add it with new value
+    ///</summary>
+    private void TraitListReset()
+    {
+        traitDisplayName.Clear();
+        for (int i = 0; i < traitSize; i++)
+        {
+            traitDisplayName.Add(traits[i].traitName);
+        }
+    }
+    private void LoadClassList()
+    {
+        ClassesData[] classData = Resources.LoadAll<ClassesData>(PathDatabase.ClassRelativeDataPath);
+        classDisplayName = new string[classData.Length];
+        for (int i = 0; i < classDisplayName.Length; i++)
+        {
+            classDisplayName[i] = classData[i].className;
         }
     }
 
