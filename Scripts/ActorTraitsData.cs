@@ -20,7 +20,6 @@ public class ActorTraitsData : ScriptableObject
     }
     public void Init()
     {
-        traitName = "None";
-        traitValue = 0;
+
     }
 }
