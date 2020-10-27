@@ -76,9 +76,8 @@ public class ActorTab : BaseTab
     {
         LoadGameData<ActorData>(ref actorSize, player, PathDatabase.ActorRelativeDataPath);
         LoadGameData<ActorTraitsData>(ref traitSize, traits, PathDatabase.ActorTraitRelativeDataPath);
+        LoadGameData<TypeEquipmentData>(ref equipmentTypeSize, equipmentType, PathDatabase.EquipmentRelativeDataPath);
         LoadClassList();
-        TraitListReset();
-        LoadTypeEquipmentList();
         ListReset();
         if (traitSize == 0)
         {
@@ -193,7 +192,7 @@ public class ActorTab : BaseTab
                                 }
                                 GUILayout.Space(generalBox.height / 20);
                                 GUILayout.Label("Class:");
-                                selectedClassIndex = EditorGUILayout.Popup(selectedClassIndex, actorClassesList, GUILayout.Height(generalBox.height / 8), GUILayout.Width(generalBox.width / 2 - 15));
+                                selectedClassIndex = EditorGUILayout.Popup(selectedClassIndex, classDisplayName, GUILayout.Height(generalBox.height / 8), GUILayout.Width(generalBox.width / 2 - 15));
                             GUILayout.EndVertical(); //Name label, name field, class label, and class popup (ending)
                             #endregion
                             #region Names Classes
@@ -341,9 +340,9 @@ public class ActorTab : BaseTab
                                 );
                             typeIndex = GUILayout.SelectionGrid(
                                                 typeIndex, 
-                                                equipDisplayName, 
+                                                initialEquipName.ToArray(), 
                                                 1, 
-                                                GUILayout.Width(firstTabWidth - 20),
+                                                GUILayout.Width(equipmentBox.width * .90f),
                                                 GUILayout.Height(position.height / 24 * equipmentTypeSize)
                                                 );
                         GUILayout.EndScrollView();
@@ -363,7 +362,7 @@ public class ActorTab : BaseTab
                 //Traits
                 Rect traitsBox = new Rect(5, 5, firstTabWidth + 15, position.height * 5 / 8);
                 #region Traits
-                TraitListReset();
+                ListReset();
                 GUILayout.BeginArea(traitsBox, tabStyle);
                     GUILayout.Space(2);
                     GUILayout.Label("Traits", EditorStyles.boldLabel);
@@ -458,21 +457,7 @@ public class ActorTab : BaseTab
         {
             initialEquipName.Add(equipmentType[i].dataName);
         }
-    }
-    private void LoadTypeEquipmentList()
-    {
-        TypeEquipmentData[] typeEquipmentData = Resources.LoadAll<TypeEquipmentData>(PathDatabase.EquipmentRelativeDataPath);
-        equipDisplayName = new string[typeEquipmentData.Length];
-        for (int i = 0; i < equipDisplayName.Length; i++)
-        {
-            equipDisplayName[i] = typeEquipmentData[i].dataName;
-        }
-    }
-    ///<summary>
-    ///Clears out the displayName list and add it with new value
-    ///</summary>
-    private void TraitListReset()
-    {
+        //Trait Reset
         traitDisplayName.Clear();
         for (int i = 0; i < traitSize; i++)
         {
