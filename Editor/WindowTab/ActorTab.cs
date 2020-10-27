@@ -42,7 +42,7 @@ public class ActorTab : BaseTab
     //How many actor in ChangeMaximum Func
     public int actorSize;
     public int equipmentTypeSize;
-    public int traitSize = 3;
+    public int traitSize;
 
     //i don't know about this but i leave this to handle later.
     int index = 0;
@@ -80,6 +80,11 @@ public class ActorTab : BaseTab
         TraitListReset();
         LoadTypeEquipmentList();
         ListReset();
+        if (traitSize == 0)
+        {
+            ChangeMaximum<ActorTraitsData>(traitSize + 1, traits, PathDatabase.ActorTraitExplicitDataPath);
+            traitSize++;
+        }
     }
 
     public void OnRender(Rect position)
@@ -392,13 +397,18 @@ public class ActorTab : BaseTab
                 {
                     if (traitIndex != traitIndexTemp)
                     {
-                        ActorTraitWindow.ShowWindow(traits[traitIndex]);
+                        ActorTraitWindow.ShowWindow(traits[traitIndex], traitSize);
                         traitIndexTemp = -1;
                     }
                     else
                     {
                         traitIndexTemp = traitIndex;
                     }
+                }
+                if (traits[traitSize - 1].traitName != null && traitSize > 0)
+                {
+                    ChangeMaximum<ActorTraitsData>(traitSize + 1, traits, PathDatabase.ActorTraitExplicitDataPath);
+                    traitSize ++;
                 }
                 GUILayout.EndArea();
                 #endregion //End of TraitboxArea

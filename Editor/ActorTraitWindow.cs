@@ -80,10 +80,12 @@ public class ActorTraitWindow : EditorWindow
     public int firstSelectedTab;
     public int firstSelectedToggle;
     public int firstValue;
+    public string firstTraitName;
+    static int traitSize;
 
     //Data(s) reference
     static ActorTraitsData thisClass;
-    public static void ShowWindow(ActorTraitsData actorTraitData)
+    public static void ShowWindow(ActorTraitsData actorTraitData, int size)
     {
         var window = GetWindow<ActorTraitWindow>();
         var position = window.position;
@@ -92,6 +94,7 @@ public class ActorTraitWindow : EditorWindow
         window.minSize = new Vector2(500, 190);
         window.titleContent = new GUIContent("Traits");
         thisClass = actorTraitData;
+        traitSize = size;
         position.center = new Rect(Screen.width * -1 * .05f, Screen.height * -1 * .05f, Screen.currentResolution.width, Screen.currentResolution.height).center;
         window.position = position;
         window.Show();
@@ -150,7 +153,7 @@ public class ActorTraitWindow : EditorWindow
                         thisClass.traitName = StringMaker(thisClass.selectedTabIndex, thisClass.selectedTabToggle, thisClass.selectedArrayIndex, thisClass.traitValue);
                         GUILayout.Space(5);
                         GUILayout.BeginHorizontal();
-                            GUILayout.Space(generalBox.width * .32f);
+                            GUILayout.Space(generalBox.width * .245f);
                             if (GUILayout.Button("OK", GUILayout.Width(generalBox.width * .17f), GUILayout.Height(20)))
                             {
                                 this.Close();
@@ -161,11 +164,16 @@ public class ActorTraitWindow : EditorWindow
                                 thisClass.selectedTabIndex = firstSelectedTab;
                                 thisClass.selectedArrayIndex = firstSelectedArray;
                                 thisClass.traitValue = firstValue;
-                                thisClass.traitName = StringMaker(thisClass.selectedTabIndex, 
-                                                                    thisClass.selectedTabToggle, 
-                                                                    thisClass.selectedArrayIndex, 
-                                                                    thisClass.traitValue
-                                                                 );
+                                thisClass.traitName = firstTraitName;
+                                this.Close();
+                            }
+                            if (GUILayout.Button("Clear", GUILayout.Width(generalBox.width * .17f), GUILayout.Height(20)))
+                            {
+                                thisClass.selectedTabToggle = 0;
+                                thisClass.selectedTabIndex = 0;
+                                thisClass.selectedArrayIndex = 0;
+                                thisClass.traitValue = 0;
+                                thisClass.traitName = null;
                                 this.Close();
                             }
                         GUILayout.EndHorizontal();
@@ -173,7 +181,7 @@ public class ActorTraitWindow : EditorWindow
                     GUILayout.EndVertical();
                 GUILayout.EndVertical();
             GUILayout.EndArea();
-        #endregion
+            #endregion
         
         GUILayout.EndArea();
         #endregion
@@ -720,6 +728,7 @@ public class ActorTraitWindow : EditorWindow
     {
         if (i == 0)
         {
+            firstTraitName = thisClass.traitName;
             firstSelectedArray = thisClass.selectedArrayIndex;
             firstSelectedTab = thisClass.selectedTabIndex;
             firstSelectedToggle = thisClass.selectedTabToggle;
