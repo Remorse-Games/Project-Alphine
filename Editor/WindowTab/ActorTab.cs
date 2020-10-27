@@ -42,7 +42,7 @@ public class ActorTab : BaseTab
     //How many actor in ChangeMaximum Func
     public int actorSize;
     public int equipmentTypeSize;
-    public int traitSize;
+    public static int traitSize;
 
     //i don't know about this but i leave this to handle later.
     int index = 0;
@@ -397,7 +397,7 @@ public class ActorTab : BaseTab
                 {
                     if (traitIndex != traitIndexTemp)
                     {
-                        ActorTraitWindow.ShowWindow(traits[traitIndex], traitSize);
+                        ActorTraitWindow.ShowWindow(traits, traitIndex, traitSize);
                         traitIndexTemp = -1;
                     }
                     else
