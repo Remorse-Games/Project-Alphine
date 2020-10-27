@@ -113,8 +113,14 @@ public abstract class BaseTab
             AssetDatabase.CreateFolder("Assets/Resources/Data/TypeData", "EquipmentData");
         }
     }
-
-    public void DrawUILine(Color color, int thickness = 2, int padding = 10)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="color">Line Color (ex. Color.black)</param>
+    /// <param name="thickness">Line Thickness (int)</param>
+    /// <param name="padding">Line Padding (int)</param>
+    /// <returns></returns>
+    public void DrawUILine(Color color, int thickness, int padding)
     {
         Rect r = EditorGUILayout.GetControlRect(GUILayout.Height(padding + thickness));
         r.height = thickness;
