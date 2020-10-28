@@ -42,7 +42,7 @@ public abstract class BaseTab
         }
         if (!AssetDatabase.IsValidFolder("Assets/Resources/Data/ActorData/TraitData"))
         {
-            AssetDatabase.CreateFolder("Assets/Resources/Data/TraitData", "TraitData");
+            AssetDatabase.CreateFolder("Assets/Resources/Data/ActorData", "TraitData");
         }
         if (!AssetDatabase.IsValidFolder("Assets/Resources/Image"))
         {
