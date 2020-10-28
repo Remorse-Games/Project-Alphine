@@ -410,7 +410,7 @@ public class ActorTab : BaseTab
                         ChangeMaximum<ActorTraitsData>(traitSize + 1, traits, PathDatabase.ActorTraitExplicitDataPath);
                         traitSize ++;
                     }
-                    if (GUILayout.Button("Delete All Data", GUILayout.Width(traitsBox.width * .2f), GUILayout.Height(traitsBox.height * .065f)))
+                    if (GUILayout.Button("Delete All Data", GUILayout.Width(traitsBox.width * .25f), GUILayout.Height(traitsBox.height * .065f)))
                     {
                         if (EditorUtility.DisplayDialog("Delete All Trait Data", "Are you sure want to delete all Trait Data?", "Yes", "No"))
                         {
