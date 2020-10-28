@@ -342,7 +342,7 @@ public class ActorTab : BaseTab
                                                 typeIndex, 
                                                 initialEquipName.ToArray(), 
                                                 1, 
-                                                GUILayout.Width(equipmentBox.width * .90f),
+                                                GUILayout.Width(equipmentBox.width * .92f),
                                                 GUILayout.Height(position.height / 24 * equipmentTypeSize)
                                                 );
                         GUILayout.EndScrollView();
@@ -366,7 +366,7 @@ public class ActorTab : BaseTab
                 GUILayout.BeginArea(traitsBox, tabStyle);
                     GUILayout.Space(2);
                     GUILayout.Label("Traits", EditorStyles.boldLabel);
-                    GUILayout.Space(traitsBox.height / 30);
+                    GUILayout.Space(5);
                     #region Horizontal For Type And Content
                     GUILayout.BeginHorizontal();
                         GUILayout.Label("Type", GUILayout.Width(traitsBox.width * 3 / 8));
@@ -379,7 +379,7 @@ public class ActorTab : BaseTab
                             false, 
                             true, 
                             GUILayout.Width(firstTabWidth + 5), 
-                            GUILayout.Height(traitsBox.height * 0.87f)
+                            GUILayout.Height(traitsBox.height * 0.83f)
                             );
                         traitIndex = GUILayout.SelectionGrid(
                             traitIndex,
@@ -389,26 +389,36 @@ public class ActorTab : BaseTab
                             GUILayout.Height(position.height / 24 * traitSize
                             ));
                     GUILayout.EndScrollView();
-                #endregion
+                    #endregion
         
-                //Happen everytime selection grid is updated
-                if (GUI.changed)
-                {
-                    if (traitIndex != traitIndexTemp)
+                    //Happen everytime selection grid is updated
+                    if (GUI.changed)
                     {
-                        ActorTraitWindow.ShowWindow(traits, traitIndex, traitSize);
-                        traitIndexTemp = -1;
+                        if (traitIndex != traitIndexTemp)
+                        {
+                            ActorTraitWindow.ShowWindow(traits, traitIndex, traitSize);
+                            traitIndexTemp = -1;
+                        }
+                        else
+                        {
+                            traitIndexTemp = traitIndex;
+                        }
                     }
-                    else
+                    if (traits[traitSize - 1].traitName != null && traitSize > 0)
                     {
-                        traitIndexTemp = traitIndex;
+                        ChangeMaximum<ActorTraitsData>(traitSize + 1, traits, PathDatabase.ActorTraitExplicitDataPath);
+                        traitSize ++;
                     }
-                }
-                if (traits[traitSize - 1].traitName != null && traitSize > 0)
-                {
-                    ChangeMaximum<ActorTraitsData>(traitSize + 1, traits, PathDatabase.ActorTraitExplicitDataPath);
-                    traitSize ++;
-                }
+                    if (GUILayout.Button("Delete All Data", GUILayout.Width(traitsBox.width * .25f), GUILayout.Height(traitsBox.height * .065f)))
+                    {
+                        if (EditorUtility.DisplayDialog("Delete All Trait Data", "Are you sure want to delete all Trait Data?", "Yes", "No"))
+                        {
+                            traitIndex = 0;
+                            traitSize = 1;
+                            ChangeMaximum<ActorTraitsData>(0, traits, PathDatabase.ActorTraitExplicitDataPath);
+                            ChangeMaximum<ActorTraitsData>(1, traits, PathDatabase.ActorTraitExplicitDataPath);
+                        }
+                    }
                 GUILayout.EndArea();
                 #endregion //End of TraitboxArea
 
