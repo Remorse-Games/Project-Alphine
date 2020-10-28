@@ -99,7 +99,6 @@ public class ActorTab : BaseTab
         ////////////////////////////////////////////////////////////////////////////////////////
         /////////////////////////////START REGION OF VALUE INIT/////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////////////////
-        Debug.Log(traitIsOpen);
         float tabWidth = position.width * .85f;
         float tabHeight = position.height - 10f;
 
@@ -404,7 +403,7 @@ public class ActorTab : BaseTab
                     {
                         ChangeMaximum<ActorTraitsData>(++traitSize, traits, PathDatabase.ActorTraitExplicitDataPath);
                     }
-                    if (GUILayout.Button("Delete All Data", GUILayout.Width(traitsBox.width * .25f), GUILayout.Height(traitsBox.height * .065f)))
+                    if (GUILayout.Button("Delete All Data", GUILayout.Width(traitsBox.width * .3f), GUILayout.Height(traitsBox.height * .065f)))
                     {
                         if (EditorUtility.DisplayDialog("Delete All Trait Data", "Are you sure want to delete all Trait Data?", "Yes", "No"))
                         {
