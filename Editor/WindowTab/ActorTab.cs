@@ -48,7 +48,7 @@ public class ActorTab : BaseTab
     int index = 0;
     int traitIndex = 0;
     int indexTemp = -1;
-    int traitIndexTemp = -1;
+    int traitIndexTemp = 0;
     int typeIndex = 0;
 
     //Scroll position. Is this necessary?
@@ -89,17 +89,16 @@ public class ActorTab : BaseTab
     public void OnRender(Rect position)
     {
         #region A Bit Explanation About Local Tab
-    ///So there is 2 types of Tab,
-    ///One is in Database that not included here.
-    ///Second, there is 3 tab slicing in ActorTab itself.
-    ///So make sure you understand that tabbing in here does not
-    ///have any corelation with DatabaseMain.cs Tab system.
+        ///So there is 2 types of Tab,
+        ///One is in Database that not included here.
+        ///Second, there is 3 tab slicing in ActorTab itself.
+        ///So make sure you understand that tabbing in here does not
+        ///have any corelation with DatabaseMain.cs Tab system.
         #endregion
 
-    ////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////START REGION OF VALUE INIT/////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////
-
+        ////////////////////////////////////////////////////////////////////////////////////////
+        /////////////////////////////START REGION OF VALUE INIT/////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////
         float tabWidth = position.width * .85f;
         float tabHeight = position.height - 10f;
 
@@ -397,19 +396,14 @@ public class ActorTab : BaseTab
                         if (traitIndex != traitIndexTemp)
                         {
                             ActorTraitWindow.ShowWindow(traits, traitIndex, traitSize);
-                            traitIndexTemp = -1;
-                        }
-                        else
-                        {
                             traitIndexTemp = traitIndex;
                         }
                     }
                     if (traits[traitSize - 1].traitName != null && traitSize > 0)
                     {
-                        ChangeMaximum<ActorTraitsData>(traitSize + 1, traits, PathDatabase.ActorTraitExplicitDataPath);
-                        traitSize ++;
+                        ChangeMaximum<ActorTraitsData>(++traitSize, traits, PathDatabase.ActorTraitExplicitDataPath);
                     }
-                    if (GUILayout.Button("Delete All Data", GUILayout.Width(traitsBox.width * .25f), GUILayout.Height(traitsBox.height * .065f)))
+                    if (GUILayout.Button("Delete All Data", GUILayout.Width(traitsBox.width * .3f), GUILayout.Height(traitsBox.height * .065f)))
                     {
                         if (EditorUtility.DisplayDialog("Delete All Trait Data", "Are you sure want to delete all Trait Data?", "Yes", "No"))
                         {
