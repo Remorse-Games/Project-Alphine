@@ -168,12 +168,26 @@ public class ActorTraitWindow : EditorWindow
                             // OK Button
                             if (GUILayout.Button("Cancel", GUILayout.Width(generalBox.width * .23f), GUILayout.Height(20)))
                             {
-                                traits[traitIndex].selectedTabToggle = firstSelectedToggle;
-                                traits[traitIndex].selectedTabIndex = firstSelectedTab;
-                                traits[traitIndex].selectedArrayIndex = firstSelectedArray;
-                                traits[traitIndex].traitValue = firstValue;
-                                traits[traitIndex].traitName = firstTraitName;
-                                this.Close();
+                                if(firstTraitName != null)
+                                { 
+                                    traits[traitIndex].selectedTabToggle = firstSelectedToggle;
+                                    traits[traitIndex].selectedTabIndex = firstSelectedTab;
+                                    traits[traitIndex].selectedArrayIndex = firstSelectedArray;
+                                    traits[traitIndex].traitValue = firstValue;
+                                    traits[traitIndex].traitName = firstTraitName;
+                                    this.Close();
+                                }
+                                else
+                                {
+                                    this.Close();
+                                    for (int i = traitIndex; i < traitSize - 1; i++)
+                                    {
+                                        traits[i] = traits[i + 1];
+                                    }
+                                    traitIndex = 0;
+                                    ChangeMaximum<ActorTraitsData>(--traitSize, traits, PathDatabase.ActorTraitExplicitDataPath);
+                                    ActorTab.traitSize = traitSize;
+                                }
                             }
                             if(firstTraitName != null)
                             { 
