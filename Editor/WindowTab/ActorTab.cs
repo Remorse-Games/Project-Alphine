@@ -48,7 +48,7 @@ public class ActorTab : BaseTab
     int index = 0;
     int traitIndex = 0;
     int indexTemp = -1;
-    int traitIndexTemp = 0;
+    int traitIndexTemp = -1;
     int typeIndex = 0;
 
     //Scroll position. Is this necessary?

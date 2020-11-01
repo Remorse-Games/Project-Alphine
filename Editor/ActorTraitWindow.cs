@@ -724,6 +724,11 @@ public class ActorTraitWindow : EditorWindow
     }
     #endregion
 
+    private void OnLostFocus()
+    {
+        this.Focus();
+    }
+
     #region Features
     /// <summary>
     /// Create Texture for GUI skin.
