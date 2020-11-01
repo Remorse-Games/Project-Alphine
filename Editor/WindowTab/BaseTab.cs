@@ -198,15 +198,15 @@ public abstract class BaseTab
     /// <param name="dataTabName">get size from actorSize</param>
     public void ChangeMaximum<GameData>(int dataSize, List<GameData> listTabData, string dataPath) where GameData : ScriptableObject
     {
-        int counter = 0;
+        int counter = listTabData.Count;
+
         //This count only useful when we doesn't have a name yet.
         //you can remove this when decide a new format later.
         if (dataSize > listTabData.Count)
             while (dataSize > listTabData.Count)
             {
                 listTabData.Add(ScriptableObject.CreateInstance<GameData>());
-                counter = listTabData.Count;
-                AssetDatabase.CreateAsset(listTabData[listTabData.Count - 1], dataPath + counter + ".asset");
+                AssetDatabase.CreateAsset(listTabData[listTabData.Count - 1], dataPath + (counter + 1) + ".asset");
                 AssetDatabase.SaveAssets();
                 counter++;
             }
