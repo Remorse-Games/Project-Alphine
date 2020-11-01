@@ -63,6 +63,7 @@ public class TypeTab : BaseTab
 
     public void Init()
     {
+        equipment.Clear();
         LoadGameData<TypeElementData>(ref elementSize, element, PathDatabase.ElementRelativeDataPath);
         ElementListReset();
         LoadGameData<TypeSkillData>(ref skillSize, skill, PathDatabase.SkillRelativeDataPath);
