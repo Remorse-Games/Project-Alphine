@@ -76,6 +76,7 @@ public class ActorTab : BaseTab
             ChangeMaximum<ActorTraitsData>(traitSize + 1, traits, PathDatabase.ActorTraitExplicitDataPath);
             traitSize++;
         }
+        ClearNullScriptableObjects();
     }
 
     public void OnRender(Rect position)
@@ -467,6 +468,29 @@ public class ActorTab : BaseTab
         for (int i = 0; i < classDisplayName.Length; i++)
         {
             classDisplayName[i] = classData[i].className;
+        }
+    }
+
+    private void ClearNullScriptableObjects()
+    {
+        bool availableNull = true;
+        while (availableNull)
+        {
+            availableNull = false;
+            for (int i = 0; i < traitSize - 1; i++)
+            {
+                if (traits[i].traitName == "" || traits[i].traitName == null)
+                {
+                    availableNull = true;
+                    for (int j = i; j < traitSize - 1; j++)
+                    {
+                        traits[j] = traits[j + 1];
+                    }
+                    traitIndex = 0;
+                    ChangeMaximum<ActorTraitsData>(--traitSize, traits, PathDatabase.ActorTraitExplicitDataPath);
+                    i--;
+                }
+            }
         }
     }
 

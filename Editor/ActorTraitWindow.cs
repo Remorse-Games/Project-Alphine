@@ -168,12 +168,30 @@ public class ActorTraitWindow : EditorWindow
                             // OK Button
                             if (GUILayout.Button("Cancel", GUILayout.Width(generalBox.width * .23f), GUILayout.Height(20)))
                             {
-                                traits[traitIndex].selectedTabToggle = firstSelectedToggle;
-                                traits[traitIndex].selectedTabIndex = firstSelectedTab;
-                                traits[traitIndex].selectedArrayIndex = firstSelectedArray;
-                                traits[traitIndex].traitValue = firstValue;
-                                traits[traitIndex].traitName = firstTraitName;
-                                this.Close();
+                                if(firstTraitName != null)
+                                { 
+                                    traits[traitIndex].selectedTabToggle = firstSelectedToggle;
+                                    traits[traitIndex].selectedTabIndex = firstSelectedTab;
+                                    traits[traitIndex].selectedArrayIndex = firstSelectedArray;
+                                    traits[traitIndex].traitValue = firstValue;
+                                    traits[traitIndex].traitName = firstTraitName;
+                                    this.Close();
+                                }
+                                else
+                                {
+                                    this.Close();
+                                    for (int i = traitIndex; i < traitSize - 1; i++)
+                                    {
+                                        traits[i].traitName = traits[i + 1].traitName;
+                                        traits[i].traitValue = traits[i + 1].traitValue;
+                                        traits[i].selectedArrayIndex = traits[i + 1].selectedArrayIndex;
+                                        traits[i].selectedTabIndex = traits[i + 1].selectedTabIndex;
+                                        traits[i].selectedTabToggle = traits[i + 1].selectedTabToggle;
+                                    }
+                                    traitIndex = 0;
+                                    ChangeMaximum<ActorTraitsData>(--traitSize, traits, PathDatabase.ActorTraitExplicitDataPath);
+                                    ActorTab.traitSize = traitSize;
+                                }
                             }
                             if(firstTraitName != null)
                             { 
@@ -182,7 +200,11 @@ public class ActorTraitWindow : EditorWindow
                                     this.Close();
                                     for (int i = traitIndex; i < traitSize - 1; i++)
                                     {
-                                        traits[i] = traits[i + 1];
+                                        traits[i].traitName = traits[i + 1].traitName;
+                                        traits[i].traitValue = traits[i + 1].traitValue;
+                                        traits[i].selectedArrayIndex = traits[i + 1].selectedArrayIndex;
+                                        traits[i].selectedTabIndex = traits[i + 1].selectedTabIndex;
+                                        traits[i].selectedTabToggle = traits[i + 1].selectedTabToggle;
                                     }
                                     traitIndex = 0;
                                     ChangeMaximum<ActorTraitsData>(--traitSize, traits, PathDatabase.ActorTraitExplicitDataPath);
@@ -709,6 +731,11 @@ public class ActorTraitWindow : EditorWindow
         GUILayout.EndHorizontal();
     }
     #endregion
+
+    private void OnLostFocus()
+    {
+        this.Focus();
+    }
 
     #region Features
     /// <summary>
