@@ -182,7 +182,11 @@ public class ActorTraitWindow : EditorWindow
                                     this.Close();
                                     for (int i = traitIndex; i < traitSize - 1; i++)
                                     {
-                                        traits[i] = traits[i + 1];
+                                        traits[i].traitName = traits[i + 1].traitName;
+                                        traits[i].traitValue = traits[i + 1].traitValue;
+                                        traits[i].selectedArrayIndex = traits[i + 1].selectedArrayIndex;
+                                        traits[i].selectedTabIndex = traits[i + 1].selectedTabIndex;
+                                        traits[i].selectedTabToggle = traits[i + 1].selectedTabToggle;
                                     }
                                     traitIndex = 0;
                                     ChangeMaximum<ActorTraitsData>(--traitSize, traits, PathDatabase.ActorTraitExplicitDataPath);
@@ -196,7 +200,11 @@ public class ActorTraitWindow : EditorWindow
                                     this.Close();
                                     for (int i = traitIndex; i < traitSize - 1; i++)
                                     {
-                                        traits[i] = traits[i + 1];
+                                        traits[i].traitName = traits[i + 1].traitName;
+                                        traits[i].traitValue = traits[i + 1].traitValue;
+                                        traits[i].selectedArrayIndex = traits[i + 1].selectedArrayIndex;
+                                        traits[i].selectedTabIndex = traits[i + 1].selectedTabIndex;
+                                        traits[i].selectedTabToggle = traits[i + 1].selectedTabToggle;
                                     }
                                     traitIndex = 0;
                                     ChangeMaximum<ActorTraitsData>(--traitSize, traits, PathDatabase.ActorTraitExplicitDataPath);
