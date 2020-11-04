@@ -18,6 +18,9 @@ public class MaxHPWindow : EditorWindow
         window.maxSize = new Vector2(810, 540);
         window.minSize = new Vector2(810, 540);
         window.titleContent = new GUIContent("MaxHPWindow");
+        var position = window.position;
+        position.center = new Rect(Screen.width * -1 * .05f, Screen.height * -1 * .05f, Screen.currentResolution.width, Screen.currentResolution.height).center;
+        window.position = position;
         thisClass = classData;
         levelIndex = 1;
         editedKeyframeValue = Mathf.RoundToInt(thisClass.maxHPCurve.keys[levelIndex].value);
@@ -163,6 +166,9 @@ public class MaxMPWindow : EditorWindow
         window.titleContent = new GUIContent("Max MP");
         window.minSize = new Vector2(810, 540);
         window.maxSize = new Vector2(810, 540);
+        var position = window.position;
+        position.center = new Rect(Screen.width * -1 * .05f, Screen.height * -1 * .05f, Screen.currentResolution.width, Screen.currentResolution.height).center;
+        window.position = position;
         thisClass = classData;
         levelIndex = 1;
         editedKeyframeValue = Mathf.RoundToInt(thisClass.maxMPCurve.keys[levelIndex].value);
@@ -305,6 +311,9 @@ public class AttackWindow : EditorWindow
         window.titleContent = new GUIContent("Attack");
         window.minSize = new Vector2(810, 540);
         window.maxSize = new Vector2(810, 540);
+        var position = window.position;
+        position.center = new Rect(Screen.width * -1 * .05f, Screen.height * -1 * .05f, Screen.currentResolution.width, Screen.currentResolution.height).center;
+        window.position = position;
         thisClass = classData;
         levelIndex = 1;
         editedKeyframeValue = Mathf.RoundToInt(thisClass.AttackCurve.keys[levelIndex].value);
@@ -447,6 +456,9 @@ public class DefenseWindow : EditorWindow
         window.titleContent = new GUIContent("Defense");
         window.minSize = new Vector2(810, 540);
         window.maxSize = new Vector2(810, 540);
+        var position = window.position;
+        position.center = new Rect(Screen.width * -1 * .05f, Screen.height * -1 * .05f, Screen.currentResolution.width, Screen.currentResolution.height).center;
+        window.position = position;
         thisClass = classData;
         levelIndex = 1;
         editedKeyframeValue = Mathf.RoundToInt(thisClass.DefenseCurve.keys[levelIndex].value);
@@ -566,6 +578,9 @@ public class MAttackWindow : EditorWindow
         window.titleContent = new GUIContent("M.Attack");
         window.minSize = new Vector2(810, 540);
         window.maxSize = new Vector2(810, 540);
+        var position = window.position;
+        position.center = new Rect(Screen.width * -1 * .05f, Screen.height * -1 * .05f, Screen.currentResolution.width, Screen.currentResolution.height).center;
+        window.position = position;
         thisClass = classData;
         levelIndex = 1;
         editedKeyframeValue = Mathf.RoundToInt(thisClass.mAttackCurve.keys[levelIndex].value);
@@ -685,6 +700,9 @@ public class MDefenseWindow : EditorWindow
         window.titleContent = new GUIContent("M.Defense");
         window.minSize = new Vector2(810, 540);
         window.maxSize = new Vector2(810, 540);
+        var position = window.position;
+        position.center = new Rect(Screen.width * -1 * .05f, Screen.height * -1 * .05f, Screen.currentResolution.width, Screen.currentResolution.height).center;
+        window.position = position;
         thisClass = classData;
         levelIndex = 1;
         editedKeyframeValue = Mathf.RoundToInt(thisClass.mDefenseCurve.keys[levelIndex].value);
@@ -804,6 +822,9 @@ public class AgilityWindow : EditorWindow
         window.titleContent = new GUIContent("Agility");
         window.minSize = new Vector2(810, 540);
         window.maxSize = new Vector2(810, 540);
+        var position = window.position;
+        position.center = new Rect(Screen.width * -1 * .05f, Screen.height * -1 * .05f, Screen.currentResolution.width, Screen.currentResolution.height).center;
+        window.position = position;
         thisClass = classData;
         levelIndex = 1;
         editedKeyframeValue = Mathf.RoundToInt(thisClass.agilityCurve.keys[levelIndex].value);
@@ -923,6 +944,9 @@ public class LuckWindow : EditorWindow
         window.titleContent = new GUIContent("Luck");
         window.minSize = new Vector2(810, 540);
         window.maxSize = new Vector2(810, 540);
+        var position = window.position;
+        position.center = new Rect(Screen.width * -1 * .05f, Screen.height * -1 * .05f, Screen.currentResolution.width, Screen.currentResolution.height).center;
+        window.position = position;
         thisClass = classData;
         levelIndex = 1;
         editedKeyframeValue = Mathf.RoundToInt(thisClass.luckCurve.keys[levelIndex].value);
