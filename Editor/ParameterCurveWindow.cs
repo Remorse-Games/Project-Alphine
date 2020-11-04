@@ -51,7 +51,7 @@ public class MaxHPWindow : EditorWindow
         GUILayout.EndHorizontal();
         using (new EditorGUI.DisabledScope(true))
         {
-            EditorGUILayout.CurveField(thisClass.maxHPCurve, new Color32(208, 128, 96, 255), new Rect(0, 0, 100, 9999), GUILayout.Height(300), GUILayout.Width(800));
+            EditorGUILayout.CurveField(thisClass.maxHPCurve, new Color32(255, 150, 0, 255), new Rect(0, 0, 100, 9999), GUILayout.Height(300), GUILayout.Width(800));
         }
         GUILayout.Label("Generate Curve: ");
         GUILayout.Space(10);
@@ -194,7 +194,7 @@ public class MaxMPWindow : EditorWindow
         GUILayout.EndHorizontal();
         using (new EditorGUI.DisabledScope(true))
         {
-            EditorGUILayout.CurveField(thisClass.maxMPCurve, new Color32(80, 128, 224, 255), new Rect(0, 0, 100, 2000), GUILayout.Height(300), GUILayout.Width(800));
+            EditorGUILayout.CurveField(thisClass.maxMPCurve, new Color32(0, 0, 255, 255), new Rect(0, 0, 100, 2000), GUILayout.Height(300), GUILayout.Width(800));
         }
         GUILayout.Label("Generate Curve: ");
         GUILayout.Space(10);
@@ -336,7 +336,7 @@ public class AttackWindow : EditorWindow
         GUILayout.EndHorizontal();
         using (new EditorGUI.DisabledScope(true))
         {
-            EditorGUILayout.CurveField(thisClass.AttackCurve, new Color32(192, 64, 96, 255), new Rect(0, 0, 100, 250), GUILayout.Height(300), GUILayout.Width(800));
+            EditorGUILayout.CurveField(thisClass.AttackCurve, new Color32(255, 0, 0, 255), new Rect(0, 0, 100, 250), GUILayout.Height(300), GUILayout.Width(800));
         }
         GUILayout.Label("Generate Curve: ");
         GUILayout.Space(10);
@@ -478,7 +478,7 @@ public class DefenseWindow : EditorWindow
         GUILayout.EndHorizontal();
         using (new EditorGUI.DisabledScope(true))
         {
-            EditorGUILayout.CurveField(thisClass.DefenseCurve, new Color32(144, 176, 96, 255), new Rect(0, 0, 100, 250), GUILayout.Height(300), GUILayout.Width(800));
+            EditorGUILayout.CurveField(thisClass.DefenseCurve, new Color32(0, 255, 0, 255), new Rect(0, 0, 100, 250), GUILayout.Height(300), GUILayout.Width(800));
         }
         GUILayout.Label("Generate Curve: ");
         GUILayout.Space(10);
@@ -597,7 +597,7 @@ public class MAttackWindow : EditorWindow
         GUILayout.EndHorizontal();
         using (new EditorGUI.DisabledScope(true))
         {
-            EditorGUILayout.CurveField(thisClass.mAttackCurve, new Color32(192, 80, 176, 255), new Rect(0, 0, 100, 250), GUILayout.Height(300), GUILayout.Width(800));
+            EditorGUILayout.CurveField(thisClass.mAttackCurve, new Color32(255, 0, 255, 255), new Rect(0, 0, 100, 250), GUILayout.Height(300), GUILayout.Width(800));
         }
         GUILayout.Label("Generate Curve: ");
         GUILayout.Space(10);
@@ -716,7 +716,7 @@ public class MDefenseWindow : EditorWindow
         GUILayout.EndHorizontal();
         using (new EditorGUI.DisabledScope(true))
         {
-            EditorGUILayout.CurveField(thisClass.mDefenseCurve, new Color32(64, 160, 64, 255), new Rect(0, 0, 100, 250), GUILayout.Height(300), GUILayout.Width(800));
+            EditorGUILayout.CurveField(thisClass.mDefenseCurve, new Color32(11, 156, 49, 255), new Rect(0, 0, 100, 250), GUILayout.Height(300), GUILayout.Width(800));
         }
         GUILayout.Label("Generate Curve: ");
         GUILayout.Space(10);
@@ -835,7 +835,7 @@ public class AgilityWindow : EditorWindow
         GUILayout.EndHorizontal();
         using (new EditorGUI.DisabledScope(true))
         {
-            EditorGUILayout.CurveField(thisClass.agilityCurve, new Color32(80, 176, 224, 255), new Rect(0, 0, 100, 500), GUILayout.Height(300), GUILayout.Width(800));
+            EditorGUILayout.CurveField(thisClass.agilityCurve, new Color32(0, 255, 255, 255), new Rect(0, 0, 100, 500), GUILayout.Height(300), GUILayout.Width(800));
         }
         GUILayout.Label("Generate Curve: ");
         GUILayout.Space(10);
@@ -954,7 +954,7 @@ public class LuckWindow : EditorWindow
         GUILayout.EndHorizontal();
         using (new EditorGUI.DisabledScope(true))
         {
-            EditorGUILayout.CurveField(thisClass.luckCurve, new Color32(208, 176, 64, 255), new Rect(0, 0, 100, 500), GUILayout.Height(300), GUILayout.Width(800));
+            EditorGUILayout.CurveField(thisClass.luckCurve, new Color32(255, 200, 0, 255), new Rect(0, 0, 100, 500), GUILayout.Height(300), GUILayout.Width(800));
         }
         GUILayout.Label("Generate Curve: ");
         GUILayout.Space(10);

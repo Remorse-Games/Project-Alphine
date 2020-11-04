@@ -158,7 +158,7 @@ public class ClassTab : BaseTab
                             {
                                 using (new EditorGUI.DisabledScope(true))
                                 {
-                                    EditorGUILayout.CurveField(classes[index].maxHPCurve, new Color32(208, 128, 96, 255), curveValueRangeHP, GUILayout.Width(curveWidth), GUILayout.Height(curveheight));
+                                    EditorGUILayout.CurveField(classes[index].maxHPCurve, new Color32(255, 150, 0, 255), curveValueRangeHP, GUILayout.Width(curveWidth), GUILayout.Height(curveheight));
                                 }
                                 if (GUILayout.Button("Edit Max Hp", GUILayout.Width(curveWidth)))
                                 {
@@ -177,7 +177,7 @@ public class ClassTab : BaseTab
                             {
                                 using (new EditorGUI.DisabledScope(true))
                                 {
-                                    EditorGUILayout.CurveField(classes[index].mAttackCurve, new Color32(192, 80, 176, 255), curveValueRangeMAtk, GUILayout.Width(curveWidth), GUILayout.Height(curveheight));
+                                    EditorGUILayout.CurveField(classes[index].mAttackCurve, new Color32(255, 0, 255, 255), curveValueRangeMAtk, GUILayout.Width(curveWidth), GUILayout.Height(curveheight));
                                 }
                                 if (GUILayout.Button("Edit M.Attack", GUILayout.Width(curveWidth)))
                                 {
@@ -197,7 +197,7 @@ public class ClassTab : BaseTab
                             {
                                 using (new EditorGUI.DisabledScope(true))
                                 {
-                                    EditorGUILayout.CurveField(classes[index].maxMPCurve, new Color32(80, 128, 224, 255), curveValueRangeMP, GUILayout.Width(curveWidth), GUILayout.Height(curveheight));
+                                    EditorGUILayout.CurveField(classes[index].maxMPCurve, new Color32(0, 0, 255, 255), curveValueRangeMP, GUILayout.Width(curveWidth), GUILayout.Height(curveheight));
                                 }
                                 if (GUILayout.Button("Edit Max MP", GUILayout.Width(curveWidth)))
                                 {
@@ -216,7 +216,7 @@ public class ClassTab : BaseTab
                             {
                                 using (new EditorGUI.DisabledScope(true))
                                 {
-                                    EditorGUILayout.CurveField(classes[index].mDefenseCurve, new Color32(64, 160, 64, 255), curveValueRangeMAtk, GUILayout.Width(curveWidth), GUILayout.Height(curveheight));
+                                    EditorGUILayout.CurveField(classes[index].mDefenseCurve, new Color32(11, 156, 49, 255), curveValueRangeMAtk, GUILayout.Width(curveWidth), GUILayout.Height(curveheight));
                                 }
                                 if (GUILayout.Button("Edit M.Defense", GUILayout.Width(curveWidth)))
                                 {
@@ -236,7 +236,7 @@ public class ClassTab : BaseTab
                             {
                                 using (new EditorGUI.DisabledScope(true))
                                 {
-                                    EditorGUILayout.CurveField(classes[index].AttackCurve, new Color32(192, 64, 96, 255), curveValueRangeAttack, GUILayout.Width(curveWidth), GUILayout.Height(curveheight));
+                                    EditorGUILayout.CurveField(classes[index].AttackCurve, new Color32(255, 0, 0, 255), curveValueRangeAttack, GUILayout.Width(curveWidth), GUILayout.Height(curveheight));
                                 }
                                 if (GUILayout.Button("Edit Attack", GUILayout.Width(curveWidth)))
                                 {
@@ -255,7 +255,7 @@ public class ClassTab : BaseTab
                             {
                                 using (new EditorGUI.DisabledScope(true))
                                 {
-                                    EditorGUILayout.CurveField(classes[index].agilityCurve, new Color32(80, 176, 224, 255), curveValueRangeAgi, GUILayout.Width(curveWidth), GUILayout.Height(curveheight));
+                                    EditorGUILayout.CurveField(classes[index].agilityCurve, new Color32(0, 255, 255, 255), curveValueRangeAgi, GUILayout.Width(curveWidth), GUILayout.Height(curveheight));
                                 }
                                 if (GUILayout.Button("Edit Agility", GUILayout.Width(curveWidth)))
                                 {
@@ -275,7 +275,7 @@ public class ClassTab : BaseTab
                             {
                                 using (new EditorGUI.DisabledScope(true))
                                 {
-                                    EditorGUILayout.CurveField(classes[index].DefenseCurve, new Color32(144, 176, 96, 255), curveValueRangeDefense, GUILayout.Width(curveWidth), GUILayout.Height(curveheight));
+                                    EditorGUILayout.CurveField(classes[index].DefenseCurve, new Color32(0, 255, 0, 255), curveValueRangeDefense, GUILayout.Width(curveWidth), GUILayout.Height(curveheight));
                                 }
                                 if (GUILayout.Button("Edit Defense", GUILayout.Width(curveWidth)))
                                 {
@@ -294,7 +294,7 @@ public class ClassTab : BaseTab
                             {
                                 using (new EditorGUI.DisabledScope(true))
                                 {
-                                    EditorGUILayout.CurveField(classes[index].luckCurve, new Color32(208, 176, 64, 255), curveValueRangeLuck, GUILayout.Width(curveWidth), GUILayout.Height(curveheight));
+                                    EditorGUILayout.CurveField(classes[index].luckCurve, new Color32(255, 200, 0, 255), curveValueRangeLuck, GUILayout.Width(curveWidth), GUILayout.Height(curveheight));
                                 }
                                 if (GUILayout.Button("Edit Luck", GUILayout.Width(curveWidth)))
                                 {
