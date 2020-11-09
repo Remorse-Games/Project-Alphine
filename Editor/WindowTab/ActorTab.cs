@@ -4,12 +4,15 @@ using UnityEditor;
 using System.IO;
 using SFB;
 using System.Linq;
+using System;
+
 public class ActorTab : BaseTab
 {
     //Having list of all player exist in data.
     public List<ActorData> player = new List<ActorData>();
     public List<ActorTraitsData> traits = new List<ActorTraitsData>();
     public List<TypeEquipmentData> equipmentType = new List<TypeEquipmentData>();
+    public List<ArmorData> armors = new List<ArmorData>();
 
     //List of names. Why you ask? because selectionGrid require
     //array of string, which we cannot obtain in ActorData.
@@ -21,6 +24,8 @@ public class ActorTab : BaseTab
 
     public string[] equipDisplayName;
     public string[] classDisplayName;
+    public string[] tempArmorList;
+
     //All GUIStyle variable initialization.
     GUIStyle actorStyle;
     GUIStyle tabStyle;
@@ -41,6 +46,7 @@ public class ActorTab : BaseTab
 
     //How many actor in ChangeMaximum Func
     public int actorSize;
+    public int armorSize;
     public int equipmentTypeSize;
     public static int traitSize;
 
@@ -50,6 +56,7 @@ public class ActorTab : BaseTab
     int indexTemp = -1;
     int traitIndexTemp = -1;
     int typeIndex = 0;
+    int typeIndexTemp = -1;
 
     //Scroll position. Is this necessary?
     Vector2 scrollPos = Vector2.zero;
@@ -77,6 +84,7 @@ public class ActorTab : BaseTab
         LoadGameData<ActorData>(ref actorSize, player, PathDatabase.ActorRelativeDataPath);
         LoadGameData<ActorTraitsData>(ref traitSize, traits, PathDatabase.ActorTraitRelativeDataPath);
         LoadGameData<TypeEquipmentData>(ref equipmentTypeSize, equipmentType, PathDatabase.EquipmentRelativeDataPath);
+        LoadGameData<ArmorData>(ref armorSize, armors, PathDatabase.ArmorTabRelativeDataPath);
         LoadClassList();
         ListReset();
         if (traitSize == 0)
@@ -332,12 +340,12 @@ public class ActorTab : BaseTab
                         #endregion
                         #region ScrollView
                             equipmentScrollPos = GUILayout.BeginScrollView(
-                                equipmentScrollPos,
-                                false,
-                                true,
-                                GUILayout.Width(firstTabWidth + 50),
-                                GUILayout.Height(equipmentBox.height * 0.7f)
-                                );
+                                                equipmentScrollPos,
+                                                false,
+                                                true,
+                                                GUILayout.Width(firstTabWidth + 50),
+                                                GUILayout.Height(equipmentBox.height * 0.7f)
+                                                );
                             typeIndex = GUILayout.SelectionGrid(
                                                 typeIndex, 
                                                 initialEquipName.ToArray(), 
@@ -347,10 +355,21 @@ public class ActorTab : BaseTab
                                                 );
                         GUILayout.EndScrollView();
                         #endregion
+
+                        if (GUI.changed)
+                        {
+                            if (typeIndex != typeIndexTemp)
+                            {
+                                LoadArmorList(typeIndex);
+                                InitialEquipmentWindow.ShowWindow(equipmentType[typeIndex], initialEquipName[typeIndex], tempArmorList);
+                                typeIndexTemp = typeIndex;
+                            }
+                        }
                     GUILayout.EndVertical();
                     #endregion
                 GUILayout.EndArea();
                 #endregion
+
             GUILayout.EndArea();
             #endregion
 
@@ -455,7 +474,7 @@ public class ActorTab : BaseTab
         initialEquipName.Clear();
         for (int i = 0; i < equipmentTypeSize; i++)
         {
-            initialEquipName.Add(equipmentType[i].dataName);
+            initialEquipName.Add(equipmentType[i].dataName + ' ' +  equipmentType[i].equipmentItem);
         }
         //Trait Reset
         traitDisplayName.Clear();
@@ -471,6 +490,44 @@ public class ActorTab : BaseTab
         for (int i = 0; i < classDisplayName.Length; i++)
         {
             classDisplayName[i] = classData[i].className;
+        }
+    }
+
+    private void LoadArmorList(int searchedIndex)
+    {
+        ArmorData[] armorData = Resources.LoadAll<ArmorData>(PathDatabase.ArmorTabRelativeDataPath);
+        tempArmorList = new string[armorData.Length];
+
+        int j = 1;
+        tempArmorList[0] = "None";
+        for (int i = 0; i < tempArmorList.Length; i++)
+        {
+            if(armorData[i].selectedArmorEquipmentIndex == searchedIndex)
+            {
+                tempArmorList[j++] = armorData[i].armorName;
+            }
+        }
+    }
+    private void ClearNullScriptableObjects()
+    {
+        bool availableNull = true;
+        while (availableNull)
+        {
+            availableNull = false;
+            for (int i = 0; i < traitSize - 1; i++)
+            {
+                if (traits[i].traitName == "" || traits[i].traitName == null)
+                {
+                    availableNull = true;
+                    for (int j = i; j < traitSize - 1; j++)
+                    {
+                        traits[j] = traits[j + 1];
+                    }
+                    traitIndex = 0;
+                    ChangeMaximum<ActorTraitsData>(--traitSize, traits, PathDatabase.ActorTraitExplicitDataPath);
+                    i--;
+                }
+            }
         }
     }
 

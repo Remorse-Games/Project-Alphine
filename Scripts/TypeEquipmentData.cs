@@ -3,6 +3,8 @@
 public class TypeEquipmentData : ScriptableObject
 {
     public string dataName;
+    public string equipmentItem;
+    public int selectedArmor;
 
     public void OnEnable()
     {
@@ -15,5 +17,6 @@ public class TypeEquipmentData : ScriptableObject
     public void Init()
     {
         dataName = "equipment";
+        equipmentItem = "None";
     }
 }
