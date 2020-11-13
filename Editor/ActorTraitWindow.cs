@@ -207,6 +207,11 @@ public class ActorTraitWindow : EditorWindow
         #endregion
     }
 
+    private void OnLostFocus()
+    {
+        this.Focus();
+    }
+
     #region RateTab
     private void RateTab(Rect generalBox, float widthSpace)
     {

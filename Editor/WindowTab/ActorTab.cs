@@ -158,6 +158,11 @@ public class ActorTab : BaseTab
                 {
                     indexTemp = index;
                     ItemTabLoader(indexTemp);
+
+                    if(player[index].allArmorIndexes.Length != equipmentTypeSize)
+                    {
+                        player[index].allArmorIndexes = new int[equipmentTypeSize];
+                    }
                     indexTemp = -1;
                 }
 
@@ -361,7 +366,7 @@ public class ActorTab : BaseTab
                             if (typeIndex != typeIndexTemp)
                             {
                                 LoadArmorList(typeIndex);
-                                InitialEquipmentWindow.ShowWindow(equipmentType[typeIndex], initialEquipName[typeIndex], tempArmorList);
+                                InitialEquipmentWindow.ShowWindow(player[index], equipmentType[typeIndex].dataName, tempArmorList, typeIndex);
                                 typeIndexTemp = typeIndex;
                             }
                         }
@@ -409,14 +414,14 @@ public class ActorTab : BaseTab
                             ));
                     GUILayout.EndScrollView();
                 #endregion
-        
+
                 //Happen everytime selection grid is updated
                 if (GUI.changed)
                 {
                     if (traitIndex != traitIndexTemp)
                     {
                         ActorTraitWindow.ShowWindow(traits, traitIndex, traitSize);
-                        traitIndexTemp = -1;
+                        traitIndexTemp = traitIndex;
                     }
                     else
                     {
@@ -472,9 +477,12 @@ public class ActorTab : BaseTab
         }
         //Equip Reset
         initialEquipName.Clear();
+
+        
         for (int i = 0; i < equipmentTypeSize; i++)
         {
-            initialEquipName.Add(equipmentType[i].dataName + ' ' +  equipmentType[i].equipmentItem);
+            LoadArmorList(i);
+            initialEquipName.Add(equipmentType[i].dataName + ' ' +  tempArmorList[player[index].allArmorIndexes[i]]);
         }
         //Trait Reset
         traitDisplayName.Clear();

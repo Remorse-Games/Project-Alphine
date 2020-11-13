@@ -10,14 +10,14 @@ public class InitialEquipmentWindow : EditorWindow
     //Base Value
     int i = 0;
     int firstSelectedArmor;
-    string firstEquipmentItem;
 
     GUIStyle windowStyle;
 
     //Static Values
-    static TypeEquipmentData thisClass;
+    static ActorData thisClass;
     static string[] armorList;
-    public static void ShowWindow(TypeEquipmentData equipmentData, string windowName, string[] list)
+    static int windowOrder;
+    public static void ShowWindow(ActorData equipmentData, string windowName, string[] list, int order)
     {
         var window = GetWindow<InitialEquipmentWindow>();
         var position = window.position;
@@ -28,6 +28,7 @@ public class InitialEquipmentWindow : EditorWindow
         position.center = new Rect(Screen.width * -1 * .05f, Screen.height * -1 * .05f, Screen.currentResolution.width, Screen.currentResolution.height).center;
         thisClass = equipmentData;
         armorList = list;
+        windowOrder = order;
         window.position = position;
         window.Show();
     }
@@ -47,8 +48,7 @@ public class InitialEquipmentWindow : EditorWindow
         GUILayout.BeginArea(primaryBox, windowStyle);
             GUILayout.BeginVertical();
                 GUILayout.Label("Armor:", EditorStyles.boldLabel);
-                thisClass.selectedArmor = EditorGUILayout.Popup(thisClass.selectedArmor, armorList);
-                thisClass.equipmentItem = armorList[thisClass.selectedArmor];
+                thisClass.allArmorIndexes[windowOrder] = EditorGUILayout.Popup(thisClass.allArmorIndexes[windowOrder], armorList);
 
                 GUILayout.Space(30);
                 GUILayout.BeginHorizontal();
@@ -59,8 +59,7 @@ public class InitialEquipmentWindow : EditorWindow
                 }
                 if (GUILayout.Button("Cancel", GUILayout.Width(50), GUILayout.Height(20)))
                 {
-                    thisClass.selectedArmor = firstSelectedArmor;
-                    thisClass.equipmentItem = firstEquipmentItem;
+                    thisClass.allArmorIndexes[windowOrder] = firstSelectedArmor;
                     this.Close();
                 }
 
@@ -75,8 +74,7 @@ public class InitialEquipmentWindow : EditorWindow
     {
         if (i == 0)
         {
-            firstEquipmentItem = thisClass.equipmentItem;
-            firstSelectedArmor = thisClass.selectedArmor;
+            firstSelectedArmor = thisClass.allArmorIndexes[windowOrder];
         }
     }
     /// <summary>
