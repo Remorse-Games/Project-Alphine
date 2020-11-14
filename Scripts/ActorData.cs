@@ -6,7 +6,6 @@ public class ActorData : ScriptableObject
 {
     public string actorName;
     public string actorNickname;
-//    public ActorData[] actorClass;
     public int initLevel;
     public int maxLevel;
 
@@ -18,7 +17,7 @@ public class ActorData : ScriptableObject
     public Sprite battler;
 
     //TODO : Equipment
-
+    public int[] allArmorIndexes;
     //TODO : Traits
 
     [TextArea]
