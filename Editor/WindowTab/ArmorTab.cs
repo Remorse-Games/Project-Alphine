@@ -25,24 +25,8 @@ public class ArmorTab : BaseTab
     public int armorSize;
     public int armorSizeTemp;
 
-    public string[] armorTypeList =
-   {
-        "None",
-        "General Armor",
-        "Magic Armor",
-        "Light Armor",
-        "Heavy Armor",
-        "Small Shield",
-        "Large Shield",
-    };
-
-    public string[] armorEquipmentList =
-    {
-        "Shield",
-        "Head",
-        "Body",
-        "Accessory",
-    };
+    public string[] armorTypeList;
+    public string[] armorEquipmentList;
 
     //i don't know about this but i leave this to handle later.
     int index = 0;
@@ -57,7 +41,10 @@ public class ArmorTab : BaseTab
     Texture2D armorIcon;
     public void Init()
     {
+        armor.Clear();
         LoadGameData<ArmorData>(ref armorSize, armor, PathDatabase.ArmorTabRelativeDataPath);
+        LoadArmorData();
+        LoadEquipmentData();
         ListReset();
     }
     public void OnRender(Rect position)
@@ -235,7 +222,7 @@ public class ArmorTab : BaseTab
                             #endregion
                             #endregion
 
-                            #region Animation
+                            #region EquipmentType
                             GUILayout.BeginHorizontal();
                                 GUILayout.BeginVertical();
                                     GUILayout.Label("Equipment Type:"); // Animation class label
@@ -417,7 +404,24 @@ public class ArmorTab : BaseTab
         }
     }
 
-
+    private void LoadArmorData()
+    {
+        TypeArmorData[] armorData = Resources.LoadAll<TypeArmorData>(PathDatabase.ArmorRelativeDataPath);
+        armorTypeList = new string[armorData.Length];
+        for (int i = 0; i < armorTypeList.Length; i++)
+        {
+            armorTypeList[i] = armorData[i].dataName;
+        }
+    }
+    private void LoadEquipmentData()
+    {
+        TypeEquipmentData[] equipmentData = Resources.LoadAll<TypeEquipmentData>(PathDatabase.EquipmentRelativeDataPath);
+        armorEquipmentList = new string[equipmentData.Length];
+        for (int i = 0; i < armorEquipmentList.Length; i++)
+        {
+            armorEquipmentList[i] = equipmentData[i].dataName;
+        }
+    }
     public override void ItemTabLoader(int index)
     {
         Texture2D defTex = new Texture2D(256, 256);

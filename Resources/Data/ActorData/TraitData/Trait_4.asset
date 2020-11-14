@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9426ce6cce591a74a8b6ba02b9b11738, type: 3}
-  m_Name: Trait_1
+  m_Name: Trait_4
   m_EditorClassIdentifier: 
-  traitName: None
+  traitName: 
   selectedTabToggle: 0
   selectedTabIndex: 0
   selectedArrayIndex: 0

@@ -29,7 +29,8 @@ public class ClassTab : BaseTab
 
     public void Init()
     {
-        LoadGameData<ClassesData>(ref classSize, classes, PathDatabase.ClassRelativeDataPath);
+        classes.Clear();
+        LoadGameData<ClassesData>(ref classSize, classes, PathDatabase.ClassRelativeDataPath);        
         ListReset();
     }
     public void OnRender(Rect position)
