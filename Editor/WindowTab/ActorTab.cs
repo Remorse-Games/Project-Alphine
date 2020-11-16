@@ -4,15 +4,12 @@ using UnityEditor;
 using System.IO;
 using SFB;
 using System.Linq;
-using System;
-
 public class ActorTab : BaseTab
 {
     //Having list of all player exist in data.
-    public List<ActorData> actor = new List<ActorData>();
+    public List<ActorData> player = new List<ActorData>();
     public List<ActorTraitsData> traits = new List<ActorTraitsData>();
     public List<TypeEquipmentData> equipmentType = new List<TypeEquipmentData>();
-    public List<ArmorData> armors = new List<ArmorData>();
 
     //List of names. Why you ask? because selectionGrid require
     //array of string, which we cannot obtain in ActorData.
@@ -24,30 +21,35 @@ public class ActorTab : BaseTab
 
     public string[] equipDisplayName;
     public string[] classDisplayName;
-    public string[] tempArmorList;
-
     //All GUIStyle variable initialization.
     GUIStyle actorStyle;
     GUIStyle tabStyle;
     GUIStyle columnStyle;
 
     #region  DeleteLater
+    //This should be removed when i have time.
+    public string[] actorClassesList =
+    {
+        "Mage",
+        "Cleric",
+        "Healer",
+        "Warrior",
+    };
+
     //Index for selected Class.
     public int selectedClassIndex;
 
     //How many actor in ChangeMaximum Func
     public int actorSize;
-    public int armorSize;
     public int equipmentTypeSize;
-    public static int traitSize;
+    public static int[] traitSize;
 
     //i don't know about this but i leave this to handle later.
-    int index = 0;
+    public static int index = 0;
     int traitIndex = 0;
     int indexTemp = -1;
     int traitIndexTemp = -1;
     int typeIndex = 0;
-    int typeIndexTemp = -1;
 
     //Scroll position. Is this necessary?
     Vector2 scrollPos = Vector2.zero;
@@ -72,17 +74,23 @@ public class ActorTab : BaseTab
 
     public void Init()
     {
-        actor.Clear();
-        LoadGameData<ActorData>(ref actorSize, actor, PathDatabase.ActorRelativeDataPath);
-        LoadGameData<ActorTraitsData>(ref traitSize, traits, PathDatabase.ActorTraitRelativeDataPath);
+        player.Clear();
+        traits.Clear();
+        index = 0;
+        traitIndex = 0;
+        LoadGameData<ActorData>(ref actorSize, player, PathDatabase.ActorRelativeDataPath);
+
+        traitSize = new int[actorSize];
+        LoadGameData<ActorTraitsData>(ref traitSize[index], traits, PathDatabase.ActorTraitRelativeDataPath + (index + 1));
+
         LoadGameData<TypeEquipmentData>(ref equipmentTypeSize, equipmentType, PathDatabase.EquipmentRelativeDataPath);
-        LoadGameData<ArmorData>(ref armorSize, armors, PathDatabase.ArmorTabRelativeDataPath);
         LoadClassList();
         ListReset();
-        if (traitSize == 0)
+        FolderCreator(actorSize, "Assets/Resources/Data/ActorData");
+        if (traitSize[index] <= 0)
         {
-            ChangeMaximum<ActorTraitsData>(traitSize + 1, traits, PathDatabase.ActorTraitExplicitDataPath);
-            traitSize++;
+            traitIndex = 0;
+            ChangeMaximum<ActorTraitsData>(++traitSize[index], traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");
         }
         ClearNullScriptableObjects();
     }
@@ -96,7 +104,6 @@ public class ActorTab : BaseTab
         ///So make sure you understand that tabbing in here does not
         ///have any corelation with DatabaseMain.cs Tab system.
         #endregion
-
         ////////////////////////////////////////////////////////////////////////////////////////
         /////////////////////////////START REGION OF VALUE INIT/////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////////////////
@@ -149,12 +156,19 @@ public class ActorTab : BaseTab
                 if (GUI.changed && index != indexTemp)
                 {
                     indexTemp = index;
-                    ItemTabLoader(indexTemp);
+                    traitIndex =  0;
+                    traitIndexTemp = -1;
 
-                    if(player[index].allArmorIndexes.Length != equipmentTypeSize)
+                    ItemTabLoader(indexTemp);
+                    traits.Clear();
+                    LoadGameData<ActorTraitsData>(ref traitSize[index], traits, PathDatabase.ActorTraitRelativeDataPath + (index + 1));
+                    if (traitSize[indexTemp] <= 0)
                     {
-                        player[index].allArmorIndexes = new int[equipmentTypeSize];
+                        Debug.Log(traitSize[index]);
+                        ChangeMaximum<ActorTraitsData>(1, traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");
+                        traitSize[index] = 1;
                     }
+                    ListReset();
                     indexTemp = -1;
                 }
 
@@ -163,7 +177,15 @@ public class ActorTab : BaseTab
                 if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
                 {
                     actorSize = actorSizeTemp;
-                    ChangeMaximum<ActorData>(actorSize, actor, PathDatabase.ActorExplicitDataPath);
+                    int[] tempArr = new int[traitSize.Length];
+                    for (int i = 0; i < traitSize.Length; i++)
+                        tempArr[i] = traitSize[i];
+
+                    traitSize = new int[actorSize];
+                    for (int i = 0; i < tempArr.Length; i++)
+                        traitSize[i] = tempArr[i];
+                    ChangeMaximum<ActorData>(actorSize, player, PathDatabase.ActorExplicitDataPath);
+                    FolderCreator(actorSize, "Assets/Resources/Data/ActorData");
                     ListReset();
                 }
             GUILayout.EndArea();
@@ -188,8 +210,8 @@ public class ActorTab : BaseTab
                                 GUILayout.Label("Name:");
                                 if (actorSize > 0)
                                 {
-                                    actor[index].actorName = GUILayout.TextField(actor[index].actorName, GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 8));
-                                    actorDisplayName[index] = actor[index].actorName;
+                                    player[index].actorName = GUILayout.TextField(player[index].actorName, GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 8));
+                                    actorDisplayName[index] = player[index].actorName;
                                 }
                                 else
                                 { 
@@ -204,7 +226,7 @@ public class ActorTab : BaseTab
                             GUILayout.BeginVertical(); //Nickname label, nickname field, initial level and max level label and field
                                 GUILayout.Label("Nickname:");
                                 if (actorSize > 0)
-                                { actor[index].actorNickname = GUILayout.TextField(actor[index].actorNickname, GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 8)); }
+                                { player[index].actorNickname = GUILayout.TextField(player[index].actorNickname, GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 8)); }
                                 else
                                 {GUILayout.TextField("Null", GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 8)); }
                                 GUILayout.Space(generalBox.height / 20);
@@ -214,7 +236,7 @@ public class ActorTab : BaseTab
                                     GUILayout.BeginVertical();
                                         GUILayout.Label("Initial Level:");
                                         if (actorSize > 0)
-                                           {actor[index].initLevel = EditorGUILayout.IntField(actor[index].initLevel, GUILayout.Width(generalBox.width / 4 - 20), GUILayout.Height(generalBox.height / 8));}
+                                           {player[index].initLevel = EditorGUILayout.IntField(player[index].initLevel, GUILayout.Width(generalBox.width / 4 - 20), GUILayout.Height(generalBox.height / 8));}
                                         else
                                             {EditorGUILayout.IntField(-1, GUILayout.Width(generalBox.width / 4 - 20), GUILayout.Height(generalBox.height / 8));}
                                     GUILayout.EndVertical();
@@ -223,7 +245,7 @@ public class ActorTab : BaseTab
                                     GUILayout.BeginVertical();
                                         GUILayout.Label("Max Level:");
                                         if (actorSize > 0)
-                                            {actor[index].maxLevel = EditorGUILayout.IntField(actor[index].maxLevel, GUILayout.Width(generalBox.width / 4 - 20), GUILayout.Height(generalBox.height / 8));}
+                                            {player[index].maxLevel = EditorGUILayout.IntField(player[index].maxLevel, GUILayout.Width(generalBox.width / 4 - 20), GUILayout.Height(generalBox.height / 8));}
                                         else
                                             {EditorGUILayout.IntField(-1, GUILayout.Width(generalBox.width / 4 - 20), GUILayout.Height(generalBox.height / 8));}
                                     GUILayout.EndVertical();
@@ -237,9 +259,9 @@ public class ActorTab : BaseTab
                         GUILayout.Label("Profile:");
                         if (actorSize > 0)
                             {
-                                actor[index].description = GUILayout.TextArea
+                                player[index].description = GUILayout.TextArea
                                     (
-                                    actor[index].description,
+                                    player[index].description,
                                     GUILayout.Width(firstTabWidth + 50), 
                                     GUILayout.Height(generalBox.height / 5)
                                     );
@@ -274,7 +296,7 @@ public class ActorTab : BaseTab
                             GUILayout.Box(faceImage, GUILayout.Width(imageBox.width / 3 - 10), GUILayout.Height(imageBox.width / 3 - 10));
                             if (GUILayout.Button("Edit Face", GUILayout.Height(imageBox.height / 10), GUILayout.Width(imageBox.width / 3 - 10))) 
                             {
-                                    actor[index].face = ImageChanger(
+                                    player[index].face = ImageChanger(
                                     index,
                                     "Choose Face", 
                                     "Assets/Resources/Image"
@@ -289,7 +311,7 @@ public class ActorTab : BaseTab
                             GUILayout.Box(characterImage, GUILayout.Width(imageBox.width / 3 - 10), GUILayout.Height(imageBox.width / 3 - 10));
                             if (GUILayout.Button("Edit Character", GUILayout.Height(imageBox.height / 10), GUILayout.Width(imageBox.width / 3 - 10))) 
                             {
-                                    actor[index].characterWorld = ImageChanger(
+                                    player[index].characterWorld = ImageChanger(
                                     index,                                    
                                     "Choose Character",
                                     "Assets/Resources/Image"
@@ -304,7 +326,7 @@ public class ActorTab : BaseTab
                             GUILayout.Box(battlerImage, GUILayout.Width(imageBox.width / 3 - 10), GUILayout.Height(imageBox.width / 3 - 10));
                             if (GUILayout.Button("Edit Battler", GUILayout.Height(imageBox.height / 10), GUILayout.Width(imageBox.width / 3 - 10))) 
                             {
-                                    actor[index].battler = ImageChanger(
+                                    player[index].battler = ImageChanger(
                                     index, 
                                     "Choose Face", 
                                     "Assets/Resources/Image" 
@@ -337,12 +359,12 @@ public class ActorTab : BaseTab
                         #endregion
                         #region ScrollView
                             equipmentScrollPos = GUILayout.BeginScrollView(
-                                                equipmentScrollPos,
-                                                false,
-                                                true,
-                                                GUILayout.Width(firstTabWidth + 50),
-                                                GUILayout.Height(equipmentBox.height * 0.7f)
-                                                );
+                                equipmentScrollPos,
+                                false,
+                                true,
+                                GUILayout.Width(firstTabWidth + 50),
+                                GUILayout.Height(equipmentBox.height * 0.7f)
+                                );
                             typeIndex = GUILayout.SelectionGrid(
                                                 typeIndex, 
                                                 initialEquipName.ToArray(), 
@@ -352,21 +374,10 @@ public class ActorTab : BaseTab
                                                 );
                         GUILayout.EndScrollView();
                         #endregion
-
-                        if (GUI.changed)
-                        {
-                            if (typeIndex != typeIndexTemp)
-                            {
-                                LoadArmorList(typeIndex);
-                                InitialEquipmentWindow.ShowWindow(player[index], equipmentType[typeIndex].dataName, tempArmorList, typeIndex);
-                                typeIndexTemp = typeIndex;
-                            }
-                        }
                     GUILayout.EndVertical();
                     #endregion
                 GUILayout.EndArea();
                 #endregion
-
             GUILayout.EndArea();
             #endregion
 
@@ -402,10 +413,9 @@ public class ActorTab : BaseTab
                             traitDisplayName.ToArray(),
                             1,
                             GUILayout.Width(firstTabWidth - 20),
-                            GUILayout.Height(position.height / 24 * traitSize
+                            GUILayout.Height(position.height / 24 * traitSize[index]
                             ));
                     GUILayout.EndScrollView();
-
                     #endregion
         
                     //Happen everytime selection grid is updated
@@ -413,22 +423,23 @@ public class ActorTab : BaseTab
                     {
                         if (traitIndex != traitIndexTemp)
                         {
-                            ActorTraitWindow.ShowWindow(traits, traitIndex, traitSize);
+                            ActorTraitWindow.ShowWindow(traits, traitIndex, traitSize[index]);
                             traitIndexTemp = traitIndex;
                         }
                     }
-                    if (traits[traitSize - 1].traitName != null && traitSize > 0)
+                    if (traits[traitSize[index] - 1].traitName != null && traitSize[index] > 0)
                     {
-                        ChangeMaximum<ActorTraitsData>(++traitSize, traits, PathDatabase.ActorTraitExplicitDataPath);
+                        traitIndex = 0;
+                        ChangeMaximum<ActorTraitsData>(++traitSize[index], traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");
                     }
                     if (GUILayout.Button("Delete All Data", GUILayout.Width(traitsBox.width * .3f), GUILayout.Height(traitsBox.height * .065f)))
                     {
                         if (EditorUtility.DisplayDialog("Delete All Trait Data", "Are you sure want to delete all Trait Data?", "Yes", "No"))
                         {
                             traitIndex = 0;
-                            traitSize = 1;
-                            ChangeMaximum<ActorTraitsData>(0, traits, PathDatabase.ActorTraitExplicitDataPath);
-                            ChangeMaximum<ActorTraitsData>(1, traits, PathDatabase.ActorTraitExplicitDataPath);
+                            traitSize[index] = 1;
+                            ChangeMaximum<ActorTraitsData>(0, traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");
+                            ChangeMaximum<ActorTraitsData>(1, traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");
                         }
                     }
                 GUILayout.EndArea();
@@ -444,7 +455,7 @@ public class ActorTab : BaseTab
                     GUILayout.Space(notesBox.height / 50);
                     if (actorSize > 0)
                     {
-                        actor[index].notes = GUILayout.TextArea(actor[index].notes, GUILayout.Width(notesBox.width - 5), GUILayout.Height(notesBox.height * 0.9f));
+                        player[index].notes = GUILayout.TextArea(player[index].notes, GUILayout.Width(notesBox.width - 5), GUILayout.Height(notesBox.height * 0.9f));
                     }
                     else
                     {
@@ -459,7 +470,7 @@ public class ActorTab : BaseTab
         GUILayout.EndArea();
         #endregion
 
-        EditorUtility.SetDirty(actor[index]);
+        EditorUtility.SetDirty(player[index]);
     }
 
     ///<summary>
@@ -471,20 +482,17 @@ public class ActorTab : BaseTab
         actorDisplayName.Clear();
         for (int i = 0; i < actorSize; i++)
         {
-            actorDisplayName.Add(actor[i].actorName);
+            actorDisplayName.Add(player[i].actorName);
         }
         //Equip Reset
         initialEquipName.Clear();
-
-        
         for (int i = 0; i < equipmentTypeSize; i++)
         {
-            LoadArmorList(i);
-            initialEquipName.Add(equipmentType[i].dataName + ' ' +  tempArmorList[player[index].allArmorIndexes[i]]);
+            initialEquipName.Add(equipmentType[i].dataName);
         }
         //Trait Reset
         traitDisplayName.Clear();
-        for (int i = 0; i < traitSize; i++)
+        for (int i = 0; i < traitSize[index]; i++)
         {
             traitDisplayName.Add(traits[i].traitName);
         }
@@ -499,40 +507,23 @@ public class ActorTab : BaseTab
         }
     }
 
-
-    private void LoadArmorList(int searchedIndex)
-    {
-        ArmorData[] armorData = Resources.LoadAll<ArmorData>(PathDatabase.ArmorTabRelativeDataPath);
-        tempArmorList = new string[armorData.Length];
-
-        int j = 1;
-        tempArmorList[0] = "None";
-        for (int i = 0; i < tempArmorList.Length; i++)
-        {
-            if(armorData[i].selectedArmorEquipmentIndex == searchedIndex)
-            {
-                tempArmorList[j++] = armorData[i].armorName;
-            }
-        }
-    }
-
     private void ClearNullScriptableObjects()
     {
         bool availableNull = true;
         while (availableNull)
         {
             availableNull = false;
-            for (int i = 0; i < traitSize - 1; i++)
+            for (int i = 0; i < traitSize[index] - 1; i++)
             {
                 if (traits[i].traitName == "" || traits[i].traitName == null)
                 {
                     availableNull = true;
-                    for (int j = i; j < traitSize - 1; j++)
+                    for (int j = i; j < traitSize[index] - 1; j++)
                     {
                         traits[j] = traits[j + 1];
                     }
                     traitIndex = 0;
-                    ChangeMaximum<ActorTraitsData>(--traitSize, traits, PathDatabase.ActorTraitExplicitDataPath);
+                    ChangeMaximum<ActorTraitsData>(--traitSize[index], traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");
                     i--;
                 }
             }
@@ -546,22 +537,22 @@ public class ActorTab : BaseTab
         {
             if (actorSize > 0)
             {
-                if (actor[index].face == null)
+                if (player[index].face == null)
                     faceImage = defTex;
                 else
-                    faceImage = TextureToSprite(actor[index].face);
+                    faceImage = TextureToSprite(player[index].face);
 
 
-                if (actor[index].characterWorld == null)
+                if (player[index].characterWorld == null)
                     characterImage = defTex;
                 else
-                    characterImage = TextureToSprite(actor[index].characterWorld);
+                    characterImage = TextureToSprite(player[index].characterWorld);
 
 
-                if (actor[index].battler == null)
+                if (player[index].battler == null)
                     battlerImage = defTex;
                 else
-                    battlerImage = TextureToSprite(actor[index].battler);
+                    battlerImage = TextureToSprite(player[index].battler);
             }
         }
     }
