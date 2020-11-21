@@ -168,7 +168,7 @@ public class ActorTraitWindow : EditorWindow
                             // OK Button
                             if (GUILayout.Button("Cancel", GUILayout.Width(generalBox.width * .23f), GUILayout.Height(20)))
                             {
-                                if(firstTraitName != null)
+                                if(firstTraitName != null && firstTraitName != "")
                                 { 
                                     traits[traitIndex].selectedTabToggle = firstSelectedToggle;
                                     traits[traitIndex].selectedTabIndex = firstSelectedTab;
@@ -189,8 +189,8 @@ public class ActorTraitWindow : EditorWindow
                                         traits[i].selectedTabToggle = traits[i + 1].selectedTabToggle;
                                     }
                                     traitIndex = 0;
-                                    ChangeMaximum<ActorTraitsData>(--traitSize, traits, PathDatabase.ActorTraitExplicitDataPath);
-                                    ActorTab.traitSize = traitSize;
+                                    ChangeMaximum<ActorTraitsData>(--traitSize, traits, PathDatabase.ActorTraitExplicitDataPath + (ActorTab.index + 1) + "/Trait_");
+                                    ActorTab.traitSize[ActorTab.index] = traitSize;
                                 }
                             }
                             if(firstTraitName != null)
@@ -207,8 +207,8 @@ public class ActorTraitWindow : EditorWindow
                                         traits[i].selectedTabToggle = traits[i + 1].selectedTabToggle;
                                     }
                                     traitIndex = 0;
-                                    ChangeMaximum<ActorTraitsData>(--traitSize, traits, PathDatabase.ActorTraitExplicitDataPath);
-                                    ActorTab.traitSize = traitSize;
+                                    ChangeMaximum<ActorTraitsData>(--traitSize, traits, PathDatabase.ActorTraitExplicitDataPath + (ActorTab.index + 1) + "/Trait_");
+                                    ActorTab.traitSize[ActorTab.index] = traitSize;
                                 }
                             }
                             else
@@ -736,11 +736,6 @@ public class ActorTraitWindow : EditorWindow
         GUILayout.EndHorizontal();
     }
     #endregion
-
-    private void OnLostFocus()
-    {
-        this.Focus();
-    }
 
     #region Features
     /// <summary>

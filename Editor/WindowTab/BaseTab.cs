@@ -16,6 +16,31 @@ using SFB;
 public abstract class BaseTab
 {
     #region Features
+    public void FolderCreator(int dataSize, string dataPath)
+    {
+        // dataPath = "Assets/Resources/Data/ActorData"
+        int counter = 0;
+        while (AssetDatabase.IsValidFolder(dataPath + "/TraitData" + (counter + 1)))
+        {
+            counter++;
+        }
+
+        if (dataSize > counter)
+        {
+            while (dataSize > counter)
+            {
+                AssetDatabase.CreateFolder(dataPath, "TraitData" + (counter + 1));
+                counter++;
+            }
+        }
+        else
+        {
+            for (int i = counter; i > dataSize; i--)
+            {
+                AssetDatabase.DeleteAsset(dataPath + "/TraitData" + i);
+            }
+        }
+    }
     /// <summary>
     /// This called when actor list on active.
     /// pick item to load it.
@@ -40,9 +65,9 @@ public abstract class BaseTab
         {
             AssetDatabase.CreateFolder("Assets/Resources/Data", "ActorData");
         }
-        if (!AssetDatabase.IsValidFolder("Assets/Resources/Data/ActorData/TraitData"))
+        if (!AssetDatabase.IsValidFolder("Assets/Resources/Data/ActorData/TraitData1"))
         {
-            AssetDatabase.CreateFolder("Assets/Resources/Data/ActorData", "TraitData");
+            AssetDatabase.CreateFolder("Assets/Resources/Data/ActorData", "TraitData1");
         }
         if (!AssetDatabase.IsValidFolder("Assets/Resources/Image"))
         {

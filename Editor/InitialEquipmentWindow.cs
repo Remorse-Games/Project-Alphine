@@ -46,25 +46,25 @@ public class InitialEquipmentWindow : EditorWindow
 
         Rect primaryBox = new Rect(0, 0, 190, 95);
         GUILayout.BeginArea(primaryBox, windowStyle);
-            GUILayout.BeginVertical();
-                GUILayout.Label("Armor:", EditorStyles.boldLabel);
-                thisClass.allArmorIndexes[windowOrder] = EditorGUILayout.Popup(thisClass.allArmorIndexes[windowOrder], armorList);
+        GUILayout.BeginVertical();
+        GUILayout.Label("Armor:", EditorStyles.boldLabel);
+        thisClass.allArmorIndexes[windowOrder] = EditorGUILayout.Popup(thisClass.allArmorIndexes[windowOrder], armorList);
 
-                GUILayout.Space(30);
-                GUILayout.BeginHorizontal();
+        GUILayout.Space(30);
+        GUILayout.BeginHorizontal();
 
-                if (GUILayout.Button("OK", GUILayout.Width(50), GUILayout.Height(20)))
-                {
-                    this.Close();
-                }
-                if (GUILayout.Button("Cancel", GUILayout.Width(50), GUILayout.Height(20)))
-                {
-                    thisClass.allArmorIndexes[windowOrder] = firstSelectedArmor;
-                    this.Close();
-                }
+        if (GUILayout.Button("OK", GUILayout.Width(50), GUILayout.Height(20)))
+        {
+            this.Close();
+        }
+        if (GUILayout.Button("Cancel", GUILayout.Width(50), GUILayout.Height(20)))
+        {
+            thisClass.allArmorIndexes[windowOrder] = firstSelectedArmor;
+            this.Close();
+        }
 
-                GUILayout.EndHorizontal();
-            GUILayout.EndVertical();
+        GUILayout.EndHorizontal();
+        GUILayout.EndVertical();
         GUILayout.EndArea();
     }
 
