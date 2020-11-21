@@ -92,7 +92,7 @@ public class ActorTab : BaseTab
         LoadClassList();
 
         //Create Folder For TraitData and its sum is based on actorSize value
-        FolderCreator(actorSize, "Assets/Resources/Data/ActorData");
+        FolderCreator(actorSize, "Assets/Resources/Data/ActorData", "TraitData");
 
         //Check if TraitData_(index) is empty, if it is empty then create a SO named Trait_1
         if (traitSize[index] <= 0)
@@ -197,7 +197,7 @@ public class ActorTab : BaseTab
                 {
                     actorSize = actorSizeTemp;
                     index = indexTemp = 0;
-                    FolderCreator(actorSize, "Assets/Resources/Data/ActorData");
+                    FolderCreator(actorSize, "Assets/Resources/Data/ActorData", "TraitData");
                     ChangeMaximum<ActorData>(actorSize, actor, PathDatabase.ActorExplicitDataPath);
                     
                     //New TraitSize array length
