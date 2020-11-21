@@ -103,4 +103,15 @@ public static class CharacterDevelopmentData
         "Gold Double",
         "Drop Item Double",
     };
+    public static string[] specialEffect =
+    {
+        "Escape"
+    };
+    public static string[] commonEvent =
+    {
+        "001",
+        "002",
+        "003",
+        "004"
+    };
 }
