@@ -70,7 +70,7 @@ public class ActorTab : BaseTab
 
     public void Init()
     {
-        //Clears Array
+        //Clears List
         actor.Clear();
         traits.Clear();
         armors.Clear();
@@ -78,6 +78,7 @@ public class ActorTab : BaseTab
 
         //Resetting each index to 0, so that it won't have error (Index Out Of Range)
         index = 0;
+        typeIndex = 0;
         traitIndex = 0;
 
         //Load Every List needed in ActorTab
@@ -88,7 +89,6 @@ public class ActorTab : BaseTab
 
         LoadGameData<TypeEquipmentData>(ref equipmentTypeSize, equipmentType, PathDatabase.EquipmentRelativeDataPath);
         LoadGameData<ArmorData>(ref armorSize, armors, PathDatabase.ArmorTabRelativeDataPath);
-
         LoadClassList();
 
         //Create Folder For TraitData and its sum is based on actorSize value
@@ -167,25 +167,26 @@ public class ActorTab : BaseTab
                     //Index Resetting
                     indexTemp = index;
                     traitIndex = traitIndexTemp = 0;
+                    typeIndex = typeIndexTemp = 0;
 
-                    ItemTabLoader(indexTemp);
-                    
+                    ItemTabLoader(index);
+
                     //Load TraitData
                     traits.Clear();
                     LoadGameData<ActorTraitsData>(ref traitSize[index], traits, PathDatabase.ActorTraitRelativeDataPath + (index + 1));
                     //Check if TraitData folder is empty
-                    if (traitSize[indexTemp] <= 0)
+                    if (traitSize[index] <= 0)
                     {
                         ChangeMaximum<ActorTraitsData>(++traitSize[index], traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");
                         traitIndexTemp = 0;
                     }
+                    ClearNullScriptableObjects();
+
                     //Resets the armor index array length
-                    if (actor[index].allArmorIndexes.Length != equipmentTypeSize)
+                    if (actor[index].allArmorIndexes == null)
                     {
                         actor[index].allArmorIndexes = new int[equipmentTypeSize];
                     }
-
-                    ClearNullScriptableObjects();
                     ListReset();
                     indexTemp = -1;
                 }
@@ -195,6 +196,7 @@ public class ActorTab : BaseTab
                 if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
                 {
                     actorSize = actorSizeTemp;
+                    index = indexTemp = 0;
                     FolderCreator(actorSize, "Assets/Resources/Data/ActorData");
                     ChangeMaximum<ActorData>(actorSize, actor, PathDatabase.ActorExplicitDataPath);
                     
@@ -204,16 +206,24 @@ public class ActorTab : BaseTab
                         tempArr[i] = traitSize[i];
 
                     traitSize = new int[actorSize];
-                    for (int i = 0; i < tempArr.Length; i++)
+
+                    #region FindSmallestBetween
+                        int smallestValue;
+                        if (tempArr.Length < actorSize) smallestValue = tempArr.Length;
+                        else smallestValue = actorSize;
+                    #endregion
+
+                    for (int i = 0; i < smallestValue; i++)
                         traitSize[i] = tempArr[i];
 
                     //Reload Data and Check SO
                     LoadGameData<ActorTraitsData>(ref traitSize[index], traits, PathDatabase.ActorTraitRelativeDataPath + (index + 1));
-                    if (traitSize[indexTemp] <= 0)
+                    if (traitSize[index] <= 0)
                     {
                         ChangeMaximum<ActorTraitsData>(++traitSize[index], traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");
                     }
-                    if (actor[index].allArmorIndexes.Length != equipmentTypeSize)
+                    //Resets the armor index array length
+                    if (actor[index].allArmorIndexes == null)
                     {
                         actor[index].allArmorIndexes = new int[equipmentTypeSize];
                     }
@@ -533,10 +543,11 @@ public class ActorTab : BaseTab
         }
         //Equip Reset
         initialEquipName.Clear();
-        if (actor[index].allArmorIndexes.Length != equipmentTypeSize)
+        if(actor[index].allArmorIndexes == null)
         {
             actor[index].allArmorIndexes = new int[equipmentTypeSize];
         }
+
         for (int i = 0; i < equipmentTypeSize; i++)
         {
             LoadArmorList(i);
@@ -562,11 +573,11 @@ public class ActorTab : BaseTab
     private void LoadArmorList(int searchedIndex)
     {
         ArmorData[] armorData = Resources.LoadAll<ArmorData>(PathDatabase.ArmorTabRelativeDataPath);
-        tempArmorList = new string[armorData.Length];
+        tempArmorList = new string[armorData.Length + 10];
 
         int j = 1;
         tempArmorList[0] = "None";
-        for (int i = 0; i < tempArmorList.Length; i++)
+        for (int i = 0; i < armorData.Length; i++)
         {
             if (armorData[i].selectedArmorEquipmentIndex == searchedIndex)
             {

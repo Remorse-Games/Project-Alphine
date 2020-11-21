@@ -38,7 +38,6 @@ public class ActorData : ScriptableObject
 
         actorName = "player";
         actorNickname = "actorNickname";
-//        actorClass = Resources.LoadAll<ActorData>("path");
         initLevel = 1;
         maxLevel = 99;
         description = "insert your description here";
