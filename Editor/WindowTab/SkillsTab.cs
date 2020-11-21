@@ -9,12 +9,18 @@ public class SkillsTab : BaseTab
 {
     //Having list of all skills exist in data.
     public List<SkillData> skill = new List<SkillData>();
+    public List<SkillEffectData> effects = new List<SkillEffectData>();
 
     //List of names. Why you ask? because selectionGrid require
     //array of string, which we cannot obtain in SkillData.
     //I hope later got better solution about this to not do
     //a double List for this kind of thing.
     List<string> skillDisplayName = new List<string>();
+    List<string> effectDisplayName = new List<string>();
+
+    //i don't know about this but i leave this to handle later.
+    int effectIndex = 0;
+    int effectIndexTemp = -1;
 
     //Classes
     public string[] skillTypeList =
@@ -110,6 +116,7 @@ public class SkillsTab : BaseTab
 
     //How many skill in ChangeMaximum Func
     public int skillSize;
+    public static int effectSize;
 
     //i don't know about this but i leave this to handle later.
     int index = 0;
@@ -127,7 +134,15 @@ public class SkillsTab : BaseTab
     public void Init()
     {
         LoadGameData<SkillData>(ref skillSize, skill, PathDatabase.SkillTabRelativeDataPath);
+        LoadGameData<SkillEffectData>(ref effectSize, effects, PathDatabase.SkillEffectRelativeDataPath);
         ListReset();
+
+        if(effectSize == 0)
+        {
+            ChangeMaximum<SkillEffectData>(effectSize + 1, effects, PathDatabase.SkillEffectExplicitDataPath);
+            effectSize++;
+        }
+        ClearNullScriptableObjects();
     }
 
     public void OnRender(Rect position)
@@ -618,30 +633,68 @@ public class SkillsTab : BaseTab
                     #endregion
 
                 Rect effectsBox = new Rect(5, damageBox.height + 10, firstTabWidth + 15, position.height / 3);
-                    #region Effects
-                    GUILayout.BeginArea(effectsBox, tabStyle);
-                        GUILayout.Label("Effects", EditorStyles.boldLabel);
-                        GUILayout.Space(2);
+                #region Effects
+                ListReset();
+                GUILayout.BeginArea(effectsBox, tabStyle);
+                    GUILayout.Label("Effects", EditorStyles.boldLabel);
+                    GUILayout.Space(2);
 
-                        #region Horizontal For Type And Content
-                        GUILayout.BeginHorizontal();
-                            GUILayout.Label("Type", GUILayout.Width(effectsBox.width * 3 / 8));
-                            GUILayout.Label("Content", GUILayout.Width(effectsBox.width * 5 / 8));
-                        GUILayout.EndHorizontal();
-                        #endregion
-                        
-                        #region ScrollView
-                        effectsScrollPos = GUILayout.BeginScrollView(
-                            effectsScrollPos,
-                            false,
-                            true,
-                            GUILayout.Width(firstTabWidth + 5),
-                            GUILayout.Height(effectsBox.height * 0.80f)
-                            );
-                        GUILayout.EndScrollView();
-                        #endregion
-                    GUILayout.EndArea();
+                    #region Horizontal For Type And Content
+                    GUILayout.BeginHorizontal();
+                        GUILayout.Label("Type", GUILayout.Width(effectsBox.width * 3 / 8));
+                        GUILayout.Label("Content", GUILayout.Width(effectsBox.width * 5 / 8));
+                    GUILayout.EndHorizontal();
                     #endregion
+                        
+                    #region ScrollView
+                    effectsScrollPos = GUILayout.BeginScrollView(
+                        effectsScrollPos,
+                        false,
+                        true,
+                        GUILayout.Width(firstTabWidth + 5),
+                        GUILayout.Height(effectsBox.height * 0.725f)
+                    );
+
+                    GUI.changed = false;
+
+                    effectIndex = GUILayout.SelectionGrid(
+                        effectIndex,
+                        effectDisplayName.ToArray(),
+                        1,
+                        GUILayout.Width(firstTabWidth - 20),
+                        GUILayout.Height(position.height / 24 * effectSize)
+                    );
+                    GUILayout.EndScrollView();
+                    #endregion
+
+                    //Happen everytime selection grid is updated
+                    if (GUI.changed)
+                    {
+                        if(effectIndex != effectIndexTemp)
+                        {
+                            SkillEffectWindow.ShowWindow(effects, effectIndex, effectSize);
+                            effectIndexTemp = effectIndex;
+                        }
+                    }
+
+                    if(effects[effectSize - 1].effectName != null && effectSize > 0)
+                    {
+                        ChangeMaximum<SkillEffectData>(++effectSize, effects, PathDatabase.SkillEffectExplicitDataPath);
+                    }
+
+                    if (GUILayout.Button("Delete All Data"))
+                    {
+                        if (EditorUtility.DisplayDialog("Delete All Trait Data", "Are you sure want to delete all Trait Data?", "Yes", "No"))
+                        {
+                            effectIndex = 0;
+                            effectSize = 1;
+                            ChangeMaximum<SkillEffectData>(0, effects, PathDatabase.SkillEffectExplicitDataPath);
+                            ChangeMaximum<SkillEffectData>(1, effects, PathDatabase.SkillEffectExplicitDataPath);
+                        }
+                    }
+
+                GUILayout.EndArea();
+                #endregion
 
                 Rect notesBox = new Rect(5, damageBox.height + effectsBox.height + 17, firstTabWidth + 15, position.height - (damageBox.height + effectsBox.height + 17) - 40);
                     #region NoteBox
@@ -676,10 +729,41 @@ public class SkillsTab : BaseTab
     ///</summary>
     private void ListReset()
     {
+        //Skill Reset
         skillDisplayName.Clear();
         for (int i = 0; i < skillSize; i++)
         {
             skillDisplayName.Add(skill[i].skillName);
+        }
+
+        //Effect Reset
+        effectDisplayName.Clear();
+        for (int i = 0; i < effectSize; i++)
+        {
+            effectDisplayName.Add(effects[i].effectName);
+        }
+    }
+
+    private void ClearNullScriptableObjects()
+    {
+        bool availableNull = true;
+        while (availableNull)
+        {
+            availableNull = false;
+            for (int i = 0; i < effectSize - 1; i++)
+            {
+                if (effects[i].effectName == "" || effects[i].effectName == null)
+                {
+                    availableNull = true;
+                    for (int j = i; j < effectSize - 1; j++)
+                    {
+                        effects[j] = effects[j + 1];
+                    }
+                    effectIndex = 0;
+                    ChangeMaximum<SkillEffectData>(--effectSize, effects, PathDatabase.ActorTraitExplicitDataPath);
+                    i--;
+                }
+            }
         }
     }
 

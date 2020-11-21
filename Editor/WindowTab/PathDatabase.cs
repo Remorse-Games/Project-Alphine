@@ -19,6 +19,9 @@ public static class PathDatabase
     public static string SkillTabExplicitDataPath = "Assets/Resources/Data/SkillData/Skill_";
     public static string SkillTabRelativeDataPath = "Data/SkillData";
 
+    public static string SkillEffectExplicitDataPath = "Assets/Resources/Data/SkillData/EffectData/Effect_";
+    public static string SkillEffectRelativeDataPath = "Data/Skilldata/EffectData";
+
     public static string ArmorTabExplicitDataPath = "Assets/Resources/Data/ArmorData/Armor_";
     public static string ArmorTabRelativeDataPath = "Data/ArmorData";
 
