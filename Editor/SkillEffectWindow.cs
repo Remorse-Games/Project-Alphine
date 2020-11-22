@@ -823,6 +823,7 @@ public class SkillEffectWindow : EditorWindow
     public string StringMaker(int selectedTabIndex, int selectedToggleIndex, int selectedArrayIndex, int[] value)
     {
         string outputString = "";
+        string val = "";
 
         switch (selectedTabIndex)
         {
@@ -830,25 +831,29 @@ public class SkillEffectWindow : EditorWindow
                 switch (selectedToggleIndex)
                 {
                     case 2:
-                        outputString = string.Format("{0}  {1}", recoverTabToggleList[selectedToggleIndex], value[1]);
+                        outputString = PadString(recoverTabToggleList[selectedToggleIndex], value[1].ToString());
                         break;
                     default:
-                        outputString = string.Format("{0}  {1}% + {2}", recoverTabToggleList[selectedToggleIndex], value[0], value[1]);
+                        val = string.Format("{0}% + {1}", value[0], value[1]);
+                        outputString = PadString(recoverTabToggleList[selectedToggleIndex], val);
                         break;
                 }
                 break;
             case 1:
-                outputString = string.Format("{0}  {1} {2}%", stateTabToggleList[selectedToggleIndex], CharacterDevelopmentData.stateNames[selectedArrayIndex], value[0]);
+                val = string.Format("{0} {1}%", CharacterDevelopmentData.stateNames[selectedArrayIndex], value[0]);
+                outputString = PadString(stateTabToggleList[selectedToggleIndex], val);
                 break;
             case 2:
                 switch (selectedToggleIndex)
                 {
                     case 0:
                     case 1:
-                        outputString = string.Format("{0}  {1} {2} turns", paramTabToggleList[selectedToggleIndex], CharacterDevelopmentData.debuffNames[selectedArrayIndex], value[1]);
+                        val = string.Format("{0} {1} turns", CharacterDevelopmentData.debuffNames[selectedArrayIndex], value[1]);
+                        outputString = PadString(paramTabToggleList[selectedToggleIndex], val);
                         break;
                     default:
-                        outputString = string.Format("{0}  {1}", paramTabToggleList[selectedToggleIndex], CharacterDevelopmentData.debuffNames[selectedArrayIndex]);
+                        val = CharacterDevelopmentData.debuffNames[selectedArrayIndex];
+                        outputString = PadString(paramTabToggleList[selectedToggleIndex], val);
                         break;
                 }
                 break;
@@ -856,19 +861,35 @@ public class SkillEffectWindow : EditorWindow
                 switch (selectedToggleIndex)
                 {
                     case 0:
-                        outputString = string.Format("{0}  {1}", otherTabToggleList[selectedToggleIndex], CharacterDevelopmentData.specialEffect[selectedArrayIndex]);
+                        val = string.Format("{0}", CharacterDevelopmentData.specialEffect[selectedArrayIndex]);
+                        outputString = PadString(otherTabToggleList[selectedToggleIndex], val);
                         break;
                     case 1:
-                        outputString = string.Format("{0}  {1} {2}", otherTabToggleList[selectedToggleIndex], CharacterDevelopmentData.debuffNames[selectedArrayIndex], value[1]);
+                        val = string.Format("{0} {1}", CharacterDevelopmentData.debuffNames[selectedArrayIndex], value[1]);
+                        outputString = PadString(otherTabToggleList[selectedToggleIndex], val);
                         break;
                     case 2:
-                        outputString = string.Format("{0}  {1}", otherTabToggleList[selectedToggleIndex], skillDisplayName[selectedArrayIndex]);
+                        val = string.Format("{0}", skillDisplayName[selectedArrayIndex]);
+                        outputString = PadString(otherTabToggleList[selectedToggleIndex], val);
                         break;
                 }
                 break;
         }
 
         return outputString;
+    }
+
+    public string PadString(string key, string value)
+    {
+        int pad = 4 - (key.Length / 4);
+        string format = key;
+        
+        for (int i = 0; i < pad; i++)
+        {
+            format += "\t";
+        }
+
+        return string.Format(format + "{0}", value);
     }
 
     /// <summary>

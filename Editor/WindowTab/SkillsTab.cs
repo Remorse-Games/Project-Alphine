@@ -712,6 +712,7 @@ public class SkillsTab : BaseTab
                     );
 
                     GUI.changed = false;
+                    GUI.skin.button.alignment = TextAnchor.MiddleLeft;
 
                     effectIndex = GUILayout.SelectionGrid(
                         effectIndex,
@@ -720,6 +721,9 @@ public class SkillsTab : BaseTab
                         GUILayout.Width(firstTabWidth - 20),
                         GUILayout.Height(position.height / 24 * effectSize[index])
                     );
+
+                    GUI.skin.button.alignment = TextAnchor.MiddleCenter;
+
                     GUILayout.EndScrollView();
                     #endregion
 
