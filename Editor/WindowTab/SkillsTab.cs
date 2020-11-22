@@ -741,7 +741,7 @@ public class SkillsTab : BaseTab
 
                     if (GUILayout.Button("Delete All Data", GUILayout.Width(effectsBox.width * .3f)))
                     {
-                        if (EditorUtility.DisplayDialog("Delete All Effect Data", "Are you sure want to Effect all Trait Data?", "Yes", "No"))
+                        if (EditorUtility.DisplayDialog("Delete All Effect Data", "Are you sure want to delete all Effect Data?", "Yes", "No"))
                         {
                             effectIndex = 0;
                             effectSize[index] = 1;

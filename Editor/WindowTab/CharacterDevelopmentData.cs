@@ -107,11 +107,4 @@ public static class CharacterDevelopmentData
     {
         "Escape"
     };
-    public static string[] commonEvent =
-    {
-        "001",
-        "002",
-        "003",
-        "004"
-    };
 }
