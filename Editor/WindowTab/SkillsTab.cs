@@ -116,10 +116,10 @@ public class SkillsTab : BaseTab
 
     //How many skill in ChangeMaximum Func
     public int skillSize;
-    public static int effectSize;
+    public static int[] effectSize;
 
     //i don't know about this but i leave this to handle later.
-    int index = 0;
+    public static int index = 0;
     int indexTemp = -1;
 
     //Scroll position. Is this necessary?
@@ -133,16 +133,30 @@ public class SkillsTab : BaseTab
     public int skillSizeTemp;
     public void Init()
     {
-        LoadGameData<SkillData>(ref skillSize, skill, PathDatabase.SkillTabRelativeDataPath);
-        LoadGameData<SkillEffectData>(ref effectSize, effects, PathDatabase.SkillEffectRelativeDataPath);
-        ListReset();
+        //Clear List
+        skill.Clear();
+        effects.Clear();
 
-        if(effectSize == 0)
+        //resetting each index to 0
+        index = 0;
+        effectIndex = 0;
+
+        LoadGameData<SkillData>(ref skillSize, skill, PathDatabase.SkillTabRelativeDataPath);
+
+        effectSize = new int[skillSize];
+        LoadGameData<SkillEffectData>(ref effectSize[index], effects, PathDatabase.SkillEffectRelativeDataPath + (index + 1));
+
+
+        //create folder for effectdata
+        FolderCreator(skillSize, "Assets/Resources/Data/SkillData", "EffectData");
+
+        if(effectSize[index] <= 0)
         {
-            ChangeMaximum<SkillEffectData>(effectSize + 1, effects, PathDatabase.SkillEffectExplicitDataPath);
-            effectSize++;
+            effectIndex = 0;
+            ChangeMaximum<SkillEffectData>(++effectSize[index], effects, PathDatabase.SkillEffectExplicitDataPath + (index + 1) + "/Effect_");
         }
         ClearNullScriptableObjects();
+        ListReset();
     }
 
     public void OnRender(Rect position)
@@ -195,7 +209,10 @@ public class SkillsTab : BaseTab
             //Scroll View
             #region ScrollView
             scrollPos = GUILayout.BeginScrollView(scrollPos, false, true, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .82f));
+        
+            GUI.changed = false;
             index = GUILayout.SelectionGrid(index, skillDisplayName.ToArray(), 1, GUILayout.Width(firstTabWidth - 20), GUILayout.Height(position.height / 24 * skillSize));
+
             GUILayout.EndScrollView();
             #endregion
 
@@ -203,7 +220,22 @@ public class SkillsTab : BaseTab
             if (GUI.changed && index != indexTemp)
             {
                 indexTemp = index;
+                effectIndex = 0;
+                effectIndexTemp = -1;
+
                 ItemTabLoader(indexTemp);
+
+                effects.Clear();
+                LoadGameData<SkillEffectData>(ref effectSize[index], effects, PathDatabase.SkillEffectRelativeDataPath + (index + 1));
+
+                if(effectSize[index] <= 0)
+                {
+                    ChangeMaximum<SkillEffectData>(++effectSize[index], effects, PathDatabase.SkillEffectExplicitDataPath + (index + 1) + "/Effect_");
+                    effectIndexTemp = 0;
+                }
+                ClearNullScriptableObjects();
+
+                ListReset();
                 indexTemp = -1;
             }
 
@@ -212,7 +244,31 @@ public class SkillsTab : BaseTab
             if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
             {
                 skillSize = skillSizeTemp;
+                index = indexTemp = 0;
+                FolderCreator(skillSize, "Assets/Resources/Data/SkillData", "EffectData");
                 ChangeMaximum<SkillData>(skillSize, skill, PathDatabase.SkillTabExplicitDataPath);
+
+                //new effectsize array length
+                int[] tempArr = new int[effectSize.Length];
+                for (int i = 0; i < effectSize.Length; i++)
+                    tempArr[i] = effectSize[i];
+
+                effectSize = new int[skillSize];
+
+                //find the smallest between tempArr and skillSize
+                int smallestValue = tempArr.Length < skillSize ? tempArr.Length : skillSize;
+
+                for (int i = 0; i <smallestValue; i++)
+                    effectSize[i] = tempArr[i];
+
+                //Reload data
+                LoadGameData<SkillEffectData>(ref effectSize[index], effects, PathDatabase.SkillEffectRelativeDataPath + (index + 1));
+                if(effectSize[index] <= 0)
+                {
+                    ChangeMaximum<SkillEffectData>(++effectSize[index], effects, PathDatabase.SkillEffectExplicitDataPath + (index + 1) + "/Effect_");
+                }
+
+                ClearNullScriptableObjects();
                 ListReset();
             }
 
@@ -494,7 +550,7 @@ public class SkillsTab : BaseTab
                     #endregion
                     GUILayout.EndVertical();
                 GUILayout.EndArea();
-        #endregion
+                #endregion
                 #endregion
 
             Rect requiredWeapon = new Rect(5, generalBox.height + invocationBox.height + messageBox.height + 20, firstTabWidth + 60, position.height / 4 - 120);
@@ -589,7 +645,7 @@ public class SkillsTab : BaseTab
                                 {
                                     GUILayout.TextField("Null", GUILayout.Width(damageBox.width - 8), GUILayout.Height(damageBox.height / 4 - 17));
                                 }
-            #endregion
+                            #endregion
 
                             #endregion
                             #region Variance CriticalHits
@@ -662,7 +718,7 @@ public class SkillsTab : BaseTab
                         effectDisplayName.ToArray(),
                         1,
                         GUILayout.Width(firstTabWidth - 20),
-                        GUILayout.Height(position.height / 24 * effectSize)
+                        GUILayout.Height(position.height / 24 * effectSize[index])
                     );
                     GUILayout.EndScrollView();
                     #endregion
@@ -672,24 +728,25 @@ public class SkillsTab : BaseTab
                     {
                         if(effectIndex != effectIndexTemp)
                         {
-                            SkillEffectWindow.ShowWindow(effects, effectIndex, effectSize);
+                            SkillEffectWindow.ShowWindow(effects, effectIndex, effectSize[index]);
                             effectIndexTemp = effectIndex;
                         }
                     }
 
-                    if(effects[effectSize - 1].effectName != null && effectSize > 0)
+                    if(effects[effectSize[index] - 1].effectName != null && effectSize[index] > 0)
                     {
-                        ChangeMaximum<SkillEffectData>(++effectSize, effects, PathDatabase.SkillEffectExplicitDataPath);
+                        effectIndex = 0;
+                        ChangeMaximum<SkillEffectData>(++effectSize[index], effects, PathDatabase.SkillEffectExplicitDataPath + (index + 1) + "/Effect_");
                     }
 
-                    if (GUILayout.Button("Delete All Data"))
+                    if (GUILayout.Button("Delete All Data", GUILayout.Width(effectsBox.width * .3f)))
                     {
-                        if (EditorUtility.DisplayDialog("Delete All Trait Data", "Are you sure want to delete all Trait Data?", "Yes", "No"))
+                        if (EditorUtility.DisplayDialog("Delete All Effect Data", "Are you sure want to Effect all Trait Data?", "Yes", "No"))
                         {
                             effectIndex = 0;
-                            effectSize = 1;
-                            ChangeMaximum<SkillEffectData>(0, effects, PathDatabase.SkillEffectExplicitDataPath);
-                            ChangeMaximum<SkillEffectData>(1, effects, PathDatabase.SkillEffectExplicitDataPath);
+                            effectSize[index] = 1;
+                            ChangeMaximum<SkillEffectData>(0, effects, PathDatabase.SkillEffectExplicitDataPath + (index + 1) + "/Effect_");
+                            ChangeMaximum<SkillEffectData>(1, effects, PathDatabase.SkillEffectExplicitDataPath + (index + 1) + "/Effect_");
                         }
                     }
 
@@ -738,7 +795,7 @@ public class SkillsTab : BaseTab
 
         //Effect Reset
         effectDisplayName.Clear();
-        for (int i = 0; i < effectSize; i++)
+        for (int i = 0; i < effectSize[index]; i++)
         {
             effectDisplayName.Add(effects[i].effectName);
         }
@@ -750,17 +807,17 @@ public class SkillsTab : BaseTab
         while (availableNull)
         {
             availableNull = false;
-            for (int i = 0; i < effectSize - 1; i++)
+            for (int i = 0; i < effectSize[index] - 1; i++)
             {
                 if (effects[i].effectName == "" || effects[i].effectName == null)
                 {
                     availableNull = true;
-                    for (int j = i; j < effectSize - 1; j++)
+                    for (int j = i; j < effectSize[index] - 1; j++)
                     {
                         effects[j] = effects[j + 1];
                     }
                     effectIndex = 0;
-                    ChangeMaximum<SkillEffectData>(--effectSize, effects, PathDatabase.ActorTraitExplicitDataPath);
+                    ChangeMaximum<SkillEffectData>(--effectSize[index], effects, PathDatabase.ActorTraitExplicitDataPath);
                     i--;
                 }
             }

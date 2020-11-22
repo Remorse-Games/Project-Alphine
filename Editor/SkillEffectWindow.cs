@@ -178,7 +178,7 @@ public class SkillEffectWindow : EditorWindow
                                     }
                                     effectIndex = 0;
                                     ChangeMaximum<SkillEffectData>(--effectSize, effects, PathDatabase.ActorTraitExplicitDataPath);
-                                    SkillsTab.effectSize = effectSize;
+                                    SkillsTab.effectSize[SkillsTab.index] = effectSize;
                                 }
                             }
 
@@ -197,7 +197,7 @@ public class SkillEffectWindow : EditorWindow
                                     }
                                     effectIndex = 0;
                                     ChangeMaximum<SkillEffectData>(--effectSize, effects, PathDatabase.ActorTraitExplicitDataPath);
-                                    SkillsTab.effectSize = effectSize;
+                                    SkillsTab.effectSize[SkillsTab.index] = effectSize;
                                 }
                             }
                             else
