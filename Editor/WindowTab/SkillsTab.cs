@@ -220,7 +220,7 @@ public class SkillsTab : BaseTab
             if (GUI.changed && index != indexTemp)
             {
                 indexTemp = index;
-                effectIndex = 0;
+                effectIndex = 0; 
                 effectIndexTemp = -1;
 
                 ItemTabLoader(indexTemp);
@@ -733,8 +733,10 @@ public class SkillsTab : BaseTab
                         }
                     }
 
-                    if(effects[effectSize[index] - 1].effectName != null && effectSize[index] > 0)
+                    if((effects[effectSize[index] - 1].effectName != null && effects[effectSize[index] - 1].effectName != "") && effectSize[index] > 0)
                     {
+                        Debug.Log(effects[effectSize[index] - 1].effectName);
+
                         effectIndex = 0;
                         ChangeMaximum<SkillEffectData>(++effectSize[index], effects, PathDatabase.SkillEffectExplicitDataPath + (index + 1) + "/Effect_");
                     }
