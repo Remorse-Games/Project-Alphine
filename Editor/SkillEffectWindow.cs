@@ -179,6 +179,13 @@ public class SkillEffectWindow : EditorWindow
                                     }
                                     effectIndex = 0;
                                     ChangeMaximum<SkillEffectData>(--effectSize, effects, PathDatabase.SkillEffectExplicitDataPath + (SkillsTab.index + 1) + "/Effect_");
+
+                                    if(effectSize <= 0)
+                                    {
+                                        ChangeMaximum<SkillEffectData>(1, effects, PathDatabase.SkillEffectExplicitDataPath + (SkillsTab.index + 1) + "/Effect_");
+                                        effectSize = 1;
+                                    }
+
                                     SkillsTab.effectSize[SkillsTab.index] = effectSize;
                                 }
                             }
@@ -198,6 +205,13 @@ public class SkillEffectWindow : EditorWindow
                                     }
                                     effectIndex = 0;
                                     ChangeMaximum<SkillEffectData>(--effectSize, effects, PathDatabase.SkillTabExplicitDataPath + (SkillsTab.index + 1) + "/Effect_");
+                
+                                    if(effectSize <= 0)
+                                    {
+                                        ChangeMaximum<SkillEffectData>(1, effects, PathDatabase.SkillEffectExplicitDataPath + (SkillsTab.index + 1) + "/Effect_");
+                                        effectSize = 1;
+                                    }
+
                                     SkillsTab.effectSize[SkillsTab.index] = effectSize;
                                 }
                             }

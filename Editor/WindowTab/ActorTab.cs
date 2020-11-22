@@ -482,7 +482,7 @@ public class ActorTab : BaseTab
                     }
 
                     //Create Empty SO if there isn't any null SO left
-                    if (traits[traitSize[index] - 1].traitName != null && traitSize[index] > 0)
+                    if ((traits[traitSize[index] - 1].traitName != null && traits[traitSize[index] - 1].traitName != "") && traitSize[index] > 0)
                     {
                         traitIndex = 0;
                         ChangeMaximum<ActorTraitsData>(++traitSize[index], traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");

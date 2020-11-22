@@ -190,6 +190,13 @@ public class ActorTraitWindow : EditorWindow
                                     }
                                     traitIndex = 0;
                                     ChangeMaximum<ActorTraitsData>(--traitSize, traits, PathDatabase.ActorTraitExplicitDataPath + (ActorTab.index + 1) + "/Trait_");
+
+                                    if(traitSize <= 0)
+                                    {
+                                        ChangeMaximum<ActorTraitsData>(1, traits, PathDatabase.ActorTraitExplicitDataPath + (ActorTab.index + 1) + "/Trait_");
+                                        traitSize = 1;
+                                    }
+
                                     ActorTab.traitSize[ActorTab.index] = traitSize;
                                 }
                             }
@@ -208,6 +215,13 @@ public class ActorTraitWindow : EditorWindow
                                     }
                                     traitIndex = 0;
                                     ChangeMaximum<ActorTraitsData>(--traitSize, traits, PathDatabase.ActorTraitExplicitDataPath + (ActorTab.index + 1) + "/Trait_");
+                
+                                    if(traitSize <= 0)
+                                    {
+                                        ChangeMaximum<ActorTraitsData>(1, traits, PathDatabase.ActorTraitExplicitDataPath + (ActorTab.index + 1) + "/Trait_");
+                                        traitSize = 1;
+                                    }
+
                                     ActorTab.traitSize[ActorTab.index] = traitSize;
                                 }
                             }
