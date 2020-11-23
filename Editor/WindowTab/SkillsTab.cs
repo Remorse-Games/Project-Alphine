@@ -697,8 +697,7 @@ public class SkillsTab : BaseTab
 
                         #region Horizontal For Type And Content
                         GUILayout.BeginHorizontal();
-                            GUILayout.Label("Type", GUILayout.Width(effectsBox.width * 3 / 8));
-                            GUILayout.Label("Content", GUILayout.Width(effectsBox.width * 5 / 8));
+                            GUILayout.Label(PadString("Type", string.Format("{0}", " Equipment Item")), GUILayout.Width(effectsBox.width));
                         GUILayout.EndHorizontal();
                         #endregion
                         

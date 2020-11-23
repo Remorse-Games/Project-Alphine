@@ -224,7 +224,6 @@ public class SkillEffectWindow : EditorWindow
                             }
 
                         GUILayout.EndHorizontal();
-
                     GUILayout.EndVertical();
                 GUILayout.EndVertical();
             GUILayout.EndArea();

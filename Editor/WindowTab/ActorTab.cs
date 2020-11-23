@@ -395,8 +395,8 @@ public class ActorTab : BaseTab
                         GUILayout.Space(equipmentBox.height / 10);
                         #region Horizontal
                         GUILayout.BeginHorizontal();
-                            GUILayout.Label("Type", GUILayout.Width(equipmentBox.width * 3 / 8));
-                            GUILayout.Label("Equipment Item", GUILayout.Width(equipmentBox.width * 5 / 8));
+                            GUILayout.Label(PadString("Type", string.Format("{0}", " Equipment Item")), GUILayout.Width(equipmentBox.width));
+                            //GUILayout.Label("Equipment Item", GUILayout.Width(equipmentBox.width * 0.35f));
                         GUILayout.EndHorizontal();
                         #endregion
                         #region ScrollView
@@ -451,8 +451,7 @@ public class ActorTab : BaseTab
                     GUILayout.Space(5);
                     #region Horizontal For Type And Content
                     GUILayout.BeginHorizontal();
-                        GUILayout.Label("Type", GUILayout.Width(traitsBox.width * 3 / 8));
-                        GUILayout.Label("Content", GUILayout.Width(traitsBox.width * 5 / 8));
+                        GUILayout.Label(PadString("Type", string.Format("{0}", "  Content")), GUILayout.Width(traitsBox.width));
                     GUILayout.EndHorizontal();
                     #endregion
                     #region ScrollView
