@@ -11,6 +11,8 @@ using System.Linq;
 public class ActorTraitWindow : EditorWindow
 {
     public string[] elementDisplayName;
+    public string[] equipmentType;
+    public string[] skillTabDisplayName;
     public string[] skillDisplayName;
     public string[] weaponDisplayName;
     public string[] armorDisplayName;
@@ -119,10 +121,12 @@ public class ActorTraitWindow : EditorWindow
             tabStyle.normal.background = CreateTexture(1, 1, new Color32(200, 200, 200, 100));
 
         // Getting Each Array List
+        LoadEquipmentList();
         LoadArmorList();
         LoadElementList();
         LoadSkillList();
         LoadWeaponList();
+        LoadSkillTabList();
 
         #region PrimaryTab
         Rect primaryBox = new Rect(0, 0, 500, 190);
@@ -190,6 +194,13 @@ public class ActorTraitWindow : EditorWindow
                                     }
                                     traitIndex = 0;
                                     ChangeMaximum<ActorTraitsData>(--traitSize, traits, PathDatabase.ActorTraitExplicitDataPath + (ActorTab.index + 1) + "/Trait_");
+
+                                    if(traitSize <= 0)
+                                    {
+                                        ChangeMaximum<ActorTraitsData>(1, traits, PathDatabase.ActorTraitExplicitDataPath + (ActorTab.index + 1) + "/Trait_");
+                                        traitSize = 1;
+                                    }
+
                                     ActorTab.traitSize[ActorTab.index] = traitSize;
                                 }
                             }
@@ -208,6 +219,13 @@ public class ActorTraitWindow : EditorWindow
                                     }
                                     traitIndex = 0;
                                     ChangeMaximum<ActorTraitsData>(--traitSize, traits, PathDatabase.ActorTraitExplicitDataPath + (ActorTab.index + 1) + "/Trait_");
+                
+                                    if(traitSize <= 0)
+                                    {
+                                        ChangeMaximum<ActorTraitsData>(1, traits, PathDatabase.ActorTraitExplicitDataPath + (ActorTab.index + 1) + "/Trait_");
+                                        traitSize = 1;
+                                    }
+
                                     ActorTab.traitSize[ActorTab.index] = traitSize;
                                 }
                             }
@@ -545,7 +563,7 @@ public class ActorTraitWindow : EditorWindow
                 GUILayout.BeginHorizontal();
                     GUILayout.Label(" ");
                     traits[traitIndex].traitValue = -1;
-                    traits[traitIndex].selectedArrayIndex = EditorGUILayout.Popup(traits[traitIndex].selectedArrayIndex,  CharacterDevelopmentData.skillTypes, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                    traits[traitIndex].selectedArrayIndex = EditorGUILayout.Popup(traits[traitIndex].selectedArrayIndex,  skillTabDisplayName, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
                     GUILayout.Space(widthSpace);
                 GUILayout.EndHorizontal();
                 GUILayout.Space(5);
@@ -561,7 +579,7 @@ public class ActorTraitWindow : EditorWindow
                 GUILayout.BeginHorizontal();
                     GUILayout.Label(" ");
                     traits[traitIndex].traitValue = -1;
-                    traits[traitIndex].selectedArrayIndex = EditorGUILayout.Popup(traits[traitIndex].selectedArrayIndex,  CharacterDevelopmentData.skillTypes, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                    traits[traitIndex].selectedArrayIndex = EditorGUILayout.Popup(traits[traitIndex].selectedArrayIndex,  skillTabDisplayName, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
                     GUILayout.Space(widthSpace);
                 GUILayout.EndHorizontal();
                 GUILayout.Space(5);
@@ -618,7 +636,7 @@ public class ActorTraitWindow : EditorWindow
                 GUILayout.BeginHorizontal();
                     GUILayout.Label(" ");
                     traits[traitIndex].traitValue = -1;
-                    traits[traitIndex].selectedArrayIndex = EditorGUILayout.Popup(traits[traitIndex].selectedArrayIndex,  CharacterDevelopmentData.typeNames, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                    traits[traitIndex].selectedArrayIndex = EditorGUILayout.Popup(traits[traitIndex].selectedArrayIndex, equipmentType.ToArray(), GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
                     GUILayout.Space(widthSpace);
                 GUILayout.EndHorizontal();
                 GUILayout.Space(5);
@@ -634,7 +652,7 @@ public class ActorTraitWindow : EditorWindow
                 GUILayout.BeginHorizontal();
                     GUILayout.Label(" ");
                     traits[traitIndex].traitValue = -1;
-                    traits[traitIndex].selectedArrayIndex = EditorGUILayout.Popup(traits[traitIndex].selectedArrayIndex,  CharacterDevelopmentData.typeNames, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                    traits[traitIndex].selectedArrayIndex = EditorGUILayout.Popup(traits[traitIndex].selectedArrayIndex,  equipmentType.ToArray(), GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
                     GUILayout.Space(widthSpace);
                 GUILayout.EndHorizontal();
                 GUILayout.Space(5);
@@ -738,6 +756,7 @@ public class ActorTraitWindow : EditorWindow
     #endregion
 
     #region Features
+
     /// <summary>
     /// Create Texture for GUI skin.
     /// </summary>
@@ -770,6 +789,15 @@ public class ActorTraitWindow : EditorWindow
             skillDisplayName[i] = skillData[i].dataName;
         }
     }
+    private void LoadSkillTabList()
+    {
+        SkillData[] skillTabData = Resources.LoadAll<SkillData>(PathDatabase.SkillTabRelativeDataPath);
+        skillTabDisplayName = new string[skillTabData.Length];
+        for (int i = 0; i < skillTabDisplayName.Length; i++)
+        {
+            skillTabDisplayName[i] = skillTabData[i].skillName;
+        }
+    }
     private void LoadWeaponList()
     {
         TypeWeaponData[] weaponData = Resources.LoadAll<TypeWeaponData>(PathDatabase.WeaponRelativeDataPath);
@@ -788,6 +816,15 @@ public class ActorTraitWindow : EditorWindow
             armorDisplayName[i] = armorData[i].dataName;
         }
     }
+    private void LoadEquipmentList()
+    {
+        TypeEquipmentData[] equipmentData = Resources.LoadAll<TypeEquipmentData>(PathDatabase.EquipmentRelativeDataPath);
+        equipmentType = new string[equipmentData.Length];
+        for (int i = 0; i < equipmentType.Length; i++)
+        {
+            equipmentType[i] = equipmentData[i].dataName;
+        }
+    }
     public void BaseValue(int i)
     {
         if (i == 0)
@@ -802,165 +839,149 @@ public class ActorTraitWindow : EditorWindow
     public string StringMaker(int selectedTabIndex, int selectedToggleIndex, int selectedArrayIndex, int value)
     {
         string outputString = "";
-        string tabSpace = "  ";
-        #region Tab Index Selecting
+        string val = "";
+
         switch (selectedTabIndex)
         {
-            case 5:
-                outputString = otherTabToggleList[selectedToggleIndex] + tabSpace;
-                break;
-            case 4:
-                outputString = equipTabToggleList[selectedToggleIndex] + tabSpace;
-                break;
-            case 3:
-                outputString = skillTabToggleList[selectedToggleIndex] + tabSpace;
-                break;
-            case 2:
-                outputString = attackTabToggleList[selectedToggleIndex] + tabSpace;
+            case 0:
+                switch (selectedToggleIndex)
+                {
+                    case 0:
+                        val = string.Format("{0} * {1}%", elementDisplayName[selectedArrayIndex], value);
+                        outputString = PadString(rateTabToggleList[selectedToggleIndex], val);
+                        break;
+                    case 1:
+                        val = string.Format("{0} * {1}%", CharacterDevelopmentData.debuffNames[selectedArrayIndex], value);
+                        outputString = PadString(rateTabToggleList[selectedToggleIndex], val);
+                        break;
+                    case 2:
+                        val = string.Format("{0} * {1}%", CharacterDevelopmentData.stateNames[selectedArrayIndex], value);
+                        outputString = PadString(rateTabToggleList[selectedToggleIndex], val);
+                        break;
+                    default:
+                        val = string.Format("{0}", CharacterDevelopmentData.stateNames[selectedArrayIndex]);
+                        outputString = PadString(rateTabToggleList[selectedToggleIndex], val);
+                        break;
+                }
                 break;
             case 1:
-                outputString = paramTabToggleList[selectedToggleIndex] + tabSpace;
+                switch (selectedToggleIndex)
+                {
+                    case 0:
+                        val = string.Format("{0} * {1}%", CharacterDevelopmentData.debuffNames[selectedArrayIndex], value);
+                        outputString = PadString(paramTabToggleList[selectedToggleIndex], val);
+                        break;
+                    case 1:
+                        val = string.Format("{0} + {1}%", CharacterDevelopmentData.exParameterNames[selectedArrayIndex], value);
+                        outputString = PadString(paramTabToggleList[selectedToggleIndex], val);
+                        break;
+                    case 2:
+                        val = string.Format("{0} * {1}%", CharacterDevelopmentData.spParameterNames[selectedArrayIndex], value);
+                        outputString = PadString(paramTabToggleList[selectedToggleIndex], val);
+                        break;
+                }
                 break;
-            case 0:
-                outputString = rateTabToggleList[selectedToggleIndex] + tabSpace;
+            case 2:
+                switch (selectedToggleIndex)
+                {
+                    case 0:
+                        val = string.Format("{0}", elementDisplayName[selectedArrayIndex]);
+                        outputString = PadString(attackTabToggleList[selectedToggleIndex], val);
+                        break;
+                    case 1:
+                        val = string.Format("{0} + {1}%", CharacterDevelopmentData.stateNames[selectedArrayIndex], value);
+                        outputString = PadString(attackTabToggleList[selectedToggleIndex], val);
+                        break;
+                    default:
+                        val = string.Format("{0}", value);
+                        outputString = PadString(attackTabToggleList[selectedToggleIndex], val);
+                        break;
+                }
+                break;
+            case 3:
+                switch (selectedToggleIndex)
+                {
+                    case 0:
+                        val = string.Format("{0}", skillDisplayName[selectedArrayIndex]);
+                        outputString = PadString(skillTabToggleList[selectedToggleIndex], val);
+                        break;
+                    case 1:
+                        val = string.Format("{0}", skillDisplayName[selectedArrayIndex]);
+                        outputString = PadString(skillTabToggleList[selectedToggleIndex], val);
+                        break;
+                    default:
+                        val = string.Format("{0}", skillTabDisplayName[selectedArrayIndex]);
+                        outputString = PadString(skillTabToggleList[selectedToggleIndex], val);
+                        break;
+                }
+                break;
+            case 4:
+                switch (selectedToggleIndex)
+                {
+                    case 0:
+                        val = string.Format("{0}", weaponDisplayName[selectedArrayIndex]);
+                        outputString = PadString(equipTabToggleList[selectedToggleIndex], val);
+                        break;
+                    case 1:
+                        val = string.Format("{0}", armorDisplayName[selectedArrayIndex]);
+                        outputString = PadString(equipTabToggleList[selectedToggleIndex], val);
+                        break;
+                    case 2:
+                        val = string.Format("{0}", equipmentType[selectedArrayIndex]);
+                        outputString = PadString(equipTabToggleList[selectedToggleIndex], val);
+                        break;
+                    case 3:
+                        val = string.Format("{0}", equipmentType[selectedArrayIndex]);
+                        outputString = PadString(equipTabToggleList[selectedToggleIndex], val);
+                        break;
+                    default:
+                        val = string.Format("{0}", CharacterDevelopmentData.slotType[selectedArrayIndex]);
+                        outputString = PadString(equipTabToggleList[selectedToggleIndex], val);
+                        break;
+                }
+                break;
+            case 5:
+                switch (selectedToggleIndex)
+                {
+                    case 0:
+                        val = string.Format("{0}%", value);
+                        outputString = PadString(otherTabToggleList[selectedToggleIndex], val);
+                        break;
+                    case 1:
+                        val = string.Format("{0}", CharacterDevelopmentData.specialFlag[selectedArrayIndex]);
+                        outputString = PadString(otherTabToggleList[selectedToggleIndex], val);
+                        break;
+                    case 2:
+                        val = string.Format("{0}", CharacterDevelopmentData.collapseEffect[selectedArrayIndex]);
+                        outputString = PadString(otherTabToggleList[selectedToggleIndex], val);
+                        break;
+                    default:
+                        val = string.Format("{0}", CharacterDevelopmentData.partyAbility[selectedArrayIndex]);
+                        outputString = PadString(otherTabToggleList[selectedToggleIndex], val);
+                        break;
+                }
                 break;
         }
-        #endregion
-        #region Tab With Array List Available
-        if (selectedTabIndex == 0)
-        {
-            if(selectedToggleIndex == 0)
-            {
-                outputString += elementDisplayName[selectedArrayIndex];
-            }
-            else if(selectedToggleIndex == 1)
-            {
-                outputString += CharacterDevelopmentData.debuffNames[selectedArrayIndex];
-            }
-            else if(selectedToggleIndex >= 2)
-            {
-                outputString += CharacterDevelopmentData.stateNames[selectedArrayIndex];
-            }
-        }
-        else if(selectedTabIndex == 1)
-        {
-            if (selectedToggleIndex == 0)
-            {
-                outputString += CharacterDevelopmentData.debuffNames[selectedArrayIndex];
-            }
-            else if (selectedToggleIndex == 1)
-            {
-                outputString += CharacterDevelopmentData.exParameterNames[selectedArrayIndex];
-            }
-            else if (selectedToggleIndex == 2)
-            {
-                outputString += CharacterDevelopmentData.spParameterNames[selectedArrayIndex];
-            }
-        }
-        else if (selectedTabIndex == 2)
-        {
-            if (selectedToggleIndex == 0)
-            {
-                outputString += elementDisplayName[selectedArrayIndex];
-            }
-            else if (selectedToggleIndex == 1)
-            {
-                outputString += CharacterDevelopmentData.stateNames[selectedArrayIndex];
-            }
-        }
-        else if (selectedTabIndex == 3)
-        {
-            if (selectedToggleIndex == 0)
-            {
-                outputString += skillDisplayName[selectedArrayIndex];
-            }
-            else if (selectedToggleIndex == 1)
-            {
-                outputString += skillDisplayName[selectedArrayIndex];
-            }
-            else if (selectedToggleIndex == 2)
-            {
-                outputString += CharacterDevelopmentData.skillTypes[selectedArrayIndex];
-            }
-            else
-            {
-                outputString += CharacterDevelopmentData.skillTypes[selectedArrayIndex];
-            }
-        }
-        else if(selectedTabIndex == 4)
-        {
-            if (selectedToggleIndex == 0)
-            {
-                outputString += weaponDisplayName[selectedArrayIndex];
-            }
-            else if (selectedToggleIndex == 1)
-            {
-                outputString += armorDisplayName[selectedArrayIndex];
-            }
-            else if (selectedToggleIndex == 2 || selectedTabIndex == 3)
-            {
-                outputString += CharacterDevelopmentData.typeNames[selectedArrayIndex];
-            }
-            else
-            {
-                outputString += CharacterDevelopmentData.slotType[selectedArrayIndex];
-            }
-        }
-        #endregion
-        #region Value Naming
-        if (value != -1)
-        {
-            if(selectedTabIndex == 0)
-            {
-                if (selectedToggleIndex < 3)
-                {
-                    outputString += " * " + value.ToString();
-                    outputString += "%";
-                }
-            }
-            else if(selectedTabIndex == 1)
-            {
-                if(selectedToggleIndex != 1)
-                {
-                    outputString += " *";
-                }
-                else
-                {
-                    outputString += " +";
-                }
-                outputString += " " + value.ToString();
-                outputString += "%";
-            }
-            else if(selectedTabIndex == 2)
-            {
-                if(selectedToggleIndex != 2)
-                {
-                    outputString += " +";
-                    outputString += "%";
-                }
-                if (selectedToggleIndex > 0)
-                {
-                    outputString += " " + value.ToString();
-                    outputString += "%";
-                }
-            }
-            else if(selectedTabIndex == 5)
-            {
-                if(selectedToggleIndex == 0)
-                {
-                    outputString += " + " + value.ToString();
-                }
-                else
-                {
-                    outputString += " " + value.ToString();
-                }
-                outputString += "%";
-            }
-        }
-        #endregion
 
         return outputString;
     }
+    public string PadString(string key, string value)
+    {
+        int pad = 4 - (key.Length / 4);
+
+        if(key.Length >= 12)
+        {
+            pad++;
+        }
+        string format = key;
+
+        for (int i = 0; i < pad; i++)
+        {
+            format += '\t';
+        }
+        return string.Format(format + "{0}", value);
+    }
+
     /// <summary>
     /// Change Maximum function , when we change the size
     /// and click Change Maximum button in Editor, it will update

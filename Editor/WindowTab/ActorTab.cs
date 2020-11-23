@@ -407,6 +407,8 @@ public class ActorTab : BaseTab
                                                 GUILayout.Width(firstTabWidth + 50),
                                                 GUILayout.Height(equipmentBox.height * 0.7f)
                                                 );
+                            GUI.changed = false;
+                            GUI.skin.button.alignment = TextAnchor.MiddleLeft;
                             typeIndex = GUILayout.SelectionGrid(
                                                 typeIndex, 
                                                 initialEquipName.ToArray(), 
@@ -414,6 +416,7 @@ public class ActorTab : BaseTab
                                                 GUILayout.Width(equipmentBox.width * .90f),
                                                 GUILayout.Height(position.height / 24 * equipmentTypeSize)
                                                 );
+                            GUI.skin.button.alignment = TextAnchor.MiddleLeft;
                         GUILayout.EndScrollView();
                         #endregion
 
@@ -460,6 +463,9 @@ public class ActorTab : BaseTab
                             GUILayout.Width(firstTabWidth + 5), 
                             GUILayout.Height(traitsBox.height * 0.83f)
                             );
+        
+                        GUI.changed = false;
+                        GUI.skin.button.alignment = TextAnchor.MiddleLeft;
                         traitIndex = GUILayout.SelectionGrid(
                             traitIndex,
                             traitDisplayName.ToArray(),
@@ -467,6 +473,7 @@ public class ActorTab : BaseTab
                             GUILayout.Width(firstTabWidth - 20),
                             GUILayout.Height(position.height / 24 * traitSize[index]
                             ));
+                        GUI.skin.button.alignment = TextAnchor.MiddleCenter;
                     GUILayout.EndScrollView();
                     #endregion
         
@@ -482,7 +489,7 @@ public class ActorTab : BaseTab
                     }
 
                     //Create Empty SO if there isn't any null SO left
-                    if (traits[traitSize[index] - 1].traitName != null && traitSize[index] > 0)
+                    if ((traits[traitSize[index] - 1].traitName != null && traits[traitSize[index] - 1].traitName != "") && traitSize[index] > 0)
                     {
                         traitIndex = 0;
                         ChangeMaximum<ActorTraitsData>(++traitSize[index], traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");
@@ -551,7 +558,9 @@ public class ActorTab : BaseTab
         for (int i = 0; i < equipmentTypeSize; i++)
         {
             LoadArmorList(i);
-            initialEquipName.Add(equipmentType[i].dataName + ' ' + tempArmorList[actor[index].allArmorIndexes[i]]);
+            string val = string.Format("{0}", tempArmorList[actor[index].allArmorIndexes[i]]);
+            string outputString = PadString(equipmentType[i].dataName, val);
+            initialEquipName.Add(outputString);
         }
         //Trait Reset
         traitDisplayName.Clear();

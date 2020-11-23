@@ -220,7 +220,7 @@ public class SkillsTab : BaseTab
             if (GUI.changed && index != indexTemp)
             {
                 indexTemp = index;
-                effectIndex = 0;
+                effectIndex = 0; 
                 effectIndexTemp = -1;
 
                 ItemTabLoader(indexTemp);
@@ -550,7 +550,7 @@ public class SkillsTab : BaseTab
                     #endregion
                     GUILayout.EndVertical();
                 GUILayout.EndArea();
-                #endregion
+        #endregion
                 #endregion
 
             Rect requiredWeapon = new Rect(5, generalBox.height + invocationBox.height + messageBox.height + 20, firstTabWidth + 60, position.height / 4 - 120);
@@ -645,7 +645,7 @@ public class SkillsTab : BaseTab
                                 {
                                     GUILayout.TextField("Null", GUILayout.Width(damageBox.width - 8), GUILayout.Height(damageBox.height / 4 - 17));
                                 }
-                            #endregion
+            #endregion
 
                             #endregion
                             #region Variance CriticalHits
@@ -689,69 +689,73 @@ public class SkillsTab : BaseTab
                     #endregion
 
                 Rect effectsBox = new Rect(5, damageBox.height + 10, firstTabWidth + 15, position.height / 3);
-                #region Effects
-                ListReset();
-                GUILayout.BeginArea(effectsBox, tabStyle);
-                    GUILayout.Label("Effects", EditorStyles.boldLabel);
-                    GUILayout.Space(2);
+                    #region Effects
+                    ListReset();
+                    GUILayout.BeginArea(effectsBox, tabStyle);
+                        GUILayout.Label("Effects", EditorStyles.boldLabel);
+                        GUILayout.Space(2);
 
-                    #region Horizontal For Type And Content
-                    GUILayout.BeginHorizontal();
-                        GUILayout.Label("Type", GUILayout.Width(effectsBox.width * 3 / 8));
-                        GUILayout.Label("Content", GUILayout.Width(effectsBox.width * 5 / 8));
-                    GUILayout.EndHorizontal();
-                    #endregion
+                        #region Horizontal For Type And Content
+                        GUILayout.BeginHorizontal();
+                            GUILayout.Label("Type", GUILayout.Width(effectsBox.width * 3 / 8));
+                            GUILayout.Label("Content", GUILayout.Width(effectsBox.width * 5 / 8));
+                        GUILayout.EndHorizontal();
+                        #endregion
                         
-                    #region ScrollView
-                    effectsScrollPos = GUILayout.BeginScrollView(
-                        effectsScrollPos,
-                        false,
-                        true,
-                        GUILayout.Width(firstTabWidth + 5),
-                        GUILayout.Height(effectsBox.height * 0.725f)
-                    );
+                        #region ScrollView
+                        effectsScrollPos = GUILayout.BeginScrollView(
+                            effectsScrollPos,
+                            false,
+                            true,
+                            GUILayout.Width(firstTabWidth + 5),
+                            GUILayout.Height(effectsBox.height * 0.725f)
+                        );
 
-                    GUI.changed = false;
+                        GUI.changed = false;
+                        GUI.skin.button.alignment = TextAnchor.MiddleLeft;
 
-                    effectIndex = GUILayout.SelectionGrid(
-                        effectIndex,
-                        effectDisplayName.ToArray(),
-                        1,
-                        GUILayout.Width(firstTabWidth - 20),
-                        GUILayout.Height(position.height / 24 * effectSize[index])
-                    );
-                    GUILayout.EndScrollView();
-                    #endregion
+                        effectIndex = GUILayout.SelectionGrid(
+                            effectIndex,
+                            effectDisplayName.ToArray(),
+                            1,
+                            GUILayout.Width(firstTabWidth - 20),
+                            GUILayout.Height(position.height / 24 * effectSize[index])
+                        );
 
-                    //Happen everytime selection grid is updated
-                    if (GUI.changed)
-                    {
-                        if(effectIndex != effectIndexTemp)
+                        GUI.skin.button.alignment = TextAnchor.MiddleCenter;
+
+                        GUILayout.EndScrollView();
+                        #endregion
+
+                        //Happen everytime selection grid is updated
+                        if (GUI.changed)
                         {
-                            SkillEffectWindow.ShowWindow(effects, effectIndex, effectSize[index]);
-                            effectIndexTemp = effectIndex;
+                            if(effectIndex != effectIndexTemp)
+                            {
+                                SkillEffectWindow.ShowWindow(effects, effectIndex, effectSize[index]);
+                                effectIndexTemp = effectIndex;
+                            }
                         }
-                    }
 
-                    if(effects[effectSize[index] - 1].effectName != null && effectSize[index] > 0)
-                    {
-                        effectIndex = 0;
-                        ChangeMaximum<SkillEffectData>(++effectSize[index], effects, PathDatabase.SkillEffectExplicitDataPath + (index + 1) + "/Effect_");
-                    }
-
-                    if (GUILayout.Button("Delete All Data", GUILayout.Width(effectsBox.width * .3f)))
-                    {
-                        if (EditorUtility.DisplayDialog("Delete All Effect Data", "Are you sure want to Effect all Trait Data?", "Yes", "No"))
+                        if((effects[effectSize[index] - 1].effectName != null && effects[effectSize[index] - 1].effectName != "") && effectSize[index] > 0)
                         {
                             effectIndex = 0;
-                            effectSize[index] = 1;
-                            ChangeMaximum<SkillEffectData>(0, effects, PathDatabase.SkillEffectExplicitDataPath + (index + 1) + "/Effect_");
-                            ChangeMaximum<SkillEffectData>(1, effects, PathDatabase.SkillEffectExplicitDataPath + (index + 1) + "/Effect_");
+                            ChangeMaximum<SkillEffectData>(++effectSize[index], effects, PathDatabase.SkillEffectExplicitDataPath + (index + 1) + "/Effect_");
                         }
-                    }
 
-                GUILayout.EndArea();
-                #endregion
+                        if (GUILayout.Button("Delete All Data", GUILayout.Width(effectsBox.width * .3f)))
+                        {
+                            if (EditorUtility.DisplayDialog("Delete All Effect Data", "Are you sure want to delete all Effect Data?", "Yes", "No"))
+                            {
+                                effectIndex = 0;
+                                effectSize[index] = 1;
+                                ChangeMaximum<SkillEffectData>(0, effects, PathDatabase.SkillEffectExplicitDataPath + (index + 1) + "/Effect_");
+                                ChangeMaximum<SkillEffectData>(1, effects, PathDatabase.SkillEffectExplicitDataPath + (index + 1) + "/Effect_");
+                            }
+                        }
+
+                    GUILayout.EndArea();
+                    #endregion
 
                 Rect notesBox = new Rect(5, damageBox.height + effectsBox.height + 17, firstTabWidth + 15, position.height - (damageBox.height + effectsBox.height + 17) - 40);
                     #region NoteBox

@@ -10,6 +10,7 @@ using System.Linq;
 
 public class SkillEffectWindow : EditorWindow
 {
+    private string[] skillDisplayName;
     private bool[] tabToggle = new bool[4] { true, false, false, false };
 
     //All GUIStyle variable initialization.
@@ -42,8 +43,7 @@ public class SkillEffectWindow : EditorWindow
     {
         "Special Effect",
         "Grow",
-        "Learn Skill",
-        "Common Event"
+        "Learn Skill"
     };
 
     public string[] tabNames =
@@ -89,6 +89,7 @@ public class SkillEffectWindow : EditorWindow
     private void OnGUI()
     {
         SetStartValue();
+        LoadSkillList();
 
         //set window color
         windowStyle = new GUIStyle(GUI.skin.box);
@@ -177,7 +178,14 @@ public class SkillEffectWindow : EditorWindow
                                         effects[i].selectedTabToggle = effects[i + 1].selectedTabToggle;
                                     }
                                     effectIndex = 0;
-                                    ChangeMaximum<SkillEffectData>(--effectSize, effects, PathDatabase.ActorTraitExplicitDataPath);
+                                    ChangeMaximum<SkillEffectData>(--effectSize, effects, PathDatabase.SkillEffectExplicitDataPath + (SkillsTab.index + 1) + "/Effect_");
+
+                                    if(effectSize <= 0)
+                                    {
+                                        ChangeMaximum<SkillEffectData>(1, effects, PathDatabase.SkillEffectExplicitDataPath + (SkillsTab.index + 1) + "/Effect_");
+                                        effectSize = 1;
+                                    }
+
                                     SkillsTab.effectSize[SkillsTab.index] = effectSize;
                                 }
                             }
@@ -196,7 +204,14 @@ public class SkillEffectWindow : EditorWindow
                                         effects[i].selectedTabToggle = effects[i + 1].selectedTabToggle;
                                     }
                                     effectIndex = 0;
-                                    ChangeMaximum<SkillEffectData>(--effectSize, effects, PathDatabase.ActorTraitExplicitDataPath);
+                                    ChangeMaximum<SkillEffectData>(--effectSize, effects, PathDatabase.SkillTabExplicitDataPath + (SkillsTab.index + 1) + "/Effect_");
+                
+                                    if(effectSize <= 0)
+                                    {
+                                        ChangeMaximum<SkillEffectData>(1, effects, PathDatabase.SkillEffectExplicitDataPath + (SkillsTab.index + 1) + "/Effect_");
+                                        effectSize = 1;
+                                    }
+
                                     SkillsTab.effectSize[SkillsTab.index] = effectSize;
                                 }
                             }
@@ -781,7 +796,7 @@ public class SkillEffectWindow : EditorWindow
 
                         GUILayout.BeginHorizontal();
 
-                            effects[effectIndex].selectedArrayIndex = EditorGUILayout.Popup(effects[effectIndex].selectedArrayIndex, CharacterDevelopmentData.skillTypes, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                            effects[effectIndex].selectedArrayIndex = EditorGUILayout.Popup(effects[effectIndex].selectedArrayIndex, skillDisplayName, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
 
                         GUILayout.EndHorizontal();
 
@@ -790,36 +805,6 @@ public class SkillEffectWindow : EditorWindow
                 }
 
                 GUILayout.EndHorizontal();
-
-                GUILayout.BeginHorizontal();
-
-                if (EditorGUILayout.Toggle(otherTabToggleList[3], tabToggle[3], EditorStyles.radioButton))
-                {
-                    if(effects[effectIndex].effectValue[0] == -1)
-                    {
-                        effects[effectIndex].effectValue[0] = 0;
-                    }
-
-                    if(effects[effectIndex].effectValue[1] == -1)
-                    {
-                        effects[effectIndex].effectValue[1] = 0;
-                    }
-
-                    MemsetArray(3, tabToggle);
-
-                    GUILayout.BeginVertical();
-
-                        GUILayout.BeginHorizontal();
-
-                            effects[effectIndex].selectedArrayIndex = EditorGUILayout.Popup(effects[effectIndex].selectedArrayIndex, CharacterDevelopmentData.commonEvent, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
-
-                        GUILayout.EndHorizontal();
-
-                    GUILayout.EndVertical();
-                    effects[effectIndex].selectedTabToggle = 3;
-                }
-
-            GUILayout.EndHorizontal();
 
         GUILayout.EndVertical();
     }
@@ -838,6 +823,7 @@ public class SkillEffectWindow : EditorWindow
     public string StringMaker(int selectedTabIndex, int selectedToggleIndex, int selectedArrayIndex, int[] value)
     {
         string outputString = "";
+        string val = "";
 
         switch (selectedTabIndex)
         {
@@ -845,25 +831,29 @@ public class SkillEffectWindow : EditorWindow
                 switch (selectedToggleIndex)
                 {
                     case 2:
-                        outputString = string.Format("{0}  {1}", recoverTabToggleList[selectedToggleIndex], value[1]);
+                        outputString = PadString(recoverTabToggleList[selectedToggleIndex], value[1].ToString());
                         break;
                     default:
-                        outputString = string.Format("{0}  {1}% + {2}", recoverTabToggleList[selectedToggleIndex], value[0], value[1]);
+                        val = string.Format("{0}% + {1}", value[0], value[1]);
+                        outputString = PadString(recoverTabToggleList[selectedToggleIndex], val);
                         break;
                 }
                 break;
             case 1:
-                outputString = string.Format("{0}  {1} {2}%", stateTabToggleList[selectedToggleIndex], CharacterDevelopmentData.stateNames[selectedArrayIndex], value[0]);
+                val = string.Format("{0} {1}%", CharacterDevelopmentData.stateNames[selectedArrayIndex], value[0]);
+                outputString = PadString(stateTabToggleList[selectedToggleIndex], val);
                 break;
             case 2:
                 switch (selectedToggleIndex)
                 {
                     case 0:
                     case 1:
-                        outputString = string.Format("{0}  {1} {2} turns", paramTabToggleList[selectedToggleIndex], CharacterDevelopmentData.debuffNames[selectedArrayIndex], value[1]);
+                        val = string.Format("{0} {1} turns", CharacterDevelopmentData.debuffNames[selectedArrayIndex], value[1]);
+                        outputString = PadString(paramTabToggleList[selectedToggleIndex], val);
                         break;
                     default:
-                        outputString = string.Format("{0}  {1}", paramTabToggleList[selectedToggleIndex], CharacterDevelopmentData.debuffNames[selectedArrayIndex]);
+                        val = CharacterDevelopmentData.debuffNames[selectedArrayIndex];
+                        outputString = PadString(paramTabToggleList[selectedToggleIndex], val);
                         break;
                 }
                 break;
@@ -871,16 +861,16 @@ public class SkillEffectWindow : EditorWindow
                 switch (selectedToggleIndex)
                 {
                     case 0:
-                        outputString = string.Format("{0}  {1}", otherTabToggleList[selectedToggleIndex], CharacterDevelopmentData.specialEffect[selectedArrayIndex]);
+                        val = string.Format("{0}", CharacterDevelopmentData.specialEffect[selectedArrayIndex]);
+                        outputString = PadString(otherTabToggleList[selectedToggleIndex]+"  ", val);
                         break;
                     case 1:
-                        outputString = string.Format("{0}  {1} {2}", otherTabToggleList[selectedToggleIndex], CharacterDevelopmentData.debuffNames[selectedArrayIndex], value[1]);
+                        val = string.Format("{0} {1}", CharacterDevelopmentData.debuffNames[selectedArrayIndex], value[1]);
+                        outputString = PadString(otherTabToggleList[selectedToggleIndex], val);
                         break;
                     case 2:
-                        outputString = string.Format("{0}  {1}", otherTabToggleList[selectedToggleIndex], CharacterDevelopmentData.skillTypes[selectedArrayIndex]);
-                        break;
-                    case 3:
-                        outputString = string.Format("{0}  {1}", otherTabToggleList[selectedToggleIndex], CharacterDevelopmentData.commonEvent[selectedArrayIndex]);
+                        val = string.Format("{0}", skillDisplayName[selectedArrayIndex]);
+                        outputString = PadString(otherTabToggleList[selectedToggleIndex], val);
                         break;
                 }
                 break;
@@ -889,16 +879,27 @@ public class SkillEffectWindow : EditorWindow
         return outputString;
     }
 
-    public void SetStartValue()
+    public string PadString(string key, string value)
     {
-        if (set) return;
+        int pad = 4 - (key.Length / 4);
 
-        firstSelectedArray = effects[effectIndex].selectedArrayIndex;
-        firstSelectedTab = effects[effectIndex].selectedTabIndex;
-        firstSelectedToggle = effects[effectIndex].selectedTabToggle;
-        firstValue = effects[effectIndex].effectValue;
-        firstEffectName = effects[effectIndex].effectName;
-        set = true;
+        if (key.Length >= 12)
+        {
+            pad++;
+        }
+        if (key.Length >= 14)
+        {
+            pad++;
+        }
+
+        string format = key;
+        
+        for (int i = 0; i < pad; i++)
+        {
+            format += '\t';
+        }
+
+        return string.Format(format + "{0}", value);
     }
 
     /// <summary>
@@ -906,9 +907,9 @@ public class SkillEffectWindow : EditorWindow
     /// and click Change Maximum button in Editor, it will update
     /// and change the size while creating new data.
     /// </summary>
-    /// <param name="size">get size from actorSize</param>
+    /// <param name="size">get size from effectSize</param>
     /// <param name="listTabData">list of item that you want to display.</param>
-    /// <param name="dataTabName">get size from actorSize</param>
+    /// <param name="dataTabName">get size from effectSize</param>
     public void ChangeMaximum<GameData>(int dataSize, List<GameData> listTabData, string dataPath) where GameData : ScriptableObject
     {
         int counter = 0;
@@ -957,5 +958,32 @@ public class SkillEffectWindow : EditorWindow
         result.Apply();
         return result;
     }
+
+    public void SetStartValue()
+    {
+        if (set) return;
+
+        firstSelectedArray = effects[effectIndex].selectedArrayIndex;
+        firstSelectedTab = effects[effectIndex].selectedTabIndex;
+        firstSelectedToggle = effects[effectIndex].selectedTabToggle;
+        firstValue = effects[effectIndex].effectValue;
+        firstEffectName = effects[effectIndex].effectName;
+    }
+
+    private void LoadSkillList()
+    {
+        if (set) return;
+
+        SkillData[] skillData = Resources.LoadAll<SkillData>(PathDatabase.SkillTabRelativeDataPath);
+        skillDisplayName = new string[skillData.Length];
+
+        for (int i = 0; i < skillDisplayName.Length; i++)
+        {
+            skillDisplayName[i] = skillData[i].skillName;
+        }
+
+        set = true;
+    }
+
     #endregion
 }

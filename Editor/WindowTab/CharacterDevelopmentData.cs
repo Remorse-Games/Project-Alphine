@@ -54,27 +54,6 @@ public static class CharacterDevelopmentData
         "Floor Damage",
         "Experience",
     };
-    public static string[] skillTypes =
-    {
-        "Attack",
-        "Guard",
-        "Dual Attack",
-        "Double Attack",
-        "Triple Attack",
-        "Escape",
-        "Wait",
-        "Heal",
-        "Fire",
-        "Spark",
-    };
-    public static string[] typeNames =
-    {
-        "Weapon",
-        "Body",
-        "Shield",
-        "Head",
-        "Accessory",
-    };
     public static string[] slotType =
     {
         "Normal",
@@ -106,12 +85,5 @@ public static class CharacterDevelopmentData
     public static string[] specialEffect =
     {
         "Escape"
-    };
-    public static string[] commonEvent =
-    {
-        "001",
-        "002",
-        "003",
-        "004"
     };
 }

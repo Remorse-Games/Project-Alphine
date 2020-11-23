@@ -16,11 +16,27 @@ using SFB;
 public abstract class BaseTab
 {
     #region Features
+    public string PadString(string key, string value)
+    {
+        int pad = 4 - (key.Length / 4);
+
+        if (key.Length >= 12)
+        {
+            pad++;
+        }
+        string format = key;
+
+        for (int i = 0; i < pad; i++)
+        {
+            format += '\t';
+        }
+        return string.Format(format + "{0}", value);
+    }
     public void FolderCreator(int dataSize, string dataPath, string dataName)
     {
         // dataPath = "Assets/Resources/Data/ActorData"
         int counter = 0;
-        while (AssetDatabase.IsValidFolder(dataPath + "/" + dataName + (counter + 1)))
+        while (AssetDatabase.IsValidFolder(dataPath + "/"  + dataName + (counter + 1)))
         {
             counter++;
         }
