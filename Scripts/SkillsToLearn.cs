@@ -6,14 +6,15 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Database/SkillsToLearn")]
 public class SkillsToLearn : ScriptableObject
 {
-    public string skillToLearnDesc;
+    public string skillToLearnName;
+    public int selectedArrayIndex;
     public int level;
 
     [TextArea]
     public string notes;
     public void OnEnable()
     {
-        if (skillToLearnDesc == null)
+        if (skillToLearnName == null)
         {
             Init();
         }

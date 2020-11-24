@@ -412,17 +412,17 @@ public class ClassTab : BaseTab
                     {
                         if (skillIndex != skillIndexTemp)
                         {
-                            //ActorTraitWindow.ShowWindow(traits, traitIndex, traitSize[index]);
+                            SkillsToLearnWindow.ShowWindow(skillToLearn[index]);
                             
-                            skillIndexTemp = skillIndex;
+                            skillIndexTemp = -1;
                         }
                     }
 
                     //Create Empty SO if there isn't any null SO left
-                    if ((skillToLearn[skillToLearnSize[index] - 1].skillToLearnDesc != null && skillToLearn[skillToLearnSize[index] - 1].skillToLearnDesc != "") && skillToLearnSize[index] > 0)
+                    if ((skillToLearn[skillToLearnSize[index] - 1].skillToLearnName != null && skillToLearn[skillToLearnSize[index] - 1].skillToLearnName != "") && skillToLearnSize[index] > 0)
                     {
                         skillIndex = 0;
-                        //ChangeMaximum<ActorTraitsData>(++traitSize[index], traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");
+                        ChangeMaximum<SkillsToLearn>(++skillToLearnSize[index], skillToLearn, PathDatabase.SkillToLearnExplicitDataPath + (index + 1) + "/SkillToLearn_");
                     }
 
                     //Delete All Data Button
@@ -432,8 +432,8 @@ public class ClassTab : BaseTab
                         {
                             skillIndex = 0;
                             skillToLearnSize[index] = 1;
-                            //ChangeMaximum<ActorTraitsData>(0, traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");
-                            //ChangeMaximum<ActorTraitsData>(1, traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");
+                            ChangeMaximum<SkillsToLearn>(0, skillToLearn, PathDatabase.SkillToLearnExplicitDataPath + (index + 1) + "/SkillToLearn_");
+                            ChangeMaximum<SkillsToLearn>(1, skillToLearn, PathDatabase.SkillToLearnExplicitDataPath + (index + 1) + "/SkillToLearn_");
                         }
                     }
                 GUILayout.EndArea();
@@ -515,7 +515,7 @@ public class ClassTab : BaseTab
         skillToLearnNames.Clear();
         for (int i = 0; i < skillToLearnSize[index]; i++)
         {
-            skillToLearnNames.Add(skillToLearn[i].skillToLearnDesc);
+            skillToLearnNames.Add(skillToLearn[i].skillToLearnName);
         }
     }
     private void ClearNullScriptableObjects()
@@ -526,12 +526,12 @@ public class ClassTab : BaseTab
             availableNull = false;
             for (int i = 0; i < skillToLearnSize[index] - 1; i++)
             {
-                if (string.IsNullOrEmpty(skillToLearn[i].skillToLearnDesc))
+                if (string.IsNullOrEmpty(skillToLearn[i].skillToLearnName))
                 {
                     availableNull = true;
                     for (int j = i; j < skillToLearnSize[index] - 1; j++)
                     {
-                        skillToLearn[j].skillToLearnDesc = skillToLearn[j + 1].skillToLearnDesc;
+                        skillToLearn[j].skillToLearnName = skillToLearn[j + 1].skillToLearnName;
                         skillToLearn[j].level = skillToLearn[j + 1].level;
                         skillToLearn[j].notes = skillToLearn[j + 1].notes;
                     }
