@@ -12,22 +12,35 @@ public class SkillsToLearnWindow : EditorWindow
 {
     public string[] skillTabDisplayName;
 
+    //Base Value
+    int i = 0;
+    string firstSkillName;
+    int firstSelectedArray;
+    int firstLevel;
+    string firstNotes;
+
     //GUI Styles
     GUIStyle windowStyle;
     GUIStyle columnStyle;
     GUIStyle tabStyle;
 
     //Data(s) reference
-    static SkillsToLearn thisClass;
-    public static void ShowWindow(SkillsToLearn skillToLearnData)
+    static List<SkillsToLearn> thisClass;
+    static int skillIndex;
+    static int skillSize;
+    public static void ShowWindow(List<SkillsToLearn> skillToLearnData, int index, int size)
     {
         var window = GetWindow<SkillsToLearnWindow>();
         var position = window.position;
         //Sizing
-        window.maxSize = new Vector2(190, 190);
-        window.minSize = new Vector2(190, 190);
+        window.maxSize = new Vector2(400, 150);
+        window.minSize = new Vector2(400, 150);
         window.titleContent = new GUIContent("Skills To Learn");
+
         thisClass = skillToLearnData;
+        skillIndex = index;
+        skillSize = size;
+
         position.center = new Rect(Screen.width * -1 * .05f, Screen.height * -1 * .05f, Screen.currentResolution.width, Screen.currentResolution.height).center;
         window.position = position;
         window.Show();
@@ -36,7 +49,7 @@ public class SkillsToLearnWindow : EditorWindow
     private void OnGUI()
     {
         LoadSkillTabList();
-        thisClass.skillToLearnName = StringMaker();
+        BaseValue(i++);
 
         windowStyle = new GUIStyle(GUI.skin.box);
         windowStyle.normal.background = CreateTexture(1, 1, Color.gray);
@@ -50,28 +63,106 @@ public class SkillsToLearnWindow : EditorWindow
 
         
         #region PrimaryTab
-        Rect primaryBox = new Rect(0, 0, 190, 190);
+        Rect primaryBox = new Rect(0, 0, 400, 153);
         GUILayout.BeginArea(primaryBox, windowStyle);
 
             #region MainTab
-            Rect generalBox = new Rect(5, 7, 180, 187);
+            Rect generalBox = new Rect(5, 7, 390, 155);
             GUILayout.BeginArea(generalBox, columnStyle);
                 GUILayout.BeginVertical("Box");
                     GUILayout.Label("Skills To Learn", EditorStyles.boldLabel);
                     GUILayout.BeginHorizontal();
                         GUILayout.BeginVertical();
                             GUILayout.Label("Level:");
-                                            thisClass.level = EditorGUILayout.IntField(thisClass.level, GUILayout.Width(generalBox.width * .45f), GUILayout.Height(20));
+                            thisClass[skillIndex].level = EditorGUILayout.IntField(thisClass[skillIndex].level, GUILayout.Width(generalBox.width * .475f), GUILayout.Height(20));
                         GUILayout.EndVertical();
                         GUILayout.BeginVertical();
                             GUILayout.Label("Skill:");
-                            thisClass.selectedArrayIndex = EditorGUILayout.Popup(thisClass.selectedArrayIndex, skillTabDisplayName, GUILayout.Width(generalBox.width * .45f), GUILayout.Height(20));
+                            thisClass[skillIndex].selectedArrayIndex = EditorGUILayout.Popup(thisClass[skillIndex].selectedArrayIndex, skillTabDisplayName, GUILayout.Width(generalBox.width * .475f), GUILayout.Height(20));
                         GUILayout.EndVertical();            
                     GUILayout.EndHorizontal();
 
                     GUILayout.Label("Notes:");
-                    thisClass.notes = GUILayout.TextArea(thisClass.notes, GUILayout.Width(generalBox.width - 15), GUILayout.Height(20));
-                    thisClass.skillToLearnName = StringMaker();
+                    thisClass[skillIndex].notes = GUILayout.TextArea(thisClass[skillIndex].notes, GUILayout.Width(generalBox.width - 15), GUILayout.Height(20));
+                    thisClass[skillIndex].skillToLearnName = StringMaker();
+
+                    GUILayout.Space(5);
+
+                    GUILayout.BeginHorizontal();
+                            // OK Button
+                            if (GUILayout.Button("OK", GUILayout.Width(generalBox.width * .31f), GUILayout.Height(20)))
+                            {
+                                this.Close();
+                            }
+                            // OK Button
+                            if (GUILayout.Button("Cancel", GUILayout.Width(generalBox.width * .31f), GUILayout.Height(20)))
+                            {
+                                if(firstSkillName != null && firstSkillName != "")
+                                { 
+                                    thisClass[skillIndex].skillToLearnName = firstSkillName;
+                                    thisClass[skillIndex].selectedArrayIndex = firstSelectedArray;
+                                    thisClass[skillIndex].level = firstLevel;
+                                    thisClass[skillIndex].notes = firstNotes;
+                                    this.Close();
+                                }
+                                else
+                                {
+                                    this.Close();
+                                    for (int i = skillIndex; i < skillSize - 1; i++)
+                                    {
+                                        thisClass[skillIndex].skillToLearnName = thisClass[skillIndex + 1].skillToLearnName;
+                                        thisClass[skillIndex].selectedArrayIndex = thisClass[skillIndex + 1].selectedArrayIndex;
+                                        thisClass[skillIndex].level = thisClass[skillIndex + 1].level;
+                                        thisClass[skillIndex].notes = thisClass[skillIndex + 1].notes;
+                                    }
+                                    skillIndex = 0;
+                                    ChangeMaximum<SkillsToLearn>(--skillSize, thisClass, PathDatabase.SkillToLearnExplicitDataPath + (ClassTab.index + 1) + "/SkillToLearn_");
+
+                                    if(skillSize <= 0)
+                                    {
+                                        ChangeMaximum<SkillsToLearn>(1, thisClass, PathDatabase.SkillToLearnExplicitDataPath + (ClassTab.index + 1) + "/SkillToLearn_");
+                                        skillSize = 1;
+                                    }
+
+                                    ClassTab.skillToLearnSize[ClassTab.index] = skillSize;
+                                }
+                            }
+                            if(firstSkillName != null)
+                            { 
+                                if (GUILayout.Button("Clear", GUILayout.Width(generalBox.width * .31f), GUILayout.Height(20)))
+                                {
+                                    this.Close();
+                                    for (int i = skillIndex; i < skillSize - 1; i++)
+                                    {
+                                        thisClass[skillIndex].skillToLearnName = thisClass[skillIndex + 1].skillToLearnName;
+                                        thisClass[skillIndex].selectedArrayIndex = thisClass[skillIndex + 1].selectedArrayIndex;
+                                        thisClass[skillIndex].level = thisClass[skillIndex + 1].level;
+                                        thisClass[skillIndex].notes = thisClass[skillIndex + 1].notes;
+                                    }
+                                    skillIndex = 0;
+                                    ChangeMaximum<SkillsToLearn>(--skillSize, thisClass, PathDatabase.SkillToLearnExplicitDataPath + (ClassTab.index + 1) + "/SkillToLearn_");
+                
+                                    if(skillSize <= 0)
+                                    {
+                                        ChangeMaximum<SkillsToLearn>(1, thisClass, PathDatabase.SkillToLearnExplicitDataPath + (ClassTab.index + 1) + "/SkillToLearn_");
+                                        skillSize = 1;
+                                    }
+
+                                    ClassTab.skillToLearnSize[ClassTab.index] = skillSize;
+                                }
+                            }
+                            else
+                            {
+                                if (GUILayout.Button("Unable To Clear", GUILayout.Width(generalBox.width * .31f), GUILayout.Height(20)))
+                                {
+
+                                }
+                            }
+
+                    GUILayout.EndHorizontal();
+
+                    GUILayout.Space(5);
+
                 GUILayout.EndVertical();
             GUILayout.EndArea();
             #endregion
@@ -92,9 +183,9 @@ public class SkillsToLearnWindow : EditorWindow
         string outputString = "";
         string val = "";
 
-        val = string.Format("{0}", skillTabDisplayName[thisClass.selectedArrayIndex]);
-        outputString = PadString("Lv. " + thisClass.level.ToString(), val);
-        val = string.Format("{0}", thisClass.notes);
+        val = string.Format("{0}", skillTabDisplayName[thisClass[skillIndex].selectedArrayIndex]);
+        outputString = PadString("Lv. " + thisClass[skillIndex].level.ToString(), val);
+        val = string.Format("{0}", thisClass[skillIndex].notes);
         outputString = PadString(outputString, val);
 
         return outputString;
@@ -122,6 +213,16 @@ public class SkillsToLearnWindow : EditorWindow
         for (int i = 0; i < skillTabDisplayName.Length; i++)
         {
             skillTabDisplayName[i] = skillTabData[i].skillName;
+        }
+    }
+    public void BaseValue(int i)
+    {
+        if (i == 0)
+        {
+            firstSkillName = thisClass[skillIndex].skillToLearnName;
+            firstSelectedArray = thisClass[skillIndex].selectedArrayIndex;
+            firstLevel = thisClass[skillIndex].level;
+            firstNotes = thisClass[skillIndex].notes;
         }
     }
     /// <summary>
