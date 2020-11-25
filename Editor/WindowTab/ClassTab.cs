@@ -491,7 +491,7 @@ public class ClassTab : BaseTab
                     GUILayout.Space(notesBox.height / 50);
                     if (classSize > 0)
                     {
-                        classes[index].notes = GUILayout.TextArea(classes[index].notes, GUILayout.Width(notesBox.width - 5), GUILayout.Height(notesBox.height * 0.9f));
+                        classes[index].notes = GUILayout.TextArea(classes[index].notes, GUILayout.Width(notesBox.width - 5), GUILayout.Height(notesBox.height * 0.85f));
                     }
                     else
                     {
