@@ -976,7 +976,7 @@ public class EffectWindow : EditorWindow
     {
         if (set) return;
 
-        SkillData[] skillData = Resources.LoadAll<SkillData>(RelativeDataPath);
+        SkillData[] skillData = Resources.LoadAll<SkillData>(PathDatabase.SkillTabRelativeDataPath);
         skillDisplayName = new string[skillData.Length];
 
         for (int i = 0; i < skillDisplayName.Length; i++)
