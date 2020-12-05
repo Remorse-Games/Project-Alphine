@@ -9,13 +9,18 @@ public class ItemTab : BaseTab
 {
     //Having list of all items exist in data.
     public List<ItemData> item = new List<ItemData>();
+    public List<EffectData> effects = new List<EffectData>();
 
     //List of names. Why you ask? because selectionGrid require
     //array of string, which we cannot obtain in itemData.
     //I hope later got better solution about this to not do
     //a double List for this kind of thing.
     List<string> itemDisplayName = new List<string>();
+    List<string> effectDisplayName = new List<string>();
 
+    //i don't know about this but i leave this to handle later.
+    public static int effectIndex = 0;
+    int effectIndexTemp = -1;
 
     //Classes
     public string[] itemTypeList =
@@ -107,8 +112,10 @@ public class ItemTab : BaseTab
     public int itemSize;
     public int itemSizeTemp;
 
+    public static int[] effectSize;
+
     //i don't know about this but i leave this to handle later.
-    int index = 0;
+    public static int index = 0;
     int indexTemp = -1;
 
     //Scroll position. Is this necessary?
@@ -119,7 +126,24 @@ public class ItemTab : BaseTab
     Texture2D itemIcon;
     public void Init()
     {
+        effects.Clear();
+        effectIndex = 0;
+
         LoadGameData<ItemData>(ref itemSize, item, PathDatabase.ItemRelativeDataPath);
+
+        effectSize = new int[itemSize];
+        LoadGameData<EffectData>(ref effectSize[index], effects, PathDatabase.ItemEffectRelativeDataPath + (index + 1));
+
+        //create folder for effectdata
+        FolderCreator(itemSize, "Assets/Resources/Data/ItemData", "EffectData");
+
+        if(effectSize[index] <= 0)
+        {
+            effectIndex = 0;
+            ChangeMaximum<EffectData>(++effectSize[index], effects, PathDatabase.ItemEffectExplicitDataPath + (index + 1) + "/Effect_");
+        }
+
+        ClearNullScriptableObjects();
         ListReset();
     }
     public void OnRender(Rect position)
@@ -179,7 +203,22 @@ public class ItemTab : BaseTab
                 if (GUI.changed && index != indexTemp)
                 {
                     indexTemp = index;
+                    effectIndex = 0;
+                    effectIndexTemp = -1;
+
                     ItemTabLoader(indexTemp);
+
+                    effects.Clear();
+                    LoadGameData<EffectData>(ref effectSize[index], effects, PathDatabase.ItemEffectRelativeDataPath + (index + 1));
+
+                    if(effectSize[index] <= 0)
+                    {
+                        ChangeMaximum<EffectData>(++effectSize[index], effects, PathDatabase.ItemEffectExplicitDataPath + (index + 1) + "/Effect_");
+                        effectIndexTemp = 0;
+                    }
+                    ClearNullScriptableObjects();
+                    
+                    ListReset();
                     indexTemp = -1;
                 }
 
@@ -188,7 +227,31 @@ public class ItemTab : BaseTab
                 if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
                 {
                     itemSize = itemSizeTemp;
+                    index = indexTemp = 0;
+                    FolderCreator(itemSize, "Assets/Resources/Data/ItemData", "EffectData");
                     ChangeMaximum<ItemData>(itemSize, item, PathDatabase.ItemExplicitDataPath);
+                    
+                    //new effectsize array length
+                    int[] tempArr = new int[effectSize.Length];
+                    for (int i = 0; i < effectSize.Length; i++)
+                        tempArr[i] = effectSize[i];
+
+                    effectSize = new int[itemSize];
+
+                    //find the smallest between tempArr and itemSize
+                    int smallestValue = tempArr.Length < itemSize ? tempArr.Length : itemSize;
+
+                    for(int i = 0; i < smallestValue; i++)
+                        effectSize[i] = tempArr[i];
+
+                    //Reload data
+                    LoadGameData<EffectData>(ref effectSize[index], effects, PathDatabase.ItemEffectRelativeDataPath + (index + 1));
+                    if(effectSize[index] <= 0)
+                    {
+                        ChangeMaximum<EffectData>(++effectSize[index], effects, PathDatabase.ItemEffectExplicitDataPath + (index + 1) + "/Effect_");
+                    }
+
+                    ClearNullScriptableObjects();
                     ListReset();
                 }
             GUILayout.EndArea();
@@ -517,6 +580,7 @@ public class ItemTab : BaseTab
 
                 Rect effectsBox = new Rect(5, damageBox.height + 10, firstTabWidth + 15, position.height / 3);
                     #region Effects
+                    ListReset();
                     GUILayout.BeginArea(effectsBox, tabStyle);
                         GUILayout.Label("Effects", EditorStyles.boldLabel);
                         GUILayout.Space(2);
@@ -534,10 +598,51 @@ public class ItemTab : BaseTab
                             false,
                             true,
                             GUILayout.Width(firstTabWidth + 5),
-                            GUILayout.Height(effectsBox.height * 0.80f)
+                            GUILayout.Height(effectsBox.height * 0.725f)
                             );
+                        
+                        GUI.changed = false;
+                        GUI.skin.button.alignment = TextAnchor.MiddleLeft;
+
+                        effectIndex = GUILayout.SelectionGrid(
+                            effectIndex,
+                            effectDisplayName.ToArray(),
+                            1,
+                            GUILayout.Width(firstTabWidth - 20),
+                            GUILayout.Height(position.height / 24 * effectSize[index])
+                        );
+
+                        GUI.skin.button.alignment = TextAnchor.MiddleCenter;
+
                         GUILayout.EndScrollView();
                         #endregion
+
+                        if (GUI.changed)
+                        {
+                            if(effectIndex != effectIndexTemp)
+                            {
+                                EffectWindow.ShowWindow(effects, effectIndex, effectSize[index], TabType.Item);
+                                effectIndexTemp = effectIndex;
+                            }
+                        }
+
+                        if((effects[effectSize[index] - 1].effectName != null && effects[effectSize[index] - 1].effectName != "") && effectSize[index] > 0)
+                        {
+                            effectIndex = 0;
+                            ChangeMaximum<EffectData>(++effectSize[index], effects, PathDatabase.ItemEffectExplicitDataPath + (index + 1) + "/Effect_");
+                        }
+
+                        if (GUILayout.Button("Delete All Data", GUILayout.Width(effectsBox.width * .3f)))
+                        {
+                            if (EditorUtility.DisplayDialog("Delete All Effect Data", "Are you sure want to delete all Effect Data?", "Yes", "No"))
+                            {
+                                effectIndex = 0;
+                                effectSize[index] = 1;
+                                ChangeMaximum<EffectData>(0, effects, PathDatabase.ItemEffectExplicitDataPath + (index + 1) + "/Effect_");
+                                ChangeMaximum<EffectData>(1, effects, PathDatabase.ItemEffectExplicitDataPath + (index + 1) + "/Effect_");
+                            }
+                        }
+
                     GUILayout.EndArea();
                     #endregion
 
@@ -586,6 +691,29 @@ public class ItemTab : BaseTab
         }
     }
 
+    private void ClearNullScriptableObjects()
+    {
+        bool availableNull = true;
+        while (availableNull)
+        {
+            availableNull = false;
+            for(int i = 0; i < effectSize[index] - 1; i++)
+            {
+                if(effects[i].effectName == "" || effects[i].effectName == null)
+                {
+                    availableNull = true;
+                    for (int j = i; j < effectSize[index] - 1; j++)
+                    {
+                        effects[j] = effects[j + 1];
+                    }
+                    effectIndex = 0;
+                    ChangeMaximum<EffectData>(--effectSize[index], effects, PathDatabase.ItemEffectExplicitDataPath);
+                    i--;
+                }
+            }
+        }
+    }
+
     ///<summary>
     ///Clears out the displayName list and add it with new value
     ///</summary>
@@ -595,6 +723,13 @@ public class ItemTab : BaseTab
         for (int i = 0; i < itemSize; i++)
         {
             itemDisplayName.Add(item[i].itemName);
+        }
+
+        //Effect Reset
+        effectDisplayName.Clear();
+        for (int i = 0; i < effectSize[index]; i++)
+        {
+            effectDisplayName.Add(effects[i].effectName);
         }
     }
 

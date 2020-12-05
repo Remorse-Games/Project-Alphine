@@ -8,7 +8,13 @@ using System.IO;
 using SFB;
 using System.Linq;
 
-public class SkillEffectWindow : EditorWindow
+public enum TabType
+{
+    Skill,
+    Item
+};
+
+public class EffectWindow : EditorWindow
 {
     private string[] skillDisplayName;
     private bool[] tabToggle = new bool[4] { true, false, false, false };
@@ -55,7 +61,7 @@ public class SkillEffectWindow : EditorWindow
     };
 
 
-    static List<SkillEffectData> effects;
+    static List<EffectData> effects;
     static int effectSize;
     static int effectIndex;
 
@@ -67,9 +73,15 @@ public class SkillEffectWindow : EditorWindow
     public int[] firstValue = new int[2];
     public string firstEffectName;
 
-    public static void ShowWindow(List<SkillEffectData> skillEffectData, int index, int size)
+    public static TabType tabType;
+
+    public static string dataName;
+    public static string ExplicitDataPath;
+    public static string RelativeDataPath;
+
+    public static void ShowWindow(List<EffectData> effectData, int index, int size, TabType _tabType)
     {
-        var window = GetWindow<SkillEffectWindow>();
+        var window = GetWindow<EffectWindow>();
         var position = window.position;
 
         //sizing and positioning
@@ -78,9 +90,14 @@ public class SkillEffectWindow : EditorWindow
         position.center = new Rect(Screen.width * -1 * .05f, Screen.height * -1 * .05f, Screen.currentResolution.width, Screen.currentResolution.height).center;
         window.position = position;
 
-        effects = skillEffectData;
+        effects = effectData;
         effectIndex = index;
         effectSize = size;
+
+        tabType = _tabType;
+        dataName = _tabType.ToString();
+        ExplicitDataPath = "Assets/Resources/Data/" + dataName + "Data";
+        RelativeDataPath = "Data/" + dataName + "Data";
 
         window.titleContent = new GUIContent("Effect");
         window.Show();
@@ -157,7 +174,7 @@ public class SkillEffectWindow : EditorWindow
                             // Cancel Button
                             if (GUILayout.Button("Cancel", GUILayout.Height(20)))
                             {
-                                if(firstEffectName != null)
+                                if(firstEffectName != null && firstEffectName != "")
                                 {
                                     effects[effectIndex].selectedTabToggle = firstSelectedToggle;
                                     effects[effectIndex].selectedTabIndex = firstSelectedTab;
@@ -178,15 +195,8 @@ public class SkillEffectWindow : EditorWindow
                                         effects[i].selectedTabToggle = effects[i + 1].selectedTabToggle;
                                     }
                                     effectIndex = 0;
-                                    ChangeMaximum<SkillEffectData>(--effectSize, effects, PathDatabase.SkillEffectExplicitDataPath + (SkillsTab.index + 1) + "/Effect_");
 
-                                    if(effectSize <= 0)
-                                    {
-                                        ChangeMaximum<SkillEffectData>(1, effects, PathDatabase.SkillEffectExplicitDataPath + (SkillsTab.index + 1) + "/Effect_");
-                                        effectSize = 1;
-                                    }
-
-                                    SkillsTab.effectSize[SkillsTab.index] = effectSize;
+                                    clear();
                                 }
                             }
 
@@ -204,15 +214,8 @@ public class SkillEffectWindow : EditorWindow
                                         effects[i].selectedTabToggle = effects[i + 1].selectedTabToggle;
                                     }
                                     effectIndex = 0;
-                                    ChangeMaximum<SkillEffectData>(--effectSize, effects, PathDatabase.SkillTabExplicitDataPath + (SkillsTab.index + 1) + "/Effect_");
-                
-                                    if(effectSize <= 0)
-                                    {
-                                        ChangeMaximum<SkillEffectData>(1, effects, PathDatabase.SkillEffectExplicitDataPath + (SkillsTab.index + 1) + "/Effect_");
-                                        effectSize = 1;
-                                    }
 
-                                    SkillsTab.effectSize[SkillsTab.index] = effectSize;
+                                    clear();
                                 }
                             }
                             else
@@ -973,7 +976,7 @@ public class SkillEffectWindow : EditorWindow
     {
         if (set) return;
 
-        SkillData[] skillData = Resources.LoadAll<SkillData>(PathDatabase.SkillTabRelativeDataPath);
+        SkillData[] skillData = Resources.LoadAll<SkillData>(RelativeDataPath);
         skillDisplayName = new string[skillData.Length];
 
         for (int i = 0; i < skillDisplayName.Length; i++)
@@ -982,6 +985,36 @@ public class SkillEffectWindow : EditorWindow
         }
 
         set = true;
+    }
+
+    private void clear()
+    {
+        switch (tabType)
+        {
+            case TabType.Item:
+                ChangeMaximum<EffectData>(--effectSize, effects, ExplicitDataPath + "/EffectData" + (ItemTab.index + 1) + "/Effect_");
+
+                if (effectSize <= 0)
+                {
+                    ChangeMaximum<EffectData>(1, effects, ExplicitDataPath + "/EffectData" + (ItemTab.index + 1) + "/Effect_");
+                    effectSize = 1;
+                }
+
+                ItemTab.effectSize[ItemTab.index] = effectSize;
+                break;
+
+            case TabType.Skill:
+                ChangeMaximum<EffectData>(--effectSize, effects, ExplicitDataPath + "/EffectData" + (SkillsTab.index + 1) + "/Effect_");
+
+                if (effectSize <= 0)
+                {
+                    ChangeMaximum<EffectData>(1, effects, ExplicitDataPath + "/EffectData" + (SkillsTab.index + 1) + "/Effect_");
+                    effectSize = 1;
+                }
+
+                SkillsTab.effectSize[SkillsTab.index] = effectSize;
+                break;
+        }
     }
 
     #endregion

@@ -9,7 +9,7 @@ public class SkillsTab : BaseTab
 {
     //Having list of all skills exist in data.
     public List<SkillData> skill = new List<SkillData>();
-    public List<SkillEffectData> effects = new List<SkillEffectData>();
+    public List<EffectData> effects = new List<EffectData>();
 
     //List of names. Why you ask? because selectionGrid require
     //array of string, which we cannot obtain in SkillData.
@@ -19,7 +19,7 @@ public class SkillsTab : BaseTab
     List<string> effectDisplayName = new List<string>();
 
     //i don't know about this but i leave this to handle later.
-    int effectIndex = 0;
+    public static int effectIndex = 0;
     int effectIndexTemp = -1;
 
     //Classes
@@ -144,7 +144,7 @@ public class SkillsTab : BaseTab
         LoadGameData<SkillData>(ref skillSize, skill, PathDatabase.SkillTabRelativeDataPath);
 
         effectSize = new int[skillSize];
-        LoadGameData<SkillEffectData>(ref effectSize[index], effects, PathDatabase.SkillEffectRelativeDataPath + (index + 1));
+        LoadGameData<EffectData>(ref effectSize[index], effects, PathDatabase.SkillEffectRelativeDataPath + (index + 1));
 
 
         //create folder for effectdata
@@ -153,7 +153,7 @@ public class SkillsTab : BaseTab
         if(effectSize[index] <= 0)
         {
             effectIndex = 0;
-            ChangeMaximum<SkillEffectData>(++effectSize[index], effects, PathDatabase.SkillEffectExplicitDataPath + (index + 1) + "/Effect_");
+            ChangeMaximum<EffectData>(++effectSize[index], effects, PathDatabase.SkillEffectExplicitDataPath + (index + 1) + "/Effect_");
         }
         ClearNullScriptableObjects();
         ListReset();
@@ -226,11 +226,11 @@ public class SkillsTab : BaseTab
                 ItemTabLoader(indexTemp);
 
                 effects.Clear();
-                LoadGameData<SkillEffectData>(ref effectSize[index], effects, PathDatabase.SkillEffectRelativeDataPath + (index + 1));
+                LoadGameData<EffectData>(ref effectSize[index], effects, PathDatabase.SkillEffectRelativeDataPath + (index + 1));
 
                 if(effectSize[index] <= 0)
                 {
-                    ChangeMaximum<SkillEffectData>(++effectSize[index], effects, PathDatabase.SkillEffectExplicitDataPath + (index + 1) + "/Effect_");
+                    ChangeMaximum<EffectData>(++effectSize[index], effects, PathDatabase.SkillEffectExplicitDataPath + (index + 1) + "/Effect_");
                     effectIndexTemp = 0;
                 }
                 ClearNullScriptableObjects();
@@ -262,10 +262,10 @@ public class SkillsTab : BaseTab
                     effectSize[i] = tempArr[i];
 
                 //Reload data
-                LoadGameData<SkillEffectData>(ref effectSize[index], effects, PathDatabase.SkillEffectRelativeDataPath + (index + 1));
+                LoadGameData<EffectData>(ref effectSize[index], effects, PathDatabase.SkillEffectRelativeDataPath + (index + 1));
                 if(effectSize[index] <= 0)
                 {
-                    ChangeMaximum<SkillEffectData>(++effectSize[index], effects, PathDatabase.SkillEffectExplicitDataPath + (index + 1) + "/Effect_");
+                    ChangeMaximum<EffectData>(++effectSize[index], effects, PathDatabase.SkillEffectExplicitDataPath + (index + 1) + "/Effect_");
                 }
 
                 ClearNullScriptableObjects();
@@ -731,7 +731,7 @@ public class SkillsTab : BaseTab
                         {
                             if(effectIndex != effectIndexTemp)
                             {
-                                SkillEffectWindow.ShowWindow(effects, effectIndex, effectSize[index]);
+                                EffectWindow.ShowWindow(effects, effectIndex, effectSize[index], TabType.Skill);
                                 effectIndexTemp = effectIndex;
                             }
                         }
@@ -739,7 +739,7 @@ public class SkillsTab : BaseTab
                         if((effects[effectSize[index] - 1].effectName != null && effects[effectSize[index] - 1].effectName != "") && effectSize[index] > 0)
                         {
                             effectIndex = 0;
-                            ChangeMaximum<SkillEffectData>(++effectSize[index], effects, PathDatabase.SkillEffectExplicitDataPath + (index + 1) + "/Effect_");
+                            ChangeMaximum<EffectData>(++effectSize[index], effects, PathDatabase.SkillEffectExplicitDataPath + (index + 1) + "/Effect_");
                         }
 
                         if (GUILayout.Button("Delete All Data", GUILayout.Width(effectsBox.width * .3f)))
@@ -748,8 +748,8 @@ public class SkillsTab : BaseTab
                             {
                                 effectIndex = 0;
                                 effectSize[index] = 1;
-                                ChangeMaximum<SkillEffectData>(0, effects, PathDatabase.SkillEffectExplicitDataPath + (index + 1) + "/Effect_");
-                                ChangeMaximum<SkillEffectData>(1, effects, PathDatabase.SkillEffectExplicitDataPath + (index + 1) + "/Effect_");
+                                ChangeMaximum<EffectData>(0, effects, PathDatabase.SkillEffectExplicitDataPath + (index + 1) + "/Effect_");
+                                ChangeMaximum<EffectData>(1, effects, PathDatabase.SkillEffectExplicitDataPath + (index + 1) + "/Effect_");
                             }
                         }
 
@@ -820,7 +820,7 @@ public class SkillsTab : BaseTab
                         effects[j] = effects[j + 1];
                     }
                     effectIndex = 0;
-                    ChangeMaximum<SkillEffectData>(--effectSize[index], effects, PathDatabase.ActorTraitExplicitDataPath);
+                    ChangeMaximum<EffectData>(--effectSize[index], effects, PathDatabase.SkillEffectExplicitDataPath);
                     i--;
                 }
             }

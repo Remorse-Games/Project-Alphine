@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName ="Database/EffectData")]
-public class SkillEffectData : ScriptableObject
+public class EffectData : ScriptableObject
 {
     public string effectName;
     public int selectedTabToggle;
