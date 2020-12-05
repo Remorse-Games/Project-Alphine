@@ -236,6 +236,22 @@ public class EffectWindow : EditorWindow
         #endregion
     }
 
+    private void OnDestroy()
+    {
+        switch (tabType)
+        {
+            case TabType.Item:
+                ItemTab.effectIndex = 0;
+                ItemTab.effectIndexTemp = -1;
+                break;
+
+            case TabType.Skill:
+                SkillsTab.effectIndex = 0;
+                SkillsTab.effectIndexTemp = -1;
+                break;
+        }
+    }
+
     private void OnLostFocus()
     {
         this.Focus();

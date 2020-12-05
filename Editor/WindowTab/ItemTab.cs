@@ -20,7 +20,7 @@ public class ItemTab : BaseTab
 
     //i don't know about this but i leave this to handle later.
     public static int effectIndex = 0;
-    int effectIndexTemp = -1;
+    public static int effectIndexTemp = -1;
 
     //Classes
     public string[] itemTypeList =
