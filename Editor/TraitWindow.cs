@@ -8,7 +8,8 @@ using System.IO;
 using SFB;
 using System.Linq;
 
-public class ActorTraitWindow : EditorWindow
+
+public class TraitWindow : EditorWindow
 {
     public string[] elementDisplayName;
     public string[] equipmentType;
@@ -89,24 +90,49 @@ public class ActorTraitWindow : EditorWindow
     static int traitSize;
     static int traitIndex;
 
+    public static TabType tabType;
+
+    public static string dataName;
+    public static string ExplicitDataPath;
+    public static string RelativeDataPath;
+
     //Data(s) reference
-    static List<ActorTraitsData> traits;
-    public static void ShowWindow(List<ActorTraitsData> actorTraitData, int index, int size)
+    static List<TraitsData> traits;
+    public static void ShowWindow(List<TraitsData> traitData, int index, int size, TabType _tabType)
     {
-        var window = GetWindow<ActorTraitWindow>();
+        var window = GetWindow<TraitWindow>();
         var position = window.position;
         //Sizing
         window.maxSize = new Vector2(500, 190);
         window.minSize = new Vector2(500, 190);
         window.titleContent = new GUIContent("Traits");
-        traits = actorTraitData;
+        traits = traitData;
         traitIndex = index;
         traitSize = size;
+
+        tabType = _tabType;
+        dataName = _tabType.ToString();
+        ExplicitDataPath = "Assets/Resources/Data/" + dataName + "Data";
+        RelativeDataPath = "Data/" + dataName + "Data";
+
         position.center = new Rect(Screen.width * -1 * .05f, Screen.height * -1 * .05f, Screen.currentResolution.width, Screen.currentResolution.height).center;
         window.position = position;
         window.Show();
     }
-
+    private void OnDestroy()
+    {
+        switch (tabType)
+        {
+            case TabType.Actor:
+                ActorTab.traitIndex = 0;
+                ActorTab.traitIndexTemp = -1;
+                break;
+            case TabType.Class:
+                ClassTab.traitIndex = 0;
+                ClassTab.traitIndexTemp = -1;
+                break;
+        }
+    }
     private void OnGUI()
     {
         BaseValue(i++);
@@ -193,15 +219,7 @@ public class ActorTraitWindow : EditorWindow
                                         traits[i].selectedTabToggle = traits[i + 1].selectedTabToggle;
                                     }
                                     traitIndex = 0;
-                                    ChangeMaximum<ActorTraitsData>(--traitSize, traits, PathDatabase.ActorTraitExplicitDataPath + (ActorTab.index + 1) + "/Trait_");
-
-                                    if(traitSize <= 0)
-                                    {
-                                        ChangeMaximum<ActorTraitsData>(1, traits, PathDatabase.ActorTraitExplicitDataPath + (ActorTab.index + 1) + "/Trait_");
-                                        traitSize = 1;
-                                    }
-
-                                    ActorTab.traitSize[ActorTab.index] = traitSize;
+                                    clear();
                                 }
                             }
                             if(firstTraitName != null)
@@ -218,15 +236,7 @@ public class ActorTraitWindow : EditorWindow
                                         traits[i].selectedTabToggle = traits[i + 1].selectedTabToggle;
                                     }
                                     traitIndex = 0;
-                                    ChangeMaximum<ActorTraitsData>(--traitSize, traits, PathDatabase.ActorTraitExplicitDataPath + (ActorTab.index + 1) + "/Trait_");
-                
-                                    if(traitSize <= 0)
-                                    {
-                                        ChangeMaximum<ActorTraitsData>(1, traits, PathDatabase.ActorTraitExplicitDataPath + (ActorTab.index + 1) + "/Trait_");
-                                        traitSize = 1;
-                                    }
-
-                                    ActorTab.traitSize[ActorTab.index] = traitSize;
+                                    clear();
                                 }
                             }
                             else
@@ -1037,5 +1047,37 @@ public class ActorTraitWindow : EditorWindow
         result.Apply();
         return result;
     }
+
+
+    private void clear()
+    {
+        switch (tabType)
+        {
+            case TabType.Actor:
+                ChangeMaximum<TraitsData>(--traitSize, traits, ExplicitDataPath + "/TraitData" + (ActorTab.index + 1) + "/Trait_");
+
+                if (traitSize <= 0)
+                {
+                    ChangeMaximum<TraitsData>(1, traits, ExplicitDataPath + "/TraitData" + (ActorTab.index + 1) + "/Trait_");
+                    traitSize = 1;
+                }
+
+                ActorTab.traitSize[ActorTab.index] = traitSize;
+                break;
+
+            /*case TabType.Class:
+                ChangeMaximum<TraitsData>(--effectSize, effects, ExplicitDataPath + "/EffectData" + (SkillsTab.index + 1) + "/Effect_");
+
+                if (effectSize <= 0)
+                {
+                    ChangeMaximum<TraitsData>(1, effects, ExplicitDataPath + "/EffectData" + (SkillsTab.index + 1) + "/Effect_");
+                    effectSize = 1;
+                }
+
+                ClassTab.[ClassTab.index] = traitSize;
+                break;*/
+        }
+    }
+
     #endregion
 }

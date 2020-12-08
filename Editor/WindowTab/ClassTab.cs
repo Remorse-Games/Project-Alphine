@@ -7,27 +7,36 @@ public class ClassTab : BaseTab
 {
     //Make a classData List
     List<ClassesData> classes = new List<ClassesData>();
+    List<TraitsData> traits = new List<TraitsData>();
     List<SkillsToLearn> skillToLearn = new List<SkillsToLearn>();
 
     //Make a string list filled with its name
     List<string> skillToLearnNames = new List<string>();
+    List<string> traitDisplayName = new List<string>();
     List<string> classesNames = new List<string>();
 
     GUIStyle classStyle;
     GUIStyle tabStyle;
     GUIStyle columnStyle;
 
-     int classSize;
+    int classSize;
+
     public static int[] skillToLearnSize;
+    public static int[] traitSize;
+
     public static int index = 0;
     int indexTemp = -1;
+
     int skillIndex = 0;
     int skillIndexTemp = -1;
+
+    public static int traitIndex = 0;
+    public static int traitIndexTemp = -1;
 
     //ScrollPos
     Vector2 scrollPos = Vector2.zero;
     Vector2 skillsScrollPos = Vector2.zero;
-    Vector2 SkillsScrollPos = Vector2.zero;
+    Vector2 traitsScrollPos = Vector2.zero;
 
     #region TempValues
     int classSizeTemp;
@@ -35,12 +44,24 @@ public class ClassTab : BaseTab
 
     public void Init()
     {
+        //Clears List
         classes.Clear();
         skillToLearn.Clear();
-        LoadGameData<ClassesData>(ref classSize, classes, PathDatabase.ClassRelativeDataPath);
+        traits.Clear();
 
-        //Create Folder For SkillData and its sum is based on actorSize value
+        //Resetting each index to 0, so that it won't have error (Index Out Of Range)
+        index = 0;
+        skillIndex = 0;
+        traitIndex = 0;
+
+        LoadGameData<ClassesData>(ref classSize, classes, PathDatabase.ClassRelativeDataPath);
+        
+        traitSize = new int[classSize]; //Resets Trait Sizing
+        LoadGameData<TraitsData>(ref traitSize[index], traits, PathDatabase.ActorTraitRelativeDataPath + (index + 1));
+
+        //Create Folder For SkillData and its sum is based on classSize value
         FolderCreator(classSize, "Assets/Resources/Data/ClassesData", "SkillToLearnData");
+        FolderCreator(classSize, "Assets/Resources/Data/ClassesData", "TraitData");
 
         skillToLearnSize = new int[classSize]; //Resets Skill Sizing
         LoadGameData<SkillsToLearn>(ref skillToLearnSize[index], skillToLearn, PathDatabase.SkillToLearnRelativeDataPath + (index + 1));
@@ -51,6 +72,14 @@ public class ClassTab : BaseTab
             skillIndex = 0;
             ChangeMaximum<SkillsToLearn>(++skillToLearnSize[index], skillToLearn, PathDatabase.SkillToLearnExplicitDataPath + (index + 1) + "/SkillToLearn_");
         }
+
+        //Check if TraitsData_(index) is empty, if it is empty then create a SO named Trait_1
+        if (traitSize[index] <= 0)
+        {
+            traitIndex = 0;
+            ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");
+        }
+        ClearNullScriptableObjects(); //Clear Trait SO without a value
         ListReset();
     }
     public void OnRender(Rect position)
@@ -100,7 +129,10 @@ public class ClassTab : BaseTab
                 if (GUI.changed && index != indexTemp)
                 {
                     indexTemp = index;
+                    traitIndex = 0;
+                    traitIndexTemp = -1;
                     skillIndex = 0;
+                    skillIndexTemp = -1;
                     
                     //Load SkillToLearnData
                     skillToLearn.Clear();
@@ -111,6 +143,17 @@ public class ClassTab : BaseTab
                         ChangeMaximum<SkillsToLearn>(++skillToLearnSize[index], skillToLearn, PathDatabase.SkillToLearnExplicitDataPath + (index + 1) + "/SkillToLearn_");
                         skillIndexTemp = 0;
                     }
+
+                    //Load TraitsData
+                    traits.Clear();
+                    LoadGameData<TraitsData>(ref traitSize[index], traits, PathDatabase.ClassTraitRelativeDataPath + (index + 1));;
+                    //Check if TraitsData folder is empty
+                    if (traitSize[index] <= 0)
+                    {
+                        ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.ClassTraitExplicitDataPath + (index + 1) + "/Trait_");
+                        traitIndexTemp = 0;
+                    }
+
                     ClearNullScriptableObjects();
                     ListReset();
                     indexTemp = -1;
@@ -120,10 +163,13 @@ public class ClassTab : BaseTab
                 if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
                 {
                     classSize = classSizeTemp;
+                    index = indexTemp = 0;
                     skillIndex = 0;
 
                     FolderCreator(classSize, "Assets/Resources/Data/ClassesData", "SkillToLearnData");
+                    FolderCreator(classSize, "Assets/Resources/Data/ActorData", "TraitData");
                     ChangeMaximum<ClassesData>(classSize, classes, PathDatabase.ClassExplicitDataPath);
+                    
                     //New SkillSize array length
                     int[] tempArr = new int[skillToLearnSize.Length];
                     for (int i = 0; i < skillToLearnSize.Length; i++)
@@ -140,11 +186,31 @@ public class ClassTab : BaseTab
                     for (int i = 0; i < smallestValue; i++)
                         skillToLearnSize[i] = tempArr[i];
 
+                    //New TraitSize array length
+                    tempArr = new int[traitSize.Length];
+                    for (int i = 0; i < traitSize.Length; i++)
+                        tempArr[i] = traitSize[i];
+
+                    traitSize = new int[classSize];
+
+                    #region FindSmallestBetween
+                        if (tempArr.Length < classSize) smallestValue = tempArr.Length;
+                        else smallestValue = classSize;
+                    #endregion
+
+                    for (int i = 0; i < smallestValue; i++)
+                        traitSize[i] = tempArr[i];
+
                     //Reload Data and Check SO
                     LoadGameData<SkillsToLearn>(ref skillToLearnSize[index], skillToLearn, PathDatabase.SkillToLearnRelativeDataPath + (index + 1));
                     if (skillToLearnSize[index] <= 0)
                     {
                         ChangeMaximum<SkillsToLearn>(++skillToLearnSize[index], skillToLearn, PathDatabase.SkillToLearnExplicitDataPath + (index + 1) + "/SkillToLearn_");
+                    }
+                    LoadGameData<TraitsData>(ref traitSize[index], traits, PathDatabase.ClassTraitRelativeDataPath + (index + 1));
+                    if (traitSize[index] <= 0)
+                    {
+                        ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.ClassTraitExplicitDataPath + (index + 1) + "/Trait_");
                     }
                     ClearNullScriptableObjects();
                     ListReset();
@@ -454,36 +520,77 @@ public class ClassTab : BaseTab
             #region Tab 3/3
             //Third Column
             GUILayout.BeginArea(new Rect(position.width - (position.width - firstTabWidth * 2) + 77, 0, firstTabWidth + 25, tabHeight - 15), columnStyle);
-
-                //Skills
-                Rect SkillsBox = new Rect(5, 5, firstTabWidth + 15, position.height * 5 / 8);
-                #region Skills
-                GUILayout.BeginArea(SkillsBox, tabStyle);
+            
+                //Traits
+                Rect traitsBox = new Rect(5, 5, firstTabWidth + 15, position.height * 5 / 8);
+                #region Traits
+                ListReset();
+                GUILayout.BeginArea(traitsBox, tabStyle);
                     GUILayout.Space(2);
-                    GUILayout.Label("Skills", EditorStyles.boldLabel);
-                    GUILayout.Space(SkillsBox.height / 30);
+                    GUILayout.Label("Traits", EditorStyles.boldLabel);
+                    GUILayout.Space(5);
                     #region Horizontal For Type And Content
                     GUILayout.BeginHorizontal();
-                        GUILayout.Label("Type", GUILayout.Width(SkillsBox.width * 3 / 8));
-                        GUILayout.Label("Content", GUILayout.Width(SkillsBox.width * 5 / 8));
+                        GUILayout.Label(PadString("Type", string.Format("{0}", "  Content")), GUILayout.Width(traitsBox.width));
                     GUILayout.EndHorizontal();
                     #endregion
                     #region ScrollView
-                        SkillsScrollPos = GUILayout.BeginScrollView(
-                            SkillsScrollPos, 
+                        traitsScrollPos = GUILayout.BeginScrollView(
+                            traitsScrollPos, 
                             false, 
                             true, 
                             GUILayout.Width(firstTabWidth + 5), 
-                            GUILayout.Height(SkillsBox.height * 0.87f)
+                            GUILayout.Height(traitsBox.height * 0.83f)
                             );
+        
+                        GUI.changed = false;
+                        GUI.skin.button.alignment = TextAnchor.MiddleLeft;
+                        traitIndex = GUILayout.SelectionGrid(
+                            traitIndex,
+                            traitDisplayName.ToArray(),
+                            1,
+                            GUILayout.Width(firstTabWidth - 20),
+                            GUILayout.Height(position.height / 24 * traitSize[index]
+                            ));
+                        GUI.skin.button.alignment = TextAnchor.MiddleCenter;
                     GUILayout.EndScrollView();
                     #endregion
+        
+                    //Happen everytime selection grid is updated
+                    if (GUI.changed)
+                    {
+                        if (traitIndex != traitIndexTemp)
+                        {
+                            TraitWindow.ShowWindow(traits, traitIndex, traitSize[index], TabType.Actor);
+                            
+                            traitIndexTemp = traitIndex;
+                        }
+                    }
+
+                    //Create Empty SO if there isn't any null SO left
+                    if ((traits[traitSize[index] - 1].traitName != null && traits[traitSize[index] - 1].traitName != "") && traitSize[index] > 0)
+                    {
+                        traitIndex = 0;
+                        ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");
+                    }
+
+                    //Delete All Data Button
+                    if (GUILayout.Button("Delete All Data", GUILayout.Width(traitsBox.width * .3f), GUILayout.Height(traitsBox.height * .055f)))
+                    {
+                        if (EditorUtility.DisplayDialog("Delete All Trait Data", "Are you sure want to delete all Trait Data?", "Yes", "No"))
+                        {
+                            traitIndex = 0;
+                            traitSize[index] = 1;
+                            ChangeMaximum<TraitsData>(0, traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");
+                            ChangeMaximum<TraitsData>(1, traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");
+                        }
+                    }
                 GUILayout.EndArea();
-                #endregion //End of SkillboxArea
+                #endregion //End of TraitboxArea
 
 
                 //Notes
-                Rect notesBox = new Rect(5, SkillsBox.height + 15, firstTabWidth + 15, position.height * 2.5f / 8);
+                Rect notesBox = new Rect(5, traitsBox.height + 15, firstTabWidth + 15, position.height * 2.5f / 8);
                 #region NoteBox
                 GUILayout.BeginArea(notesBox, tabStyle);
                     GUILayout.Space(2);
@@ -527,6 +634,13 @@ public class ClassTab : BaseTab
         {
             skillToLearnNames.Add(skillToLearn[i].skillToLearnName);
         }
+
+        //Trait Reset
+        traitDisplayName.Clear();
+        for (int i = 0; i < traitSize[index]; i++)
+        {
+            traitDisplayName.Add(traits[i].traitName);
+        }
     }
     private void ClearNullScriptableObjects()
     {
@@ -546,6 +660,29 @@ public class ClassTab : BaseTab
                         skillToLearn[j].notes = skillToLearn[j + 1].notes;
                     }
                     ChangeMaximum<SkillsToLearn>(--skillToLearnSize[index], skillToLearn, PathDatabase.SkillToLearnExplicitDataPath + (index + 1) + "/SkillToLearn_");
+                    i--;
+                }
+            }
+        }
+
+        availableNull = true;
+        while (availableNull)
+        {
+            availableNull = false;
+            for (int i = 0; i < traitSize[index] - 1; i++)
+            {
+                if (string.IsNullOrEmpty(traits[i].traitName))
+                {
+                    availableNull = true;
+                    for (int j = i; j < traitSize[index] - 1; j++)
+                    {
+                        traits[j].traitName = traits[j + 1].traitName;
+                        traits[j].selectedTabToggle = traits[j + 1].selectedTabToggle;
+                        traits[j].selectedTabIndex = traits[j + 1].selectedTabIndex;
+                        traits[j].selectedArrayIndex = traits[j + 1].selectedArrayIndex;
+                        traits[j].traitValue = traits[j + 1].traitValue;
+                    }
+                    ChangeMaximum<TraitsData>(--traitSize[index], traits, PathDatabase.ClassTraitExplicitDataPath + (index + 1) + "/Trait_");
                     i--;
                 }
             }

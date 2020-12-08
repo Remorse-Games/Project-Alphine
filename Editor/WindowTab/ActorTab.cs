@@ -8,7 +8,7 @@ public class ActorTab : BaseTab
 {
     //Having list of all actor exist in data.
     public List<ActorData> actor = new List<ActorData>();
-    public List<ActorTraitsData> traits = new List<ActorTraitsData>();
+    public List<TraitsData> traits = new List<TraitsData>();
     public List<TypeEquipmentData> equipmentType = new List<TypeEquipmentData>();
     public List<ArmorData> armors = new List<ArmorData>();
 
@@ -41,9 +41,9 @@ public class ActorTab : BaseTab
 
     //i don't know about this but i leave this to handle later.
     public static int index = 0;
-    int traitIndex = 0;
+    public static int traitIndex = 0;
     int indexTemp = -1;
-    int traitIndexTemp = -1;
+    public static int traitIndexTemp = -1;
     int typeIndex = 0;
     int typeIndexTemp = -1;
 
@@ -85,20 +85,20 @@ public class ActorTab : BaseTab
         LoadGameData<ActorData>(ref actorSize, actor, PathDatabase.ActorRelativeDataPath);
 
         traitSize = new int[actorSize]; //Resets Trait Sizing
-        LoadGameData<ActorTraitsData>(ref traitSize[index], traits, PathDatabase.ActorTraitRelativeDataPath + (index + 1));
+        LoadGameData<TraitsData>(ref traitSize[index], traits, PathDatabase.ActorTraitRelativeDataPath + (index + 1));
 
         LoadGameData<TypeEquipmentData>(ref equipmentTypeSize, equipmentType, PathDatabase.EquipmentRelativeDataPath);
         LoadGameData<ArmorData>(ref armorSize, armors, PathDatabase.ArmorTabRelativeDataPath);
         LoadClassList();
 
-        //Create Folder For TraitData and its sum is based on actorSize value
+        //Create Folder For TraitsData and its sum is based on actorSize value
         FolderCreator(actorSize, "Assets/Resources/Data/ActorData", "TraitData");
 
-        //Check if TraitData_(index) is empty, if it is empty then create a SO named Trait_1
+        //Check if TraitsData_(index) is empty, if it is empty then create a SO named Trait_1
         if (traitSize[index] <= 0)
         {
             traitIndex = 0;
-            ChangeMaximum<ActorTraitsData>(++traitSize[index], traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");
+            ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");
         }
         ClearNullScriptableObjects(); //Clear Trait SO without a value
         ListReset(); //Resets List
@@ -171,13 +171,13 @@ public class ActorTab : BaseTab
 
                     ItemTabLoader(index);
 
-                    //Load TraitData
+                    //Load TraitsData
                     traits.Clear();
-                    LoadGameData<ActorTraitsData>(ref traitSize[index], traits, PathDatabase.ActorTraitRelativeDataPath + (index + 1));
-                    //Check if TraitData folder is empty
+                    LoadGameData<TraitsData>(ref traitSize[index], traits, PathDatabase.ActorTraitRelativeDataPath + (index + 1));
+                    //Check if TraitsData folder is empty
                     if (traitSize[index] <= 0)
                     {
-                        ChangeMaximum<ActorTraitsData>(++traitSize[index], traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");
+                        ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");
                         traitIndexTemp = 0;
                     }
                     ClearNullScriptableObjects();
@@ -217,10 +217,10 @@ public class ActorTab : BaseTab
                         traitSize[i] = tempArr[i];
 
                     //Reload Data and Check SO
-                    LoadGameData<ActorTraitsData>(ref traitSize[index], traits, PathDatabase.ActorTraitRelativeDataPath + (index + 1));
+                    LoadGameData<TraitsData>(ref traitSize[index], traits, PathDatabase.ActorTraitRelativeDataPath + (index + 1));
                     if (traitSize[index] <= 0)
                     {
-                        ChangeMaximum<ActorTraitsData>(++traitSize[index], traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");
+                        ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");
                     }
                     //Resets the armor index array length
                     if (actor[index].allArmorIndexes == null)
@@ -481,7 +481,7 @@ public class ActorTab : BaseTab
                     {
                         if (traitIndex != traitIndexTemp)
                         {
-                            ActorTraitWindow.ShowWindow(traits, traitIndex, traitSize[index]);
+                            TraitWindow.ShowWindow(traits, traitIndex, traitSize[index], TabType.Actor);
                             
                             traitIndexTemp = traitIndex;
                         }
@@ -491,7 +491,7 @@ public class ActorTab : BaseTab
                     if ((traits[traitSize[index] - 1].traitName != null && traits[traitSize[index] - 1].traitName != "") && traitSize[index] > 0)
                     {
                         traitIndex = 0;
-                        ChangeMaximum<ActorTraitsData>(++traitSize[index], traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");
+                        ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");
                     }
 
                     //Delete All Data Button
@@ -501,8 +501,8 @@ public class ActorTab : BaseTab
                         {
                             traitIndex = 0;
                             traitSize[index] = 1;
-                            ChangeMaximum<ActorTraitsData>(0, traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");
-                            ChangeMaximum<ActorTraitsData>(1, traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");
+                            ChangeMaximum<TraitsData>(0, traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");
+                            ChangeMaximum<TraitsData>(1, traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");
                         }
                     }
                 GUILayout.EndArea();
@@ -612,7 +612,7 @@ public class ActorTab : BaseTab
                         traits[j].selectedArrayIndex = traits[j + 1].selectedArrayIndex;
                         traits[j].traitValue = traits[j + 1].traitValue;
                     }
-                    ChangeMaximum<ActorTraitsData>(--traitSize[index], traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");
+                    ChangeMaximum<TraitsData>(--traitSize[index], traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");
                     i--;
                 }
             }

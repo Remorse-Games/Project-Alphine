@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using TMPro.EditorUtilities;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Database/ActorTraitData")]
-public class ActorTraitsData : ScriptableObject
+[CreateAssetMenu(menuName = "Database/TraitData")]
+public class TraitsData : ScriptableObject
 {
     public string traitName;
     public int selectedTabToggle;

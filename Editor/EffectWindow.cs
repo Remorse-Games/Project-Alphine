@@ -10,6 +10,8 @@ using System.Linq;
 
 public enum TabType
 {
+    Actor,
+    Class,
     Skill,
     Item
 };
