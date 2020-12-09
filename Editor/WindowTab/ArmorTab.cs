@@ -9,12 +9,14 @@ public class ArmorTab : BaseTab
 {
     //Having list of all armors exist in data.
     public List<ArmorData> armor = new List<ArmorData>();
+    public List<TraitsData> traits = new List<TraitsData>();
 
     //List of names. Why you ask? because selectionGrid require
     //array of string, which we cannot obtain in armorData.
     //I hope later got better solution about this to not do
     //a double List for this kind of thing.
     List<string> armorDisplayName = new List<string>();
+    List<string> traitDisplayName = new List<string>();
 
     //All GUIStyle variable initialization.
     GUIStyle tabStyle;
@@ -24,13 +26,16 @@ public class ArmorTab : BaseTab
     //How many armor in ChangeMaximum Func
     public int armorSize;
     public int armorSizeTemp;
+    public static int[] traitSize;
 
     public string[] armorTypeList;
     public string[] armorEquipmentList;
 
     //i don't know about this but i leave this to handle later.
-    int index = 0;
+    public static int index = 0;
+    public static int traitIndex = 0;
     int indexTemp = -1;
+    public static int traitIndexTemp = -1;
 
     //Scroll position. Is this necessary?
     Vector2 scrollPos = Vector2.zero;
@@ -41,10 +46,34 @@ public class ArmorTab : BaseTab
     Texture2D armorIcon;
     public void Init()
     {
+        //Clears List
         armor.Clear();
+        traits.Clear();
+
+        //Resetting each index to 0, so that it won't have error (Index Out Of Range)
+        index = 0;
+        traitIndex = 0;
+
+        //Load Every List needed in ArmorTab
         LoadGameData<ArmorData>(ref armorSize, armor, PathDatabase.ArmorTabRelativeDataPath);
+        
+        traitSize = new int[armorSize]; //Resets Trait Sizing
+        LoadGameData<TraitsData>(ref traitSize[index], traits, PathDatabase.ArmorTraitRelativeDataPath + (index + 1));
+
+        //Create Folder For TraitsData and its sum is based on actorSize value
+        FolderCreator(armorSize, "Assets/Resources/Data/ArmorData", "TraitData");
+
         LoadArmorData();
         LoadEquipmentData();
+
+        //Check if TraitsData_(index) is empty, if it is empty then create a SO named Trait_1
+        if (traitSize[index] <= 0)
+        {
+            traitIndex = 0;
+            ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.ArmorTraitExplicitDataPath + (index + 1) + "/Trait_");
+        }
+
+        ClearNullScriptableObjects(); //Clear Trait SO without a value
         ListReset();
     }
     public void OnRender(Rect position)
@@ -107,7 +136,21 @@ public class ArmorTab : BaseTab
                 if (GUI.changed && index != indexTemp)
                 {
                     indexTemp = index;
+                    traitIndex = traitIndexTemp = 0;
+
                     ItemTabLoader(indexTemp);
+
+                    //Load TraitsData
+                    traits.Clear();
+                    LoadGameData<TraitsData>(ref traitSize[index], traits, PathDatabase.ArmorTraitRelativeDataPath + (index + 1));
+                    //Check if TraitsData folder is empty
+                    if (traitSize[index] <= 0)
+                    {
+                        ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.ArmorTraitExplicitDataPath + (index + 1) + "/Trait_");
+                        traitIndexTemp = 0;
+                    }
+                    ClearNullScriptableObjects();
+                    ListReset();
                     indexTemp = -1;
                 }
 
@@ -116,7 +159,34 @@ public class ArmorTab : BaseTab
                 if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
                 {
                     armorSize = armorSizeTemp;
+                    index = indexTemp = 0;
+                    FolderCreator(armorSize, "Assets/Resources/Data/ArmorData", "TraitData");
                     ChangeMaximum<ArmorData>(armorSize, armor, PathDatabase.ArmorTabExplicitDataPath);
+                    
+                    //New TraitSize array length
+                    int[] tempArr = new int[traitSize.Length];
+                    for (int i = 0; i < traitSize.Length; i++)
+                        tempArr[i] = traitSize[i];
+
+                    traitSize = new int[armorSize];
+
+                    #region FindSmallestBetween
+                        int smallestValue;
+                        if (tempArr.Length < armorSize) smallestValue = tempArr.Length;
+                        else smallestValue = armorSize;
+                    #endregion
+
+                    for (int i = 0; i < smallestValue; i++)
+                        traitSize[i] = tempArr[i];
+
+                    //Reload Data and Check SO
+                    LoadGameData<TraitsData>(ref traitSize[index], traits, PathDatabase.ArmorTraitRelativeDataPath + (index + 1));
+                    if (traitSize[index] <= 0)
+                    {
+                        ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.ArmorTraitExplicitDataPath + (index + 1) + "/Trait_");
+                    }
+
+                    ClearNullScriptableObjects();
                     ListReset();
                 }
 
@@ -337,32 +407,73 @@ public class ArmorTab : BaseTab
             #region Tab 3/3
             //Third Column
             GUILayout.BeginArea(new Rect(position.width - (position.width - firstTabWidth * 2) + 77, 0, firstTabWidth + 25, tabHeight - 15), columnStyle);
-
+            
                 //Traits
                 Rect traitsBox = new Rect(5, 5, firstTabWidth + 15, position.height * 5 / 8);
-                    #region Traits
-                    GUILayout.BeginArea(traitsBox, tabStyle);
-                        GUILayout.Space(2);
-                        GUILayout.Label("Traits", EditorStyles.boldLabel);
-                        GUILayout.Space(traitsBox.height / 30);
-                        #region Horizontal For Type And Content
-                        GUILayout.BeginHorizontal();
-                        GUILayout.Label("Type", GUILayout.Width(traitsBox.width * 3 / 8));
-                        GUILayout.Label("Content", GUILayout.Width(traitsBox.width * 5 / 8));
-                        GUILayout.EndHorizontal();
-                        #endregion
-                        #region ScrollView
+                #region Traits
+                ListReset();
+                GUILayout.BeginArea(traitsBox, tabStyle);
+                    GUILayout.Space(2);
+                    GUILayout.Label("Traits", EditorStyles.boldLabel);
+                    GUILayout.Space(5);
+                    #region Horizontal For Type And Content
+                    GUILayout.BeginHorizontal();
+                        GUILayout.Label(PadString("Type", string.Format("{0}", "  Content")), GUILayout.Width(traitsBox.width));
+                    GUILayout.EndHorizontal();
+                    #endregion
+                    #region ScrollView
                         traitsScrollPos = GUILayout.BeginScrollView(
-                            traitsScrollPos,
-                            false,
-                            true,
-                            GUILayout.Width(firstTabWidth + 5),
-                            GUILayout.Height(traitsBox.height * 0.87f)
+                            traitsScrollPos, 
+                            false, 
+                            true, 
+                            GUILayout.Width(firstTabWidth + 5), 
+                            GUILayout.Height(traitsBox.height * 0.83f)
                             );
-                        GUILayout.EndScrollView();
-                        #endregion
-                    GUILayout.EndArea();
-                    #endregion //End of TraitboxArea
+        
+                        GUI.changed = false;
+                        GUI.skin.button.alignment = TextAnchor.MiddleLeft;
+                        traitIndex = GUILayout.SelectionGrid(
+                            traitIndex,
+                            traitDisplayName.ToArray(),
+                            1,
+                            GUILayout.Width(firstTabWidth - 20),
+                            GUILayout.Height(position.height / 24 * traitSize[index]
+                            ));
+                        GUI.skin.button.alignment = TextAnchor.MiddleCenter;
+                    GUILayout.EndScrollView();
+                    #endregion
+        
+                    //Happen everytime selection grid is updated
+                    if (GUI.changed)
+                    {
+                        if (traitIndex != traitIndexTemp)
+                        {
+                            TraitWindow.ShowWindow(traits, traitIndex, traitSize[index], TabType.Armor);
+                            
+                            traitIndexTemp = traitIndex;
+                        }
+                    }
+
+                    //Create Empty SO if there isn't any null SO left
+                    if ((traits[traitSize[index] - 1].traitName != null && traits[traitSize[index] - 1].traitName != "") && traitSize[index] > 0)
+                    {
+                        traitIndex = 0;
+                        ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.ArmorTraitExplicitDataPath + (index + 1) + "/Trait_");
+                    }
+
+                    //Delete All Data Button
+                    if (GUILayout.Button("Delete All Data", GUILayout.Width(traitsBox.width * .3f), GUILayout.Height(traitsBox.height * .055f)))
+                    {
+                        if (EditorUtility.DisplayDialog("Delete All Trait Data", "Are you sure want to delete all Trait Data?", "Yes", "No"))
+                        {
+                            traitIndex = 0;
+                            traitSize[index] = 1;
+                            ChangeMaximum<TraitsData>(0, traits, PathDatabase.ArmorTraitExplicitDataPath + (index + 1) + "/Trait_");
+                            ChangeMaximum<TraitsData>(1, traits, PathDatabase.ArmorTraitExplicitDataPath + (index + 1) + "/Trait_");
+                        }
+                    }
+                GUILayout.EndArea();
+                #endregion //End of TraitboxArea
 
 
                 //Notes
@@ -433,6 +544,31 @@ public class ArmorTab : BaseTab
                     armorIcon = defTex;
                 else
                     armorIcon = TextureToSprite(armor[index].Icon);
+            }
+        }
+    }
+    private void ClearNullScriptableObjects()
+    {
+        bool availableNull = true;
+        while (availableNull)
+        {
+            availableNull = false;
+            for (int i = 0; i < traitSize[index] - 1; i++)
+            {
+                if (string.IsNullOrEmpty(traits[i].traitName))
+                {
+                    availableNull = true;
+                    for (int j = i; j < traitSize[index] - 1; j++)
+                    {
+                        traits[j].traitName = traits[j + 1].traitName;
+                        traits[j].selectedTabToggle = traits[j + 1].selectedTabToggle;
+                        traits[j].selectedTabIndex = traits[j + 1].selectedTabIndex;
+                        traits[j].selectedArrayIndex = traits[j + 1].selectedArrayIndex;
+                        traits[j].traitValue = traits[j + 1].traitValue;
+                    }
+                    ChangeMaximum<TraitsData>(--traitSize[index], traits, PathDatabase.ArmorTraitExplicitDataPath + (index + 1) + "/Trait_");
+                    i--;
+                }
             }
         }
     }

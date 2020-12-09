@@ -135,6 +135,10 @@ public class TraitWindow : EditorWindow
                 WeaponTab.traitIndex = 0;
                 WeaponTab.traitIndexTemp = -1;
                 break;
+            case TabType.Armor:
+                ArmorTab.traitIndex = 0;
+                ArmorTab.traitIndexTemp = -1;
+                break;
         }
     }
     private void OnGUI()
@@ -1091,6 +1095,17 @@ public class TraitWindow : EditorWindow
                 }
 
                 WeaponTab.traitSize[WeaponTab.index] = traitSize;
+                break;
+            case TabType.Armor:
+                ChangeMaximum<TraitsData>(--traitSize, traits, ExplicitDataPath + "/TraitData" + (ArmorTab.index + 1) + "/Trait_");
+
+                if (traitSize <= 0)
+                {
+                    ChangeMaximum<TraitsData>(1, traits, ExplicitDataPath + "/TraitData" + (ArmorTab.index + 1) + "/Trait_");
+                    traitSize = 1;
+                }
+
+                ArmorTab.traitSize[ArmorTab.index] = traitSize;
                 break;
         }
     }

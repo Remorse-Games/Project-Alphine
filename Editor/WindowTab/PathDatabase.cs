@@ -15,6 +15,9 @@ public static class PathDatabase
     public static string ArmorTabExplicitDataPath = "Assets/Resources/Data/ArmorData/Armor_";
     public static string ArmorTabRelativeDataPath = "Data/ArmorData";
 
+    public static string ArmorTraitExplicitDataPath = "Assets/Resources/Data/ArmorData/TraitData";
+    public static string ArmorTraitRelativeDataPath = "Data/ArmorData/TraitData";
+
     //ClassTab
     public static string ClassExplicitDataPath = "Assets/Resources/Data/ClassesData/Class_";
     public static string ClassRelativeDataPath = "Data/ClassesData";

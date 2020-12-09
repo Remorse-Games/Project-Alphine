@@ -19,6 +19,7 @@ public enum TabType
     Class,
     Skill,
     Item,
+    Armor,
     Weapon,
 };
 
