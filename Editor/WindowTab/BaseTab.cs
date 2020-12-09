@@ -13,6 +13,15 @@ using SFB;
  * 
  */
 
+public enum TabType
+{
+    Actor,
+    Class,
+    Skill,
+    Item,
+    Weapon,
+};
+
 public abstract class BaseTab
 {
     #region Features

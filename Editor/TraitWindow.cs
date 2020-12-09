@@ -131,6 +131,10 @@ public class TraitWindow : EditorWindow
                 ClassTab.traitIndex = 0;
                 ClassTab.traitIndexTemp = -1;
                 break;
+            case TabType.Weapon:
+                WeaponTab.traitIndex = 0;
+                WeaponTab.traitIndexTemp = -1;
+                break;
         }
     }
     private void OnGUI()
@@ -1065,17 +1069,29 @@ public class TraitWindow : EditorWindow
                 ActorTab.traitSize[ActorTab.index] = traitSize;
                 break;
 
-            /*case TabType.Class:
-                ChangeMaximum<TraitsData>(--effectSize, effects, ExplicitDataPath + "/EffectData" + (SkillsTab.index + 1) + "/Effect_");
+            case TabType.Class:
+                ChangeMaximum<TraitsData>(--traitSize, traits, ExplicitDataPath + "/TraitData" + (ClassTab.index + 1) + "/Trait_");
 
-                if (effectSize <= 0)
+                if (traitSize <= 0)
                 {
-                    ChangeMaximum<TraitsData>(1, effects, ExplicitDataPath + "/EffectData" + (SkillsTab.index + 1) + "/Effect_");
-                    effectSize = 1;
+                    ChangeMaximum<TraitsData>(1, traits, ExplicitDataPath + "/TraitData" + (ClassTab.index + 1) + "/Trait_");
+                    traitSize = 1;
                 }
 
-                ClassTab.[ClassTab.index] = traitSize;
-                break;*/
+                ClassTab.traitSize[ClassTab.index] = traitSize;
+                break;
+
+            case TabType.Weapon:
+                ChangeMaximum<TraitsData>(--traitSize, traits, ExplicitDataPath + "/TraitData" + (WeaponTab.index + 1) + "/Trait_");
+
+                if (traitSize <= 0)
+                {
+                    ChangeMaximum<TraitsData>(1, traits, ExplicitDataPath + "/TraitData" + (WeaponTab.index + 1) + "/Trait_");
+                    traitSize = 1;
+                }
+
+                WeaponTab.traitSize[WeaponTab.index] = traitSize;
+                break;
         }
     }
 
