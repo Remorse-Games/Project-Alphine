@@ -56,11 +56,7 @@ public class StateTab : BaseTab
 
     //How many state in ChangeMaximum Func
     public int stateSize;
-    public int stateSizeTemp;
-
-    //dataPath where the game data will be saved as a .assets
-    private string dataPath = "Assets/Resources/Data/StateData/State_";
-    private string _dataPath = "Data/StateData";
+    public int stateSizeTemp;    
 
     //i don't know about this but i leave this to handle later.
     int index = 0;
@@ -75,7 +71,7 @@ public class StateTab : BaseTab
 
     public void Init()
     {
-        LoadGameData<StateData>(ref stateSize, state, _dataPath);
+        LoadGameData<StateData>(ref stateSize, state, PathDatabase.StateRelativeDataPath);
         ListReset();
     }
     public void OnRender(Rect position)
@@ -147,7 +143,7 @@ public class StateTab : BaseTab
                 if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
                 {
                     stateSize = stateSizeTemp;
-                    ChangeMaximum<StateData>(stateSize, state, dataPath);
+                    ChangeMaximum<StateData>(stateSize, state, PathDatabase.StateExplicitDataPath);
                     ListReset();
                 }
 

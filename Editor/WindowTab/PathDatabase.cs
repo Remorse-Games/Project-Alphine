@@ -29,6 +29,9 @@ public static class PathDatabase
     public static string EnemyExplicitDataPath = "Assets/Resources/Data/EnemyData/Enemy_";
     public static string EnemyRelativeDataPath = "Data/EnemyData";
 
+    public static string EnemyTraitExplicitDataPath = "Assets/Resources/Data/EnemyData/TraitData";
+    public static string EnemyTraitRelativeDataPath = "Data/EnemyData/TraitData";
+
     //ItemTab
     public static string ItemExplicitDataPath = "Assets/Resources/Data/ItemData/Item_";
     public static string ItemRelativeDataPath = "Data/ItemData";
@@ -44,8 +47,11 @@ public static class PathDatabase
     public static string SkillTabRelativeDataPath = "Data/SkillData";
 
     public static string SkillEffectExplicitDataPath = "Assets/Resources/Data/SkillData/EffectData";
-    public static string SkillEffectRelativeDataPath = "Data/Skilldata/EffectData";
+    public static string SkillEffectRelativeDataPath = "Data/SkillData/EffectData";
 
+    //StateTab
+    public static string StateExplicitDataPath = "Assets/Resources/Data/StateData/State_";
+    public static string StateRelativeDataPath = "Data/StateData";
     //WeaponTab
     public static string WeaponTabExplicitDataPath = "Assets/Resources/Data/WeaponData/Weapon_";
     public static string WeaponTabRelativeDataPath = "Data/WeaponData";

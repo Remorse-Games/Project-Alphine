@@ -513,6 +513,12 @@ public class ArmorTab : BaseTab
         {
             armorDisplayName.Add(armor[i].armorName);
         }
+        //Trait Reset
+        traitDisplayName.Clear();
+        for (int i = 0; i < traitSize[index]; i++)
+        {
+            traitDisplayName.Add(traits[i].traitName);
+        }
     }
 
     private void LoadArmorData()

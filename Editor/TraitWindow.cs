@@ -15,6 +15,7 @@ public class TraitWindow : EditorWindow
     public string[] equipmentType;
     public string[] skillTabDisplayName;
     public string[] skillDisplayName;
+    public string[] stateDisplayName;
     public string[] weaponDisplayName;
     public string[] armorDisplayName;
     public string[] rateTabToggleList =
@@ -139,6 +140,10 @@ public class TraitWindow : EditorWindow
                 ArmorTab.traitIndex = 0;
                 ArmorTab.traitIndexTemp = -1;
                 break;
+            case TabType.Enemy:
+                EnemyTab.traitIndex = 0;
+                EnemyTab.traitIndexTemp = -1;
+                break;
         }
     }
     private void OnGUI()
@@ -161,6 +166,7 @@ public class TraitWindow : EditorWindow
         LoadSkillList();
         LoadWeaponList();
         LoadSkillTabList();
+        LoadStateList();
 
         #region PrimaryTab
         Rect primaryBox = new Rect(0, 0, 500, 190);
@@ -335,7 +341,7 @@ public class TraitWindow : EditorWindow
             GUILayout.BeginVertical();
                 GUILayout.BeginHorizontal();
                     GUILayout.Label(" ");
-                    traits[traitIndex].selectedArrayIndex = EditorGUILayout.Popup(traits[traitIndex].selectedArrayIndex, CharacterDevelopmentData.stateNames, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                    traits[traitIndex].selectedArrayIndex = EditorGUILayout.Popup(traits[traitIndex].selectedArrayIndex, stateDisplayName, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
                     GUILayout.Space(widthSpace);
                 GUILayout.EndHorizontal();
                 GUILayout.BeginHorizontal();
@@ -356,7 +362,7 @@ public class TraitWindow : EditorWindow
                 GUILayout.BeginHorizontal();
                     GUILayout.Label(" ");
                     traits[traitIndex].traitValue = -1;
-                    traits[traitIndex].selectedArrayIndex = EditorGUILayout.Popup(traits[traitIndex].selectedArrayIndex, CharacterDevelopmentData.stateNames, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                    traits[traitIndex].selectedArrayIndex = EditorGUILayout.Popup(traits[traitIndex].selectedArrayIndex, stateDisplayName, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
                     GUILayout.Space(widthSpace);
                 GUILayout.EndHorizontal();
                 GUILayout.Space(5);
@@ -481,7 +487,7 @@ public class TraitWindow : EditorWindow
             GUILayout.BeginVertical();
                 GUILayout.BeginHorizontal();
                     GUILayout.Label(" ");
-                    traits[traitIndex].selectedArrayIndex = EditorGUILayout.Popup(traits[traitIndex].selectedArrayIndex, CharacterDevelopmentData.stateNames, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                    traits[traitIndex].selectedArrayIndex = EditorGUILayout.Popup(traits[traitIndex].selectedArrayIndex, stateDisplayName, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
                     GUILayout.Space(widthSpace);
                 GUILayout.EndHorizontal();
                 GUILayout.BeginHorizontal();
@@ -834,6 +840,15 @@ public class TraitWindow : EditorWindow
             armorDisplayName[i] = armorData[i].dataName;
         }
     }
+    private void LoadStateList()
+    {
+        StateData[] stateData = Resources.LoadAll<StateData>(PathDatabase.StateRelativeDataPath);
+        stateDisplayName = new string[stateData.Length];
+        for (int i = 0; i < stateDisplayName.Length; i++)
+        {
+            stateDisplayName[i] = stateData[i].stateName;
+        }
+    }
     private void LoadEquipmentList()
     {
         TypeEquipmentData[] equipmentData = Resources.LoadAll<TypeEquipmentData>(PathDatabase.EquipmentRelativeDataPath);
@@ -873,11 +888,11 @@ public class TraitWindow : EditorWindow
                         outputString = PadString(rateTabToggleList[selectedToggleIndex], val);
                         break;
                     case 2:
-                        val = string.Format("{0} * {1}%", CharacterDevelopmentData.stateNames[selectedArrayIndex], value);
+                        val = string.Format("{0} * {1}%", stateDisplayName[selectedArrayIndex], value);
                         outputString = PadString(rateTabToggleList[selectedToggleIndex], val);
                         break;
                     default:
-                        val = string.Format("{0}", CharacterDevelopmentData.stateNames[selectedArrayIndex]);
+                        val = string.Format("{0}", stateDisplayName[selectedArrayIndex]);
                         outputString = PadString(rateTabToggleList[selectedToggleIndex], val);
                         break;
                 }
@@ -907,7 +922,7 @@ public class TraitWindow : EditorWindow
                         outputString = PadString(attackTabToggleList[selectedToggleIndex], val);
                         break;
                     case 1:
-                        val = string.Format("{0} + {1}%", CharacterDevelopmentData.stateNames[selectedArrayIndex], value);
+                        val = string.Format("{0} + {1}%", stateDisplayName[selectedArrayIndex], value);
                         outputString = PadString(attackTabToggleList[selectedToggleIndex], val);
                         break;
                     default:
@@ -1106,6 +1121,17 @@ public class TraitWindow : EditorWindow
                 }
 
                 ArmorTab.traitSize[ArmorTab.index] = traitSize;
+                break;
+            case TabType.Enemy:
+                ChangeMaximum<TraitsData>(--traitSize, traits, ExplicitDataPath + "/TraitData" + (EnemyTab.index + 1) + "/Trait_");
+
+                if (traitSize <= 0)
+                {
+                    ChangeMaximum<TraitsData>(1, traits, ExplicitDataPath + "/TraitData" + (EnemyTab.index + 1) + "/Trait_");
+                    traitSize = 1;
+                }
+
+                EnemyTab.traitSize[EnemyTab.index] = traitSize;
                 break;
         }
     }
