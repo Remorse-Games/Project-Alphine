@@ -3,6 +3,8 @@ using UnityEngine;
 using UnityEditor;
 using System.IO;
 using SFB;
+using System.Linq;
+
 public class TroopTab : BaseTab
 {
 
@@ -16,16 +18,7 @@ public class TroopTab : BaseTab
     List<string> troopDisplayName = new List<string>();
 
     //Unique List
-    List<string> troopAvailableList = new List<string>
-    (
-        new string[]
-        {
-            "Bat",
-            "Slime",
-            "Orc",
-            "Minotaur",
-        }
-    );
+    List<string> troopAvailableList = new List<string>();
 
     //All GUIStyle variable initialization.
     GUIStyle tabStyle;
@@ -53,6 +46,8 @@ public class TroopTab : BaseTab
 
     public void Init()
     {
+        LoadEnemyList();
+
         LoadGameData<TroopData>(ref troopSize, troop, _dataPath);
         ListReset();
     }
@@ -253,6 +248,14 @@ public class TroopTab : BaseTab
 
             }
         }
+    }
+
+    private void LoadEnemyList()
+    {
+        troopAvailableList.Clear();
+
+        EnemyData[] enemyData = Resources.LoadAll<EnemyData>(PathDatabase.EnemyRelativeDataPath);
+        troopAvailableList = enemyData.Select(x => x.enemyName).ToList();
     }
 
     #endregion
