@@ -57,7 +57,7 @@ public class ClassTab : BaseTab
         LoadGameData<ClassesData>(ref classSize, classes, PathDatabase.ClassRelativeDataPath);
         
         traitSize = new int[classSize]; //Resets Trait Sizing
-        LoadGameData<TraitsData>(ref traitSize[index], traits, PathDatabase.ActorTraitRelativeDataPath + (index + 1));
+        LoadGameData<TraitsData>(ref traitSize[index], traits, PathDatabase.ClassTraitRelativeDataPath + (index + 1));
 
         //Create Folder For SkillData and its sum is based on classSize value
         FolderCreator(classSize, "Assets/Resources/Data/ClassesData", "SkillToLearnData");
@@ -77,7 +77,7 @@ public class ClassTab : BaseTab
         if (traitSize[index] <= 0)
         {
             traitIndex = 0;
-            ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");
+            ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.ClassTraitExplicitDataPath + (index + 1) + "/Trait_");
         }
         ClearNullScriptableObjects(); //Clear Trait SO without a value
         ListReset();
@@ -167,7 +167,7 @@ public class ClassTab : BaseTab
                     skillIndex = 0;
 
                     FolderCreator(classSize, "Assets/Resources/Data/ClassesData", "SkillToLearnData");
-                    FolderCreator(classSize, "Assets/Resources/Data/ActorData", "TraitData");
+                    FolderCreator(classSize, "Assets/Resources/Data/ClassesData", "TraitData");
                     ChangeMaximum<ClassesData>(classSize, classes, PathDatabase.ClassExplicitDataPath);
                     
                     //New SkillSize array length
@@ -561,7 +561,7 @@ public class ClassTab : BaseTab
                     {
                         if (traitIndex != traitIndexTemp)
                         {
-                            TraitWindow.ShowWindow(traits, traitIndex, traitSize[index], TabType.Actor);
+                            TraitWindow.ShowWindow(traits, traitIndex, traitSize[index], TabType.Class);
                             
                             traitIndexTemp = traitIndex;
                         }
@@ -571,7 +571,7 @@ public class ClassTab : BaseTab
                     if ((traits[traitSize[index] - 1].traitName != null && traits[traitSize[index] - 1].traitName != "") && traitSize[index] > 0)
                     {
                         traitIndex = 0;
-                        ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");
+                        ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.ClassTraitExplicitDataPath + (index + 1) + "/Trait_");
                     }
 
                     //Delete All Data Button
@@ -581,8 +581,8 @@ public class ClassTab : BaseTab
                         {
                             traitIndex = 0;
                             traitSize[index] = 1;
-                            ChangeMaximum<TraitsData>(0, traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");
-                            ChangeMaximum<TraitsData>(1, traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");
+                            ChangeMaximum<TraitsData>(0, traits, PathDatabase.ClassTraitExplicitDataPath + (index + 1) + "/Trait_");
+                            ChangeMaximum<TraitsData>(1, traits, PathDatabase.ClassTraitExplicitDataPath + (index + 1) + "/Trait_");
                         }
                     }
                 GUILayout.EndArea();

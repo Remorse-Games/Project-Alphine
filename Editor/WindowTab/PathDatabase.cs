@@ -23,7 +23,7 @@ public static class PathDatabase
     public static string ClassRelativeDataPath = "Data/ClassesData";
 
     public static string ClassTraitExplicitDataPath = "Assets/Resources/Data/ClassesData/TraitData";
-    public static string ClassTraitRelativeDataPath = "Data/ActorData/TraitData";
+    public static string ClassTraitRelativeDataPath = "Data/ClassesData/TraitData";
 
     //EnemyTab
     public static string EnemyExplicitDataPath = "Assets/Resources/Data/EnemyData/Enemy_";
