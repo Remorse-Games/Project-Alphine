@@ -9,34 +9,21 @@ public class WeaponTab : BaseTab
 {
     //Having list of all weapons exist in data.
     public List<WeaponData> weapon = new List<WeaponData>();
+    public List<TraitsData> traits = new List<TraitsData>();
 
     //List of names. Why you ask? because selectionGrid require
     //array of string, which we cannot obtain in weaponData.
     //I hope later got better solution about this to not do
     //a double List for this kind of thing.
     List<string> weaponDisplayName = new List<string>();
+    List<string> traitDisplayName = new List<string>();
 
     //All GUIStyle variable initialization.
     GUIStyle tabStyle;
     GUIStyle columnStyle;
     GUIStyle weaponStyle;
 
-    public string[] weaponTypeList =
-    {
-        "None",
-        "Dagger",
-        "Sword",
-        "Flail",
-        "Axe",
-        "Whip",
-        "Cane",
-        "Bow",
-        "Crossbow",
-        "Gun",
-        "Claw",
-        "Glove",
-        "Spear",
-    };
+    public string[] weaponTypeList;
 
     public string[] weaponAnimationList =
     {
@@ -49,10 +36,13 @@ public class WeaponTab : BaseTab
     //How many weapon in ChangeMaximum Func
     public int weaponSize;
     public int weaponSizeTemp;
+    public static int[] traitSize;
 
     //i don't know about this but i leave this to handle later.
-    int index = 0;
+    public static int index = 0;
     int indexTemp = -1;
+    public static int traitIndex = 0;
+    public static int traitIndexTemp = -1;
 
     //Scroll position. Is this necessary?
     Vector2 scrollPos = Vector2.zero;
@@ -64,7 +54,32 @@ public class WeaponTab : BaseTab
 
     public void Init()
     {
+        //Clears List
+        weapon.Clear();
+        traits.Clear();
+
+        //Resetting each index to 0, so that it won't have error (Index Out Of Range)
+        index = 0;
+        traitIndex = 0;
+
+        //Getting Actual weaponSize
         LoadGameData<WeaponData>(ref weaponSize, weapon, PathDatabase.WeaponTabRelativeDataPath);
+
+        traitSize = new int[weaponSize]; //Resets Trait Sizing
+        LoadGameData<TraitsData>(ref traitSize[index], traits, PathDatabase.WeaponTraitRelativeDataPath + (index + 1));
+
+        //Create Folder For TraitData and its sum is based on weaponSize value
+        FolderCreator(weaponSize, "Assets/Resources/Data/WeaponData", "TraitData");
+
+        //Check if TraitData_(index) is empty, if it is empty then create a SO named Trait_1
+        if (traitSize[index] <= 0)
+        {
+            traitIndex = 0;
+            ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.WeaponTraitExplicitDataPath + (index + 1) + "/Trait_");
+        }
+
+        LoadWeaponList();
+        ClearNullScriptableObjects();
         ListReset();
     }
 
@@ -127,7 +142,23 @@ public class WeaponTab : BaseTab
                 if (GUI.changed && index != indexTemp)
                 {
                     indexTemp = index;
-                    ItemTabLoader(indexTemp);
+                    traitIndex = traitIndexTemp = 0;
+                    
+                    //Load TraitsData
+                    traits.Clear();
+                    LoadGameData<TraitsData>(ref traitSize[index], traits, PathDatabase.WeaponTraitRelativeDataPath + (index + 1));
+                    
+                    //Check if TraitsData folder is empty
+                    if (traitSize[index] <= 0)
+                    {
+                        ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.WeaponTraitExplicitDataPath + (index + 1) + "/Trait_");
+                        traitIndexTemp = 0;
+                    }
+                    ClearNullScriptableObjects();
+
+                    ListReset();
+
+                    ItemTabLoader(index);
                     indexTemp = -1;
                 }
 
@@ -136,7 +167,34 @@ public class WeaponTab : BaseTab
                 if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
                 {
                     weaponSize = weaponSizeTemp;
+                    index = indexTemp = 0;
+                    FolderCreator(weaponSize, "Assets/Resources/Data/WeapomData", "TraitData");
                     ChangeMaximum<WeaponData>(weaponSize, weapon, PathDatabase.WeaponTabExplicitDataPath);
+                    
+                    //New TraitSize array length
+                    int[] tempArr = new int[traitSize.Length];
+                    for (int i = 0; i < traitSize.Length; i++)
+                        tempArr[i] = traitSize[i];
+
+                    traitSize = new int[weaponSize];
+
+                    #region FindSmallestBetween
+                        int smallestValue;
+                        if (tempArr.Length < weaponSize) smallestValue = tempArr.Length;
+                        else smallestValue = weaponSize;
+                    #endregion
+
+                    for (int i = 0; i < smallestValue; i++)
+                        traitSize[i] = tempArr[i];
+
+                    //Reload Data and Check SO
+                    LoadGameData<TraitsData>(ref traitSize[index], traits, PathDatabase.WeaponTraitRelativeDataPath + (index + 1));
+                    if (traitSize[index] <= 0)
+                    {
+                        ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.WeaponTraitExplicitDataPath + (index + 1) + "/Trait_");
+                    }
+
+                    ClearNullScriptableObjects();
                     ListReset();
                 }
 
@@ -237,23 +295,10 @@ public class WeaponTab : BaseTab
                                 
                                 GUILayout.Space(generalBox.width / 4 - 2);
                             GUILayout.EndHorizontal();
-                            #endregion
+                            #endregion  
 
-                            #region Animation
-                            GUILayout.BeginHorizontal();
-                                GUILayout.BeginVertical();
-                                    GUILayout.Label("Animation:"); // Animation class label
-                                    if (weaponSize > 0)
-                                    {
-                                        weapon[index].selectedweaponAnimationIndex = EditorGUILayout.Popup(weapon[index].selectedweaponAnimationIndex, weaponAnimationList, GUILayout.Height(generalBox.height / 8 - 15), GUILayout.Width(generalBox.width / 2 - 15));
-                                    }
-                                    else
-                                    {
-                                        EditorGUILayout.Popup(0, weaponAnimationList, GUILayout.Height(generalBox.height / 8 - 15), GUILayout.Width(generalBox.width / 2 - 15));
-                                    }
-                                GUILayout.EndVertical();
-                            GUILayout.EndHorizontal();
-                            #endregion
+                            GUILayout.Space(12);
+                            DrawUILine(Color.black, 7, 2);
 
                         GUILayout.EndVertical();
                         #endregion
@@ -354,33 +399,73 @@ public class WeaponTab : BaseTab
             #region Tab 3/3
             //Third Column
             GUILayout.BeginArea(new Rect(position.width - (position.width - firstTabWidth * 2) + 77, 0, firstTabWidth + 25, tabHeight - 15), columnStyle);
-
+            
                 //Traits
                 Rect traitsBox = new Rect(5, 5, firstTabWidth + 15, position.height * 5 / 8);
-                    #region Traits
-                    GUILayout.BeginArea(traitsBox, tabStyle);
-                        GUILayout.Space(2);
-                        GUILayout.Label("Traits", EditorStyles.boldLabel);
-                        GUILayout.Space(traitsBox.height / 30);
-                        #region Horizontal For Type And Content
-                        GUILayout.BeginHorizontal();
-                            GUILayout.Label("Type", GUILayout.Width(traitsBox.width * 3 / 8));
-                            GUILayout.Label("Content", GUILayout.Width(traitsBox.width * 5 / 8));
-                        GUILayout.EndHorizontal();
-                        #endregion
-                        #region ScrollView
+                #region Traits
+                ListReset();
+                GUILayout.BeginArea(traitsBox, tabStyle);
+                    GUILayout.Space(2);
+                    GUILayout.Label("Traits", EditorStyles.boldLabel);
+                    GUILayout.Space(5);
+                    #region Horizontal For Type And Content
+                    GUILayout.BeginHorizontal();
+                        GUILayout.Label(PadString("Type", string.Format("{0}", "  Content")), GUILayout.Width(traitsBox.width));
+                    GUILayout.EndHorizontal();
+                    #endregion
+                    #region ScrollView
                         traitsScrollPos = GUILayout.BeginScrollView(
-                            traitsScrollPos,
-                            false,
-                            true,
-                            GUILayout.Width(firstTabWidth + 5),
-                            GUILayout.Height(traitsBox.height * 0.87f)
+                            traitsScrollPos, 
+                            false, 
+                            true, 
+                            GUILayout.Width(firstTabWidth + 5), 
+                            GUILayout.Height(traitsBox.height * 0.83f)
                             );
-                        GUILayout.EndScrollView();
-                        #endregion
-                    GUILayout.EndArea();
-                    #endregion //End of TraitboxArea
+        
+                        GUI.changed = false;
+                        GUI.skin.button.alignment = TextAnchor.MiddleLeft;
+                        traitIndex = GUILayout.SelectionGrid(
+                            traitIndex,
+                            traitDisplayName.ToArray(),
+                            1,
+                            GUILayout.Width(firstTabWidth - 20),
+                            GUILayout.Height(position.height / 24 * traitSize[index]
+                            ));
+                        GUI.skin.button.alignment = TextAnchor.MiddleCenter;
+                    GUILayout.EndScrollView();
+                    #endregion
+        
+                    //Happen everytime selection grid is updated
+                    if (GUI.changed)
+                    {
+                        if (traitIndex != traitIndexTemp)
+                        {
+                            TraitWindow.ShowWindow(traits, traitIndex, traitSize[index], TabType.Weapon);
+                            
+                            traitIndexTemp = traitIndex;
+                        }
+                    }
 
+                    //Create Empty SO if there isn't any null SO left
+                    if ((traits[traitSize[index] - 1].traitName != null && traits[traitSize[index] - 1].traitName != "") && traitSize[index] > 0)
+                    {
+                        traitIndex = 0;
+                        ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.WeaponTraitExplicitDataPath + (index + 1) + "/Trait_");
+                    }
+
+                    //Delete All Data Button
+                    if (GUILayout.Button("Delete All Data", GUILayout.Width(traitsBox.width * .3f), GUILayout.Height(traitsBox.height * .055f)))
+                    {
+                        if (EditorUtility.DisplayDialog("Delete All Trait Data", "Are you sure want to delete all Trait Data?", "Yes", "No"))
+                        {
+                            traitIndex = 0;
+                            traitSize[index] = 1;
+                            ChangeMaximum<TraitsData>(0, traits, PathDatabase.WeaponTraitExplicitDataPath + (index + 1) + "/Trait_");
+                            ChangeMaximum<TraitsData>(1, traits, PathDatabase.WeaponTraitExplicitDataPath + (index + 1) + "/Trait_");
+                        }
+                    }
+                GUILayout.EndArea();
+                #endregion //End of TraitboxArea
 
                 //Notes
                 Rect notesBox = new Rect(5, traitsBox.height + 15, firstTabWidth + 15, position.height * 2.5f / 8);
@@ -423,8 +508,23 @@ public class WeaponTab : BaseTab
         {
             weaponDisplayName.Add(weapon[i].weaponName);
         }
+        //Trait Reset
+        traitDisplayName.Clear();
+        for (int i = 0; i < traitSize[index]; i++)
+        {
+            traitDisplayName.Add(traits[i].traitName);
+        }
     }
-   
+
+    private void LoadWeaponList()
+    {
+        TypeWeaponData[] weaponData = Resources.LoadAll<TypeWeaponData>(PathDatabase.WeaponRelativeDataPath);
+        weaponTypeList = new string[weaponData.Length];
+        for (int i = 0; i < weaponTypeList.Length; i++)
+        {
+            weaponTypeList[i] = weaponData[i].dataName;
+        }
+    }
     public override void ItemTabLoader(int index)
     {
         Texture2D defTex = new Texture2D(256, 256);
@@ -436,6 +536,32 @@ public class WeaponTab : BaseTab
                     weaponIcon = defTex;
                 else
                     weaponIcon = TextureToSprite(weapon[index].Icon);
+            }
+        }
+    }
+
+    private void ClearNullScriptableObjects()
+    {
+        bool availableNull = true;
+        while (availableNull)
+        {
+            availableNull = false;
+            for (int i = 0; i < traitSize[index] - 1; i++)
+            {
+                if (string.IsNullOrEmpty(traits[i].traitName))
+                {
+                    availableNull = true;
+                    for (int j = i; j < traitSize[index] - 1; j++)
+                    {
+                        traits[j].traitName = traits[j + 1].traitName;
+                        traits[j].selectedTabToggle = traits[j + 1].selectedTabToggle;
+                        traits[j].selectedTabIndex = traits[j + 1].selectedTabIndex;
+                        traits[j].selectedArrayIndex = traits[j + 1].selectedArrayIndex;
+                        traits[j].traitValue = traits[j + 1].traitValue;
+                    }
+                    ChangeMaximum<TraitsData>(--traitSize[index], traits, PathDatabase.WeaponTraitExplicitDataPath + (index + 1) + "/Trait_");
+                    i--;
+                }
             }
         }
     }

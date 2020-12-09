@@ -8,13 +8,6 @@ using System.IO;
 using SFB;
 using System.Linq;
 
-public enum TabType
-{
-    Actor,
-    Class,
-    Skill,
-    Item
-};
 
 public class EffectWindow : EditorWindow
 {
