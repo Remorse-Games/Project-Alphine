@@ -27,8 +27,8 @@ public class ClassTab : BaseTab
     public static int index = 0;
     int indexTemp = -1;
 
-    int skillIndex = 0;
-    int skillIndexTemp = -1;
+    public static int skillIndex = 0;
+    public static int skillIndexTemp = -1;
 
     public static int traitIndex = 0;
     public static int traitIndexTemp = -1;

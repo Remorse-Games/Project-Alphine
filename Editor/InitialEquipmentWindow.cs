@@ -38,6 +38,11 @@ public class InitialEquipmentWindow : EditorWindow
         this.Focus();
     }
 
+    private void OnDestroy()
+    {
+        ActorTab.typeIndex = 0;
+        ActorTab.typeIndexTemp = -1;
+    }
     private void OnGUI()
     {
         BaseValue(i++);

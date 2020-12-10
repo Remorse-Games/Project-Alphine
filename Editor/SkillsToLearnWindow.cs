@@ -45,7 +45,11 @@ public class SkillsToLearnWindow : EditorWindow
         window.position = position;
         window.Show();
     }
-
+    private void OnDestroy()
+    {
+        ClassTab.skillIndex = 0;
+        ClassTab.skillIndexTemp = -1;
+    }
     private void OnGUI()
     {
         LoadSkillTabList();

@@ -44,8 +44,8 @@ public class ActorTab : BaseTab
     public static int traitIndex = 0;
     int indexTemp = -1;
     public static int traitIndexTemp = -1;
-    int typeIndex = 0;
-    int typeIndexTemp = -1;
+    public static int typeIndex = 0;
+    public static int typeIndexTemp = -1;
 
     //Scroll position. Is this necessary?
     Vector2 scrollPos = Vector2.zero;
