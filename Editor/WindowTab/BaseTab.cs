@@ -16,7 +16,7 @@ using SFB;
 public enum TabType
 {
     Actor,
-    Class,
+    Classes,
     Skill,
     Item,
     Armor,

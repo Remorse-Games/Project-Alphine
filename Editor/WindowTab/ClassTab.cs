@@ -129,10 +129,8 @@ public class ClassTab : BaseTab
                 if (GUI.changed && index != indexTemp)
                 {
                     indexTemp = index;
-                    traitIndex = 0;
-                    traitIndexTemp = -1;
-                    skillIndex = 0;
-                    skillIndexTemp = -1;
+                    traitIndex = traitIndexTemp = 0;
+                    skillIndex = skillIndexTemp = 0;
                     
                     //Load SkillToLearnData
                     skillToLearn.Clear();
@@ -164,7 +162,6 @@ public class ClassTab : BaseTab
                 {
                     classSize = classSizeTemp;
                     index = indexTemp = 0;
-                    skillIndex = 0;
 
                     FolderCreator(classSize, "Assets/Resources/Data/ClassesData", "SkillToLearnData");
                     FolderCreator(classSize, "Assets/Resources/Data/ClassesData", "TraitData");
@@ -561,7 +558,7 @@ public class ClassTab : BaseTab
                     {
                         if (traitIndex != traitIndexTemp)
                         {
-                            TraitWindow.ShowWindow(traits, traitIndex, traitSize[index], TabType.Class);
+                            TraitWindow.ShowWindow(traits, traitIndex, traitSize[index], TabType.Classes);
                             
                             traitIndexTemp = traitIndex;
                         }

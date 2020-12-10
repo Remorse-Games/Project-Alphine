@@ -128,7 +128,7 @@ public class TraitWindow : EditorWindow
                 ActorTab.traitIndex = 0;
                 ActorTab.traitIndexTemp = -1;
                 break;
-            case TabType.Class:
+            case TabType.Classes:
                 ClassTab.traitIndex = 0;
                 ClassTab.traitIndexTemp = -1;
                 break;
@@ -1088,7 +1088,7 @@ public class TraitWindow : EditorWindow
                 ActorTab.traitSize[ActorTab.index] = traitSize;
                 break;
 
-            case TabType.Class:
+            case TabType.Classes:
                 ChangeMaximum<TraitsData>(--traitSize, traits, ExplicitDataPath + "/TraitData" + (ClassTab.index + 1) + "/Trait_");
 
                 if (traitSize <= 0)
