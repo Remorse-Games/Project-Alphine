@@ -46,11 +46,14 @@ public class TroopTab : BaseTab
 
     public void Init()
     {
+        troop.Clear();
+
         LoadEnemyList();
 
         LoadGameData<TroopData>(ref troopSize, troop, _dataPath);
         ListReset();
     }
+
     public void OnRender(Rect position)
     {
         #region A Bit Explanation About Local Tab
@@ -118,6 +121,12 @@ public class TroopTab : BaseTab
                 troopSizeTemp = EditorGUILayout.IntField(troopSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
                 if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
                 {
+                    if(troopSizeTemp < troopSize)
+                    {
+                        index = troopSizeTemp - 1;
+                        GUI.changed = true;
+                    }
+
                     troopSize = troopSizeTemp;
                     ChangeMaximum<TroopData>(troopSize, troop, dataPath);
                     ListReset();
@@ -137,19 +146,19 @@ public class TroopTab : BaseTab
                             GUILayout.Label("Name:");
                             if (troopSize > 0)
                             {
-                                troop[index].troopName = GUILayout.TextField(troop[index].troopName, GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 8));
+                                troop[index].troopName = GUILayout.TextField(troop[index].troopName, GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 12));
                                 troopDisplayName[index] = troop[index].troopName;
                             }
                             else
                             {
-                                GUILayout.TextField("Null", GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 8));
+                                GUILayout.TextField("Null", GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 12));
                             }
                         GUILayout.EndVertical();
 
                         GUILayout.BeginHorizontal();
                             GUILayout.BeginVertical();
 
-                                GUILayout.BeginArea(new Rect(5, 45+generalBox.height/8, 25 + (firstTabWidth * .4f), generalBox.height * .725f), troopStyle);
+                                GUILayout.BeginArea(new Rect(5, 45+generalBox.height/9, 25 + (firstTabWidth * .4f), generalBox.height * .725f), troopStyle);
                                 #region ScrollView
                                 scrollAddedListPos = GUILayout.BeginScrollView(scrollAddedListPos, false, true, GUILayout.Width(20 + (firstTabWidth * .4f)), GUILayout.Height(generalBox.height * .725f));
                                 troop[index].indexAddedList = GUILayout.SelectionGrid(troop[index].indexAddedList, troop[index].troopAddedList.ToArray(), 1, GUILayout.Width(firstTabWidth * .4f), GUILayout.Height(generalBox.height * .72f / 10 * troop[index].troopAddedList.Count));
@@ -182,7 +191,7 @@ public class TroopTab : BaseTab
                                 }
                             GUILayout.EndVertical();
 
-                            GUILayout.BeginArea(new Rect(generalBox.width - (30 + (firstTabWidth * .4f)), 45 + generalBox.height / 8, 25 + (firstTabWidth * .4f), generalBox.height * .725f), troopStyle);
+                            GUILayout.BeginArea(new Rect(generalBox.width - (30 + (firstTabWidth * .4f)), 45 + generalBox.height / 9, 25 + (firstTabWidth * .4f), generalBox.height * .725f), troopStyle);
                                 #region ScrollView
                                 scrollAvailableTroopListPos = GUILayout.BeginScrollView(scrollAvailableTroopListPos, false, true, GUILayout.Width(20 + (firstTabWidth * .4f)), GUILayout.Height(generalBox.height * .725f));
                                 troop[index].indexAvailableList = GUILayout.SelectionGrid(troop[index].indexAvailableList, troopAvailableList.ToArray(), 1, GUILayout.Width(firstTabWidth * .4f), GUILayout.Height(generalBox.height * .72f / 10 * troopAvailableList.Count));
