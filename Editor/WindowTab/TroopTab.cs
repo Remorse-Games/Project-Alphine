@@ -20,6 +20,26 @@ public class TroopTab : BaseTab
     //Unique List
     List<string> troopAvailableList = new List<string>();
 
+    //page index string list
+    List<string> pageIndexList = new List<string>()
+    {
+        "1",
+        "2",
+        "3"
+    };
+
+    List<string> spanList = new List<string>()
+    {
+        "Battle",
+        "Turn",
+        "Moment"
+    };
+
+    List<string> eventCommandList = new List<string>()
+    {
+        "- "
+    };
+
     //All GUIStyle variable initialization.
     GUIStyle tabStyle;
     GUIStyle columnStyle;
@@ -28,18 +48,20 @@ public class TroopTab : BaseTab
     //How many troop in ChangeMaximum Func
     public int troopSize;
 
-    //dataPath where the game data will be saved as a .assets
-    private string dataPath = "Assets/Resources/Data/TroopData/Troop_";
-    private string _dataPath = "Data/TroopData";
-
     //i don't know about this but i leave this to handle later.
     int index = 0;
     int indexTemp = -1;
+
+    int pageIndex = 0;
+    int spanIndex = 0;
+    int eventCommandIndex = -1;
 
     //Scroll position. Is this necessary?
     Vector2 scrollPos = Vector2.zero;
     Vector2 scrollAddedListPos = Vector2.zero;
     Vector2 scrollAvailableTroopListPos = Vector2.zero;
+    Vector2 scrollPageIndex = Vector2.zero;
+    Vector2 scrollPage = Vector2.zero;
 
     Texture2D background;
     public int troopSizeTemp;
@@ -50,7 +72,7 @@ public class TroopTab : BaseTab
 
         LoadEnemyList();
 
-        LoadGameData<TroopData>(ref troopSize, troop, _dataPath);
+        LoadGameData<TroopData>(ref troopSize, troop, PathDatabase.TroopRelativeDataPath);
         ListReset();
     }
 
@@ -128,7 +150,7 @@ public class TroopTab : BaseTab
                     }
 
                     troopSize = troopSizeTemp;
-                    ChangeMaximum<TroopData>(troopSize, troop, dataPath);
+                    ChangeMaximum<TroopData>(troopSize, troop, PathDatabase.TroopExplicitDataPath);
                     ListReset();
                 }
 
@@ -177,10 +199,18 @@ public class TroopTab : BaseTab
                             GUILayout.EndVertical();
                             GUILayout.BeginVertical();
                                 GUILayout.Space(generalBox.height * .20f);
+                                
+                                EditorGUI.BeginDisabledGroup(troopAvailableList.Count <= 0);
+            
                                 if(GUILayout.Button("< Add",GUILayout.Width(firstTabWidth * .4f),GUILayout.Height(position.height * .3f / 8)))
                                 {
                                     troop[index].troopAddedList.Add(troopAvailableList[troop[index].indexAvailableList]);
                                 }
+
+                                EditorGUI.EndDisabledGroup();
+
+                                EditorGUI.BeginDisabledGroup(troop[index].troopAddedList.Count <= 0);
+
                                 if (GUILayout.Button("Remove >", GUILayout.Width(firstTabWidth * .4f), GUILayout.Height(position.height * .3f / 8)))
                                 {
                                     troop[index].troopAddedList.RemoveAt(troop[index].indexAddedList);
@@ -189,6 +219,9 @@ public class TroopTab : BaseTab
                                 {
                                     troop[index].troopAddedList.Clear();
                                 }
+                                
+                                EditorGUI.EndDisabledGroup();
+
                             GUILayout.EndVertical();
 
                             GUILayout.BeginArea(new Rect(generalBox.width - (30 + (firstTabWidth * .4f)), 45 + generalBox.height / 9, 25 + (firstTabWidth * .4f), generalBox.height * .725f), troopStyle);
@@ -213,8 +246,152 @@ public class TroopTab : BaseTab
                 Rect battleEvent = new Rect(5, generalBox.height + 10, tabWidth - firstTabWidth - 25, position.height - generalBox.height - 50);
                     #region BattleEvent
                     GUILayout.BeginArea(battleEvent, tabStyle);
-                    GUILayout.Label("Battle Event", EditorStyles.boldLabel);
+                        GUILayout.Label("Battle Event", EditorStyles.boldLabel);
 
+                        GUILayout.Space(10);
+
+                        GUILayout.BeginHorizontal();
+
+                            #region Buttons
+
+                                GUILayout.BeginVertical(GUILayout.Width(100));
+                                    GUILayout.Space(40);
+
+                                    GUIStyle button = new GUIStyle(GUI.skin.button);
+                                    button.margin = new RectOffset(20, 20, 5, 5);
+
+                                    if (GUILayout.Button("New Event Page", button, GUILayout.Height(50)))
+                                    {
+        
+                                    }
+
+                                    if (GUILayout.Button("Copy Event Page", button, GUILayout.Height(50)))
+                                    {
+
+                                    }
+
+                                    EditorGUI.BeginDisabledGroup(true);
+
+                                    if (GUILayout.Button("Paste Event Page", button, GUILayout.Height(50)))
+                                    {
+
+                                    }
+
+                                    if (GUILayout.Button("Delete Event Page", button, GUILayout.Height(50)))
+                                    {
+
+                                    }
+
+                                    EditorGUI.EndDisabledGroup();
+
+                                    if (GUILayout.Button("Clear Event Page", button, GUILayout.Height(50)))
+                                    {
+
+                                    }
+
+                                GUILayout.EndVertical();
+
+                            #endregion
+
+                            #region Event Page
+
+                                #region Front-end
+
+                                GUILayout.BeginVertical();
+
+                                    #region page index
+
+                                    scrollPageIndex = GUILayout.BeginScrollView(scrollPageIndex, false, false, GUILayout.Height(40));
+
+                                        pageIndex = GUILayout.SelectionGrid(
+                                            pageIndex,
+                                            pageIndexList.ToArray(),
+                                            pageIndexList.Count,
+                                            GUILayout.Width(position.width / 30 * pageIndexList.Count)
+                                        );
+
+                                    GUILayout.EndScrollView();
+
+                                    #endregion
+
+                                    #region pages
+
+                                        #region Header
+
+                                        GUILayout.Space(5);
+
+                                        GUILayout.BeginHorizontal();
+                                            
+                                            GUIStyle labelStyle = new GUIStyle(GUI.skin.label);
+                                            labelStyle.margin = new RectOffset(0, 20, 2, 2);
+
+                                            GUI.skin.button.alignment = TextAnchor.MiddleLeft;
+                                            
+                                            GUILayout.Label("Condition: ", labelStyle, GUILayout.Width(70));
+                                            if(GUILayout.Button("Don't Run"))
+                                            {
+                                                // TODO: Open Condition Window
+                                            }
+
+                                            GUILayout.Label("Span: ", labelStyle, GUILayout.Width(70));
+                                            spanIndex = EditorGUILayout.Popup(spanIndex, spanList.ToArray(), GUILayout.Width(100));
+
+                                            GUI.skin.button.alignment = TextAnchor.MiddleCenter;
+
+
+                                        GUILayout.EndHorizontal();
+
+                                        #endregion
+
+                                        #region Main Pages
+            
+                                        // init style and position
+                                        GUIStyle pageStyle = new GUIStyle(GUI.skin.box);
+                                        pageStyle.normal.background = CreateTexture(1,1,Color.gray);
+                                    
+                                        Rect pageRect = new Rect(160, 100, tabWidth - firstTabWidth - 190, position.height - generalBox.height - 155);
+
+                                        // pages
+                                        GUILayout.BeginArea(pageRect, pageStyle);
+
+                                            #region ScrollView
+
+                                            scrollPage = GUILayout.BeginScrollView(scrollPage, false,true);
+
+                                                GUI.skin.button.alignment = TextAnchor.MiddleLeft;
+
+                                                eventCommandIndex = GUILayout.SelectionGrid(
+                                                    eventCommandIndex,
+                                                    eventCommandList.ToArray(),
+                                                    1,
+                                                    GUILayout.Height(position.height / 30 * eventCommandList.Count)
+                                                );
+
+                                                GUI.skin.button.alignment = TextAnchor.MiddleCenter;
+
+                                            GUILayout.EndScrollView();
+
+                                            #endregion
+
+                                        GUILayout.EndArea();
+
+                                        #endregion
+
+                                    #endregion
+
+                                GUILayout.EndVertical();
+
+                                #endregion
+
+                                #region Back-end
+
+
+
+                                #endregion
+
+                            #endregion
+
+                        GUILayout.EndHorizontal();
 
                     GUILayout.EndArea();
                     #endregion
