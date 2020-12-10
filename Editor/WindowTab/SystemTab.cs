@@ -32,6 +32,11 @@ public class SystemTab : BaseTab
         {
             system.startingParty.Add("");
         }
+
+        if (system.magicSkills.Count <= 0 || system.magicSkills[system.magicSkills.Count - 1] != "")
+        {
+            system.magicSkills.Add("");
+        }
     }
     public void OnRender(Rect position)
     {
@@ -82,7 +87,7 @@ public class SystemTab : BaseTab
                 
                                         if(selectedStartingPartyIndex != -1)
                                         {
-                                            StartingPartyWindow.ShowWindow(system, selectedStartingPartyIndex);
+                                            SelectWindow.ShowWindow(system, selectedStartingPartyIndex, SelectType.Actor);
                                         }
                 
                                     GUILayout.EndScrollView();
@@ -136,7 +141,14 @@ public class SystemTab : BaseTab
                                     GUILayout.Label("[SV] Magic Skills", EditorStyles.boldLabel);
                                     GUILayout.Space(2);
                                     scrollSVMagic = GUILayout.BeginScrollView(scrollSVMagic, false, true, GUILayout.Width(svMagicSkillsTab.width-5), GUILayout.Height(svMagicSkillsTab.height-30));
-                                        GUILayout.SelectionGrid(selectedMagicSkillIndex, system.magicSkills.ToArray(), 1, GUILayout.Width(svMagicSkillsTab.width*9/10), GUILayout.Height(svMagicSkillsTab.height/10));
+                                        EditorGUI.BeginDisabledGroup(selectedMagicSkillIndex != -1);
+                                        selectedMagicSkillIndex = GUILayout.SelectionGrid(selectedMagicSkillIndex, system.magicSkills.ToArray(), 1, GUILayout.Height(svMagicSkillsTab.height/10 * system.magicSkills.Count));
+                                        EditorGUI.EndDisabledGroup();
+
+                                        if(selectedMagicSkillIndex != -1)
+                                        {
+                                            SelectWindow.ShowWindow(system, selectedMagicSkillIndex, SelectType.Skill);
+                                        }
                                     GUILayout.EndScrollView();
                                 GUILayout.EndVertical();
                             GUILayout.EndArea();

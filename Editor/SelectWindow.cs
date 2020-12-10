@@ -4,9 +4,17 @@ using UnityEngine;
 using UnityEditor;
 using System.Linq;
 
-public class StartingPartyWindow : EditorWindow
+// will remove this when find better solution
+public enum SelectType
+{
+    Skill,
+    Actor
+}
+
+public class SelectWindow : EditorWindow
 {
     public static SystemData data;
+    public static SelectType type;
 
     public static int index;
 
@@ -15,7 +23,9 @@ public class StartingPartyWindow : EditorWindow
     GUIStyle tabStyle;
     GUIStyle columnStyle;
 
-    private List<string> ActorList = new List<string>();
+    private List<string> DataList = new List<string>();
+
+    public static List<string> list = new List<string>();
 
     private int SelectedActorIndex = 0;
 
@@ -23,9 +33,9 @@ public class StartingPartyWindow : EditorWindow
 
     bool set = false;
 
-    public static void ShowWindow(SystemData _data, int _index)
+    public static void ShowWindow(SystemData _data, int _index, SelectType _type)
     {
-        var window = GetWindow<StartingPartyWindow>();
+        var window = GetWindow<SelectWindow>();
         var position = window.position;
 
         //sizing and positioning
@@ -36,6 +46,18 @@ public class StartingPartyWindow : EditorWindow
 
         data = _data;
         index = _index;
+        type = _type;
+
+        switch (type)
+        {
+            case SelectType.Actor:
+                list = data.startingParty;
+                break;
+
+            case SelectType.Skill:
+                list = data.magicSkills;
+                break;
+        }
 
         window.titleContent = new GUIContent("Effect");
         window.Show();
@@ -82,7 +104,7 @@ public class StartingPartyWindow : EditorWindow
                     SelectedActorIndex = GUILayout.SelectionGrid
                     (
                         SelectedActorIndex,
-                        ActorList.ToArray(),
+                        DataList.ToArray(),
                         1
                     );
 
@@ -95,11 +117,11 @@ public class StartingPartyWindow : EditorWindow
                     if (GUILayout.Button("ok"))
                     {
                         // save and close
-                        data.startingParty[index] = ActorList[SelectedActorIndex];
+                        list[index] = DataList[SelectedActorIndex];
                 
-                        if(index == data.startingParty.Count - 1)
+                        if(index == list.Count - 1)
                         {
-                            data.startingParty.Add("");
+                            list.Add("");
                         }
 
 
@@ -115,11 +137,11 @@ public class StartingPartyWindow : EditorWindow
                     Color tempColor = GUI.backgroundColor;
                     GUI.backgroundColor = Color.red;
 
-                    EditorGUI.BeginDisabledGroup(data.startingParty[index] == "");
+                    EditorGUI.BeginDisabledGroup(list[index] == "");
 
                     if (GUILayout.Button("delete"))
                     {
-                        data.startingParty.RemoveAt(index);
+                        list.RemoveAt(index);
                         this.Close();
                     }
 
@@ -141,6 +163,7 @@ public class StartingPartyWindow : EditorWindow
     private void OnDestroy()
     {
         SystemTab.selectedStartingPartyIndex = -1;
+        SystemTab.selectedMagicSkillIndex = -1;
     }
 
     #region Features
@@ -172,8 +195,18 @@ public class StartingPartyWindow : EditorWindow
     {
         if(!set)
         {
-            ActorData[] data = Resources.LoadAll<ActorData>(PathDatabase.ActorRelativeDataPath);
-            ActorList = data.Select(x => x.actorName).ToList();
+            switch (type)
+            {
+                case SelectType.Actor:
+                    ActorData[] actor = Resources.LoadAll<ActorData>(PathDatabase.ActorRelativeDataPath);
+                    DataList = actor.Select(x => x.actorName).ToList();
+                    break;
+
+                case SelectType.Skill:
+                    TypeSkillData[] skill = Resources.LoadAll<TypeSkillData>(PathDatabase.SkillRelativeDataPath);
+                    DataList = skill.Select(x => x.dataName).ToList();
+                    break;
+            }
 
             set = true;
         }
