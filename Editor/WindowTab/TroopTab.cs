@@ -11,6 +11,9 @@ public class TroopTab : BaseTab
     //Having list of all troops exist in data.
     public List<TroopData> troop = new List<TroopData>();
 
+    // list of all battle event data
+    public List<BattleEventData> battleEvents = new List<BattleEventData>();
+
     //List of names. Why you ask? because selectionGrid require
     //array of string, which we cannot obtain in TroopData.
     //I hope later got better solution about this to not do
@@ -48,12 +51,14 @@ public class TroopTab : BaseTab
     //How many troop in ChangeMaximum Func
     public int troopSize;
 
+    //How many battle event data
+    public int[] battleEventSize;
+
     //i don't know about this but i leave this to handle later.
     int index = 0;
     int indexTemp = -1;
 
-    int pageIndex = 0;
-    int spanIndex = 0;
+    int battleEventIndex = 0;
     int eventCommandIndex = -1;
 
     //Scroll position. Is this necessary?
@@ -66,13 +71,32 @@ public class TroopTab : BaseTab
     Texture2D background;
     public int troopSizeTemp;
 
+    private BattleEventData CopyData = null;
+
     public void Init()
     {
         troop.Clear();
+        battleEvents.Clear();
+
+        index = 0;
+        battleEventIndex = 0;
+
+        LoadGameData<TroopData>(ref troopSize, troop, PathDatabase.TroopRelativeDataPath);
+
+        battleEventSize = new int[troopSize];
+        LoadGameData<BattleEventData>(ref battleEventSize[index], battleEvents, PathDatabase.BattleEventRelativeDataPath + (index + 1));
+
+        FolderCreator(troopSize, "Assets/Resources/Data/TroopData", "BattleEventData");
+
+        if(battleEventSize[index] <= 0)
+        {
+            battleEventIndex = 0;
+            ChangeMaximum<BattleEventData>(++battleEventSize[index], battleEvents, PathDatabase.BattleEventExplicitDataPath + (index + 1) + "/BattleEvent_");
+        }
 
         LoadEnemyList();
 
-        LoadGameData<TroopData>(ref troopSize, troop, PathDatabase.TroopRelativeDataPath);
+        ClearNullScriptableObjects();
         ListReset();
     }
 
@@ -135,7 +159,24 @@ public class TroopTab : BaseTab
                 if (GUI.changed && index != indexTemp)
                 {
                     indexTemp = index;
+                    battleEventIndex = 0;
+
+                    // load battle events data
+                    battleEvents.Clear();
+                    LoadGameData<BattleEventData>(ref battleEventSize[index], battleEvents, PathDatabase.BattleEventRelativeDataPath + (index + 1));
+
+                    //check if battle event folder empty
+                    if(battleEventSize[index] <= 0)
+                    {
+                        ChangeMaximum<BattleEventData>(++battleEventSize[index], battleEvents, PathDatabase.BattleEventExplicitDataPath + (index + 1) + "/BattleEvent_");
+                        battleEventIndex = 0;
+                    }
+
+                    ClearNullScriptableObjects();
+
                     ItemTabLoader(indexTemp);
+
+                    ListReset();
                     indexTemp = -1;
                 }
 
@@ -150,7 +191,31 @@ public class TroopTab : BaseTab
                     }
 
                     troopSize = troopSizeTemp;
+                    battleEventIndex = 0;
+
+                    FolderCreator(troopSize, "Assets/Resources/Data/TroopData", "BattleEventData");
+
                     ChangeMaximum<TroopData>(troopSize, troop, PathDatabase.TroopExplicitDataPath);
+
+                    int[] tempArr = new int[battleEventSize.Length];
+                    for(int i = 0; i < battleEventSize.Length; i++)
+                        tempArr[i] = battleEventSize[i];
+
+                    battleEventSize = new int[troopSize];
+
+                    int smallestValue = tempArr.Length < troopSize ? tempArr.Length : troopSize;
+
+                    for(int i = 0; i < smallestValue; i++)
+                        battleEventSize[i] = tempArr[i];
+
+                    // Reload data and check SO
+                    LoadGameData<BattleEventData>(ref battleEventSize[index], battleEvents, PathDatabase.BattleEventRelativeDataPath + (index + 1));
+                    if(battleEventSize[index] <= 0)
+                    {
+                        ChangeMaximum<BattleEventData>(++battleEventSize[index], battleEvents, PathDatabase.BattleEventExplicitDataPath + (index + 1) + "/BattleEvent_");
+                    }
+
+                    ClearNullScriptableObjects();
                     ListReset();
                 }
 
@@ -243,9 +308,9 @@ public class TroopTab : BaseTab
                     GUILayout.EndArea();
                     #endregion
 
-                Rect battleEvent = new Rect(5, generalBox.height + 10, tabWidth - firstTabWidth - 25, position.height - generalBox.height - 50);
+                Rect battleEventRect = new Rect(5, generalBox.height + 10, tabWidth - firstTabWidth - 25, position.height - generalBox.height - 50);
                     #region BattleEvent
-                    GUILayout.BeginArea(battleEvent, tabStyle);
+                    GUILayout.BeginArea(battleEventRect, tabStyle);
                         GUILayout.Label("Battle Event", EditorStyles.boldLabel);
 
                         GUILayout.Space(10);
@@ -262,31 +327,49 @@ public class TroopTab : BaseTab
 
                                     if (GUILayout.Button("New Event Page", button, GUILayout.Height(50)))
                                     {
-        
+                                        ChangeMaximum<BattleEventData>(++battleEventSize[index], battleEvents, PathDatabase.BattleEventExplicitDataPath + (index + 1) + "/BattleEvent_");
+                                        battleEvents.Clear();
+                                        LoadGameData<BattleEventData>(ref battleEventSize[index], battleEvents, PathDatabase.BattleEventRelativeDataPath + (index + 1));
+
+                                        ListReset();
                                     }
 
                                     if (GUILayout.Button("Copy Event Page", button, GUILayout.Height(50)))
                                     {
-
+                                        CopyData = battleEvents[battleEventIndex];
                                     }
 
-                                    EditorGUI.BeginDisabledGroup(true);
+                                    EditorGUI.BeginDisabledGroup(CopyData == null);
 
                                     if (GUILayout.Button("Paste Event Page", button, GUILayout.Height(50)))
                                     {
+                                        PasteData();
+                                        battleEvents.Clear();
+                                        LoadGameData<BattleEventData>(ref battleEventSize[index], battleEvents, PathDatabase.BattleEventRelativeDataPath + (index + 1));
 
+                                        ListReset();
                                     }
+
+                                    EditorGUI.EndDisabledGroup();
+
+                                    EditorGUI.BeginDisabledGroup(battleEventSize[index] <= 1);
 
                                     if (GUILayout.Button("Delete Event Page", button, GUILayout.Height(50)))
                                     {
+                                        DeleteEventData();
+                                        battleEvents.Clear();
+                                        LoadGameData<BattleEventData>(ref battleEventSize[index], battleEvents, PathDatabase.BattleEventRelativeDataPath + (index + 1));
 
+                                        ListReset();
                                     }
 
                                     EditorGUI.EndDisabledGroup();
 
                                     if (GUILayout.Button("Clear Event Page", button, GUILayout.Height(50)))
                                     {
-
+                                        battleEvents[battleEventIndex].condition = "Don't Run";
+                                        battleEvents[battleEventIndex].span = 0;
+                                        battleEvents[battleEventIndex].eventCommand.Clear();
                                     }
 
                                 GUILayout.EndVertical();
@@ -302,9 +385,9 @@ public class TroopTab : BaseTab
                                     #region page index
 
                                     scrollPageIndex = GUILayout.BeginScrollView(scrollPageIndex, false, false, GUILayout.Height(40));
-
-                                        pageIndex = GUILayout.SelectionGrid(
-                                            pageIndex,
+        
+                                        battleEventIndex = GUILayout.SelectionGrid(
+                                            battleEventIndex,
                                             pageIndexList.ToArray(),
                                             pageIndexList.Count,
                                             GUILayout.Width(position.width / 30 * pageIndexList.Count)
@@ -328,13 +411,13 @@ public class TroopTab : BaseTab
                                             GUI.skin.button.alignment = TextAnchor.MiddleLeft;
                                             
                                             GUILayout.Label("Condition: ", labelStyle, GUILayout.Width(70));
-                                            if(GUILayout.Button("Don't Run"))
+                                            if(GUILayout.Button(battleEvents[battleEventIndex].condition))
                                             {
                                                 // TODO: Open Condition Window
                                             }
 
                                             GUILayout.Label("Span: ", labelStyle, GUILayout.Width(70));
-                                            spanIndex = EditorGUILayout.Popup(spanIndex, spanList.ToArray(), GUILayout.Width(100));
+                                            battleEvents[battleEventIndex].span = EditorGUILayout.Popup(battleEvents[battleEventIndex].span, spanList.ToArray(), GUILayout.Width(100));
 
                                             GUI.skin.button.alignment = TextAnchor.MiddleCenter;
 
@@ -418,6 +501,36 @@ public class TroopTab : BaseTab
         {
             troopDisplayName.Add(troop[i].troopName);
         }
+
+        pageIndexList.Clear();
+        for(int i = 0; i < battleEventSize[index]; i++)
+        {
+            pageIndexList.Add((i + 1).ToString());
+        }
+    }
+
+    private void ClearNullScriptableObjects()
+    {
+        bool availableNull = true;
+        while (availableNull)
+        {
+            availableNull = false;
+            for(int i = 0; i < battleEventSize[index] - 1; i++)
+            {
+                if(battleEvents[i].condition == "Don't Run")
+                {
+                    availableNull = true;
+                    for(int j = i; j < battleEventSize[index] - 1; j++)
+                    {
+                        battleEvents[j].condition = battleEvents[j + 1].condition;
+                        battleEvents[j].span = battleEvents[j + 1].span;
+                        battleEvents[j].eventCommand = battleEvents[j + 1].eventCommand;
+                    }
+                    ChangeMaximum<BattleEventData>(--battleEventSize[index], battleEvents, PathDatabase.BattleEventExplicitDataPath + (index + 1) + "/BattleEvent_");
+                    i--;
+                }
+            }
+        }
     }
 
     public override void ItemTabLoader(int index)
@@ -442,6 +555,44 @@ public class TroopTab : BaseTab
 
         EnemyData[] enemyData = Resources.LoadAll<EnemyData>(PathDatabase.EnemyRelativeDataPath);
         troopAvailableList = enemyData.Select(x => x.enemyName).ToList();
+    }
+
+    private void DeleteEventData()
+    {
+        for (int i = battleEventIndex; i < battleEventSize[index] - 1; i++)
+        {
+            battleEvents[i].condition = battleEvents[i + 1].condition;
+            battleEvents[i].span = battleEvents[i + 1].span;
+            battleEvents[i].eventCommand = battleEvents[i + 1].eventCommand;
+        }
+
+        if (battleEventIndex > 0) battleEventIndex--;
+
+        ChangeMaximum<BattleEventData>(--battleEventSize[index], battleEvents, PathDatabase.BattleEventExplicitDataPath + (index + 1) + "/BattleEvent_");
+        if (battleEventSize[index] <= 0)
+        {
+            ChangeMaximum<BattleEventData>(1, battleEvents, PathDatabase.BattleEventExplicitDataPath + (index + 1) + "/BattleEvent_");
+            battleEventSize[index] = 1;
+        }
+    }
+
+    private void PasteData()
+    {
+        ChangeMaximum<BattleEventData>(++battleEventSize[index], battleEvents, PathDatabase.BattleEventExplicitDataPath + (index + 1) + "/BattleEvent_");
+
+        for (int i = battleEventIndex + 1; i < battleEventSize[index] - 1; i++)
+        {
+            battleEvents[i + 1].condition = battleEvents[i].condition;
+            battleEvents[i + 1].span = battleEvents[i].span;
+            battleEvents[i + 1].eventCommand = battleEvents[i].eventCommand;
+        }
+
+        battleEvents[battleEventIndex + 1].condition = CopyData.condition;
+        battleEvents[battleEventIndex + 1].span = CopyData.span;
+        battleEvents[battleEventIndex + 1].eventCommand = CopyData.eventCommand;
+        CopyData = null;
+
+        battleEventIndex++;
     }
 
     #endregion
