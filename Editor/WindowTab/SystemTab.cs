@@ -13,12 +13,11 @@ public class SystemTab : BaseTab
     GUIStyle tabStyle;
     GUIStyle columnStyle;
 
-    int selectedStartingPartyIndex = 0;
-    int selectedMagicSkillIndex = 0;
+    public static int selectedStartingPartyIndex = -1;
+    public static int selectedMagicSkillIndex = -1;
     public SystemData system;
     public void Init()
     {
-
         system = Resources.Load<SystemData>("Data/SystemData/SystemData");
         if(system == null)
         {
@@ -27,6 +26,11 @@ public class SystemTab : BaseTab
             AssetDatabase.SaveAssets();
             system = Resources.Load<SystemData>("Data/SystemData/SystemData");
 
+        }
+
+        if (system.startingParty.Count <= 0 || system.startingParty[system.startingParty.Count - 1] != "")
+        {
+            system.startingParty.Add("");
         }
     }
     public void OnRender(Rect position)
@@ -72,8 +76,16 @@ public class SystemTab : BaseTab
                                     GUILayout.Label("Starting Party", EditorStyles.boldLabel);
                                     GUILayout.Space(2);
                                     scrollStartParty = GUILayout.BeginScrollView(scrollStartParty, false, true, GUILayout.Width(startingPartyTab.width-5), GUILayout.Height(startingPartyTab.height-30));
-                                        GUILayout.SelectionGrid(selectedStartingPartyIndex, system.startingParty.ToArray(), 1, GUILayout.Height(startingPartyTab.height/10), GUILayout.Width(startingPartyTab.width*9/10));
-                                    GUILayout.EndScrollView();//
+                                        EditorGUI.BeginDisabledGroup(selectedStartingPartyIndex != -1);
+                                        selectedStartingPartyIndex = GUILayout.SelectionGrid(selectedStartingPartyIndex, system.startingParty.ToArray(), 1, GUILayout.Height(startingPartyTab.height/10 * system.startingParty.Count));
+                                        EditorGUI.EndDisabledGroup();
+                
+                                        if(selectedStartingPartyIndex != -1)
+                                        {
+                                            StartingPartyWindow.ShowWindow(system, selectedStartingPartyIndex);
+                                        }
+                
+                                    GUILayout.EndScrollView();
                                 GUILayout.EndVertical();
                             GUILayout.EndArea();
                             #endregion
