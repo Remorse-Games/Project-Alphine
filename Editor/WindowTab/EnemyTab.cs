@@ -11,11 +11,13 @@ public class EnemyTab : BaseTab
     //Having list of all enemys exist in data.
     public List<EnemyData> enemy = new List<EnemyData>();
     public List<TraitsData> traits = new List<TraitsData>();
+    public List<ActionPatternsData> actionPattern = new List<ActionPatternsData>();
 
     //List of names. Why you ask? because selectionGrid require
     //array of string, which we cannot obtain in enemyData.
     //I hope later got better solution about this to not do
     //a double List for this kind of thing.
+    List<string> actionPatternName = new List<string>();
     List<string> enemyDisplayName = new List<string>();
     List<string> traitDisplayName = new List<string>();
 
@@ -32,23 +34,28 @@ public class EnemyTab : BaseTab
     //How many enemy in ChangeMaximum Func
     public int enemySize;
     public int enemySizeTemp;
+    public static int[] actionSize;
     public static int[] traitSize;
 
     //i don't know about this but i leave this to handle later.
     public static int index = 0;
     public static int traitIndex = 0;
+    public static int actionIndex = 0;
     int indexTemp = -1;
     public static int traitIndexTemp = -1;
+    public static int actionIndexTemp = -1;
 
     Texture2D enemyImage;
     public void Init()
     {
         //Clears List
         enemy.Clear();
+        actionPattern.Clear();
         traits.Clear();
 
         //Resetting each index to 0, so that it won't have error (Index Out Of Range)
         index = 0;
+        actionIndex = 0;
         traitIndex = 0;
 
         //Load Every List needed in ActorTab
@@ -57,14 +64,23 @@ public class EnemyTab : BaseTab
         traitSize = new int[enemySize]; //Resets Trait Sizing
         LoadGameData<TraitsData>(ref traitSize[index], traits, PathDatabase.EnemyTraitRelativeDataPath + (index + 1));
 
+        actionSize = new int[enemySize];
+        LoadGameData<ActionPatternsData>(ref actionSize[index], actionPattern, PathDatabase.EnemyActionRelativeDataPath + (index + 1));
+
         //Create Folder For TraitsData and its sum is based on actorSize value
         FolderCreator(enemySize, "Assets/Resources/Data/EnemyData", "TraitData");
+        FolderCreator(enemySize, "Assets/Resources/Data/EnemyData", "ActionData");
 
         //Check if TraitsData_(index) is empty, if it is empty then create a SO named Trait_1
         if (traitSize[index] <= 0)
         {
             traitIndex = 0;
             ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.EnemyTraitExplicitDataPath + (index + 1) + "/Trait_");
+        }
+        if (actionSize[index] <= 0)
+        {
+            actionIndex = 0;
+            ChangeMaximum<ActionPatternsData>(++actionSize[index], actionPattern, PathDatabase.EnemyActionExplicitDataPath + (index + 1) + "/Action_");
         }
         ClearNullScriptableObjects(); //Clear Trait SO without a value
         ListReset(); //Resets List
@@ -139,6 +155,17 @@ public class EnemyTab : BaseTab
                         ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.EnemyTraitExplicitDataPath + (index + 1) + "/Trait_");
                         traitIndexTemp = 0;
                     }
+
+                    //Load ActionData
+                    actionPattern.Clear();
+                    LoadGameData<ActionPatternsData>(ref actionSize[index], actionPattern, PathDatabase.EnemyActionRelativeDataPath + (index + 1));
+                    //Check if ActionData folder is empty
+                    if (actionSize[index] <= 0)
+                    {
+                        ChangeMaximum<ActionPatternsData>(++actionSize[index], actionPattern, PathDatabase.EnemyActionExplicitDataPath + (index + 1) + "/Action_");
+                        actionIndexTemp = 0;
+                    }
+
                     ClearNullScriptableObjects();
                     ListReset();
                     indexTemp = -1;
@@ -151,6 +178,7 @@ public class EnemyTab : BaseTab
                     enemySize = enemySizeTemp;
                     index = indexTemp = 0;
                     FolderCreator(enemySize, "Assets/Resources/Data/EnemyData", "TraitData");
+                    FolderCreator(enemySize, "Assets/Resources/Data/EnemyData", "ActionData");
                     ChangeMaximum<EnemyData>(enemySize, enemy, PathDatabase.EnemyExplicitDataPath);
                     
                     //New TraitSize array length
@@ -169,11 +197,31 @@ public class EnemyTab : BaseTab
                     for (int i = 0; i < smallestValue; i++)
                         traitSize[i] = tempArr[i];
 
+                    //New ActionSize array length
+                    tempArr = new int[actionSize.Length];
+                    for (int i = 0; i < actionSize.Length; i++)
+                        tempArr[i] = actionSize[i];
+
+                    actionSize = new int[enemySize];
+
+                    #region FindSmallestBetween
+                        if (tempArr.Length < enemySize) smallestValue = tempArr.Length;
+                        else smallestValue = enemySize;
+                    #endregion
+
+                    for (int i = 0; i < smallestValue; i++)
+                        actionSize[i] = tempArr[i];
+
                     //Reload Data and Check SO
                     LoadGameData<TraitsData>(ref traitSize[index], traits, PathDatabase.EnemyTraitRelativeDataPath + (index + 1));
                     if (traitSize[index] <= 0)
                     {
                         ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.EnemyTraitExplicitDataPath + (index + 1) + "/Trait_");
+                    }
+                    LoadGameData<ActionPatternsData>(ref actionSize[index], actionPattern, PathDatabase.EnemyActionRelativeDataPath + (index + 1));
+                    if (actionSize[index] <= 0)
+                    {
+                        ChangeMaximum<ActionPatternsData>(++actionSize[index], actionPattern, PathDatabase.EnemyActionExplicitDataPath + (index + 1) + "/Action_");
                     }
 
                     ClearNullScriptableObjects();
@@ -377,9 +425,18 @@ public class EnemyTab : BaseTab
 
                         #region Horizontal For Type And Content
                         GUILayout.BeginHorizontal();
-                            GUILayout.Label("Skill", GUILayout.Width(actionBox.width * .44f));
-                            GUILayout.Label("Condition", GUILayout.Width(actionBox.width * .44f));
-                            GUILayout.Label("R", GUILayout.Width(actionBox.width * .12f));
+                            
+                            #region Title
+                            string outputString = "";
+                            string val = "";
+
+                            val = string.Format("{0}", "  Condition");
+                            outputString = PadString("Skill", val);
+                            val = string.Format("{0}", "\t  R");
+                            outputString = PadString(outputString, val);
+
+                            GUILayout.Label(outputString);
+                            #endregion
 
                         GUILayout.EndHorizontal();
                         #endregion
@@ -390,10 +447,49 @@ public class EnemyTab : BaseTab
                             false,
                             true,
                             GUILayout.Width(actionBox.width - 8),
-                            GUILayout.Height(actionBox.height * 0.80f)
+                            GUILayout.Height(actionBox.height * 0.75f)
                             );
+                        GUI.changed = false;
+                        GUI.skin.button.alignment = TextAnchor.MiddleLeft;
+                            actionIndex = GUILayout.SelectionGrid(
+                                actionIndex,
+                                actionPatternName.ToArray(),
+                                1,
+                                GUILayout.Width(firstTabWidth + 25),
+                                GUILayout.Height(position.height / 24 * actionSize[index]
+                                ));
+                        GUI.skin.button.alignment = TextAnchor.MiddleCenter;
                         GUILayout.EndScrollView();
                         #endregion
+                    //Happen everytime selection grid is updated
+                    if (GUI.changed)
+                    {
+                        if (actionIndex != actionIndexTemp)
+                        {
+                            ActionPatternsWindow.ShowWindow(actionPattern, actionIndex, actionSize[index]);
+                            actionIndexTemp = actionIndex;
+                        }
+                    }
+
+                    //Create Empty SO if there isn't any null SO left
+                    if ((actionPattern[actionSize[index] - 1].actionName != null && actionPattern[actionSize[index] - 1].actionName != "") && actionSize[index] > 0)
+                    {
+                        actionIndex = 0;
+                        ChangeMaximum<ActionPatternsData>(++actionSize[index], actionPattern, PathDatabase.EnemyActionExplicitDataPath + (index + 1) + "/Action_");
+                    }
+
+                    //Delete All Data Button
+                    if (GUILayout.Button("Delete All Data", GUILayout.Width(actionBox.width * .3f), GUILayout.Height(actionBox.height * .08f)))
+                    {
+                        if (EditorUtility.DisplayDialog("Delete All Skill Data", "Are you sure want to delete all Action Pattern Data?", "Yes", "No"))
+                        {
+                            actionIndex = 0;
+                            actionSize[index] = 1;
+                            ChangeMaximum<ActionPatternsData>(0, actionPattern, PathDatabase.EnemyActionExplicitDataPath + (index + 1) + "/Action_");
+
+                            ChangeMaximum<ActionPatternsData>(1, actionPattern, PathDatabase.EnemyActionExplicitDataPath + (index + 1) + "/Action_");
+                    }
+                    }
                     GUILayout.EndArea();
                     #endregion        
 
@@ -512,6 +608,12 @@ public class EnemyTab : BaseTab
         {
             enemyDisplayName.Add(enemy[i].enemyName);
         }
+        //Action Reset
+        actionPatternName.Clear();
+        for (int i = 0; i < actionSize[index]; i++)
+        {
+            actionPatternName.Add(actionPattern[i].actionName);
+        }
         //Trait Reset
         traitDisplayName.Clear();
         for (int i = 0; i < traitSize[index]; i++)
@@ -580,6 +682,29 @@ public class EnemyTab : BaseTab
                         traits[j].traitValue = traits[j + 1].traitValue;
                     }
                     ChangeMaximum<TraitsData>(--traitSize[index], traits, PathDatabase.EnemyTraitExplicitDataPath + (index + 1) + "/Trait_");
+                    i--;
+                }
+            }
+        }
+        availableNull = true;
+        while (availableNull)
+        {
+            availableNull = false;
+            for (int i = 0; i < actionSize[index] - 1; i++)
+            {
+                if (string.IsNullOrEmpty(actionPattern[i].actionName))
+                {
+                    availableNull = true;
+                    for (int j = i; j < actionSize[index] - 1; j++)
+                    {
+                        actionPattern[j].actionName = actionPattern[j + 1].actionName;
+                        actionPattern[j].selectedConditionIndex = actionPattern[j + 1].selectedConditionIndex;
+                        actionPattern[j].selectedSkillIndex= actionPattern[j + 1].selectedSkillIndex;
+                        actionPattern[j].additionalSelectedIndex = actionPattern[j + 1].additionalSelectedIndex;
+                        actionPattern[j].additionalValue1= actionPattern[j + 1].additionalValue1;
+                        actionPattern[j].additionalValue2 = actionPattern[j + 1].additionalValue2;
+                    }
+                    ChangeMaximum<ActionPatternsData>(--actionSize[index], actionPattern, PathDatabase.EnemyActionExplicitDataPath + (index + 1) + "/Action_");
                     i--;
                 }
             }
