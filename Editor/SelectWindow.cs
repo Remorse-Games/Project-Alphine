@@ -52,14 +52,15 @@ public class SelectWindow : EditorWindow
         {
             case SelectType.Actor:
                 list = data.startingParty;
+                window.titleContent = new GUIContent("Starting Party");
                 break;
 
             case SelectType.Skill:
                 list = data.magicSkills;
+                window.titleContent = new GUIContent("Magic Skill");
                 break;
         }
 
-        window.titleContent = new GUIContent("Effect");
         window.Show();
     }
 
@@ -114,7 +115,7 @@ public class SelectWindow : EditorWindow
 
                 GUILayout.BeginHorizontal();
 
-                    if (GUILayout.Button("ok"))
+                    if (GUILayout.Button("OK"))
                     {
                         // save and close
                         list[index] = DataList[SelectedActorIndex];
@@ -128,7 +129,7 @@ public class SelectWindow : EditorWindow
                         this.Close();
                     }
 
-                    if (GUILayout.Button("cancel"))
+                    if (GUILayout.Button("Cancel"))
                     {
                         // close
                         this.Close();
@@ -139,7 +140,7 @@ public class SelectWindow : EditorWindow
 
                     EditorGUI.BeginDisabledGroup(list[index] == "");
 
-                    if (GUILayout.Button("delete"))
+                    if (GUILayout.Button("Delete"))
                     {
                         list.RemoveAt(index);
                         this.Close();
