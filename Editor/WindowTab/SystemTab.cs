@@ -13,12 +13,11 @@ public class SystemTab : BaseTab
     GUIStyle tabStyle;
     GUIStyle columnStyle;
 
-    int selectedStartingPartyIndex = 0;
-    int selectedMagicSkillIndex = 0;
+    public static int selectedStartingPartyIndex = -1;
+    public static int selectedMagicSkillIndex = -1;
     public SystemData system;
     public void Init()
     {
-
         system = Resources.Load<SystemData>("Data/SystemData/SystemData");
         if(system == null)
         {
@@ -27,6 +26,16 @@ public class SystemTab : BaseTab
             AssetDatabase.SaveAssets();
             system = Resources.Load<SystemData>("Data/SystemData/SystemData");
 
+        }
+
+        if (system.startingParty.Count <= 0 || system.startingParty[system.startingParty.Count - 1] != "")
+        {
+            system.startingParty.Add("");
+        }
+
+        if (system.magicSkills.Count <= 0 || system.magicSkills[system.magicSkills.Count - 1] != "")
+        {
+            system.magicSkills.Add("");
         }
     }
     public void OnRender(Rect position)
@@ -72,8 +81,16 @@ public class SystemTab : BaseTab
                                     GUILayout.Label("Starting Party", EditorStyles.boldLabel);
                                     GUILayout.Space(2);
                                     scrollStartParty = GUILayout.BeginScrollView(scrollStartParty, false, true, GUILayout.Width(startingPartyTab.width-5), GUILayout.Height(startingPartyTab.height-30));
-                                        GUILayout.SelectionGrid(selectedStartingPartyIndex, system.startingParty.ToArray(), 1, GUILayout.Height(startingPartyTab.height/10), GUILayout.Width(startingPartyTab.width*9/10));
-                                    GUILayout.EndScrollView();//
+                                        EditorGUI.BeginDisabledGroup(selectedStartingPartyIndex != -1);
+                                        selectedStartingPartyIndex = GUILayout.SelectionGrid(selectedStartingPartyIndex, system.startingParty.ToArray(), 1, GUILayout.Height(startingPartyTab.height/10 * system.startingParty.Count));
+                                        EditorGUI.EndDisabledGroup();
+                
+                                        if(selectedStartingPartyIndex != -1)
+                                        {
+                                            SelectWindow.ShowWindow(system, selectedStartingPartyIndex, SelectType.Actor);
+                                        }
+                
+                                    GUILayout.EndScrollView();
                                 GUILayout.EndVertical();
                             GUILayout.EndArea();
                             #endregion
@@ -124,7 +141,14 @@ public class SystemTab : BaseTab
                                     GUILayout.Label("[SV] Magic Skills", EditorStyles.boldLabel);
                                     GUILayout.Space(2);
                                     scrollSVMagic = GUILayout.BeginScrollView(scrollSVMagic, false, true, GUILayout.Width(svMagicSkillsTab.width-5), GUILayout.Height(svMagicSkillsTab.height-30));
-                                        GUILayout.SelectionGrid(selectedMagicSkillIndex, system.magicSkills.ToArray(), 1, GUILayout.Width(svMagicSkillsTab.width*9/10), GUILayout.Height(svMagicSkillsTab.height/10));
+                                        EditorGUI.BeginDisabledGroup(selectedMagicSkillIndex != -1);
+                                        selectedMagicSkillIndex = GUILayout.SelectionGrid(selectedMagicSkillIndex, system.magicSkills.ToArray(), 1, GUILayout.Height(svMagicSkillsTab.height/10 * system.magicSkills.Count));
+                                        EditorGUI.EndDisabledGroup();
+
+                                        if(selectedMagicSkillIndex != -1)
+                                        {
+                                            SelectWindow.ShowWindow(system, selectedMagicSkillIndex, SelectType.Skill);
+                                        }
                                     GUILayout.EndScrollView();
                                 GUILayout.EndVertical();
                             GUILayout.EndArea();
