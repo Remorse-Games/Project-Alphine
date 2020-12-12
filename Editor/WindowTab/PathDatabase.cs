@@ -79,4 +79,10 @@ public static class PathDatabase
 
     public static string EquipmentExplicitDataPath = "Assets/Resources/Data/TypeData/EquipmentData/Equipment_";
     public static string EquipmentRelativeDataPath = "Data/TypeData/EquipmentData";
+
+    public static string TroopExplicitDataPath = "Assets/Resources/Data/TroopData/Troop_";
+    public static string TroopRelativeDataPath = "Data/TroopData";
+
+    public static string BattleEventExplicitDataPath = "Assets/Resources/Data/TroopData/BattleEventData";
+    public static string BattleEventRelativeDataPath = "Data/TroopData/BattleEventData";
 }
