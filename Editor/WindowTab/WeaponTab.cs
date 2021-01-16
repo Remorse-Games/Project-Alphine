@@ -142,7 +142,7 @@ public class WeaponTab : BaseTab
                 if (GUI.changed && index != indexTemp)
                 {
                     indexTemp = index;
-                    traitIndex = traitIndexTemp = 0;
+                    traitIndex = 0;
                     
                     //Load TraitsData
                     traits.Clear();

@@ -45,6 +45,10 @@ public class SkillsToLearnWindow : EditorWindow
         window.position = position;
         window.Show();
     }
+    private void OnLostFocus()
+    {
+        this.Focus();
+    }
     private void OnDestroy()
     {
         ClassTab.skillIndex = 0;
@@ -176,10 +180,6 @@ public class SkillsToLearnWindow : EditorWindow
 
     }
 
-    private void OnLostFocus()
-    {
-        this.Focus();
-    }
 
     #region Features
     private string StringMaker()

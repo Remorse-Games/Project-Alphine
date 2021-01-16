@@ -143,7 +143,7 @@ public class EnemyTab : BaseTab
                 if (GUI.changed && index != indexTemp)
                 {
                     indexTemp = index;
-                    traitIndex = traitIndexTemp = 0;
+                    traitIndex = 0;
                     ItemTabLoader(indexTemp);
 
                     //Load TraitsData

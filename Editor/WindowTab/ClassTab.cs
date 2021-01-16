@@ -129,8 +129,8 @@ public class ClassTab : BaseTab
                 if (GUI.changed && index != indexTemp)
                 {
                     indexTemp = index;
-                    traitIndex = traitIndexTemp = 0;
-                    skillIndex = skillIndexTemp = 0;
+                    traitIndex = 0;
+                    skillIndex = 0;
                     
                     //Load SkillToLearnData
                     skillToLearn.Clear();
@@ -485,9 +485,9 @@ public class ClassTab : BaseTab
                     {
                         if (skillIndex != skillIndexTemp)
                         {
-                            SkillsToLearnWindow.ShowWindow(skillToLearn, skillIndex, skillToLearnSize[index]);
                             
                             skillIndexTemp = skillIndex;
+                            SkillsToLearnWindow.ShowWindow(skillToLearn, skillIndex, skillToLearnSize[index]);
                         }
                     }
 
