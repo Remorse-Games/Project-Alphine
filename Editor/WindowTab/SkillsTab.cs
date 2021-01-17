@@ -22,6 +22,9 @@ public class SkillsTab : BaseTab
     public static int effectIndex = 0;
     public static int effectIndexTemp = -1;
 
+
+    public string[] skillWeaponType;
+
     //Classes
     public string[] skillTypeList =
     {
@@ -66,14 +69,6 @@ public class SkillsTab : BaseTab
         "Normal Attack",
         "None",
         "Hit Pyhsical",
-        "Other... (Add More Manually)",
-    };
-
-    public string[] skillWeaponType =
-    {
-        "None",
-        "Dagger",
-        "Sword",
         "Other... (Add More Manually)",
     };
 
@@ -145,7 +140,7 @@ public class SkillsTab : BaseTab
 
         effectSize = new int[skillSize];
         LoadGameData<EffectData>(ref effectSize[index], effects, PathDatabase.SkillEffectRelativeDataPath + (index + 1));
-
+        LoadWeaponTypeList();
 
         //create folder for effectdata
         FolderCreator(skillSize, "Assets/Resources/Data/SkillData", "EffectData");
@@ -801,6 +796,16 @@ public class SkillsTab : BaseTab
         for (int i = 0; i < effectSize[index]; i++)
         {
             effectDisplayName.Add(effects[i].effectName);
+        }
+    }
+
+    private void LoadWeaponTypeList()
+    {
+        TypeWeaponData[] typeWeaponData = Resources.LoadAll<TypeWeaponData>(PathDatabase.WeaponRelativeDataPath);
+        skillWeaponType = new string[typeWeaponData.Length];
+        for (int i = 0; i < skillWeaponType.Length; i++)
+        {
+            skillWeaponType[i] = typeWeaponData[i].dataName;
         }
     }
 
