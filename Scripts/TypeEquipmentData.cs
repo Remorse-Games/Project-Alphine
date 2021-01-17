@@ -14,6 +14,6 @@ public class TypeEquipmentData : ScriptableObject
 
     public void Init()
     {
-        dataName = "equipment";
+        dataName = "New Equipment Type";
     }
 }

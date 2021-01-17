@@ -55,7 +55,7 @@ public class EnemyData : ScriptableObject
     public void Init()
     {
         Sprite sp = Resources.Load<Sprite>("Image");
-        enemyName = "enemy";
+        enemyName = "New Enemy";
         enemyEXP = 0;
         enemyAttack = 30;
         enemyDefense = 30;

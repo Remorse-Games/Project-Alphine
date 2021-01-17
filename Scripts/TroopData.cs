@@ -27,7 +27,7 @@ public class TroopData : ScriptableObject
     {
         Sprite sp = Resources.Load<Sprite>("Image");
 
-        troopName = "troop";
+        troopName = "New Troop";
         background = sp;
         notes = "";
     }

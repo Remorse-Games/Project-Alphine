@@ -36,7 +36,7 @@ public class ActorData : ScriptableObject
     {
         Sprite sp = Resources.Load<Sprite>("Image");
 
-        actorName = "player";
+        actorName = "New Player";
         actorNickname = "actorNickname";
         initLevel = 1;
         maxLevel = 99;

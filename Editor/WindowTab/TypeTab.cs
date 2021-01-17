@@ -63,6 +63,10 @@ public class TypeTab : BaseTab
 
     public void Init()
     {
+        element.Clear();
+        skill.Clear();
+        weapon.Clear();
+        armor.Clear();
         equipment.Clear();
         LoadGameData<TypeElementData>(ref elementSize, element, PathDatabase.ElementRelativeDataPath);
         ElementListReset();

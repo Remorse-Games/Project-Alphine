@@ -27,7 +27,6 @@ public class SystemData : ScriptableObject
     {
         startingParty = new List<string>();
         magicSkills = new List<string>();
-        startingParty.Add("Keju");
 
         gameTitle = "Game Title";
 

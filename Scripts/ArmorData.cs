@@ -37,7 +37,7 @@ public class ArmorData : ScriptableObject
     {
         Sprite sp = Resources.Load<Sprite>("Image");
 
-        armorName = "armor";
+        armorName = "New Armor";
         Icon = sp;
         armorDescription = "Insert your description here";
         armorPrice = 500;

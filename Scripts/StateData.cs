@@ -41,7 +41,7 @@ public class StateData : ScriptableObject
     {
         Sprite sp = Resources.Load<Sprite>("Image");
 
-        stateName = "state";
+        stateName = "New State";
         icon = sp;
 
         statePriority = 100;

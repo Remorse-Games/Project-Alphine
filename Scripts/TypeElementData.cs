@@ -14,6 +14,6 @@ public class TypeElementData : ScriptableObject
 
     public void Init()
     {
-        dataName = "element";
+        dataName = "New Element Type";
     }
 }

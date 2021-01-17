@@ -126,6 +126,7 @@ public class ItemTab : BaseTab
     Texture2D itemIcon;
     public void Init()
     {
+        item.Clear();
         effects.Clear();
         effectIndex = 0;
 

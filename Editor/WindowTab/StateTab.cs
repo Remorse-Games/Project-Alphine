@@ -71,6 +71,7 @@ public class StateTab : BaseTab
 
     public void Init()
     {
+        state.Clear();
         LoadGameData<StateData>(ref stateSize, state, PathDatabase.StateRelativeDataPath);
         ListReset();
     }

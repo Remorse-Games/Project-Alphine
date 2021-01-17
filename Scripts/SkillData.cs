@@ -55,7 +55,7 @@ public class SkillData : ScriptableObject
     {
         Sprite sp = Resources.Load<Sprite>("Image");
 
-        skillName = "skill";
+        skillName = "New Skill";
         Icon = sp;
         skillDescription = "Insert your description here";
         skillMPCost = 0;

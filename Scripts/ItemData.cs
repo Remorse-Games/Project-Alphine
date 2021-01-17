@@ -50,7 +50,7 @@ public class ItemData : ScriptableObject
     {
         Sprite sp = Resources.Load<Sprite>("Image");
 
-        itemName = "item";
+        itemName = "New Item";
         Icon = sp;
         itemDescription = "Insert your description here";
         itemPrice = 0;

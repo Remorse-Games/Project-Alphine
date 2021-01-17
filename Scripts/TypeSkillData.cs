@@ -14,6 +14,6 @@ public class TypeSkillData : ScriptableObject
 
     public void Init()
     {
-        dataName = "skill";
+        dataName = "New Skill Type";
     }
 }
