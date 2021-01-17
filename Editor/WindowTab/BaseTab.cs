@@ -216,14 +216,14 @@ public abstract class BaseTab
     {
         if (sprite.rect.width != sprite.texture.width)
         {
-            Texture2D newText = new Texture2D((int)sprite.rect.width, (int)sprite.rect.height);
+            Texture2D newTexture = new Texture2D((int)sprite.rect.width, (int)sprite.rect.height);
             Color[] newColors = sprite.texture.GetPixels((int)sprite.textureRect.x,
                                                          (int)sprite.textureRect.y,
                                                          (int)sprite.textureRect.width,
                                                          (int)sprite.textureRect.height);
-            newText.SetPixels(newColors);
-            newText.Apply();
-            return newText;
+            newTexture.SetPixels(newColors);
+            newTexture.Apply();
+            return newTexture;
         }
         else
             return sprite.texture;
@@ -283,14 +283,26 @@ public abstract class BaseTab
 
     public Sprite ImageChanger(int index, string panelName, string assetPath)
     {
-        string relativepath;
-        string[] path = StandaloneFileBrowser.OpenFilePanel(panelName, assetPath, fileExtensions, false);
+        string[] rawPath = StandaloneFileBrowser.OpenFilePanel(panelName, assetPath, fileExtensions, false);
+        string fileName = Path.GetFileNameWithoutExtension(rawPath[0]); 
 
-        if (path.Length != 0)
-        {
-            relativepath = "Image/";
-            relativepath += Path.GetFileNameWithoutExtension(path[0]);
-            Sprite imageChosen = Resources.Load<Sprite>(relativepath);
+        if (rawPath.Length != 0)
+        {    
+            int findResourcesPath = rawPath[0].IndexOf("Resources", 0, rawPath[0].Length);
+            // relative path to the Resources folder.
+            // I add + 10 because to get end of Resouces words + backslash
+            // to get relative path directly even we had subfolder.
+            string relativePath = rawPath[0].Remove(0, findResourcesPath + 10);
+            // remove the file extension.
+            string finalPath = relativePath.Remove(relativePath.Length - 4, 4);
+
+            Sprite imageChosen = Resources.Load<Sprite>(rawPath[0]);
+
+           if(imageChosen == null)
+            {
+                Debug.LogError("File did not found! Try to check path / file extension.");
+            }
+
             return imageChosen;
         }
 
