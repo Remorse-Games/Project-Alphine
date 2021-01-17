@@ -472,7 +472,10 @@ public class SkillsTab : BaseTab
                             GUILayout.EndVertical();
 
                             GUILayout.BeginVertical();
-                            GUILayout.Label("Animation:"); // Skill Type class label
+                                    GUILayout.BeginHorizontal();
+                                        GUILayout.Label("Animation:"); // item Animation label
+                                        GUILayout.Label("**UnderWorking**", EditorStyles.boldLabel);
+                                    GUILayout.EndHorizontal();
                                 if (skillSize > 0)
                                 {
                                     skill[index].selectedSkillAnimationIndex = EditorGUILayout.Popup(skill[index].selectedSkillAnimationIndex, skillAnimation, GUILayout.Height(invocationBox.height / 8 + 3), GUILayout.Width(invocationBox.width / 2 - 5));

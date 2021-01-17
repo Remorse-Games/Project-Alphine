@@ -460,7 +460,10 @@ public class ItemTab : BaseTab
                                     GUILayout.EndVertical();
 
                                     GUILayout.BeginVertical();
+                                    GUILayout.BeginHorizontal();
                                         GUILayout.Label("Animation:"); // item Animation label
+                                        GUILayout.Label("**UnderWorking**", EditorStyles.boldLabel);
+                                    GUILayout.EndHorizontal();
                                         if (itemSize > 0)
                                         {
                                             item[index].selecteditemAnimationIndex = EditorGUILayout.Popup(item[index].selecteditemAnimationIndex, itemAnimation, GUILayout.Height(invocationBox.height / 8 + 3), GUILayout.Width(invocationBox.width / 2 - 5));
