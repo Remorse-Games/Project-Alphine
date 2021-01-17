@@ -56,6 +56,9 @@ public static class PathDatabase
     public static string StateExplicitDataPath = "Assets/Resources/Data/StateData/State_";
     public static string StateRelativeDataPath = "Data/StateData";
 
+    public static string StateTraitExplicitDataPath = "Assets/Resources/Data/StateData/TraitData";
+    public static string StateTraitRelativeDataPath = "Data/StateData/TraitData";
+
     //WeaponTab
     public static string WeaponTabExplicitDataPath = "Assets/Resources/Data/WeaponData/Weapon_";
     public static string WeaponTabRelativeDataPath = "Data/WeaponData";

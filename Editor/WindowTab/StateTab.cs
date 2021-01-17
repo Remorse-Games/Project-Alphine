@@ -8,12 +8,14 @@ public class StateTab : BaseTab
 
     //Having list of all states exist in data.
     public List<StateData> state = new List<StateData>();
+    public List<TraitsData> traits = new List<TraitsData>();
 
     //List of names. Why you ask? because selectionGrid require
     //array of string, which we cannot obtain in stateData.
     //I hope later got better solution about this to not do
     //a double List for this kind of thing.
     List<string> stateDisplayName = new List<string>();
+    List<string> traitDisplayName = new List<string>();
 
     //All GUIStyle variable initialization.
     GUIStyle tabStyle;
@@ -56,11 +58,14 @@ public class StateTab : BaseTab
 
     //How many state in ChangeMaximum Func
     public int stateSize;
-    public int stateSizeTemp;    
+    public int stateSizeTemp;
+    public static int[] traitSize;
 
     //i don't know about this but i leave this to handle later.
-    int index = 0;
+    public static int index = 0;
     int indexTemp = -1;
+    public static int traitIndex = 0;
+    public static int traitIndexTemp = -1;
 
     //Scroll position. Is this necessary?
     Vector2 scrollPos = Vector2.zero;
@@ -71,8 +76,30 @@ public class StateTab : BaseTab
 
     public void Init()
     {
+        //Clears List
         state.Clear();
+        traits.Clear();
+
+        //Resetting each index to 0, so that it won't have error (Index Out Of Range)
+        index = 0;
+        traitIndex = 0;
+
         LoadGameData<StateData>(ref stateSize, state, PathDatabase.StateRelativeDataPath);
+
+        traitSize = new int[stateSize]; //Resets Trait Sizing
+        LoadGameData<TraitsData>(ref traitSize[index], traits, PathDatabase.StateTraitRelativeDataPath + (index + 1));
+
+        //Create Folder For TraitData and its sum is based on weaponSize value
+        FolderCreator(stateSize, "Assets/Resources/Data/StateData", "TraitData");
+
+        //Check if TraitData_(index) is empty, if it is empty then create a SO named Trait_1
+        if (traitSize[index] <= 0)
+        {
+            traitIndex = 0;
+            ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.StateTraitExplicitDataPath + (index + 1) + "/Trait_");
+        }
+
+        ClearNullScriptableObjects();
         ListReset();
     }
     public void OnRender(Rect position)
@@ -118,9 +145,9 @@ public class StateTab : BaseTab
             GUILayout.Box(" ", stateStyle, GUILayout.Width(position.width - DatabaseMain.tabAreaWidth), GUILayout.Height(position.height - 25f));
 
         
-            #region Tab 1/2
+            #region Tab 1/3
 
-            //First Tab of two
+            //First Tab of three
             GUILayout.BeginArea(new Rect(0, 0, tabWidth, tabHeight));
                 GUILayout.Box("States", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15));
 
@@ -135,6 +162,21 @@ public class StateTab : BaseTab
                 if (GUI.changed && index != indexTemp)
                 {
                     indexTemp = index;
+                    traitIndex = 0;
+                    
+                    //Load TraitsData
+                    traits.Clear();
+                    LoadGameData<TraitsData>(ref traitSize[index], traits, PathDatabase.StateTraitRelativeDataPath + (index + 1));
+                    
+                    //Check if TraitsData folder is empty
+                    if (traitSize[index] <= 0)
+                    {
+                        ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.StateTraitExplicitDataPath + (index + 1) + "/Trait_");
+                        traitIndexTemp = 0;
+                    }
+                    ClearNullScriptableObjects();
+
+                    ListReset();
                     ItemTabLoader(indexTemp);
                     indexTemp = -1;
                 }
@@ -144,7 +186,34 @@ public class StateTab : BaseTab
                 if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
                 {
                     stateSize = stateSizeTemp;
+                    index = indexTemp = 0;
+                    FolderCreator(stateSize, "Assets/Resources/Data/StateData", "TraitData");
                     ChangeMaximum<StateData>(stateSize, state, PathDatabase.StateExplicitDataPath);
+
+                    //New TraitSize array length
+                    int[] tempArr = new int[traitSize.Length];
+                    for (int i = 0; i < traitSize.Length; i++)
+                        tempArr[i] = traitSize[i];
+
+                    traitSize = new int[stateSize];
+
+                    #region FindSmallestBetween
+                        int smallestValue;
+                        if (tempArr.Length < stateSize) smallestValue = tempArr.Length;
+                        else smallestValue = stateSize;
+                    #endregion
+
+                    for (int i = 0; i < smallestValue; i++)
+                        traitSize[i] = tempArr[i];
+
+                    //Reload Data and Check SO
+                    LoadGameData<TraitsData>(ref traitSize[index], traits, PathDatabase.StateTraitRelativeDataPath + (index + 1));
+                    if (traitSize[index] <= 0)
+                    {
+                        ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.StateTraitExplicitDataPath + (index + 1) + "/Trait_");
+                    }
+
+                    ClearNullScriptableObjects();
                     ListReset();
                 }
 
@@ -469,26 +538,67 @@ public class StateTab : BaseTab
                 //Traits
                 Rect traitsBox = new Rect(5, 5, firstTabWidth + 15, position.height * 5 / 8);
                 #region Traits
+                ListReset();
                 GUILayout.BeginArea(traitsBox, tabStyle);
                     GUILayout.Space(2);
                     GUILayout.Label("Traits", EditorStyles.boldLabel);
-                    GUILayout.Space(traitsBox.height / 30);
+                    GUILayout.Space(5);
                     #region Horizontal For Type And Content
                     GUILayout.BeginHorizontal();
-                        GUILayout.Label("Type", GUILayout.Width(traitsBox.width * 3 / 8));
-                        GUILayout.Label("Content", GUILayout.Width(traitsBox.width * 5 / 8));
+                       GUILayout.Label(PadString("Type", string.Format("{0}", "  Content")), GUILayout.Width(traitsBox.width));
                     GUILayout.EndHorizontal();
                     #endregion
                     #region ScrollView
                     traitsScrollPos = GUILayout.BeginScrollView(
-                        traitsScrollPos,
-                        false,
-                        true,
-                        GUILayout.Width(firstTabWidth + 5),
-                        GUILayout.Height(traitsBox.height * 0.87f)
-                        );
+                                traitsScrollPos, 
+                                false, 
+                                true, 
+                                GUILayout.Width(firstTabWidth + 5), 
+                                GUILayout.Height(traitsBox.height * 0.83f)
+                                );
+        
+                            GUI.changed = false;
+                            GUI.skin.button.alignment = TextAnchor.MiddleLeft;
+                            traitIndex = GUILayout.SelectionGrid(
+                                traitIndex,
+                                traitDisplayName.ToArray(),
+                                1,
+                                GUILayout.Width(firstTabWidth - 20),
+                                GUILayout.Height(position.height / 24 * traitSize[index]
+                                ));
+                            GUI.skin.button.alignment = TextAnchor.MiddleCenter;
                     GUILayout.EndScrollView();
                     #endregion
+
+                    //Happen everytime selection grid is updated
+                        if (GUI.changed)
+                        {
+                            if (traitIndex != traitIndexTemp)
+                            {
+                                TraitWindow.ShowWindow(traits, traitIndex, traitSize[index], TabType.State);
+                            
+                                traitIndexTemp = traitIndex;
+                            }
+                        }
+
+                        //Create Empty SO if there isn't any null SO left
+                        if ((traits[traitSize[index] - 1].traitName != null && traits[traitSize[index] - 1].traitName != "") && traitSize[index] > 0)
+                        {
+                            traitIndex = 0;
+                            ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.StateTraitExplicitDataPath + (index + 1) + "/Trait_");
+                        }
+
+                        //Delete All Data Button
+                        if (GUILayout.Button("Delete All Data", GUILayout.Width(traitsBox.width * .3f), GUILayout.Height(traitsBox.height * .055f)))
+                        {
+                            if (EditorUtility.DisplayDialog("Delete All Trait Data", "Are you sure want to delete all Trait Data?", "Yes", "No"))
+                            {
+                                traitIndex = 0;
+                                traitSize[index] = 1;
+                                ChangeMaximum<TraitsData>(0, traits, PathDatabase.StateTraitExplicitDataPath + (index + 1) + "/Trait_");
+                                ChangeMaximum<TraitsData>(1, traits, PathDatabase.StateTraitExplicitDataPath + (index + 1) + "/Trait_");
+                            }
+                        }
                 GUILayout.EndArea();
                 #endregion //End of TraitboxArea
 
@@ -547,9 +657,39 @@ public class StateTab : BaseTab
         {
             stateDisplayName.Add(state[i].stateName);
         }
+        //Trait Reset
+        traitDisplayName.Clear();
+        for (int i = 0; i < traitSize[index]; i++)
+        {
+            traitDisplayName.Add(traits[i].traitName);
+        }
     }
 
-    
+    private void ClearNullScriptableObjects()
+    {
+        bool availableNull = true;
+        while (availableNull)
+        {
+            availableNull = false;
+            for (int i = 0; i < traitSize[index] - 1; i++)
+            {
+                if (string.IsNullOrEmpty(traits[i].traitName))
+                {
+                    availableNull = true;
+                    for (int j = i; j < traitSize[index] - 1; j++)
+                    {
+                        traits[j].traitName = traits[j + 1].traitName;
+                        traits[j].selectedTabToggle = traits[j + 1].selectedTabToggle;
+                        traits[j].selectedTabIndex = traits[j + 1].selectedTabIndex;
+                        traits[j].selectedArrayIndex = traits[j + 1].selectedArrayIndex;
+                        traits[j].traitValue = traits[j + 1].traitValue;
+                    }
+                    ChangeMaximum<TraitsData>(--traitSize[index], traits, PathDatabase.StateTraitExplicitDataPath + (index + 1) + "/Trait_");
+                    i--;
+                }
+            }
+        }
+    }
 
     #endregion
 }

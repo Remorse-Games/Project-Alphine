@@ -168,7 +168,7 @@ public class WeaponTab : BaseTab
                 {
                     weaponSize = weaponSizeTemp;
                     index = indexTemp = 0;
-                    FolderCreator(weaponSize, "Assets/Resources/Data/WeapomData", "TraitData");
+                    FolderCreator(weaponSize, "Assets/Resources/Data/WeaponData", "TraitData");
                     ChangeMaximum<WeaponData>(weaponSize, weapon, PathDatabase.WeaponTabExplicitDataPath);
                     
                     //New TraitSize array length
@@ -402,70 +402,70 @@ public class WeaponTab : BaseTab
             
                 //Traits
                 Rect traitsBox = new Rect(5, 5, firstTabWidth + 15, position.height * 5 / 8);
-                #region Traits
-                ListReset();
-                GUILayout.BeginArea(traitsBox, tabStyle);
-                    GUILayout.Space(2);
-                    GUILayout.Label("Traits", EditorStyles.boldLabel);
-                    GUILayout.Space(5);
-                    #region Horizontal For Type And Content
-                    GUILayout.BeginHorizontal();
-                        GUILayout.Label(PadString("Type", string.Format("{0}", "  Content")), GUILayout.Width(traitsBox.width));
-                    GUILayout.EndHorizontal();
-                    #endregion
-                    #region ScrollView
-                        traitsScrollPos = GUILayout.BeginScrollView(
-                            traitsScrollPos, 
-                            false, 
-                            true, 
-                            GUILayout.Width(firstTabWidth + 5), 
-                            GUILayout.Height(traitsBox.height * 0.83f)
-                            );
+                    #region Traits
+                    ListReset();
+                    GUILayout.BeginArea(traitsBox, tabStyle);
+                        GUILayout.Space(2);
+                        GUILayout.Label("Traits", EditorStyles.boldLabel);
+                        GUILayout.Space(5);
+                        #region Horizontal For Type And Content
+                        GUILayout.BeginHorizontal();
+                            GUILayout.Label(PadString("Type", string.Format("{0}", "  Content")), GUILayout.Width(traitsBox.width));
+                        GUILayout.EndHorizontal();
+                        #endregion
+                        #region ScrollView
+                            traitsScrollPos = GUILayout.BeginScrollView(
+                                traitsScrollPos, 
+                                false, 
+                                true, 
+                                GUILayout.Width(firstTabWidth + 5), 
+                                GUILayout.Height(traitsBox.height * 0.83f)
+                                );
         
-                        GUI.changed = false;
-                        GUI.skin.button.alignment = TextAnchor.MiddleLeft;
-                        traitIndex = GUILayout.SelectionGrid(
-                            traitIndex,
-                            traitDisplayName.ToArray(),
-                            1,
-                            GUILayout.Width(firstTabWidth - 20),
-                            GUILayout.Height(position.height / 24 * traitSize[index]
-                            ));
-                        GUI.skin.button.alignment = TextAnchor.MiddleCenter;
-                    GUILayout.EndScrollView();
-                    #endregion
+                            GUI.changed = false;
+                            GUI.skin.button.alignment = TextAnchor.MiddleLeft;
+                            traitIndex = GUILayout.SelectionGrid(
+                                traitIndex,
+                                traitDisplayName.ToArray(),
+                                1,
+                                GUILayout.Width(firstTabWidth - 20),
+                                GUILayout.Height(position.height / 24 * traitSize[index]
+                                ));
+                            GUI.skin.button.alignment = TextAnchor.MiddleCenter;
+                        GUILayout.EndScrollView();
+                        #endregion
         
-                    //Happen everytime selection grid is updated
-                    if (GUI.changed)
-                    {
-                        if (traitIndex != traitIndexTemp)
+                        //Happen everytime selection grid is updated
+                        if (GUI.changed)
                         {
-                            TraitWindow.ShowWindow(traits, traitIndex, traitSize[index], TabType.Weapon);
+                            if (traitIndex != traitIndexTemp)
+                            {
+                                TraitWindow.ShowWindow(traits, traitIndex, traitSize[index], TabType.Weapon);
                             
-                            traitIndexTemp = traitIndex;
+                                traitIndexTemp = traitIndex;
+                            }
                         }
-                    }
 
-                    //Create Empty SO if there isn't any null SO left
-                    if ((traits[traitSize[index] - 1].traitName != null && traits[traitSize[index] - 1].traitName != "") && traitSize[index] > 0)
-                    {
-                        traitIndex = 0;
-                        ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.WeaponTraitExplicitDataPath + (index + 1) + "/Trait_");
-                    }
-
-                    //Delete All Data Button
-                    if (GUILayout.Button("Delete All Data", GUILayout.Width(traitsBox.width * .3f), GUILayout.Height(traitsBox.height * .055f)))
-                    {
-                        if (EditorUtility.DisplayDialog("Delete All Trait Data", "Are you sure want to delete all Trait Data?", "Yes", "No"))
+                        //Create Empty SO if there isn't any null SO left
+                        if ((traits[traitSize[index] - 1].traitName != null && traits[traitSize[index] - 1].traitName != "") && traitSize[index] > 0)
                         {
                             traitIndex = 0;
-                            traitSize[index] = 1;
-                            ChangeMaximum<TraitsData>(0, traits, PathDatabase.WeaponTraitExplicitDataPath + (index + 1) + "/Trait_");
-                            ChangeMaximum<TraitsData>(1, traits, PathDatabase.WeaponTraitExplicitDataPath + (index + 1) + "/Trait_");
+                            ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.WeaponTraitExplicitDataPath + (index + 1) + "/Trait_");
                         }
-                    }
-                GUILayout.EndArea();
-                #endregion //End of TraitboxArea
+
+                        //Delete All Data Button
+                        if (GUILayout.Button("Delete All Data", GUILayout.Width(traitsBox.width * .3f), GUILayout.Height(traitsBox.height * .055f)))
+                        {
+                            if (EditorUtility.DisplayDialog("Delete All Trait Data", "Are you sure want to delete all Trait Data?", "Yes", "No"))
+                            {
+                                traitIndex = 0;
+                                traitSize[index] = 1;
+                                ChangeMaximum<TraitsData>(0, traits, PathDatabase.WeaponTraitExplicitDataPath + (index + 1) + "/Trait_");
+                                ChangeMaximum<TraitsData>(1, traits, PathDatabase.WeaponTraitExplicitDataPath + (index + 1) + "/Trait_");
+                            }
+                        }
+                    GUILayout.EndArea();
+                    #endregion //End of TraitboxArea
 
                 //Notes
                 Rect notesBox = new Rect(5, traitsBox.height + 15, firstTabWidth + 15, position.height * 2.5f / 8);

@@ -144,6 +144,10 @@ public class TraitWindow : EditorWindow
                 EnemyTab.traitIndex = 0;
                 EnemyTab.traitIndexTemp = -1;
                 break;
+            case TabType.State:
+                StateTab.traitIndex = 0;
+                StateTab.traitIndexTemp = -1;
+                break;
         }
     }
     private void OnGUI()
@@ -1132,6 +1136,17 @@ public class TraitWindow : EditorWindow
                 }
 
                 EnemyTab.traitSize[EnemyTab.index] = traitSize;
+                break;
+            case TabType.State:
+                ChangeMaximum<TraitsData>(--traitSize, traits, ExplicitDataPath + "/TraitData" + (StateTab.index + 1) + "/Trait_");
+
+                if (traitSize <= 0)
+                {
+                    ChangeMaximum<TraitsData>(1, traits, ExplicitDataPath + "/TraitData" + (StateTab.index + 1) + "/Trait_");
+                    traitSize = 1;
+                }
+
+                StateTab.traitSize[StateTab.index] = traitSize;
                 break;
         }
     }

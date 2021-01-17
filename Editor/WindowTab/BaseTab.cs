@@ -22,6 +22,7 @@ public enum TabType
     Armor,
     Enemy,
     Weapon,
+    State,
 };
 
 public abstract class BaseTab
