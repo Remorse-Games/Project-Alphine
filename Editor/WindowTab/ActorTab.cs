@@ -166,8 +166,8 @@ public class ActorTab : BaseTab
                 {
                     //Index Resetting
                     indexTemp = index;
-                    traitIndex = 0;
-                    typeIndex = 0;
+                    traitIndex = typeIndex = 0;
+                    traitIndexTemp = typeIndexTemp = -1;
 
                     ItemTabLoader(index);
 

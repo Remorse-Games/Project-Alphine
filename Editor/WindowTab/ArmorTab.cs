@@ -137,6 +137,7 @@ public class ArmorTab : BaseTab
                 {
                     indexTemp = index;
                     traitIndex  = 0;
+                    traitIndexTemp = -1;
 
                     ItemTabLoader(indexTemp);
 

@@ -163,7 +163,8 @@ public class StateTab : BaseTab
                 {
                     indexTemp = index;
                     traitIndex = 0;
-                    
+                    traitIndexTemp = -1;
+
                     //Load TraitsData
                     traits.Clear();
                     LoadGameData<TraitsData>(ref traitSize[index], traits, PathDatabase.StateTraitRelativeDataPath + (index + 1));
