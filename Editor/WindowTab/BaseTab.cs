@@ -296,7 +296,7 @@ public abstract class BaseTab
             // remove the file extension.
             string finalPath = relativePath.Remove(relativePath.Length - 4, 4);
 
-            Sprite imageChosen = Resources.Load<Sprite>(rawPath[0]);
+            Sprite imageChosen = Resources.Load<Sprite>(finalPath);
 
            if(imageChosen == null)
             {
