@@ -266,6 +266,9 @@ public class SkillsTab : BaseTab
                 ClearNullScriptableObjects();
                 ListReset();
             }
+            else if(skillSizeTemp <= 0){
+                skillSizeTemp = skillSize;
+            }
 
             GUILayout.EndArea();
             #endregion // End Of First Tab

@@ -166,6 +166,8 @@ public class TypeTab : BaseTab
                     elementSize = elementSizeTemp;
                     ChangeMaximum<TypeElementData>(elementSize, element, PathDatabase.ElementExplicitDataPath);
                     ElementListReset();
+                }else if(elementSizeTemp <= 0){
+                    elementSizeTemp = elementSize;
                 }
             GUILayout.EndArea();
             #endregion  
@@ -214,6 +216,10 @@ public class TypeTab : BaseTab
                 ChangeMaximum<TypeSkillData>(skillSize, skill, PathDatabase.SkillExplicitDataPath);
                 SkillListReset();
             }
+            else if (skillSizeTemp <= 0)
+            {
+                skillSizeTemp = skillSize;
+            }
             GUILayout.EndArea();
             #endregion  
 
@@ -260,6 +266,9 @@ public class TypeTab : BaseTab
                 weaponSize = weaponSizeTemp;
                 ChangeMaximum<TypeWeaponData>(weaponSize, weapon, PathDatabase.WeaponExplicitDataPath);
                 WeaponListReset();
+            }
+            else if(weaponSizeTemp <= 0){
+                weaponSizeTemp = weaponSize;
             }
             GUILayout.EndArea();
             #endregion  
@@ -308,6 +317,9 @@ public class TypeTab : BaseTab
                 ChangeMaximum<TypeArmorData>(armorSize, armor, PathDatabase.ArmorExplicitDataPath);
                 ArmorListReset();
             }
+            else if(armorSizeTemp <= 0){
+                armorSizeTemp = armorSize;
+            }
             GUILayout.EndArea();
             #endregion  
 
@@ -354,6 +366,9 @@ public class TypeTab : BaseTab
                 equipmentSize = equipmentSizeTemp;
                 ChangeMaximum<TypeEquipmentData>(equipmentSize, equipment, PathDatabase.EquipmentExplicitDataPath);
                 EquipmentListReset();
+            }
+            else if(equipmentSizeTemp <= 0){
+                equipmentSizeTemp = equipmentSize;
             }
             GUILayout.EndArea();
             #endregion  

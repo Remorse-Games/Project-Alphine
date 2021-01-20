@@ -217,7 +217,9 @@ public class StateTab : BaseTab
                     ClearNullScriptableObjects();
                     ListReset();
                 }
-
+                else if(stateSizeTemp <= 0){
+                    stateSizeTemp = stateSize;
+                }
             GUILayout.EndArea();
             #endregion // End Of First Tab
 

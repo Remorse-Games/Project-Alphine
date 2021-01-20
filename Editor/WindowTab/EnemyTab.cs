@@ -237,7 +237,9 @@ public class EnemyTab : BaseTab
                     ClearNullScriptableObjects();
                     ListReset();
                 }
-
+                else if(enemySizeTemp <= 0){
+                    enemySizeTemp = enemySize;
+                }
             GUILayout.EndArea();
             #endregion // End Of First Tab
 

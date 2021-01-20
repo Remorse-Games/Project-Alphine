@@ -255,6 +255,9 @@ public class ItemTab : BaseTab
                     ClearNullScriptableObjects();
                     ListReset();
                 }
+                else if(itemSizeTemp <= 0){
+                    itemSizeTemp = itemSize;
+                }
             GUILayout.EndArea();
             #endregion
 

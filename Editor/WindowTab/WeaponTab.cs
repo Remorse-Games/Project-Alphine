@@ -198,6 +198,9 @@ public class WeaponTab : BaseTab
                     ClearNullScriptableObjects();
                     ListReset();
                 }
+                else if(weaponSizeTemp <= 0){
+                    weaponSizeTemp = weaponSize;
+                }
 
             GUILayout.EndArea();
             #endregion // End Of First Tab

@@ -190,7 +190,9 @@ public class ArmorTab : BaseTab
                     ClearNullScriptableObjects();
                     ListReset();
                 }
-
+                else if(armorSizeTemp <= 0){
+                    armorSizeTemp = armorSize;
+                }
             GUILayout.EndArea();
             #endregion // End Of First Tab
 

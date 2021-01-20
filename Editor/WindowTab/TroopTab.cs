@@ -218,7 +218,9 @@ public class TroopTab : BaseTab
                     ClearNullScriptableObjects();
                     ListReset();
                 }
-
+                else if(troopSizeTemp <= 0){
+                    troopSizeTemp = troopSize;
+                }
             GUILayout.EndArea();
             #endregion // End Of First Tab
 

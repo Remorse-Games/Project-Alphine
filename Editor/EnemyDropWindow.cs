@@ -141,7 +141,6 @@ public class EnemyDropWindow : EditorWindow
                             GUILayout.EndHorizontal();
                         GUILayout.EndArea();
                         #endregion
-
                 GUILayout.EndArea();
                 #endregion
 

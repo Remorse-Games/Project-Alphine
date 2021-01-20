@@ -212,6 +212,9 @@ public class ClassTab : BaseTab
                     ClearNullScriptableObjects();
                     ListReset();
                 }
+                else if(classSizeTemp <= 0){
+                    classSizeTemp = classSize;
+                }
             GUILayout.EndArea();
             #endregion
 

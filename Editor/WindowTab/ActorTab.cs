@@ -190,10 +190,10 @@ public class ActorTab : BaseTab
                     ListReset();
                     indexTemp = -1;
                 }
-
+                
                 //Int field of change Maximum
                 actorSizeTemp = EditorGUILayout.IntField(actorSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
-                if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
+                if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)) && actorSizeTemp > 0)
                 {
                     actorSize = actorSizeTemp;
                     index = indexTemp = 0;
@@ -229,6 +229,9 @@ public class ActorTab : BaseTab
                     }
                     ClearNullScriptableObjects();
                     ListReset();
+                }
+                else if(actorSizeTemp <= 0){
+                    actorSizeTemp = actorSize;
                 }
             GUILayout.EndArea();
             #endregion
