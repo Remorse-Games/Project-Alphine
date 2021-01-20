@@ -584,7 +584,7 @@ public class ActorTab : BaseTab
     private void LoadArmorList(int searchedIndex)
     {
         ArmorData[] armorData = Resources.LoadAll<ArmorData>(PathDatabase.ArmorTabRelativeDataPath);
-        tempArmorList = new string[armorData.Length + 10];
+        tempArmorList = new string[armorData.Length + 1];
 
         int j = 1;
         tempArmorList[0] = "None";
