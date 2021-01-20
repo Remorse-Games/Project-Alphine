@@ -11,6 +11,9 @@ public class EnemyDropWindow : EditorWindow
     GUIStyle tabStyle;
     GUIStyle columnStyle;
 
+    public static string[] itemDisplayName;
+    public static string[] weaponDisplayName;
+    public static string[] armorDisplayName;
     int i = 0;
     int firstSelectedToggle;
     int firstSelectedIndex;
@@ -23,7 +26,7 @@ public class EnemyDropWindow : EditorWindow
 
     //Data(s) reference
     static EnemyData thisClass;
-    public static void ShowWindow(EnemyData enemyData, int size)
+    public static void ShowWindow(EnemyData enemyData, int size, string[] itemListName, string[] weaponListName, string[] armorListName)
     {
         var window = GetWindow<EnemyDropWindow>();
         var position = window.position;
@@ -33,6 +36,9 @@ public class EnemyDropWindow : EditorWindow
         window.titleContent = new GUIContent("Drop Item");
         thisClass = enemyData;
         windowOrder = size;
+        itemDisplayName = itemListName;
+        weaponDisplayName = weaponListName;
+        armorDisplayName = armorListName;
         position.center = new Rect(Screen.width * -1 * .05f, Screen.height * -1 * .05f, Screen.currentResolution.width, Screen.currentResolution.height).center;
         window.position = position;
         window.Show();
@@ -69,21 +75,21 @@ public class EnemyDropWindow : EditorWindow
                             if (EditorGUILayout.Toggle("Items", itemsToggle[1], EditorStyles.radioButton))
                             {
                                 MemsetArray(1);
-                                thisClass.selectedIndex[windowOrder] = EditorGUILayout.Popup(thisClass.selectedIndex[windowOrder], thisClass.enemyItem, GUILayout.Height(15), GUILayout.Width(170));
+                                thisClass.selectedIndex[windowOrder] = EditorGUILayout.Popup(thisClass.selectedIndex[windowOrder], itemDisplayName, GUILayout.Height(15), GUILayout.Width(170));
                                 thisClass.selectedToggle[windowOrder] = 1;
                                 GUILayout.Space(5);
                             }
                             if (EditorGUILayout.Toggle("Weapon", itemsToggle[2], EditorStyles.radioButton))
                             {
                                 MemsetArray(2);
-                                thisClass.selectedIndex[windowOrder] = EditorGUILayout.Popup(thisClass.selectedIndex[windowOrder], thisClass.enemyWeapon, GUILayout.Height(15), GUILayout.Width(170));
+                                thisClass.selectedIndex[windowOrder] = EditorGUILayout.Popup(thisClass.selectedIndex[windowOrder], weaponDisplayName, GUILayout.Height(15), GUILayout.Width(170));
                                 thisClass.selectedToggle[windowOrder] = 2;
                                 GUILayout.Space(5);
                             }
                             if (EditorGUILayout.Toggle("Armor", itemsToggle[3], EditorStyles.radioButton))
                             {
                                 MemsetArray(3);
-                                thisClass.selectedIndex[windowOrder] = EditorGUILayout.Popup(thisClass.selectedIndex[windowOrder], thisClass.enemyArmor, GUILayout.Height(15), GUILayout.Width(170));
+                                thisClass.selectedIndex[windowOrder] = EditorGUILayout.Popup(thisClass.selectedIndex[windowOrder], armorDisplayName, GUILayout.Height(15), GUILayout.Width(170));
                                 thisClass.selectedToggle[windowOrder] = 3;
                                 GUILayout.Space(5);
                             }
@@ -110,7 +116,7 @@ public class EnemyDropWindow : EditorWindow
                                     }
                                     else
                                     {
-                                        EditorGUILayout.IntField(-1, GUILayout.Width(probabilityBox.width - 40), GUILayout.Height(20));
+                                        EditorGUILayout.IntField(1, GUILayout.Width(probabilityBox.width - 40), GUILayout.Height(20));
                                     }
                                 GUILayout.EndHorizontal();
                             GUILayout.EndVertical();
@@ -158,6 +164,8 @@ public class EnemyDropWindow : EditorWindow
         }
         itemsToggle[(checkedTrue)] = true;
     }
+
+   
 
     public void BaseValue(int i)
     {

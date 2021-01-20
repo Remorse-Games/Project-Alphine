@@ -21,6 +21,10 @@ public class EnemyTab : BaseTab
     List<string> enemyDisplayName = new List<string>();
     List<string> traitDisplayName = new List<string>();
 
+    public string[] itemDisplayName;
+    public string[] weaponDisplayName;
+    public string[] armorDisplayName;
+
     //All GUIStyle variable initialization.
     GUIStyle tabStyle;
     GUIStyle columnStyle;
@@ -66,6 +70,10 @@ public class EnemyTab : BaseTab
 
         actionSize = new int[enemySize];
         LoadGameData<ActionPatternsData>(ref actionSize[index], actionPattern, PathDatabase.EnemyActionRelativeDataPath + (index + 1));
+
+        LoadArmorList();
+        LoadItemList();
+        LoadWeaponList();
 
         //Create Folder For TraitsData and its sum is based on actorSize value
         FolderCreator(enemySize, "Assets/Resources/Data/EnemyData", "TraitData");
@@ -392,15 +400,15 @@ public class EnemyTab : BaseTab
                         {
                             if (GUILayout.Button(StringMaker(0), GUILayout.Width(dropItemBox.width - 10), GUILayout.Height(dropItemBox.height / 3 - 15)))
                             {
-                                EnemyDropWindow.ShowWindow(enemy[index], 0);
+                                EnemyDropWindow.ShowWindow(enemy[index], 0, itemDisplayName, weaponDisplayName, armorDisplayName);
                             }
                             if (GUILayout.Button(StringMaker(1), GUILayout.Width(dropItemBox.width - 10), GUILayout.Height(dropItemBox.height / 3 - 15)))
                             {
-                                EnemyDropWindow.ShowWindow(enemy[index], 1);
+                                EnemyDropWindow.ShowWindow(enemy[index], 1, itemDisplayName, weaponDisplayName, armorDisplayName);
                             }
                             if (GUILayout.Button(StringMaker(2), GUILayout.Width(dropItemBox.width - 10), GUILayout.Height(dropItemBox.height / 3 - 15)))
                             {
-                                EnemyDropWindow.ShowWindow(enemy[index], 2);
+                                EnemyDropWindow.ShowWindow(enemy[index], 2, itemDisplayName, weaponDisplayName, armorDisplayName);
                             }
                         }
                         else
@@ -624,6 +632,33 @@ public class EnemyTab : BaseTab
         }
     }
 
+    private void LoadItemList()
+    {
+        ItemData[] itemData = Resources.LoadAll<ItemData>(PathDatabase.ItemRelativeDataPath);
+        itemDisplayName = new string[itemData.Length];
+        for (int i = 0; i < itemDisplayName.Length; i++)
+        {
+            itemDisplayName[i] = itemData[i].itemName;
+        }
+    }
+    private void LoadArmorList()
+    {
+        ArmorData[] armorData = Resources.LoadAll<ArmorData>(PathDatabase.ArmorTabRelativeDataPath);
+        armorDisplayName = new string[armorData.Length];
+        for (int i = 0; i < armorDisplayName.Length; i++)
+        {
+            armorDisplayName[i] = armorData[i].armorName;
+        }
+    }
+    private void LoadWeaponList()
+    {
+        WeaponData[] weaponData = Resources.LoadAll<WeaponData>(PathDatabase.WeaponTabRelativeDataPath);
+        weaponDisplayName = new string[weaponData.Length];
+        for (int i = 0; i < weaponDisplayName.Length; i++)
+        {
+            weaponDisplayName[i] = weaponData[i].weaponName;
+        }
+    }
 
     public string StringMaker(int indexx)
     {
@@ -634,15 +669,15 @@ public class EnemyTab : BaseTab
         {
             if (selectedToggle == 1)
             {
-                outputString = enemy[index].enemyItem[enemy[index].selectedIndex[indexx]];
+                outputString = itemDisplayName[enemy[index].selectedIndex[indexx]];
             }
             else if (selectedToggle == 2)
             {
-                outputString = enemy[index].enemyWeapon[enemy[index].selectedIndex[indexx]];
+                outputString = weaponDisplayName[enemy[index].selectedIndex[indexx]];
             }
             else
             {
-                outputString = enemy[index].enemyArmor[enemy[index].selectedIndex[indexx]];
+                outputString = armorDisplayName[enemy[index].selectedIndex[indexx]];
             }
             outputString += " : 1/" + enemy[index].enemyProbability[indexx].ToString();
         }

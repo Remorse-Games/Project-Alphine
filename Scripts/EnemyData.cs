@@ -5,26 +5,6 @@ using UnityEngine.UIElements;
 
 public class EnemyData : ScriptableObject
 {
-    public string[] enemyItem =
-       {
-        "Potion",
-        "Add other manually.",
-    };
-
-    public string[] enemyArmor =
-    {
-        "Shield",
-        "Hat",
-        "Cloth",
-        "Ring",
-        "Add other manually.",
-    };
-
-    public string[] enemyWeapon =
-    {
-        "Sword",
-        "Add other manually.",
-    };
     public string enemyName;
     public Sprite Image;
 
