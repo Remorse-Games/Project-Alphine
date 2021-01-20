@@ -83,20 +83,7 @@ public class SkillsTab : BaseTab
         "MP Drain",
     };
 
-    public string[] skillElement =
-    {
-        "Normal Attack",
-        "None",
-        "Physical",
-        "Fire",
-        "Ice",
-        "Thunder",
-        "Water",
-        "Earth",
-        "Wind",
-        "Light",
-        "Darkness",
-    };
+    public string[] skillElement;
 
     public string[] skillBool =
     {
@@ -141,6 +128,7 @@ public class SkillsTab : BaseTab
         effectSize = new int[skillSize];
         LoadGameData<EffectData>(ref effectSize[index], effects, PathDatabase.SkillEffectRelativeDataPath + (index + 1));
         LoadWeaponTypeList();
+        LoadElementTypeList();
 
         //create folder for effectdata
         FolderCreator(skillSize, "Assets/Resources/Data/SkillData", "EffectData");
@@ -805,6 +793,15 @@ public class SkillsTab : BaseTab
         }
     }
 
+    private void LoadElementTypeList()
+    {
+        TypeElementData[] typeElementData = Resources.LoadAll<TypeElementData>(PathDatabase.ElementRelativeDataPath);
+        skillElement = new string[typeElementData.Length];
+        for (int i = 0; i < skillElement.Length; i++)
+        {
+            skillElement[i] = typeElementData[i].dataName;
+        }
+    }
     private void LoadWeaponTypeList()
     {
         TypeWeaponData[] typeWeaponData = Resources.LoadAll<TypeWeaponData>(PathDatabase.WeaponRelativeDataPath);

@@ -134,6 +134,7 @@ public class ItemTab : BaseTab
 
         effectSize = new int[itemSize];
         LoadGameData<EffectData>(ref effectSize[index], effects, PathDatabase.ItemEffectRelativeDataPath + (index + 1));
+        LoadElementTypeList();
 
         //create folder for effectdata
         FolderCreator(itemSize, "Assets/Resources/Data/ItemData", "EffectData");
@@ -682,6 +683,15 @@ public class ItemTab : BaseTab
 
 
     #region Features
+    private void LoadElementTypeList()
+    {
+        TypeElementData[] typeElementData = Resources.LoadAll<TypeElementData>(PathDatabase.ElementRelativeDataPath);
+        itemElement = new string[typeElementData.Length];
+        for (int i = 0; i < itemElement.Length; i++)
+        {
+            itemElement[i] = typeElementData[i].dataName;
+        }
+    }
     public override void ItemTabLoader(int index)
     {
         Texture2D defTex = new Texture2D(256, 256);

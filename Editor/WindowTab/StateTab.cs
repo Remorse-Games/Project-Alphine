@@ -408,9 +408,9 @@ public class StateTab : BaseTab
                                     }
                                     else
                                     {
-                                        EditorGUILayout.IntField(-1, GUILayout.Width(generalBox.width / 2 * .4f), GUILayout.Height(generalBox.height / 8));
+                                        EditorGUILayout.IntField(1, GUILayout.Width(generalBox.width / 2 * .4f), GUILayout.Height(generalBox.height / 8));
                                         GUILayout.Label(" ~");
-                                        EditorGUILayout.IntField(-1, GUILayout.Width(generalBox.width / 2 * .4f), GUILayout.Height(generalBox.height / 8 ));
+                                        EditorGUILayout.IntField(1, GUILayout.Width(generalBox.width / 2 * .4f), GUILayout.Height(generalBox.height / 8 ));
                                     }
                                 GUILayout.EndHorizontal();
                                
