@@ -129,7 +129,10 @@ public class SystemTab : BaseTab
                                     GUILayout.Space(2);
                                     GUILayout.Label("Window Color", EditorStyles.boldLabel);
                                     GUILayout.Space(windowColorTab.height/10);
+                                    Color tempColorButton = GUI.backgroundColor;
+                                    GUI.backgroundColor = Color.green;
                                     system.windowColor =  EditorGUILayout.ColorField(system.windowColor, GUILayout.Width(windowColorTab.width*99/100), GUILayout.Height(windowColorTab.height*65/100));
+                                    GUI.backgroundColor = tempColorButton;                            
                                     //GUILayout.Button(CreateTexture(Mathf.RoundToInt(windowColorTab.width-10),Mathf.RoundToInt(windowColorTab.height-20), system.windowColor));
                                     //GUILayout.Box(CreateTexture(Mathf.RoundToInt(windowColorTab.width-10),Mathf.RoundToInt(windowColorTab.height-20), system.windowColor));
                                 GUILayout.EndArea();

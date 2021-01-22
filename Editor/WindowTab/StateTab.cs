@@ -258,6 +258,8 @@ public class StateTab : BaseTab
 
                                     GUILayout.BeginVertical();
                                         GUILayout.Box(stateIcon, GUILayout.Width(61), GUILayout.Height(61)); // Icon Box preview
+                                        Color tempColorIcon = GUI.backgroundColor;
+                                        GUI.backgroundColor = Color.green;
                                         if (GUILayout.Button("Edit Icon", GUILayout.Height(20), GUILayout.Width(61))) // Icon changer Button
                                         {
                                             state[index].icon = ImageChanger(
@@ -267,6 +269,7 @@ public class StateTab : BaseTab
                                             );
                                             ItemTabLoader(index);
                                         }
+                                        GUI.backgroundColor = tempColorIcon;
                                     GUILayout.EndVertical();
                                 GUILayout.EndHorizontal();
                                 GUILayout.EndArea();

@@ -242,7 +242,6 @@ public class ActorTab : BaseTab
 
             //GeneralSettings tab
                 Rect generalBox = new Rect(5, 5, firstTabWidth + 60, position.height / 3 - 50);
-
                 #region GeneralSettings
                 GUILayout.BeginArea(generalBox, tabStyle); //Start of general settings tab
                     GUILayout.Label("General Settings", EditorStyles.boldLabel); //general settings label
@@ -339,6 +338,8 @@ public class ActorTab : BaseTab
                         GUILayout.BeginVertical();
                             GUILayout.Label("Face:");
                             GUILayout.Box(faceImage, GUILayout.Width(imageBox.width / 3 - 10), GUILayout.Height(imageBox.width / 3 - 10));
+                            Color tempColor1 = GUI.backgroundColor;
+                            GUI.backgroundColor = Color.green;
                             if (GUILayout.Button("Edit Face", GUILayout.Height(imageBox.height / 10), GUILayout.Width(imageBox.width / 3 - 10))) 
                             {
                                     actor[index].face = ImageChanger(
@@ -348,12 +349,15 @@ public class ActorTab : BaseTab
                                     );
                                     ItemTabLoader(index);
                             }
+                            GUI.backgroundColor = tempColor1;
                         GUILayout.EndVertical();
                         #endregion
                         #region Character
                         GUILayout.BeginVertical();
                             GUILayout.Label("Character:");
                             GUILayout.Box(characterImage, GUILayout.Width(imageBox.width / 3 - 10), GUILayout.Height(imageBox.width / 3 - 10));
+                            Color tempColor2 = GUI.backgroundColor;
+                            GUI.backgroundColor = Color.green;
                             if (GUILayout.Button("Edit Character", GUILayout.Height(imageBox.height / 10), GUILayout.Width(imageBox.width / 3 - 10))) 
                             {
                                     actor[index].characterWorld = ImageChanger(
@@ -363,12 +367,15 @@ public class ActorTab : BaseTab
                                     );
                                     ItemTabLoader(index);
                             }
+                            GUI.backgroundColor = tempColor2;
                         GUILayout.EndVertical();
                         #endregion
                         #region SV Battler
                         GUILayout.BeginVertical();
                             GUILayout.Label("[SV] Battler: ");
                             GUILayout.Box(battlerImage, GUILayout.Width(imageBox.width / 3 - 10), GUILayout.Height(imageBox.width / 3 - 10));
+                            Color tempColor3 = GUI.backgroundColor;
+                            GUI.backgroundColor = Color.green;
                             if (GUILayout.Button("Edit Battler", GUILayout.Height(imageBox.height / 10), GUILayout.Width(imageBox.width / 3 - 10))) 
                             {
                                     actor[index].battler = ImageChanger(
@@ -379,6 +386,7 @@ public class ActorTab : BaseTab
                                     ItemTabLoader(index);
 
                             }
+                            GUI.backgroundColor = tempColor3;
                             GUILayout.EndVertical();
                                             #endregion
                                         GUILayout.EndHorizontal();

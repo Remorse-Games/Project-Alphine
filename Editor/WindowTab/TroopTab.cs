@@ -326,7 +326,7 @@ public class TroopTab : BaseTab
 
                                     GUIStyle button = new GUIStyle(GUI.skin.button);
                                     button.margin = new RectOffset(20, 20, 5, 5);
-
+                                    
                                     if (GUILayout.Button("New Event Page", button, GUILayout.Height(50)))
                                     {
                                         ChangeMaximum<BattleEventData>(++battleEventSize[index], battleEvents, PathDatabase.BattleEventExplicitDataPath + (index + 1) + "/BattleEvent_");
@@ -336,11 +336,13 @@ public class TroopTab : BaseTab
                                         ListReset();
                                     }
 
+                                    Color tempColorCopy = GUI.backgroundColor;
+                                    GUI.backgroundColor = Color.cyan;
                                     if (GUILayout.Button("Copy Event Page", button, GUILayout.Height(50)))
                                     {
                                         CopyData = battleEvents[battleEventIndex];
                                     }
-
+                                    GUI.backgroundColor = tempColorCopy;
                                     EditorGUI.BeginDisabledGroup(CopyData == null);
 
                                     if (GUILayout.Button("Paste Event Page", button, GUILayout.Height(50)))
@@ -355,7 +357,9 @@ public class TroopTab : BaseTab
                                     EditorGUI.EndDisabledGroup();
 
                                     EditorGUI.BeginDisabledGroup(battleEventSize[index] <= 1);
-
+                                    
+                                    Color tempColor2 = GUI.backgroundColor;
+                                    GUI.backgroundColor = Color.yellow;
                                     if (GUILayout.Button("Delete Event Page", button, GUILayout.Height(50)))
                                     {
                                         DeleteEventData();
@@ -364,15 +368,18 @@ public class TroopTab : BaseTab
 
                                         ListReset();
                                     }
-
+                                    GUI.backgroundColor = tempColor2;
                                     EditorGUI.EndDisabledGroup();
-
+                                    
+                                    Color tempColor = GUI.backgroundColor;
+                                    GUI.backgroundColor = Color.red;
                                     if (GUILayout.Button("Clear Event Page", button, GUILayout.Height(50)))
                                     {
                                         battleEvents[battleEventIndex].condition = "Don't Run";
                                         battleEvents[battleEventIndex].span = 0;
                                         battleEvents[battleEventIndex].eventCommand.Clear();
                                     }
+                                    GUI.backgroundColor = tempColor;
 
                                 GUILayout.EndVertical();
 

@@ -285,10 +285,13 @@ public class ClassTab : BaseTab
                                 {
                                     EditorGUILayout.CurveField(classes[index].maxHPCurve, new Color32(255, 150, 0, 255), curveValueRangeHP, GUILayout.Width(curveWidth), GUILayout.Height(curveheight));
                                 }
+                                Color tempColorHP = GUI.backgroundColor;
+                                GUI.backgroundColor = Color.green;
                                 if (GUILayout.Button("Edit Max Hp", GUILayout.Width(curveWidth)))
                                 {
                                     MaxHPWindow maxHPWindow = new MaxHPWindow(classes[index]);
                                 }
+                                GUI.backgroundColor = tempColorHP;
                             }
                             else
                             {
@@ -304,10 +307,13 @@ public class ClassTab : BaseTab
                                 {
                                     EditorGUILayout.CurveField(classes[index].mAttackCurve, new Color32(255, 0, 255, 255), curveValueRangeMAtk, GUILayout.Width(curveWidth), GUILayout.Height(curveheight));
                                 }
+                                Color tempColorMAttack = GUI.backgroundColor;
+                                GUI.backgroundColor = Color.green;
                                 if (GUILayout.Button("Edit M.Attack", GUILayout.Width(curveWidth)))
                                 {
                                     MAttackWindow mAttackWindow = new MAttackWindow(classes[index]);
                                 }
+                                GUI.backgroundColor = tempColorMAttack;
                             }
                             else
                             {
@@ -324,10 +330,13 @@ public class ClassTab : BaseTab
                                 {
                                     EditorGUILayout.CurveField(classes[index].maxMPCurve, new Color32(0, 0, 255, 255), curveValueRangeMP, GUILayout.Width(curveWidth), GUILayout.Height(curveheight));
                                 }
+                                Color tempColorMMP = GUI.backgroundColor;
+                                GUI.backgroundColor = Color.green;
                                 if (GUILayout.Button("Edit Max MP", GUILayout.Width(curveWidth)))
                                 {
                                     MaxMPWindow maxMPWindow = new MaxMPWindow(classes[index]);
                                 }
+                                GUI.backgroundColor = tempColorMMP;
                             }
                             else
                             {
@@ -343,10 +352,13 @@ public class ClassTab : BaseTab
                                 {
                                     EditorGUILayout.CurveField(classes[index].mDefenseCurve, new Color32(11, 156, 49, 255), curveValueRangeMAtk, GUILayout.Width(curveWidth), GUILayout.Height(curveheight));
                                 }
+                                Color tempColorMDefense = GUI.backgroundColor;
+                                GUI.backgroundColor = Color.green;
                                 if (GUILayout.Button("Edit M.Defense", GUILayout.Width(curveWidth)))
                                 {
                                     MDefenseWindow mDefensekWindow = new MDefenseWindow(classes[index]);
                                 }
+                                GUI.backgroundColor = tempColorMDefense;
                             }
                             else
                             {
@@ -363,10 +375,13 @@ public class ClassTab : BaseTab
                                 {
                                     EditorGUILayout.CurveField(classes[index].AttackCurve, new Color32(255, 0, 0, 255), curveValueRangeAttack, GUILayout.Width(curveWidth), GUILayout.Height(curveheight));
                                 }
+                                Color tempColorAttack = GUI.backgroundColor;
+                                GUI.backgroundColor = Color.green;
                                 if (GUILayout.Button("Edit Attack", GUILayout.Width(curveWidth)))
                                 {
                                     AttackWindow attackWindow = new AttackWindow(classes[index]);
                                 }
+                                GUI.backgroundColor = tempColorAttack;
                             }
                             else
                             {
@@ -382,10 +397,13 @@ public class ClassTab : BaseTab
                                 {
                                     EditorGUILayout.CurveField(classes[index].agilityCurve, new Color32(0, 255, 255, 255), curveValueRangeAgi, GUILayout.Width(curveWidth), GUILayout.Height(curveheight));
                                 }
+                                Color tempColorAgility = GUI.backgroundColor;
+                                GUI.backgroundColor = Color.green;
                                 if (GUILayout.Button("Edit Agility", GUILayout.Width(curveWidth)))
                                 {
                                     AgilityWindow agilityWindow = new AgilityWindow(classes[index]);
                                 }
+                                GUI.backgroundColor = tempColorAgility;
                             }
                             else
                             {
@@ -402,10 +420,13 @@ public class ClassTab : BaseTab
                                 {
                                     EditorGUILayout.CurveField(classes[index].DefenseCurve, new Color32(0, 255, 0, 255), curveValueRangeDefense, GUILayout.Width(curveWidth), GUILayout.Height(curveheight));
                                 }
+                                Color tempColorDefense = GUI.backgroundColor;
+                                GUI.backgroundColor = Color.green;
                                 if (GUILayout.Button("Edit Defense", GUILayout.Width(curveWidth)))
                                 {
                                     DefenseWindow defenseWindow = new DefenseWindow(classes[index]);
                                 }
+                                GUI.backgroundColor = tempColorDefense;
                             }
                             else
                             {
@@ -421,10 +442,13 @@ public class ClassTab : BaseTab
                                 {
                                     EditorGUILayout.CurveField(classes[index].luckCurve, new Color32(255, 200, 0, 255), curveValueRangeLuck, GUILayout.Width(curveWidth), GUILayout.Height(curveheight));
                                 }
+                                Color tempColorLuck = GUI.backgroundColor;
+                                GUI.backgroundColor = Color.green;
                                 if (GUILayout.Button("Edit Luck", GUILayout.Width(curveWidth)))
                                 {
                                     LuckWindow luckWindow = new LuckWindow(classes[index]);
                                 }
+                                GUI.backgroundColor = tempColorLuck;
                             }
                             else
                             {
@@ -444,7 +468,7 @@ public class ClassTab : BaseTab
                     GUILayout.Label("Skills to Learn", EditorStyles.boldLabel);
                     #region Vertical
                     GUILayout.BeginVertical();
-                        GUILayout.Space(skillsToLearnBox.height / 10);
+                        GUILayout.Space(5);
                         #region Horizontal
                         GUILayout.BeginHorizontal();
                             #region Title
@@ -466,7 +490,7 @@ public class ClassTab : BaseTab
                                 false,
                                 true,
                                 GUILayout.Width(firstTabWidth + 50),
-                                GUILayout.Height(skillsToLearnBox.height * 0.65f)
+                                GUILayout.Height(skillsToLearnBox.height * 0.7f)
                                 );
                             GUI.changed = false;
                             GUI.skin.button.alignment = TextAnchor.MiddleLeft;

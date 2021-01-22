@@ -265,6 +265,10 @@ public class EnemyTab : BaseTab
                                 }
                                 GUILayout.Label("Image:"); // Image labe;
                                 GUILayout.Box(enemyImage, GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height * .50f - 10)); // Image Box preview
+                                
+
+                                Color tempColorIcon = GUI.backgroundColor;
+                                GUI.backgroundColor = Color.green;
                                 if (GUILayout.Button("Edit Image", GUILayout.Height(20), GUILayout.Width(generalBox.width / 2 - 15))) // Image changer Button
                                 {
                                     enemy[index].Image = ImageChanger(
@@ -274,6 +278,7 @@ public class EnemyTab : BaseTab
                                     );
                                     ItemTabLoader(index);
                                 }
+                                GUI.backgroundColor = tempColorIcon;
                             GUILayout.EndVertical();
 
                             GUILayout.BeginVertical();
