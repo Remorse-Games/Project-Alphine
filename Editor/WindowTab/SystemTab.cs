@@ -13,6 +13,8 @@ public class SystemTab : BaseTab
     GUIStyle tabStyle;
     GUIStyle columnStyle;
 
+
+    int actorSize, skillSize;
     public static int selectedStartingPartyIndex = -1;
     public static int selectedMagicSkillIndex = -1;
     public SystemData system;
@@ -25,15 +27,16 @@ public class SystemTab : BaseTab
             AssetDatabase.CreateAsset(newSystemData, "Assets/Resources/Data/SystemData/SystemData.asset");
             AssetDatabase.SaveAssets();
             system = Resources.Load<SystemData>("Data/SystemData/SystemData");
-
         }
 
-        if (system.startingParty.Count <= 0 || system.startingParty[system.startingParty.Count - 1] != "")
+        LoadList();
+
+        if (system.startingParty.Count <= 0 || system.startingParty.Count < actorSize)
         {
             system.startingParty.Add("");
         }
 
-        if (system.magicSkills.Count <= 0 || system.magicSkills[system.magicSkills.Count - 1] != "")
+        if (system.magicSkills.Count <= 0 || system.magicSkills.Count < skillSize)
         {
             system.magicSkills.Add("");
         }
@@ -207,5 +210,13 @@ public class SystemTab : BaseTab
     public override void ItemTabLoader(int index)
     {
         throw new System.NotImplementedException();
+    }
+
+    private void LoadList()
+    {
+        ActorData[] actor = Resources.LoadAll<ActorData>(PathDatabase.ActorRelativeDataPath);
+        actorSize = actor.Length;
+        TypeSkillData[] skill = Resources.LoadAll<TypeSkillData>(PathDatabase.SkillRelativeDataPath);
+        skillSize = skill.Length;
     }
 }

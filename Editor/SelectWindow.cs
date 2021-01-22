@@ -121,7 +121,7 @@ public class SelectWindow : EditorWindow
                             // save and close
                             list[index] = DataList[SelectedActorIndex];
                 
-                            if(index == list.Count - 1)
+                            if(index == list.Count - 1 && DataList.Count > 1)
                             {
                                 list.Add("");
                             }
