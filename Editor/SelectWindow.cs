@@ -200,12 +200,25 @@ public class SelectWindow : EditorWindow
             {
                 case SelectType.Actor:
                     ActorData[] actor = Resources.LoadAll<ActorData>(PathDatabase.ActorRelativeDataPath);
-                    DataList = actor.Select(x => x.actorName).ToList();
+                    for(int i = 0; i < actor.Length; i++)
+                    {
+                        if (list.FindIndex(x => x == actor[i].actorName) < 0)
+                        {
+                            DataList.Add(actor[i].actorName);
+                        }
+                    }
                     break;
+
 
                 case SelectType.Skill:
                     TypeSkillData[] skill = Resources.LoadAll<TypeSkillData>(PathDatabase.SkillRelativeDataPath);
-                    DataList = skill.Select(x => x.dataName).ToList();
+                    for (int i = 0; i < skill.Length; i++)
+                    {
+                        if (list.FindIndex(x => x == skill[i].dataName) < 0)
+                        {
+                            DataList.Add(skill[i].dataName);
+                        }
+                    }
                     break;
             }
 
