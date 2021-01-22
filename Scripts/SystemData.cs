@@ -32,10 +32,5 @@ public class SystemData : ScriptableObject
 
         currencyUnit = "G";
         windowColor = new Color32(128,128,128,255);
-
-
-
-
-
     }
 }

@@ -31,12 +31,12 @@ public class SystemTab : BaseTab
 
         LoadList();
 
-        if (system.startingParty.Count <= 0 || system.startingParty.Count < actorSize)
+        if (system.startingParty.Count <= 0 || (system.startingParty.Count < actorSize && system.startingParty[system.startingParty.Count - 1] != ""))
         {
             system.startingParty.Add("");
         }
 
-        if (system.magicSkills.Count <= 0 || system.magicSkills.Count < skillSize)
+        if (system.magicSkills.Count <= 0 || (system.magicSkills.Count < skillSize && system.magicSkills[system.magicSkills.Count - 1] != ""))
         {
             system.magicSkills.Add("");
         }
@@ -211,12 +211,56 @@ public class SystemTab : BaseTab
     {
         throw new System.NotImplementedException();
     }
-
+    
     private void LoadList()
     {
         ActorData[] actor = Resources.LoadAll<ActorData>(PathDatabase.ActorRelativeDataPath);
         actorSize = actor.Length;
+        
+        for (int i = 0; i < system.startingParty.Count; i++)
+        {
+            bool removeThisElement = true;
+
+            int j;
+            for(j = 0; j < actorSize; j++)
+            {
+                if(actor[j].actorName == system.startingParty[i])
+                {
+                    removeThisElement = false;
+                    break;
+                }
+            }
+
+            if (removeThisElement)
+            {
+                system.startingParty.RemoveAt(i);
+                i--;
+            }
+        }
+
+
         TypeSkillData[] skill = Resources.LoadAll<TypeSkillData>(PathDatabase.SkillRelativeDataPath);
         skillSize = skill.Length;
+
+        for (int i = 0; i < system.magicSkills.Count; i++)
+        {
+            bool removeThisElement = true;
+
+            int j;
+            for (j = 0; j < skillSize; j++)
+            {
+                if (skill[j].dataName == system.magicSkills[i])
+                {
+                    removeThisElement = false;
+                    break;
+                }
+            }
+
+            if (removeThisElement)
+            {
+                system.magicSkills.RemoveAt(i);
+                i--;
+            }
+        }
     }
 }
