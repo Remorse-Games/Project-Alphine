@@ -591,6 +591,8 @@ public class StateTab : BaseTab
                             ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.StateTraitExplicitDataPath + (index + 1) + "/Trait_");
                         }
 
+                        Color tempColor = GUI.backgroundColor;
+                        GUI.backgroundColor = Color.red;
                         //Delete All Data Button
                         if (GUILayout.Button("Delete All Data", GUILayout.Width(traitsBox.width * .3f), GUILayout.Height(traitsBox.height * .055f)))
                         {
@@ -602,6 +604,7 @@ public class StateTab : BaseTab
                                 ChangeMaximum<TraitsData>(1, traits, PathDatabase.StateTraitExplicitDataPath + (index + 1) + "/Trait_");
                             }
                         }
+                        GUI.backgroundColor = tempColor;
                 GUILayout.EndArea();
                 #endregion //End of TraitboxArea
 

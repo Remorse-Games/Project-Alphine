@@ -501,8 +501,10 @@ public class ClassTab : BaseTab
                         ChangeMaximum<SkillsToLearn>(++skillToLearnSize[index], skillToLearn, PathDatabase.SkillToLearnExplicitDataPath + (index + 1) + "/SkillToLearn_");
                     }
 
+                    Color tempColor = GUI.backgroundColor;
+                    GUI.backgroundColor = Color.red;
                     //Delete All Data Button
-                    if (GUILayout.Button("Delete All Data", GUILayout.Width(skillsToLearnBox.width * .3f), GUILayout.Height(skillsToLearnBox.height * .08f)))
+                    if (GUILayout.Button("Delete All Data", GUILayout.Width(skillsToLearnBox.width * .27f), GUILayout.Height(skillsToLearnBox.height * .1f)))
                     {
                         if (EditorUtility.DisplayDialog("Delete All Skill Data", "Are you sure want to delete all Skill To Learn Data?", "Yes", "No"))
                         {
@@ -512,6 +514,7 @@ public class ClassTab : BaseTab
                             ChangeMaximum<SkillsToLearn>(1, skillToLearn, PathDatabase.SkillToLearnExplicitDataPath + (index + 1) + "/SkillToLearn_");
                         }
                     }
+                    GUI.backgroundColor = tempColor;
                 GUILayout.EndArea();
                 #endregion
 
@@ -574,6 +577,8 @@ public class ClassTab : BaseTab
                         ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.ClassTraitExplicitDataPath + (index + 1) + "/Trait_");
                     }
 
+                    Color tempColor2 = GUI.backgroundColor;
+                    GUI.backgroundColor = Color.red;
                     //Delete All Data Button
                     if (GUILayout.Button("Delete All Data", GUILayout.Width(traitsBox.width * .3f), GUILayout.Height(traitsBox.height * .055f)))
                     {
@@ -585,6 +590,7 @@ public class ClassTab : BaseTab
                             ChangeMaximum<TraitsData>(1, traits, PathDatabase.ClassTraitExplicitDataPath + (index + 1) + "/Trait_");
                         }
                     }
+                    GUI.backgroundColor = tempColor2;
                 GUILayout.EndArea();
                 #endregion //End of TraitboxArea
 

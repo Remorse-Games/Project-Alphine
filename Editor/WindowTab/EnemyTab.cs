@@ -490,8 +490,10 @@ public class EnemyTab : BaseTab
                         ChangeMaximum<ActionPatternsData>(++actionSize[index], actionPattern, PathDatabase.EnemyActionExplicitDataPath + (index + 1) + "/Action_");
                     }
 
+                    Color tempColor2 = GUI.backgroundColor;
+                    GUI.backgroundColor = Color.red;
                     //Delete All Data Button
-                    if (GUILayout.Button("Delete All Data", GUILayout.Width(actionBox.width * .3f), GUILayout.Height(actionBox.height * .08f)))
+                    if (GUILayout.Button("Delete All Data", GUILayout.Width(actionBox.width * .27f), GUILayout.Height(actionBox.height * .085f)))
                     {
                         if (EditorUtility.DisplayDialog("Delete All Skill Data", "Are you sure want to delete all Action Pattern Data?", "Yes", "No"))
                         {
@@ -500,8 +502,9 @@ public class EnemyTab : BaseTab
                             ChangeMaximum<ActionPatternsData>(0, actionPattern, PathDatabase.EnemyActionExplicitDataPath + (index + 1) + "/Action_");
 
                             ChangeMaximum<ActionPatternsData>(1, actionPattern, PathDatabase.EnemyActionExplicitDataPath + (index + 1) + "/Action_");
+                        }
                     }
-                    }
+                    GUI.backgroundColor = tempColor2;
                     GUILayout.EndArea();
                     #endregion        
 
@@ -567,6 +570,8 @@ public class EnemyTab : BaseTab
                         ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.EnemyTraitExplicitDataPath + (index + 1) + "/Trait_");
                     }
 
+                    Color tempColor = GUI.backgroundColor;
+                    GUI.backgroundColor = Color.red;
                     //Delete All Data Button
                     if (GUILayout.Button("Delete All Data", GUILayout.Width(traitsBox.width * .3f), GUILayout.Height(traitsBox.height * .055f)))
                     {
@@ -578,6 +583,7 @@ public class EnemyTab : BaseTab
                             ChangeMaximum<TraitsData>(1, traits, PathDatabase.EnemyTraitExplicitDataPath + (index + 1) + "/Trait_");
                         }
                     }
+                    GUI.backgroundColor = tempColor;
                 GUILayout.EndArea();
                 #endregion //End of TraitboxArea
 

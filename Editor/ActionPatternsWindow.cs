@@ -169,8 +169,12 @@ public class ActionPatternsWindow : EditorWindow
                                             clear();
                                         }
                                     }
-                                    if(firstActionName != null)
-                                    { 
+
+                                    Color tempColor = GUI.backgroundColor;
+                                    GUI.backgroundColor = Color.red;
+
+        
+                                    EditorGUI.BeginDisabledGroup(firstActionName == null);
                                         if (GUILayout.Button("Clear", GUILayout.Width(generalBox.width * .23f), GUILayout.Height(20)))
                                         {
                                             this.Close();
@@ -186,14 +190,8 @@ public class ActionPatternsWindow : EditorWindow
                                             actionIndex = 0;
                                             clear();
                                         }
-                                    }
-                                    else
-                                    {
-                                        if (GUILayout.Button("Unable To Clear", GUILayout.Width(generalBox.width * .23f), GUILayout.Height(20)))
-                                        {
-
-                                        }
-                                    }
+                                    EditorGUI.EndDisabledGroup();
+                                    GUI.backgroundColor = tempColor;
                                     GUILayout.EndHorizontal();
                                 GUILayout.EndVertical();
                             GUILayout.EndArea();

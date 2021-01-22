@@ -240,8 +240,12 @@ public class TraitWindow : EditorWindow
                                     clear();
                                 }
                             }
-                            if(firstTraitName != null)
-                            { 
+
+                            
+                            Color tempColor = GUI.backgroundColor;
+                            GUI.backgroundColor = Color.red;
+                            
+                            EditorGUI.BeginDisabledGroup(firstTraitName == null);
                                 if (GUILayout.Button("Clear", GUILayout.Width(generalBox.width * .23f), GUILayout.Height(20)))
                                 {
                                     this.Close();
@@ -256,14 +260,9 @@ public class TraitWindow : EditorWindow
                                     traitIndex = 0;
                                     clear();
                                 }
-                            }
-                            else
-                            {
-                                if (GUILayout.Button("Unable To Clear", GUILayout.Width(generalBox.width * .23f), GUILayout.Height(20)))
-                                {
 
-                                }
-                            }
+                            EditorGUI.EndDisabledGroup();
+                            GUI.backgroundColor = tempColor;
                         GUILayout.EndHorizontal();
                         GUILayout.Space(5);
                     GUILayout.EndVertical();

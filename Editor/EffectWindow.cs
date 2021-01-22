@@ -195,8 +195,10 @@ public class EffectWindow : EditorWindow
                                 }
                             }
 
-                            if(firstEffectName != null)
-                            {
+                            Color tempColor = GUI.backgroundColor;
+                            GUI.backgroundColor = Color.red;
+                            
+                            EditorGUI.BeginDisabledGroup(firstEffectName == null);
                                 if (GUILayout.Button("Clear", GUILayout.Height(20)))
                                 {
                                     this.Close();
@@ -212,15 +214,8 @@ public class EffectWindow : EditorWindow
 
                                     clear();
                                 }
-                            }
-                            else
-                            {
-                                if (GUILayout.Button("Unable To Clear", GUILayout.Height(20)))
-                                {
-
-                                }
-                            }
-
+                            EditorGUI.EndDisabledGroup();
+                            GUI.backgroundColor = tempColor;
                         GUILayout.EndHorizontal();
                     GUILayout.EndVertical();
                 GUILayout.EndVertical();

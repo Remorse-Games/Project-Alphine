@@ -731,6 +731,8 @@ public class SkillsTab : BaseTab
                             ChangeMaximum<EffectData>(++effectSize[index], effects, PathDatabase.SkillEffectExplicitDataPath + (index + 1) + "/Effect_");
                         }
 
+                        Color tempColor = GUI.backgroundColor;
+                        GUI.backgroundColor = Color.red;
                         if (GUILayout.Button("Delete All Data", GUILayout.Width(effectsBox.width * .3f)))
                         {
                             if (EditorUtility.DisplayDialog("Delete All Effect Data", "Are you sure want to delete all Effect Data?", "Yes", "No"))
@@ -741,7 +743,7 @@ public class SkillsTab : BaseTab
                                 ChangeMaximum<EffectData>(1, effects, PathDatabase.SkillEffectExplicitDataPath + (index + 1) + "/Effect_");
                             }
                         }
-
+                        GUI.backgroundColor = tempColor;
                     GUILayout.EndArea();
                     #endregion
 
