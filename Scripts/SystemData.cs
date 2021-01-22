@@ -31,7 +31,6 @@ public class SystemData : ScriptableObject
         gameTitle = "Game Title";
 
         currencyUnit = "G";
-        magicSkills.Add("hit");
         windowColor = new Color32(128,128,128,255);
 
 

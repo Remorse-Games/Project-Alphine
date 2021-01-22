@@ -84,12 +84,12 @@ public class SelectWindow : EditorWindow
 
         #region PrimaryTab
 
-        Rect primaryBox = new Rect(0, 0, 200, 190);
+        Rect primaryBox = new Rect(0, 0, 199, 189);
         GUILayout.BeginArea(primaryBox, windowStyle);
 
             #region Main Tab
 
-            Rect generalBox = new Rect(5, 7, 190, 187);
+            Rect generalBox = new Rect(5, 7, 194, 182);
 
             GUILayout.BeginArea(generalBox, columnStyle);
 
@@ -99,7 +99,7 @@ public class SelectWindow : EditorWindow
                     scrollPos,
                     false,
                     true,
-                    GUILayout.Height(position.height - 40)
+                    GUILayout.Height(position.height - 45)
                 );
 
                     SelectedActorIndex = GUILayout.SelectionGrid
@@ -115,19 +115,20 @@ public class SelectWindow : EditorWindow
 
                 GUILayout.BeginHorizontal();
 
-                    if (GUILayout.Button("OK"))
-                    {
-                        // save and close
-                        list[index] = DataList[SelectedActorIndex];
-                
-                        if(index == list.Count - 1)
+                    EditorGUI.BeginDisabledGroup(DataList.Count <= 0);
+                        if (GUILayout.Button("OK"))
                         {
-                            list.Add("");
+                            // save and close
+                            list[index] = DataList[SelectedActorIndex];
+                
+                            if(index == list.Count - 1)
+                            {
+                                list.Add("");
+                            }
+
+                            this.Close();
                         }
-
-
-                        this.Close();
-                    }
+                    EditorGUI.EndDisabledGroup();
 
                     if (GUILayout.Button("Cancel"))
                     {
