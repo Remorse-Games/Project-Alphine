@@ -383,21 +383,11 @@ public class TroopTab : BaseTab
                                     GUI.backgroundColor = Color.red;
                                     if (GUILayout.Button("Clear Event Page", button, GUILayout.Height(50)))
                                     {
-                                        int limit = battleEventSize[index];
-                                        for(int i = 0; i < limit; i++)
-                                        {
-                                            battleEventIndex = 0;
-                                            DeleteEventData();
-                                            battleEvents.Clear();
-                                            LoadGameData<BattleEventData>(ref battleEventSize[index], battleEvents, PathDatabase.BattleEventRelativeDataPath + (index + 1));
-
-                                            ListReset();
-                                        }
-                                        if (battleEventSize[index] <= 0)
-                                        {
-                                            battleEventIndex = 0;
-                                            ChangeMaximum<BattleEventData>(++battleEventSize[index], battleEvents, PathDatabase.BattleEventExplicitDataPath + (index + 1) + "/BattleEvent_");
-                                        }
+                                        battleEvents[battleEventIndex].condition = "Don't Run";
+                                        battleEvents[battleEventIndex].span = 0;
+                                        battleEvents[battleEventIndex].eventCommand.Clear();
+                                        
+                                        ListReset();
                                     }
                                     GUI.backgroundColor = tempColor;
 
