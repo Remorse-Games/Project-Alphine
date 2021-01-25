@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
+﻿using Boo.Lang;
+using UnityEngine;
 
 [CreateAssetMenu(menuName = "Database/TroopData")]
 public class TroopData : ScriptableObject
