@@ -11,8 +11,8 @@ public class WeaponData : ScriptableObject
     public string weaponDescription;
 
     //Index for selected Class.
-    public int selectedweaponTypeIndex;
-    public int selectedweaponAnimationIndex;
+    public int selectedWeaponTypeIndex;
+    public int selectedWeaponAnimationIndex;
 
     public int weaponPrice;
     public int weaponAttack;

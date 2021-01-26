@@ -279,7 +279,7 @@ public class WeaponTab : BaseTab
                                     GUILayout.Label("Weapon Type:"); // Weapon Type class label
                                     if (weaponSize > 0)
                                     {
-                                        weapon[index].selectedweaponTypeIndex = EditorGUILayout.Popup(weapon[index].selectedweaponTypeIndex, weaponTypeList, GUILayout.Height(generalBox.height / 8 - 15), GUILayout.Width(generalBox.width / 2 - 15));
+                                        weapon[index].selectedWeaponTypeIndex = EditorGUILayout.Popup(weapon[index].selectedWeaponTypeIndex, weaponTypeList, GUILayout.Height(generalBox.height / 8 - 15), GUILayout.Width(generalBox.width / 2 - 15));
                                     }
                                     else
                                     {
