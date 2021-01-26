@@ -88,6 +88,7 @@ public class ActorTab : BaseTab
         LoadGameData<TraitsData>(ref traitSize[index], traits, PathDatabase.ActorTraitRelativeDataPath + (index + 1));
 
         LoadGameData<TypeEquipmentData>(ref equipmentTypeSize, equipmentType, PathDatabase.EquipmentRelativeDataPath);
+        actor[index].allArmorIndexes = new int[equipmentTypeSize];
         LoadGameData<ArmorData>(ref armorSize, armors, PathDatabase.ArmorTabRelativeDataPath);
         LoadClassList();
 
@@ -192,7 +193,6 @@ public class ActorTab : BaseTab
                 }
                 
                 //Int field of change Maximum
-                AlphineHelper.NaturalNumFilter(ref actorSizeTemp);
                 actorSizeTemp = EditorGUILayout.IntField(actorSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
                 if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)) && actorSizeTemp > 0)
                 {
@@ -281,7 +281,6 @@ public class ActorTab : BaseTab
                                     GUILayout.BeginVertical();
                                         GUILayout.Label("Initial Level:");
                                         if (actorSize > 0){
-                                            AlphineHelper.UnsignedNumFilter(ref actor[index].initLevel );
                                             actor[index].initLevel = EditorGUILayout.IntField(actor[index].initLevel, GUILayout.Width(generalBox.width / 4 - 20), GUILayout.Height(generalBox.height / 8)); 
                                        }
                                         else
