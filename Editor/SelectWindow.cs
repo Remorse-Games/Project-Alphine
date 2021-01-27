@@ -144,6 +144,10 @@ public class SelectWindow : EditorWindow
                     if (GUILayout.Button("Delete"))
                     {
                         list.RemoveAt(index);
+                        if(list[list.Count-1] != "")
+                        {
+                            list.Add("");
+                        }
                         this.Close();
                     }
 
