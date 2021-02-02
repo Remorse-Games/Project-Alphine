@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace LastBoss.AI
+namespace Remorse.AI
 {
     [CreateAssetMenu(menuName = "AI/AI Chase")]
     public class EnemyChase : StateActions

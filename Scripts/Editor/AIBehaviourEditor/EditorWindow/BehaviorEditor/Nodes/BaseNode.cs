@@ -2,9 +2,10 @@
 using UnityEditorInternal;
 using UnityEngine;
 using System;
+using Remorse.AI;
 
 #if UNITY_EDITOR
-namespace LastBoss.BehaviorEditor
+namespace Remorse.BehaviorEditor
 {
     [Serializable]
     public class BaseNode 
@@ -54,9 +55,9 @@ namespace LastBoss.BehaviorEditor
     public class StateNodeReferences
     { 
     //    [HideInInspector]
-        public State currentState;
+        public AI.State currentState;
         [HideInInspector]
-        public State previousState;
+        public AI.State previousState;
 		public SerializedObject serializedState;
 	    public ReorderableList onFixedList;
 		public ReorderableList onUpdateList;

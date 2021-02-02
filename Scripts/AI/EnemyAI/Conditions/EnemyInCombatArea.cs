@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-namespace LastBoss.AI
+namespace Remorse.AI
 {
     [CreateAssetMenu(menuName = "AI/Condition/In Combat Area")]
     public class EnemyInCombatArea : Condition

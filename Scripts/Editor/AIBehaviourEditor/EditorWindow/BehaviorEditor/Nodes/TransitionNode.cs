@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using LastBoss;
+using Remorse.AI;
 
-namespace LastBoss.BehaviorEditor
+namespace Remorse.BehaviorEditor
 {
     [CreateAssetMenu(menuName ="Editor/Transition Node")]
     public class TransitionNode : DrawNode

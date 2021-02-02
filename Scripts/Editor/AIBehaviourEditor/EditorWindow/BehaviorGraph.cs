@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using Remorse.AI;
 
-
-namespace LastBoss.BehaviorEditor
+namespace Remorse.BehaviorEditor
 {
     [CreateAssetMenu]
     public class BehaviorGraph : ScriptableObject

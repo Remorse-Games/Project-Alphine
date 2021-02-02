@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using Remorse.AI;
 
 /*BEHAVIOUR EDITOR
  * 
  * This script do all the work of AI Behaviour Editor.
  */
 
-namespace LastBoss.BehaviorEditor
+namespace Remorse.BehaviorEditor
 {
     public class BehaviorEditor : EditorWindow
     {

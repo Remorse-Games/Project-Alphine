@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System;
-namespace LastBoss
+﻿using System;
+
+namespace Remorse.AI
 {
     [Serializable]
     public class Transition

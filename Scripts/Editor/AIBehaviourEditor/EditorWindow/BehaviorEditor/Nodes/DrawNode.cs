@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace LastBoss.BehaviorEditor
+namespace Remorse.BehaviorEditor
 {
     public abstract class DrawNode : ScriptableObject
     {

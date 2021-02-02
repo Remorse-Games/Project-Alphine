@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace LastBoss
+namespace Remorse.AI
 {
     public abstract class StateActions : ScriptableObject
     {

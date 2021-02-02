@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace LastBoss.BehaviorEditor
+namespace Remorse.BehaviorEditor
 {
     [CreateAssetMenu(menuName = "Editor/Comment Node")]
     public class CommentNode :DrawNode

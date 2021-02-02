@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace LastBoss.BehaviorEditor
+namespace Remorse.BehaviorEditor
 {
     [CreateAssetMenu(menuName ="Editor/Settings")]
     public class EditorSettings : ScriptableObject

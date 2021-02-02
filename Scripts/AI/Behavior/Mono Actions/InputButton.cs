@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace LastBoss
+namespace Remorse.AI
 {
 	[CreateAssetMenu(menuName = "Inputs/Button")]
 	public class InputButton : Action

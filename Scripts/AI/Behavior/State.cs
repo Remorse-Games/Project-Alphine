@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace LastBoss
+namespace Remorse.AI
 {
     [CreateAssetMenu]
     public class State : ScriptableObject

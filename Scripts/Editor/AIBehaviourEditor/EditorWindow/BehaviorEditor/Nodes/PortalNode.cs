@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEditor;
+using Remorse.AI;
 
-
-namespace LastBoss.BehaviorEditor
+namespace Remorse.BehaviorEditor
 {
 	[CreateAssetMenu(menuName = "Editor/Nodes/Portal Node")]
 	public class PortalNode : DrawNode

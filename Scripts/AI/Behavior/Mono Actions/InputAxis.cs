@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace LastBoss
+namespace Remorse.AI
 {
     [CreateAssetMenu(menuName = "Inputs/Axis")]
     public class InputAxis : Action

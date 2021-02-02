@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace LastBoss.AI
+namespace Remorse.AI
 {
     [CreateAssetMenu(menuName ="AI/Condition/Sight")]
     public class EnemySight : Condition
@@ -10,20 +10,21 @@ namespace LastBoss.AI
         public bool isEnemyVisible;
         public override bool CheckCondition(AIBehaviour state)
         {
-            if (isEnemyVisible)
-            {
-                if (state.fov.visibleTarget.Count > 0)
-                    return true;
-                else
-                    return false;
-            }
-            else
-            {
-                if (state.fov.visibleTarget.Count > 0)
-                    return false;
-                else
-                    return true;
-            }
+            //    if (isEnemyVisible)
+            //    {
+            //        //if (state.fov.visibleTarget.Count > 0)
+            //        //    return true;
+            //        //else
+            //        //    return false;
+            //    }
+            //    else
+            //    {
+            //        //if (state.fov.visibleTarget.Count > 0)
+            //        //    return false;
+            //        //else
+            //        //    return true;
+            //    }
+            return true;
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace LastBoss
+namespace Remorse.AI
 {
     public class ActionHook : MonoBehaviour
     {

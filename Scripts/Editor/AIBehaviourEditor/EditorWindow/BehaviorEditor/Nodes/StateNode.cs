@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEditorInternal;
 
-namespace LastBoss.BehaviorEditor
+namespace Remorse.BehaviorEditor
 {
     [CreateAssetMenu(menuName = "Editor/Nodes/State Node")]
     public class StateNode : DrawNode
@@ -27,7 +27,7 @@ namespace LastBoss.BehaviorEditor
                 b.collapse = EditorGUILayout.Toggle(" ", b.collapse);
             }
 
-            b.stateRef.currentState = (State)EditorGUILayout.ObjectField(b.stateRef.currentState, typeof(State), false);
+            b.stateRef.currentState = (AI.State)EditorGUILayout.ObjectField(b.stateRef.currentState, typeof(UnityEditor.Animations.AnimatorState), false);
 
             if(b.previousCollapse != b.collapse)
             {
@@ -144,7 +144,7 @@ namespace LastBoss.BehaviorEditor
 
         }
 
-        public Transition AddTransition(BaseNode b)
+        public AI.Transition AddTransition(BaseNode b)
         {
             return b.stateRef.currentState.AddTransition();
         }
