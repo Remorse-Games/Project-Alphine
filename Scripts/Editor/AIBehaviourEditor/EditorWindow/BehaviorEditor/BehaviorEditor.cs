@@ -43,7 +43,7 @@ namespace Remorse.BehaviorEditor
         #endregion
 
         #region Init
-        [MenuItem("Alife/AI/Behaviour Editor")]
+        [MenuItem("Remorse/AI/Behaviour Editor")]
         static void ShowEditor()
         {
             editor = EditorWindow.GetWindow<BehaviorEditor>();

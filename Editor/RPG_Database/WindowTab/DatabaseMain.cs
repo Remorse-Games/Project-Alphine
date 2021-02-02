@@ -58,7 +58,7 @@ public class DatabaseMain : EditorWindow
 
     #region Init Function
     //Initialize the Editor.
-    [MenuItem("Database/Database")]
+    [MenuItem("Remorse/RPG Database")]
     static void Init()
     {
         DatabaseMain dbMain = (DatabaseMain)EditorWindow.GetWindow(typeof(DatabaseMain));
