@@ -387,6 +387,7 @@ public class TroopTab : BaseTab
                                         battleEvents[battleEventIndex].span = 0;
                                         battleEvents[battleEventIndex].eventCommand.Clear();
                                         
+                                        ClearNullScriptableObjects();
                                         ListReset();
                                     }
                                     GUI.backgroundColor = tempColor;
