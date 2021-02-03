@@ -347,7 +347,9 @@ public class SkillsTab : BaseTab
                             GUILayout.BeginVertical();
                                 GUILayout.Label("MP Cost:"); // MP Cost class label
                                 if (skillSize > 0)
-                                { skill[index].skillMPCost = EditorGUILayout.IntField(skill[index].skillMPCost, GUILayout.Width(generalBox.width / 4 - 2), GUILayout.Height(generalBox.height / 8 - 9)); }
+                                { 
+                                    AlphineHelper.NumberMinFilter(ref skill[index].skillMPCost, 0);
+                                    skill[index].skillMPCost = EditorGUILayout.IntField(skill[index].skillMPCost, GUILayout.Width(generalBox.width / 4 - 2), GUILayout.Height(generalBox.height / 8 - 9)); }
                                 else
                                 { EditorGUILayout.IntField(-1, GUILayout.Width(generalBox.width / 4 - 2), GUILayout.Height(generalBox.height / 8 - 9)); }
                             GUILayout.EndVertical();
@@ -355,7 +357,9 @@ public class SkillsTab : BaseTab
                             GUILayout.BeginVertical();
                                 GUILayout.Label("TP Cost:"); // TP Cost class label
                                 if (skillSize > 0)
-                                { skill[index].skillTPCost = EditorGUILayout.IntField(skill[index].skillTPCost, GUILayout.Width(generalBox.width / 4 - 2), GUILayout.Height(generalBox.height / 8 - 9)); }
+                                { 
+                                    AlphineHelper.NumberMinFilter(ref skill[index].skillTPCost, 0);
+                                    skill[index].skillTPCost = EditorGUILayout.IntField(skill[index].skillTPCost, GUILayout.Width(generalBox.width / 4 - 2), GUILayout.Height(generalBox.height / 8 - 9)); }
                                 else
                                 { EditorGUILayout.IntField(-1, GUILayout.Width(generalBox.width / 4 - 2), GUILayout.Height(generalBox.height / 8 - 9)); }
                             GUILayout.EndVertical();
@@ -415,7 +419,9 @@ public class SkillsTab : BaseTab
                         GUILayout.BeginVertical();
                             GUILayout.Label("Initial Level:");
                                 if (skillSize > 0)
-                                { skill[index].skillSpeed = EditorGUILayout.IntField(skill[index].skillSpeed, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
+                                { 
+                                    AlphineHelper.NumberMinFilter(ref skill[index].skillSpeed, 0);
+                                    skill[index].skillSpeed = EditorGUILayout.IntField(skill[index].skillSpeed, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
                                 else
                                 { EditorGUILayout.IntField(-1, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
                             GUILayout.EndVertical();
@@ -423,7 +429,9 @@ public class SkillsTab : BaseTab
                             GUILayout.BeginVertical();
                                 GUILayout.Label("Success:");
                                 if (skillSize > 0)
-                                { skill[index].skillSuccessLevel = EditorGUILayout.IntField(skill[index].skillSuccessLevel  , GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
+                                { 
+                                    AlphineHelper.NumberMinFilter(ref skill[index].skillSuccessLevel, 0);
+                                    skill[index].skillSuccessLevel = EditorGUILayout.IntField(skill[index].skillSuccessLevel  , GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
                                 else
                                 { EditorGUILayout.IntField(-1, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
                             GUILayout.EndVertical();
@@ -431,7 +439,9 @@ public class SkillsTab : BaseTab
                             GUILayout.BeginVertical();
                                 GUILayout.Label("Repeat:");
                                 if (skillSize > 0)
-                                { skill[index].skillRepeat = EditorGUILayout.IntField(skill[index].skillRepeat, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
+                                { 
+                                    AlphineHelper.NumberMinFilter(ref skill[index].skillRepeat, 0);
+                                    skill[index].skillRepeat = EditorGUILayout.IntField(skill[index].skillRepeat, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
                                 else
                                 { EditorGUILayout.IntField(-1, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
                             GUILayout.EndVertical();
@@ -439,7 +449,9 @@ public class SkillsTab : BaseTab
                             GUILayout.BeginVertical();
                                 GUILayout.Label("TP Gain:");
                                 if (skillSize > 0)
-                                { skill[index].skillTPGain = EditorGUILayout.IntField(skill[index].skillTPGain, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
+                                { 
+                                    AlphineHelper.NumberMinFilter(ref skill[index].skillTPGain, 0);
+                                    skill[index].skillTPGain = EditorGUILayout.IntField(skill[index].skillTPGain, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
                                 else
                                 { EditorGUILayout.IntField(-1, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
                             GUILayout.EndVertical();
@@ -645,6 +657,7 @@ public class SkillsTab : BaseTab
                                     GUILayout.Label("Variance:");
                                     if (skillSize > 0)
                                     {
+                                        AlphineHelper.NumberMinFilter(ref skill[index].skillVariance, 0);
                                         skill[index].skillVariance = EditorGUILayout.IntField(skill[index].skillVariance, GUILayout.Width(.25f * (damageBox.width - 8)), GUILayout.Height(damageBox.height / 4 - 17));
                                     }
                                     else

@@ -28,9 +28,9 @@ MonoBehaviour:
   selectedCriticalHits: 0
   itemPrice: 0
   itemSpeed: 0
-  itemSuccessLevel: 100
+  itemSuccessLevel: 0
   itemRepeat: 1
   itemTPGain: 10
   itemFormula: b.mhp / 2
-  itemVariance: 20
+  itemVariance: 0
   notes: 

@@ -30,7 +30,7 @@ MonoBehaviour:
   skillMPCost: 0
   skillTPCost: 0
   skillSpeed: 0
-  skillSuccessLevel: 100
+  skillSuccessLevel: 0
   skillRepeat: 1
   skillTPGain: 10
   skillFormula: a.atk * 4 - b.def * 2

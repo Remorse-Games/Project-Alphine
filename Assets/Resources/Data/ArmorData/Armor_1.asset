@@ -18,12 +18,12 @@ MonoBehaviour:
   selectedArmorTypeIndex: 0
   selectedArmorEquipmentIndex: 0
   armorPrice: 500
-  armorAttack: 10
+  armorAttack: 0
   armorDefense: 0
   armorMAttack: 0
   armorMDefense: 0
   armorAgility: 0
   armorLuck: 0
-  armorMaxHP: 0
-  armorMaxMP: 0
+  armorMaxHP: 1
+  armorMaxMP: 1
   notes: 

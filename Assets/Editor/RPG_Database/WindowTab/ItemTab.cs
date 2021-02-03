@@ -351,7 +351,9 @@ public class ItemTab : BaseTab
                                 GUILayout.BeginVertical();
                                     GUILayout.Label("Price:"); // Price label
                                     if (itemSize > 0)
-                                    { item[index].itemPrice = EditorGUILayout.IntField(item[index].itemPrice, GUILayout.Width(generalBox.width / 4 - 2), GUILayout.Height(generalBox.height / 8 - 9)); }
+                                    { 
+                                        AlphineHelper.NumberMinFilter(ref item[index].itemPrice, 0);
+                                        item[index].itemPrice = EditorGUILayout.IntField(item[index].itemPrice, GUILayout.Width(generalBox.width / 4 - 2), GUILayout.Height(generalBox.height / 8 - 9)); }
                                     else
                                     { EditorGUILayout.IntField(-1, GUILayout.Width(generalBox.width / 4 - 2), GUILayout.Height(generalBox.height / 8 - 9)); }
                                 GUILayout.EndVertical();
@@ -419,7 +421,9 @@ public class ItemTab : BaseTab
                                 GUILayout.BeginVertical();
                                     GUILayout.Label("Initial Level:");
                                     if (itemSize > 0)
-                                    { item[index].itemSpeed = EditorGUILayout.IntField(item[index].itemSpeed, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
+                                    { 
+                                        AlphineHelper.NumberMinFilter(ref item[index].itemSpeed, 0);
+                                        item[index].itemSpeed = EditorGUILayout.IntField(item[index].itemSpeed, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
                                     else
                                     { EditorGUILayout.IntField(-1, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
                                 GUILayout.EndVertical();
@@ -427,7 +431,9 @@ public class ItemTab : BaseTab
                                 GUILayout.BeginVertical();
                                     GUILayout.Label("Success:");
                                     if (itemSize > 0)
-                                    { item[index].itemSuccessLevel = EditorGUILayout.IntField(item[index].itemSuccessLevel, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
+                                    { 
+                                        AlphineHelper.NumberMinFilter(ref item[index].itemSuccessLevel, 0);
+                                        item[index].itemSuccessLevel = EditorGUILayout.IntField(item[index].itemSuccessLevel, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
                                     else
                                     { EditorGUILayout.IntField(-1, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
                                 GUILayout.EndVertical();
@@ -435,7 +441,9 @@ public class ItemTab : BaseTab
                                 GUILayout.BeginVertical();
                                     GUILayout.Label("Repeat:");
                                     if (itemSize > 0)
-                                    { item[index].itemRepeat = EditorGUILayout.IntField(item[index].itemRepeat, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
+                                    { 
+                                        AlphineHelper.NumberMinFilter(ref item[index].itemRepeat, 0);
+                                        item[index].itemRepeat = EditorGUILayout.IntField(item[index].itemRepeat, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
                                     else
                                     { EditorGUILayout.IntField(-1, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
                                 GUILayout.EndVertical();
@@ -443,7 +451,9 @@ public class ItemTab : BaseTab
                                 GUILayout.BeginVertical();
                                     GUILayout.Label("TP Gain:");
                                     if (itemSize > 0)
-                                    { item[index].itemTPGain = EditorGUILayout.IntField(item[index].itemTPGain, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
+                                    { 
+                                        AlphineHelper.NumberMinFilter(ref item[index].itemTPGain, 0);
+                                        item[index].itemTPGain = EditorGUILayout.IntField(item[index].itemTPGain, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
                                     else
                                     { EditorGUILayout.IntField(-1, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
                                 GUILayout.EndVertical();
@@ -557,6 +567,7 @@ public class ItemTab : BaseTab
                                     GUILayout.Label("Variance:");
                                     if (itemSize > 0)
                                     {
+                                        AlphineHelper.NumberMinFilter(ref item[index].itemVariance, 0);
                                         item[index].itemVariance = EditorGUILayout.IntField(item[index].itemVariance, GUILayout.Width(.25f * (damageBox.width - 8)), GUILayout.Height(damageBox.height / 4 - 17));
                                     }
                                     else

@@ -15,10 +15,10 @@ MonoBehaviour:
   weaponName: Sword
   Icon: {fileID: 0}
   weaponDescription: 
-  selectedweaponTypeIndex: 2
-  selectedweaponAnimationIndex: 0
+  selectedWeaponTypeIndex: 0
+  selectedWeaponAnimationIndex: 0
   weaponPrice: 500
-  weaponAttack: 10
+  weaponAttack: 0
   weaponDefense: 0
   weaponMAttack: 0
   weaponMDefense: 0

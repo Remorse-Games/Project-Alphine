@@ -285,6 +285,7 @@ public class ArmorTab : BaseTab
                                     GUILayout.Label("Price:"); // Price label
                                     if (armorSize > 0)
                                     {
+                                        AlphineHelper.NumberMinFilter(ref armor[index].armorPrice, 0);
                                         armor[index].armorPrice = EditorGUILayout.IntField(armor[index].armorPrice, GUILayout.Width(generalBox.width / 4 - 2), GUILayout.Height(generalBox.height / 8 - 9));
                                     }
                                     else
@@ -331,7 +332,9 @@ public class ArmorTab : BaseTab
                                 GUILayout.BeginVertical();
                                     GUILayout.Label("Attack:");
                                     if (armorSize > 0)
-                                    { armor[index].armorAttack = EditorGUILayout.IntField(armor[index].armorAttack, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                    { 
+                                        AlphineHelper.NumberMinFilter(ref armor[index].armorAttack, 0);
+                                        armor[index].armorAttack = EditorGUILayout.IntField(armor[index].armorAttack, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
                                     else
                                     { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
                                 GUILayout.EndVertical();
@@ -339,7 +342,9 @@ public class ArmorTab : BaseTab
                                 GUILayout.BeginVertical();
                                     GUILayout.Label("Defense:");
                                     if (armorSize > 0)
-                                    { armor[index].armorDefense = EditorGUILayout.IntField(armor[index].armorDefense, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                    { 
+                                        AlphineHelper.NumberMinFilter(ref armor[index].armorDefense, 0);
+                                        armor[index].armorDefense = EditorGUILayout.IntField(armor[index].armorDefense, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
                                     else
                                     { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
                                 GUILayout.EndVertical();
@@ -347,7 +352,9 @@ public class ArmorTab : BaseTab
                                 GUILayout.BeginVertical();
                                     GUILayout.Label("M.Attack:");
                                     if (armorSize > 0)
-                                    { armor[index].armorMAttack = EditorGUILayout.IntField(armor[index].armorMAttack, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                    { 
+                                        AlphineHelper.NumberMinFilter(ref armor[index].armorMAttack, 0);
+                                        armor[index].armorMAttack = EditorGUILayout.IntField(armor[index].armorMAttack, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
                                     else
                                     { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
                                 GUILayout.EndVertical();
@@ -355,7 +362,9 @@ public class ArmorTab : BaseTab
                                 GUILayout.BeginVertical();
                                     GUILayout.Label("M.Defense:");
                                     if (armorSize > 0)
-                                    { armor[index].armorMDefense = EditorGUILayout.IntField(armor[index].armorMDefense, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                    { 
+                                        AlphineHelper.NumberMinFilter(ref armor[index].armorMDefense, 0);
+                                        armor[index].armorMDefense = EditorGUILayout.IntField(armor[index].armorMDefense, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
                                     else
                                     { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
                                 GUILayout.EndVertical();
@@ -368,7 +377,9 @@ public class ArmorTab : BaseTab
                                 GUILayout.BeginVertical();
                                     GUILayout.Label("Agility:");
                                     if (armorSize > 0)
-                                    { armor[index].armorAgility = EditorGUILayout.IntField(armor[index].armorAgility, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                    { 
+                                        AlphineHelper.NumberMinFilter(ref armor[index].armorAgility, 0);
+                                        armor[index].armorAgility = EditorGUILayout.IntField(armor[index].armorAgility, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
                                     else
                                     { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
                                 GUILayout.EndVertical();
@@ -376,7 +387,9 @@ public class ArmorTab : BaseTab
                                 GUILayout.BeginVertical();
                                     GUILayout.Label("Luck:");
                                     if (armorSize > 0)
-                                    { armor[index].armorLuck = EditorGUILayout.IntField(armor[index].armorLuck, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                    { 
+                                        AlphineHelper.NumberMinFilter(ref armor[index].armorLuck, 0);
+                                        armor[index].armorLuck = EditorGUILayout.IntField(armor[index].armorLuck, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
                                     else
                                     { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
                                 GUILayout.EndVertical();
@@ -384,7 +397,9 @@ public class ArmorTab : BaseTab
                                 GUILayout.BeginVertical();
                                     GUILayout.Label("Max HP:");
                                     if (armorSize > 0)
-                                    { armor[index].armorMaxHP = EditorGUILayout.IntField(armor[index].armorMaxHP, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                    { 
+                                        AlphineHelper.NumberMinFilter(ref armor[index].armorMaxHP, 1);
+                                        armor[index].armorMaxHP = EditorGUILayout.IntField(armor[index].armorMaxHP, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
                                     else
                                     { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
                                 GUILayout.EndVertical();
@@ -392,7 +407,9 @@ public class ArmorTab : BaseTab
                                 GUILayout.BeginVertical();
                                     GUILayout.Label("Max MP:");
                                     if (armorSize > 0)
-                                    { armor[index].armorMaxMP = EditorGUILayout.IntField(armor[index].armorMaxMP, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                    { 
+                                        AlphineHelper.NumberMinFilter(ref armor[index].armorMaxMP, 1);
+                                        armor[index].armorMaxMP = EditorGUILayout.IntField(armor[index].armorMaxMP, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
                                     else
                                     { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
                                 GUILayout.EndVertical();

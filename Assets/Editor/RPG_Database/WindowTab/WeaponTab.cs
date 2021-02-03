@@ -292,6 +292,7 @@ public class WeaponTab : BaseTab
                                     GUILayout.Label("Price:"); // Price label
                                     if (weaponSize > 0)
                                     { 
+                                        AlphineHelper.NumberMinFilter(ref weapon[index].weaponPrice, 0);
                                         weapon[index].weaponPrice = EditorGUILayout.IntField(weapon[index].weaponPrice, GUILayout.Width(generalBox.width / 4 - 2), GUILayout.Height(generalBox.height / 8 - 9)); 
                                     }
                                     else
@@ -324,7 +325,9 @@ public class WeaponTab : BaseTab
                                 GUILayout.BeginVertical();
                                     GUILayout.Label("Attack:");
                                     if (weaponSize > 0)
-                                    { weapon[index].weaponAttack = EditorGUILayout.IntField(weapon[index].weaponAttack, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                    { 
+                                        AlphineHelper.NumberMinFilter(ref weapon[index].weaponAttack, 0);
+                                        weapon[index].weaponAttack = EditorGUILayout.IntField(weapon[index].weaponAttack, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
                                     else
                                     { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
                                 GUILayout.EndVertical();
@@ -332,7 +335,9 @@ public class WeaponTab : BaseTab
                                 GUILayout.BeginVertical();
                                     GUILayout.Label("Defense:");
                                     if (weaponSize > 0)
-                                    { weapon[index].weaponDefense = EditorGUILayout.IntField(weapon[index].weaponDefense, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                    {
+                                        AlphineHelper.NumberMinFilter(ref weapon[index].weaponDefense, 0);
+                                        weapon[index].weaponDefense = EditorGUILayout.IntField(weapon[index].weaponDefense, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
                                     else
                                     { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
                                 GUILayout.EndVertical();
@@ -340,7 +345,9 @@ public class WeaponTab : BaseTab
                                 GUILayout.BeginVertical();
                                     GUILayout.Label("M.Attack:");
                                     if (weaponSize > 0)
-                                    { weapon[index].weaponMAttack = EditorGUILayout.IntField(weapon[index].weaponMAttack, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                    { 
+                                        AlphineHelper.NumberMinFilter(ref weapon[index].weaponMAttack, 0);
+                                        weapon[index].weaponMAttack = EditorGUILayout.IntField(weapon[index].weaponMAttack, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
                                     else
                                     { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
                                 GUILayout.EndVertical();
@@ -348,7 +355,9 @@ public class WeaponTab : BaseTab
                                 GUILayout.BeginVertical();
                                     GUILayout.Label("M.Defense:");
                                     if (weaponSize > 0)
-                                    { weapon[index].weaponMDefense = EditorGUILayout.IntField(weapon[index].weaponMDefense, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                    { 
+                                        AlphineHelper.NumberMinFilter(ref weapon[index].weaponMDefense, 0);
+                                        weapon[index].weaponMDefense = EditorGUILayout.IntField(weapon[index].weaponMDefense, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
                                     else
                                     { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
                                 GUILayout.EndVertical();
@@ -361,7 +370,9 @@ public class WeaponTab : BaseTab
                                 GUILayout.BeginVertical();
                                     GUILayout.Label("Agility:");
                                     if (weaponSize > 0)
-                                    { weapon[index].weaponAgility = EditorGUILayout.IntField(weapon[index].weaponAgility, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                    { 
+                                        AlphineHelper.NumberMinFilter(ref weapon[index].weaponAgility, 0);
+                                        weapon[index].weaponAgility = EditorGUILayout.IntField(weapon[index].weaponAgility, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
                                     else
                                     { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
                                 GUILayout.EndVertical();
@@ -369,7 +380,9 @@ public class WeaponTab : BaseTab
                                 GUILayout.BeginVertical();
                                     GUILayout.Label("Luck:");
                                     if (weaponSize > 0)
-                                    { weapon[index].weaponLuck = EditorGUILayout.IntField(weapon[index].weaponLuck, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                    { 
+                                        AlphineHelper.NumberMinFilter(ref weapon[index].weaponLuck, 0);
+                                        weapon[index].weaponLuck = EditorGUILayout.IntField(weapon[index].weaponLuck, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
                                     else
                                     { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
                                 GUILayout.EndVertical();
@@ -377,7 +390,9 @@ public class WeaponTab : BaseTab
                                 GUILayout.BeginVertical();
                                     GUILayout.Label("Max HP:");
                                     if (weaponSize > 0)
-                                    { weapon[index].weaponMaxHP = EditorGUILayout.IntField(weapon[index].weaponMaxHP, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                    { 
+                                        AlphineHelper.NumberMinFilter(ref weapon[index].weaponMaxHP, 0);
+                                        weapon[index].weaponMaxHP = EditorGUILayout.IntField(weapon[index].weaponMaxHP, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
                                     else
                                     { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
                                 GUILayout.EndVertical();
@@ -385,7 +400,9 @@ public class WeaponTab : BaseTab
                                 GUILayout.BeginVertical();
                                     GUILayout.Label("Max MP:");
                                     if (weaponSize > 0)
-                                    { weapon[index].weaponMaxMP = EditorGUILayout.IntField(weapon[index].weaponMaxMP, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                    { 
+                                        AlphineHelper.NumberMinFilter(ref weapon[index].weaponMaxMP, 0);
+                                        weapon[index].weaponMaxMP = EditorGUILayout.IntField(weapon[index].weaponMaxMP, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
                                     else
                                     { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
                                 GUILayout.EndVertical();

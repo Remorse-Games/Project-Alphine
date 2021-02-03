@@ -281,6 +281,7 @@ public class ActorTab : BaseTab
                                     GUILayout.BeginVertical();
                                         GUILayout.Label("Initial Level:");
                                         if (actorSize > 0){
+                                            AlphineHelper.NumberMinFilter(ref actor[index].initLevel , 0);
                                             actor[index].initLevel = EditorGUILayout.IntField(actor[index].initLevel, GUILayout.Width(generalBox.width / 4 - 20), GUILayout.Height(generalBox.height / 8)); 
                                        }
                                         else
@@ -290,8 +291,11 @@ public class ActorTab : BaseTab
                                     #region MaxLevel
                                     GUILayout.BeginVertical();
                                         GUILayout.Label("Max Level:");
-                                        if (actorSize > 0)
-                                            {actor[index].maxLevel = EditorGUILayout.IntField(actor[index].maxLevel, GUILayout.Width(generalBox.width / 4 - 20), GUILayout.Height(generalBox.height / 8));}
+                                        if (actorSize > 0){
+                                                AlphineHelper.NumberMinFilter(ref actor[index].maxLevel, 1);
+                                                AlphineHelper.NumberMaxFilter(ref actor[index].maxLevel, 9999999);
+                                                actor[index].maxLevel = EditorGUILayout.IntField(actor[index].maxLevel, GUILayout.Width(generalBox.width / 4 - 20), GUILayout.Height(generalBox.height / 8));
+                                                }
                                         else
                                             {EditorGUILayout.IntField(-1, GUILayout.Width(generalBox.width / 4 - 20), GUILayout.Height(generalBox.height / 8));}
                                     GUILayout.EndVertical();

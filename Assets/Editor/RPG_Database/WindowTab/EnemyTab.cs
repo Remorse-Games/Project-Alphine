@@ -285,6 +285,7 @@ public class EnemyTab : BaseTab
                                 GUILayout.Label("Max HP:");
                                 if (enemySize > 0)
                                 {
+                                    AlphineHelper.NumberMinFilter(ref enemy[index].enemyMaxHP, 1);
                                     enemy[index].enemyMaxHP = EditorGUILayout.IntField(enemy[index].enemyMaxHP, GUILayout.Width(generalBox.width / 4 - 5), GUILayout.Height(generalBox.height / 8));
                                 }
                                 else
@@ -295,6 +296,7 @@ public class EnemyTab : BaseTab
                                 GUILayout.Label("Attack:");
                                 if (enemySize > 0)
                                 { 
+                                    AlphineHelper.NumberMinFilter(ref enemy[index].enemyAttack, 0);
                                     enemy[index].enemyAttack = EditorGUILayout.IntField(enemy[index].enemyAttack, GUILayout.Width(generalBox.width / 4 - 5), GUILayout.Height(generalBox.height / 8)); 
                                 }
                                 else
@@ -305,6 +307,7 @@ public class EnemyTab : BaseTab
                                 GUILayout.Label("M.Attack:");
                                 if (enemySize > 0)
                                 {
+                                    AlphineHelper.NumberMinFilter(ref enemy[index].enemyMAttack, 0);
                                     enemy[index].enemyMAttack = EditorGUILayout.IntField(enemy[index].enemyMAttack, GUILayout.Width(generalBox.width / 4 - 5), GUILayout.Height(generalBox.height / 8));
                                 }
                                 else
@@ -314,6 +317,7 @@ public class EnemyTab : BaseTab
                                 GUILayout.Label("Agility:");
                                 if (enemySize > 0)
                                 {
+                                    AlphineHelper.NumberMinFilter(ref enemy[index].enemyAgility, 0);
                                     enemy[index].enemyAgility = EditorGUILayout.IntField(enemy[index].enemyAgility, GUILayout.Width(generalBox.width / 4 - 5), GUILayout.Height(generalBox.height / 8));
                                 }
                                 else
@@ -327,6 +331,7 @@ public class EnemyTab : BaseTab
                                 GUILayout.Label("Max MP:");
                                 if (enemySize > 0)
                                 {
+                                    AlphineHelper.NumberMinFilter(ref enemy[index].enemyMaxMP, 0);
                                     enemy[index].enemyMaxMP = EditorGUILayout.IntField(enemy[index].enemyMaxMP, GUILayout.Width(generalBox.width / 4 - 5), GUILayout.Height(generalBox.height / 8));
                                 }
                                 else
@@ -337,6 +342,7 @@ public class EnemyTab : BaseTab
                                 GUILayout.Label("Defense:");
                                 if (enemySize > 0)
                                 {
+                                    AlphineHelper.NumberMinFilter(ref enemy[index].enemyDefense, 0);
                                     enemy[index].enemyDefense = EditorGUILayout.IntField(enemy[index].enemyDefense, GUILayout.Width(generalBox.width / 4 - 5), GUILayout.Height(generalBox.height / 8));
                                 }
                                 else
@@ -347,6 +353,7 @@ public class EnemyTab : BaseTab
                                 GUILayout.Label("M.Defense:");
                                 if (enemySize > 0)
                                 {
+                                    AlphineHelper.NumberMinFilter(ref enemy[index].enemyMDefense, 0);
                                     enemy[index].enemyMDefense = EditorGUILayout.IntField(enemy[index].enemyMDefense, GUILayout.Width(generalBox.width / 4 - 5), GUILayout.Height(generalBox.height / 8));
                                 }
                                 else
@@ -357,6 +364,7 @@ public class EnemyTab : BaseTab
                                 GUILayout.Label("Luck:");
                                 if (enemySize > 0)
                                 {
+                                    AlphineHelper.NumberMinFilter(ref enemy[index].enemyLuck, 0);
                                     enemy[index].enemyLuck = EditorGUILayout.IntField(enemy[index].enemyLuck, GUILayout.Width(generalBox.width / 4 - 5), GUILayout.Height(generalBox.height / 8));
                                 }
                                 else
@@ -379,6 +387,7 @@ public class EnemyTab : BaseTab
                             GUILayout.Label("EXP:");
                             if (enemySize > 0)
                             {
+                                AlphineHelper.NumberMinFilter(ref enemy[index].enemyEXP, 0);
                                 enemy[index].enemyEXP = EditorGUILayout.IntField(enemy[index].enemyEXP, GUILayout.Width(firstTabWidth - 210), GUILayout.Height(generalBox.height / 8));
                             }
                             else
@@ -388,6 +397,7 @@ public class EnemyTab : BaseTab
                             GUILayout.Label("Gold:");
                             if (enemySize > 0)
                             {
+                                AlphineHelper.NumberMinFilter(ref enemy[index].enemyGold, 0);
                                 enemy[index].enemyGold = EditorGUILayout.IntField(enemy[index].enemyGold, GUILayout.Width(firstTabWidth - 210), GUILayout.Height(generalBox.height / 8));
                             }
                             else

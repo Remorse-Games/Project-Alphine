@@ -12,30 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36d9ae60251e0b34a8152c386e7e3016, type: 3}
   m_Name: Enemy_1
   m_EditorClassIdentifier: 
-  enemyItem:
-  - Potion
-  - Add other manually.
-  enemyArmor:
-  - Shield
-  - Hat
-  - Cloth
-  - Ring
-  - Add other manually.
-  enemyWeapon:
-  - Sword
-  - Add other manually.
   enemyName: Bat
   Image: {fileID: 0}
   selectedToggle: 000000000000000000000000
   selectedIndex: 000000000000000000000000
   enemyProbability: 010000000100000001000000
   enemyAttack: 30
-  enemyDefense: 30
+  enemyDefense: 0
   enemyMAttack: 30
   enemyMDefense: 30
   enemyAgility: 30
   enemyLuck: 30
-  enemyMaxHP: 500
+  enemyMaxHP: 1
   enemyMaxMP: 0
   enemyEXP: 0
   enemyGold: 0

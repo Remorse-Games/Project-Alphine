@@ -302,6 +302,7 @@ public class StateTab : BaseTab
                                     GUILayout.Label("Priority:"); // MP Cost class label
                                     if (stateSize > 0)
                                     { 
+                                        AlphineHelper.NumberMinFilter(ref state[index].statePriority, 0);
                                         state[index].statePriority = EditorGUILayout.IntField(state[index].statePriority, 
                                                                                                 GUILayout.Width(generalBox.width / 4 - 2), 
                                                                                                 GUILayout.Height(generalBox.height / 8 )
@@ -403,18 +404,20 @@ public class StateTab : BaseTab
                                 GUILayout.BeginHorizontal();
                                     GUILayout.Label("Duration in Turns:");
                                     GUILayout.Space(generalBox.width * .20f);
-                                    if(state[index].selectedAutoRemoval > 0)
-                                    {
+/*                                     if(state[index].selectedAutoRemoval > 0)
+                                    { */
+                                        AlphineHelper.NumberMinFilter(ref state[index].durationInTurnsA, 1);
+                                        AlphineHelper.NumberMinFilter(ref state[index].durationInTurnsB, 1);
                                         state[index].durationInTurnsA = EditorGUILayout.IntField(state[index].durationInTurnsA, GUILayout.Width(generalBox.width / 2 * .4f), GUILayout.Height(generalBox.height / 8));
                                         GUILayout.Label(" ~");
                                         state[index].durationInTurnsB = EditorGUILayout.IntField(state[index].durationInTurnsB, GUILayout.Width(generalBox.width / 2 * .4f), GUILayout.Height(generalBox.height / 8));
-                                    }
+/*                                     }
                                     else
                                     {
                                         EditorGUILayout.IntField(1, GUILayout.Width(generalBox.width / 2 * .4f), GUILayout.Height(generalBox.height / 8));
                                         GUILayout.Label(" ~");
                                         EditorGUILayout.IntField(1, GUILayout.Width(generalBox.width / 2 * .4f), GUILayout.Height(generalBox.height / 8 ));
-                                    }
+                                    } */
                                 GUILayout.EndHorizontal();
                                
                                 GUILayout.Space(5);
@@ -425,6 +428,7 @@ public class StateTab : BaseTab
                                     if (EditorGUILayout.Toggle("Remove By Damage", state[index].stateRemoveByDamage))
                                     {
                                         state[index].stateRemoveByDamage = true;
+                                        AlphineHelper.NumberMinFilter(ref state[index].removeByDamageValue, 0);
                                         state[index].removeByDamageValue = EditorGUILayout.IntField(state[index].removeByDamageValue, GUILayout.Width(generalBox.width / 2 * .4f), GUILayout.Height(generalBox.height / 8));
                                     }
                                     else
@@ -437,6 +441,7 @@ public class StateTab : BaseTab
                                     if (EditorGUILayout.Toggle("Remove By Walking", state[index].stateRemoveByWalking))
                                     {
                                         state[index].stateRemoveByWalking = true;
+                                        AlphineHelper.NumberMinFilter(ref state[index].removeByWalkingValue, 0);
                                         state[index].removeByWalkingValue = EditorGUILayout.IntField(state[index].removeByWalkingValue, GUILayout.Width(generalBox.width / 2 * .4f), GUILayout.Height(generalBox.height / 8));
                                     }
                                     else
