@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ebad62dee5fe98439d18254e7f71e98, type: 3}
   m_Name: Element_3
   m_EditorClassIdentifier: 
-  dataName: New Element Type
+  dataName: earth

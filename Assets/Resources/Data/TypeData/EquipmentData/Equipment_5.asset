@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ebad62dee5fe98439d18254e7f71e98, type: 3}
-  m_Name: Element_2
+  m_Script: {fileID: 11500000, guid: 3a88e3bf206481942b365ad86dc90d5c, type: 3}
+  m_Name: Equipment_5
   m_EditorClassIdentifier: 
-  dataName: water
+  dataName: New Equipment Type

@@ -286,6 +286,7 @@ public class TraitWindow : EditorWindow
         fieldHeight = generalBox.height * .12f;
         MemsetArray(traits[traitIndex].selectedTabToggle, tabToggle);
         GUILayout.BeginHorizontal();
+        AlphineHelper.NumberMinFilter(ref traits[traitIndex].traitValue, 0);
         if (EditorGUILayout.Toggle(rateTabToggleList[0], tabToggle[0], EditorStyles.radioButton))
         {
             if (traits[traitIndex].traitValue == -1)
@@ -301,6 +302,7 @@ public class TraitWindow : EditorWindow
                 GUILayout.EndHorizontal();
                 GUILayout.BeginHorizontal();
                     GUILayout.Label("*");
+                    /* AlphineHelper.NumberMinFIlter(ref traits[traitIndex].traitValue); */
                     traits[traitIndex].traitValue = EditorGUILayout.IntField(traits[traitIndex].traitValue, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
                     GUILayout.Space(widthSpace);
                 GUILayout.EndHorizontal();

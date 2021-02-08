@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 04e2f2ad66be44b4f92456baf008c98e, type: 3}
-  m_Name: Actor_1
+  m_Name: Actor_4
   m_EditorClassIdentifier: 
-  actorName: Kenneth Alvision
-  actorNickname: Kennetha123
-  initLevel: 0
-  maxLevel: 1
+  actorName: New Players
+  actorNickname: actorNicknameq
+  initLevel: 1
+  maxLevel: 99
   description: insert your description here
   face: {fileID: 0}
   characterWorld: {fileID: 0}

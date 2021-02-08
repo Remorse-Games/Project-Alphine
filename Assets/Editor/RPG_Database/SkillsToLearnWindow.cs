@@ -82,6 +82,7 @@ public class SkillsToLearnWindow : EditorWindow
                     GUILayout.BeginHorizontal();
                         GUILayout.BeginVertical();
                             GUILayout.Label("Level:");
+                            AlphineHelper.NumberMinFilter(ref thisClass[skillIndex].level, 0);
                             thisClass[skillIndex].level = EditorGUILayout.IntField(thisClass[skillIndex].level, GUILayout.Width(generalBox.width * .475f), GUILayout.Height(20));
                         GUILayout.EndVertical();
                         GUILayout.BeginVertical();

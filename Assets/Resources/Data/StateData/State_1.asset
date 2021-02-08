@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stateName: Knockout
   icon: {fileID: 0}
-  statePriority: 100
+  statePriority: 0
   selectedRestriction: 0
   selectedSVMotion: 0
   selectedSVOverlay: 0

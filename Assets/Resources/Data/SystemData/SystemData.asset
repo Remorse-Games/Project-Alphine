@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startingParty:
   - Kenneth Alvision
+  - 
   gameTitle: Game Title
   currencyUnit: G
   magicSkills:

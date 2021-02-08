@@ -33,6 +33,12 @@ public class MaxHPWindow : EditorWindow
     {
         UpdateCurve();
 
+        AlphineHelper.NumberMinFilter(ref levelIndex, 0);
+        AlphineHelper.NumberMinFilter(ref editedKeyframeValue, 0);
+        AlphineHelper.NumberMinFilter(ref genCurveStartValue, 0);
+        AlphineHelper.NumberMinFilter(ref genCurveEndValue, 0);
+        AlphineHelper.NumberMinFilter(ref genCurveGrowthRate, 0);
+        
         GUILayout.BeginVertical();
         GUILayout.BeginHorizontal();
         GUILayout.BeginVertical();
@@ -178,6 +184,12 @@ public class MaxMPWindow : EditorWindow
     private void OnGUI()
     {
         UpdateCurve();
+        
+        AlphineHelper.NumberMinFilter(ref levelIndex, 0);
+        AlphineHelper.NumberMinFilter(ref editedKeyframeValue, 0);
+        AlphineHelper.NumberMinFilter(ref genCurveStartValue, 0);
+        AlphineHelper.NumberMinFilter(ref genCurveEndValue, 0);
+        AlphineHelper.NumberMinFilter(ref genCurveGrowthRate, 0);
 
         GUILayout.BeginVertical();
         GUILayout.BeginHorizontal();
@@ -324,6 +336,12 @@ public class AttackWindow : EditorWindow
     {
         UpdateCurve();
 
+                AlphineHelper.NumberMinFilter(ref levelIndex, 0);
+        AlphineHelper.NumberMinFilter(ref editedKeyframeValue, 0);
+        AlphineHelper.NumberMinFilter(ref genCurveStartValue, 0);
+        AlphineHelper.NumberMinFilter(ref genCurveEndValue, 0);
+        AlphineHelper.NumberMinFilter(ref genCurveGrowthRate, 0);
+        
         GUILayout.BeginVertical();
         GUILayout.BeginHorizontal();
         GUILayout.BeginVertical();
@@ -469,6 +487,12 @@ public class DefenseWindow : EditorWindow
     {
         UpdateCurve();
 
+                AlphineHelper.NumberMinFilter(ref levelIndex, 0);
+        AlphineHelper.NumberMinFilter(ref editedKeyframeValue, 0);
+        AlphineHelper.NumberMinFilter(ref genCurveStartValue, 0);
+        AlphineHelper.NumberMinFilter(ref genCurveEndValue, 0);
+        AlphineHelper.NumberMinFilter(ref genCurveGrowthRate, 0);
+        
         GUILayout.BeginVertical();
         GUILayout.BeginHorizontal();
         GUILayout.BeginVertical();
@@ -591,6 +615,12 @@ public class MAttackWindow : EditorWindow
     {
         UpdateCurve();
 
+                AlphineHelper.NumberMinFilter(ref levelIndex, 0);
+        AlphineHelper.NumberMinFilter(ref editedKeyframeValue, 0);
+        AlphineHelper.NumberMinFilter(ref genCurveStartValue, 0);
+        AlphineHelper.NumberMinFilter(ref genCurveEndValue, 0);
+        AlphineHelper.NumberMinFilter(ref genCurveGrowthRate, 0);
+        
         GUILayout.BeginVertical();
         GUILayout.BeginHorizontal();
         GUILayout.BeginVertical();
@@ -713,6 +743,12 @@ public class MDefenseWindow : EditorWindow
     {
         UpdateCurve();
 
+                AlphineHelper.NumberMinFilter(ref levelIndex, 0);
+        AlphineHelper.NumberMinFilter(ref editedKeyframeValue, 0);
+        AlphineHelper.NumberMinFilter(ref genCurveStartValue, 0);
+        AlphineHelper.NumberMinFilter(ref genCurveEndValue, 0);
+        AlphineHelper.NumberMinFilter(ref genCurveGrowthRate, 0);
+        
         GUILayout.BeginVertical();
         GUILayout.BeginHorizontal();
         GUILayout.BeginVertical();
@@ -835,6 +871,12 @@ public class AgilityWindow : EditorWindow
     {
         UpdateCurve();
 
+                AlphineHelper.NumberMinFilter(ref levelIndex, 0);
+        AlphineHelper.NumberMinFilter(ref editedKeyframeValue, 0);
+        AlphineHelper.NumberMinFilter(ref genCurveStartValue, 0);
+        AlphineHelper.NumberMinFilter(ref genCurveEndValue, 0);
+        AlphineHelper.NumberMinFilter(ref genCurveGrowthRate, 0);
+        
         GUILayout.BeginVertical();
         GUILayout.BeginHorizontal();
         GUILayout.BeginVertical();
@@ -957,6 +999,12 @@ public class LuckWindow : EditorWindow
     {
         UpdateCurve();
 
+                AlphineHelper.NumberMinFilter(ref levelIndex, 0);
+        AlphineHelper.NumberMinFilter(ref editedKeyframeValue, 0);
+        AlphineHelper.NumberMinFilter(ref genCurveStartValue, 0);
+        AlphineHelper.NumberMinFilter(ref genCurveEndValue, 0);
+        AlphineHelper.NumberMinFilter(ref genCurveGrowthRate, 0);
+        
         GUILayout.BeginVertical();
         GUILayout.BeginHorizontal();
         GUILayout.BeginVertical();

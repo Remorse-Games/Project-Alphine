@@ -9,7 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ebad62dee5fe98439d18254e7f71e98, type: 3}
-  m_Name: Element_2
+  m_Script: {fileID: 11500000, guid: 9426ce6cce591a74a8b6ba02b9b11738, type: 3}
+  m_Name: Trait_2
   m_EditorClassIdentifier: 
-  dataName: water
+  traitName: 
+  selectedTabToggle: 0
+  selectedTabIndex: 0
+  selectedArrayIndex: 0
+  traitValue: 0
