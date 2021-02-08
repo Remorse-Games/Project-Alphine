@@ -33,6 +33,8 @@ public class ClassTab : BaseTab
     public static int traitIndex = 0;
     public static int traitIndexTemp = -1;
 
+    private int tempNameformatIndex = 1;
+
     //ScrollPos
     Vector2 scrollPos = Vector2.zero;
     Vector2 skillsScrollPos = Vector2.zero;
@@ -160,15 +162,29 @@ public class ClassTab : BaseTab
                 classSizeTemp = EditorGUILayout.IntField(classSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
                 if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
                 {
+                    int tempCount = classSizeTemp - classSize;
                     classSize = classSizeTemp;
                     index = indexTemp = 0;
 
                     FolderCreator(classSize, "Assets/Resources/Data/ClassesData", "SkillToLearnData");
                     FolderCreator(classSize, "Assets/Resources/Data/ClassesData", "TraitData");
                     ChangeMaximum<ClassesData>(classSize, classes, PathDatabase.ClassExplicitDataPath);
-                    
-                    //New SkillSize array length
-                    int[] tempArr = new int[skillToLearnSize.Length];
+
+
+                    //add increment number for new class
+                    if (tempCount > 0)
+                    {
+                        for (int i = classSize - tempCount; i < classSize; i++)
+                        {
+                            classes[i].className += string.Format("( {0})", tempNameformatIndex);
+                            tempNameformatIndex++;
+                            
+                        }
+
+                    }   
+
+            //New SkillSize array length
+            int[] tempArr = new int[skillToLearnSize.Length];
                     for (int i = 0; i < skillToLearnSize.Length; i++)
                         tempArr[i] = skillToLearnSize[i];
 
@@ -232,9 +248,12 @@ public class ClassTab : BaseTab
                             GUILayout.Label("Name: ");
                             if (classSize > 0)
                             {
-                                classes[index].className = GUILayout.TextField(classes[index].className,
+                                string tempClassname;
+                                tempClassname = GUILayout.TextField(classes[index].className,
                                                                                 GUILayout.Width(generalSettingsBox.width / 2 - 10),
                                                                                 GUILayout.Height(generalSettingsBox.height * 0.25f));
+
+                                classes[index].className = ChangeSameName(tempClassname);
                                 classesNames[index] = classes[index].className;
                             }
                             else
@@ -721,6 +740,21 @@ public class ClassTab : BaseTab
     public override void ItemTabLoader(int index)
     {
 
+    }
+
+    private string ChangeSameName(string name)
+    {
+
+        List<ClassesData> tempList = new List<ClassesData>();
+        tempList = classes.FindAll(x => x.className.Equals(name));
+        if (tempList.Count > 1)
+        {
+            return name + " (0)";
+        }
+        else
+        {
+            return name;
+        }
     }
 
     #endregion
