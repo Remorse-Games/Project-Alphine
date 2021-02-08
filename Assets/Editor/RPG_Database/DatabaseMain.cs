@@ -1,10 +1,10 @@
 using UnityEngine;
 using UnityEditor;
-using Remorse.Editor.RPGDatabase.Window;
+using Remorse.Tools.RPGDatabase.Window;
 
-namespace Remorse.Editor.RPGDatabase
+namespace Remorse.Tools.RPGDatabase
 {
-    public abstract class DatabaseMain : EditorWindow
+    public class DatabaseMain : EditorWindow
     {
         #region Init Values
         //Editor Classes
