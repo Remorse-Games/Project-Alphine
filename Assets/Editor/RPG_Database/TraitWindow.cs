@@ -286,7 +286,7 @@ public class TraitWindow : EditorWindow
         fieldHeight = generalBox.height * .12f;
         MemsetArray(traits[traitIndex].selectedTabToggle, tabToggle);
         GUILayout.BeginHorizontal();
-        AlphineHelper.NumberMinFilter(ref traits[traitIndex].traitValue, 0);
+        AlphineHelper.NumberMinMaxFilter(ref traits[traitIndex].traitValue, 0, 999);
         if (EditorGUILayout.Toggle(rateTabToggleList[0], tabToggle[0], EditorStyles.radioButton))
         {
             if (traits[traitIndex].traitValue == -1)

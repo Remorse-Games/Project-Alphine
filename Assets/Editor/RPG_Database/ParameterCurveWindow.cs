@@ -12,9 +12,10 @@ public class MaxHPWindow : EditorWindow
     int genCurveStartValue;
     int genCurveEndValue;
     int genCurveGrowthRate;
-    public MaxHPWindow(ClassesData classData)
+    
+    public void Show( ClassesData classData )
     {
-        var window = GetWindow<MaxHPWindow>();
+        var window = this;
         window.maxSize = new Vector2(810, 540);
         window.minSize = new Vector2(810, 540);
         window.titleContent = new GUIContent("MaxHPWindow");
@@ -24,7 +25,15 @@ public class MaxHPWindow : EditorWindow
         thisClass = classData;
         levelIndex = 1;
         editedKeyframeValue = Mathf.RoundToInt(thisClass.maxHPCurve.keys[levelIndex].value);
-        window.Show();
+        window.ShowModal();
+    }
+    private void OnLostFocus()
+    {
+        this.Focus();
+    }
+    public MaxHPWindow()
+    {
+
     }
 
 

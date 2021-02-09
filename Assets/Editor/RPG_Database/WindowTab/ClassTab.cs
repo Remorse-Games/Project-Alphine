@@ -42,6 +42,9 @@ public class ClassTab : BaseTab
     int classSizeTemp;
     #endregion
 
+    /* ChildWindow Variable */
+    MaxHPWindow maxHPWindow = ScriptableObject.CreateInstance<MaxHPWindow>();
+    
     public void Init()
     {
         //Clears List
@@ -289,7 +292,11 @@ public class ClassTab : BaseTab
                                 GUI.backgroundColor = Color.green;
                                 if (GUILayout.Button("Edit Max Hp", GUILayout.Width(curveWidth)))
                                 {
-                                    MaxHPWindow maxHPWindow = new MaxHPWindow(classes[index]);
+                                    MaxHPWindow maxHPWindow = ScriptableObject.CreateInstance<MaxHPWindow>();
+                                    maxHPWindow.Show( classes[index] );
+                                    Debug.Log("MAXXX");
+                                    GUILayout.BeginHorizontal();
+                                    /* MaxHPWindow maxHPWindow = new MaxHPWindow(classes[index]); */
                                 }
                                 GUI.backgroundColor = tempColorHP;
                             }
@@ -589,7 +596,7 @@ public class ClassTab : BaseTab
                         if (traitIndex != traitIndexTemp)
                         {
                             TraitWindow.ShowWindow(traits, traitIndex, traitSize[index], TabType.Classes);
-                            
+                            Debug.Log("Traitor");
                             traitIndexTemp = traitIndex;
                         }
                     }

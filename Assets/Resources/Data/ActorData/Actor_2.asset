@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actorName: New Playerm
   actorNickname: actorNicknamef
-  initLevel: 1
-  maxLevel: 99
+  initLevel: 0
+  maxLevel: 1
   description: insert your description here
   face: {fileID: 0}
   characterWorld: {fileID: 0}
