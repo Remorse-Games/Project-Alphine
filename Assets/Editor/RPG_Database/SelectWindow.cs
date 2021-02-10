@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using System.Linq;
+using Remorse.Editor.RPGDatabase.Window;
+using Remorse.Editor.RPGDatabase.Utility;
 
 // will remove this when find better solution
 public enum SelectType

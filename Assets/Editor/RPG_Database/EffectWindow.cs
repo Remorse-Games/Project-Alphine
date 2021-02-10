@@ -7,6 +7,8 @@ using System.Runtime.CompilerServices;
 using System.IO;
 using SFB;
 using System.Linq;
+using Remorse.Editor.RPGDatabase.Window;
+using Remorse.Editor.RPGDatabase.Utility;
 
 
 public class EffectWindow : EditorWindow

@@ -1,12 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using UnityEditor.AnimatedValues;
-using System.Runtime.CompilerServices;
-using System.IO;
-using SFB;
 using System.Linq;
+using Remorse.Editor.RPGDatabase.Window;
+using Remorse.Editor.RPGDatabase.Utility;
 
 
 public class TraitWindow : EditorWindow

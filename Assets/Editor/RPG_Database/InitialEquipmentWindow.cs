@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using UnityEditor.AnimatedValues;
 using System.Runtime.CompilerServices;
+using Remorse.Editor.RPGDatabase.Window;
 
 public class InitialEquipmentWindow : EditorWindow
 {
