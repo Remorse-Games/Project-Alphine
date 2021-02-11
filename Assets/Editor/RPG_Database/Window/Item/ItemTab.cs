@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEditor;
 using Remorse.Tools.RPGDatabase.Utility;
+using Remorse.Tools.RPGDatabase.Commons;
 
 namespace Remorse.Tools.RPGDatabase.Window
 {

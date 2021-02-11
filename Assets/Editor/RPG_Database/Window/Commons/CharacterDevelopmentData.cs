@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class CharacterDevelopmentData
+namespace Remorse.Tools.RPGDatabase.Commons
 {
-    public static string[] debuffNames =
+    public static class CharacterDevelopmentData
     {
+        public static string[] debuffNames =
+        {
         "Max HP",
         "Max MP",
         "Attack",
@@ -15,8 +17,8 @@ public static class CharacterDevelopmentData
         "Agility",
         "Luck",
     };
-    public static string[] stateNames =
-    {
+        public static string[] stateNames =
+        {
         "Knockout",
         "Guard",
         "Immortal",
@@ -28,8 +30,8 @@ public static class CharacterDevelopmentData
         "Fascination",
         "Sleep",
     };
-    public static string[] exParameterNames =
-    {
+        public static string[] exParameterNames =
+        {
         "Hit Rate",
         "Evasion Rate",
         "Critical Rate",
@@ -41,8 +43,8 @@ public static class CharacterDevelopmentData
         "TP Regeneration",
         "MP Regeneration",
     };
-    public static string[] spParameterNames =
-    {
+        public static string[] spParameterNames =
+        {
         "Target Rate",
         "Guard Effect",
         "Recovery Effect",
@@ -54,27 +56,27 @@ public static class CharacterDevelopmentData
         "Floor Damage",
         "Experience",
     };
-    public static string[] slotType =
-    {
+        public static string[] slotType =
+        {
         "Normal",
         "Dual Wield",
     };
-    public static string[] specialFlag =
-    {
+        public static string[] specialFlag =
+        {
         "Auto Battle",
         "Guard",
         "Substitute",
         "Preserve TP",
     };
-    public static string[] collapseEffect =
-    {
+        public static string[] collapseEffect =
+        {
         "Normal",
         "Boss",
         "Instant",
         "Dissapear",
     };
-    public static string[] partyAbility =
-    {
+        public static string[] partyAbility =
+        {
         "Encounter Half",
         "Encounter None",
         "Cancel Surprise",
@@ -82,8 +84,9 @@ public static class CharacterDevelopmentData
         "Gold Double",
         "Drop Item Double",
     };
-    public static string[] specialEffect =
-    {
+        public static string[] specialEffect =
+        {
         "Escape"
     };
+    }
 }
