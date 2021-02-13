@@ -247,6 +247,7 @@ public class ItemTab : BaseTab
                         effectSize[i] = tempArr[i];
 
                     //Reload data
+                    effects.Clear();
                     LoadGameData<EffectData>(ref effectSize[index], effects, PathDatabase.ItemEffectRelativeDataPath + (index + 1));
                     if(effectSize[index] <= 0)
                     {

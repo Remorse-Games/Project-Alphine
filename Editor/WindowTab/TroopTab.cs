@@ -209,6 +209,7 @@ public class TroopTab : BaseTab
                         battleEventSize[i] = tempArr[i];
 
                     // Reload data and check SO
+                    battleEvents.Clear();
                     LoadGameData<BattleEventData>(ref battleEventSize[index], battleEvents, PathDatabase.BattleEventRelativeDataPath + (index + 1));
                     if(battleEventSize[index] <= 0)
                     {

@@ -199,6 +199,7 @@ public class ClassTab : BaseTab
                         traitSize[i] = tempArr[i];
 
                     //Reload Data and Check SO
+                    traits.Clear();
                     LoadGameData<SkillsToLearn>(ref skillToLearnSize[index], skillToLearn, PathDatabase.SkillToLearnRelativeDataPath + (index + 1));
                     if (skillToLearnSize[index] <= 0)
                     {

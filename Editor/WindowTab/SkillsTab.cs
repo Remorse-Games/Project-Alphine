@@ -245,6 +245,7 @@ public class SkillsTab : BaseTab
                     effectSize[i] = tempArr[i];
 
                 //Reload data
+                effects.Clear();
                 LoadGameData<EffectData>(ref effectSize[index], effects, PathDatabase.SkillEffectRelativeDataPath + (index + 1));
                 if(effectSize[index] <= 0)
                 {

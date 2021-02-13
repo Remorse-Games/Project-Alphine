@@ -189,6 +189,7 @@ public class WeaponTab : BaseTab
                         traitSize[i] = tempArr[i];
 
                     //Reload Data and Check SO
+                    traits.Clear();
                     LoadGameData<TraitsData>(ref traitSize[index], traits, PathDatabase.WeaponTraitRelativeDataPath + (index + 1));
                     if (traitSize[index] <= 0)
                     {
