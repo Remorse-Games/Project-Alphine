@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LastBoss.Localize
+namespace Remorse.Localize
 {
     [Serializable]
     public class LocalizedString
@@ -18,6 +18,11 @@ namespace LastBoss.Localize
             {
                 return Localization.GetLocalizedValue(key);
             }
+        }
+
+        public static explicit operator string(LocalizedString v)
+        {
+            throw new NotImplementedException();
         }
 
         public static implicit operator LocalizedString(string key)

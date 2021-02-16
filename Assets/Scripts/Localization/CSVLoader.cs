@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 using UnityEngine;
 using System.Linq;
 using UnityEditor;
-namespace LastBoss.Localize
+namespace Remorse.Localize
 {
     public class CSVLoader
     {

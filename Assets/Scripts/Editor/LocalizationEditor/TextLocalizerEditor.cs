@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEditor;
 
-namespace LastBossEditor.Localization
+namespace RemorseEditor.Localization
 {
     public class TextLocalizerEditor : EditorWindow
     {
@@ -29,13 +29,13 @@ namespace LastBossEditor.Localization
 
             if (GUILayout.Button("Add"))
             {
-                if (LastBoss.Localize.Localization.GetLocalizedValue(key) != string.Empty)
+                if (Remorse.Localize.Localization.GetLocalizedValue(key) != string.Empty)
                 {
-                    LastBoss.Localize.Localization.Replace(key, value);
+                    Remorse.Localize.Localization.Replace(key, value);
                 }
                 else
                 {
-                    LastBoss.Localize.Localization.Add(key, value);
+                    Remorse.Localize.Localization.Add(key, value);
                 }
             }
 
@@ -62,7 +62,7 @@ namespace LastBossEditor.Localization
 
         private void OnEnable()
         {
-            dictionary = LastBoss.Localize.Localization.GetDictionaryForEditor();
+            dictionary = Remorse.Localize.Localization.GetDictionaryForEditor();
         }
 
         public void OnGUI()
@@ -94,10 +94,10 @@ namespace LastBossEditor.Localization
                     {
                         if (EditorUtility.DisplayDialog("Remove Key" + element.Key + "?", "This will remove the element of localization, are you sure?", "Yes"))
                         {
-                            LastBoss.Localize.Localization.Remove(element.Key);
+                            Remorse.Localize.Localization.Remove(element.Key);
                             AssetDatabase.Refresh();
-                            LastBoss.Localize.Localization.Init();
-                            dictionary = LastBoss.Localize.Localization.GetDictionaryForEditor();
+                            Remorse.Localize.Localization.Init();
+                            dictionary = Remorse.Localize.Localization.GetDictionaryForEditor();
                         }
                     }
 

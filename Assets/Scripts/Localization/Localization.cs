@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
-namespace LastBoss.Localize
+namespace Remorse.Localize
 {
     public class Localization
     {
@@ -33,6 +34,19 @@ namespace LastBoss.Localize
         {
             localizedEN = csvLoader.GetDictionaryValues("en");
             localizedID = csvLoader.GetDictionaryValues("id");
+        }
+
+        public static void ChangeLanguange(string languageId)
+        {
+            switch (languageId)
+            {
+                case "en":
+                    languange = Languange.English;
+                    break;
+                case "id":
+                    languange = Languange.Indonesia;
+                    break;
+            }
         }
 
         public static Dictionary<string, string> GetDictionaryForEditor()
