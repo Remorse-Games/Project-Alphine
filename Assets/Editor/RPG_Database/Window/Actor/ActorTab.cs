@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using System.IO;
-using SFB;
-using System.Linq;
+using Remorse.Tools.RPGDatabase.Utility;
+using Remorse.Tools.RPGDatabase.Commons;
 
+namespace Remorse.Tools.RPGDatabase.Window
+{
     public class ActorTab : BaseTab
     {
         //Having list of all actor exist in data.
@@ -33,7 +34,6 @@ using System.Linq;
 
         //Index for selected Class.
         public int selectedClassIndex;
-        int sameNameFound = 0;
 
         //How many actor in ChangeMaximum Func
         public int armorSize;
@@ -78,7 +78,6 @@ using System.Linq;
             armors.Clear();
             equipmentType.Clear();
 
-
             //Resetting each index to 0, so that it won't have error (Index Out Of Range)
             index = 0;
             typeIndex = 0;
@@ -92,7 +91,6 @@ using System.Linq;
 
             LoadGameData<TypeEquipmentData>(ref equipmentTypeSize, equipmentType, PathDatabase.EquipmentRelativeDataPath);
             actor[index].allArmorIndexes = new int[equipmentTypeSize];
-
             LoadGameData<ArmorData>(ref armorSize, armors, PathDatabase.ArmorTabRelativeDataPath);
             LoadClassList();
 
@@ -125,7 +123,6 @@ using System.Linq;
             float tabHeight = position.height - 10f;
 
             float firstTabWidth = tabWidth * 3 / 10;
-
 
             //Style area.
             actorStyle = new GUIStyle(GUI.skin.box);
@@ -201,58 +198,38 @@ using System.Linq;
             actorSizeTemp = EditorGUILayout.IntField(actorSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
             if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)) && actorSizeTemp > 0)
             {
+                actorSize = actorSizeTemp;
                 index = indexTemp = 0;
-                FolderCreator(actorSizeTemp, "Assets/Resources/Data/ActorData", "TraitData");
-                ChangeMaximum<ActorData>(actorSizeTemp, actor, PathDatabase.ActorExplicitDataPath);
+                FolderCreator(actorSize, "Assets/Resources/Data/ActorData", "TraitData");
+                ChangeMaximum<ActorData>(actorSize, actor, PathDatabase.ActorExplicitDataPath);
 
-                #region  New TraitSize array length
+                //New TraitSize array length
                 int[] tempArr = new int[traitSize.Length];
                 for (int i = 0; i < traitSize.Length; i++)
                     tempArr[i] = traitSize[i];
 
-                traitSize = new int[actorSizeTemp];
+                traitSize = new int[actorSize];
 
                 #region FindSmallestBetween
                 int smallestValue;
-                if (tempArr.Length < actorSizeTemp) smallestValue = tempArr.Length;
-                else smallestValue = actorSizeTemp;
+                if (tempArr.Length < actorSize) smallestValue = tempArr.Length;
+                else smallestValue = actorSize;
                 #endregion
 
                 for (int i = 0; i < smallestValue; i++)
                     traitSize[i] = tempArr[i];
 
-                #endregion
-
-                if (actorSizeTemp > actorSize)
-                {
-                    for (int i = actorSize; i < actorSizeTemp; i++)
-                    {
-                        actor[i].actorName = actor[i].name;
-
-                        //Resets the armor index array length
-                        if (actor[i].allArmorIndexes == null)
-                        {
-                            actor[i].allArmorIndexes = new int[equipmentTypeSize];
-                        }
-                        sameNameFound = 0;
-                    }
-                }
-
-                //Resets the armor index array length
-                if (actor[index].allArmorIndexes == null)
-                {
-                    actor[index].allArmorIndexes = new int[equipmentTypeSize];
-                }
-
                 //Reload Data and Check SO
-                traits.Clear();
                 LoadGameData<TraitsData>(ref traitSize[index], traits, PathDatabase.ActorTraitRelativeDataPath + (index + 1));
                 if (traitSize[index] <= 0)
                 {
                     ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");
                 }
-
-                actorSize = actorSizeTemp;
+                //Resets the armor index array length
+                if (actor[index].allArmorIndexes == null)
+                {
+                    actor[index].allArmorIndexes = new int[equipmentTypeSize];
+                }
                 ClearNullScriptableObjects();
                 ListReset();
             }
@@ -283,21 +260,11 @@ using System.Linq;
             {
                 actor[index].actorName = GUILayout.TextField(actor[index].actorName, GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 8));
                 actorDisplayName[index] = actor[index].actorName;
-
-                for (int j = 0; j < actor.Count; j++)
-                {
-                    if (actor[index].actorName == actor[j].actorName && j != index)
-                    {
-                        actor[index].actorName = actor[index].name;
-                        break;
-                    }
-                }
             }
             else
             {
                 GUILayout.TextField("Null", GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 8));
             }
-
             GUILayout.Space(generalBox.height / 20);
             GUILayout.Label("Class:");
             selectedClassIndex = EditorGUILayout.Popup(selectedClassIndex, classDisplayName, GUILayout.Height(generalBox.height / 8), GUILayout.Width(generalBox.width / 2 - 15));
@@ -700,3 +667,4 @@ using System.Linq;
             }
         }
     }
+}
