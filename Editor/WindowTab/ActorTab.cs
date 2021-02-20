@@ -175,6 +175,7 @@ public class ActorTab : BaseTab
                     //Load TraitsData
                     traits.Clear();
                     LoadGameData<TraitsData>(ref traitSize[index], traits, PathDatabase.ActorTraitRelativeDataPath + (index + 1));
+
                     //Check if TraitsData folder is empty
                     if (traitSize[index] <= 0)
                     {
@@ -183,11 +184,6 @@ public class ActorTab : BaseTab
                     }
                     ClearNullScriptableObjects();
 
-                    //Resets the armor index array length
-                    if (actor[index].allArmorIndexes == null)
-                    {
-                        actor[index].allArmorIndexes = new int[equipmentTypeSize];
-                    }
                     ListReset();
                     indexTemp = -1;
                 }
@@ -196,22 +192,49 @@ public class ActorTab : BaseTab
                 actorSizeTemp = EditorGUILayout.IntField(actorSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
                 if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)) && actorSizeTemp > 0)
                 {
-                    actorSize = actorSizeTemp;
                     index = indexTemp = 0;
-                    FolderCreator(actorSize, "Assets/Resources/Data/ActorData", "TraitData");
-                    ChangeMaximum<ActorData>(actorSize, actor, PathDatabase.ActorExplicitDataPath);
+                    FolderCreator(actorSizeTemp, "Assets/Resources/Data/ActorData", "TraitData");
+                    ChangeMaximum<ActorData>(actorSizeTemp, actor, PathDatabase.ActorExplicitDataPath);
                     
+                    //Remove Name Duplicates
+                    if (actorSize < actorSizeTemp)
+                    {
+                        for (int i = actorSize; i < actorSizeTemp; i++)
+                        {
+                            //Resets the armor index array length
+                            if (actor[i].allArmorIndexes == null)
+                            {
+                                actor[i].allArmorIndexes = new int[equipmentTypeSize];
+                            }
+                            string originalName = actor[i].actorName;
+                            bool sameNameFound = true;
+                            int nameIncrement = 0;
+                            while (sameNameFound)
+                            {
+                                sameNameFound = false;
+                                for(int j = 0; j < i; j++)
+                                {
+                                    if (actor[j].actorName == actor[i].actorName)
+                                        sameNameFound = true;
+                                }
+
+                                if (sameNameFound)
+                                    actor[i].actorName = originalName + ' ' + ++nameIncrement;
+                            }
+                        }
+                    }
+
                     //New TraitSize array length
                     int[] tempArr = new int[traitSize.Length];
                     for (int i = 0; i < traitSize.Length; i++)
                         tempArr[i] = traitSize[i];
 
-                    traitSize = new int[actorSize];
+                    traitSize = new int[actorSizeTemp];
 
                     #region FindSmallestBetween
                         int smallestValue;
-                        if (tempArr.Length < actorSize) smallestValue = tempArr.Length;
-                        else smallestValue = actorSize;
+                        if (tempArr.Length < actorSizeTemp) smallestValue = tempArr.Length;
+                        else smallestValue = actorSizeTemp;
                     #endregion
 
                     for (int i = 0; i < smallestValue; i++)
@@ -224,12 +247,11 @@ public class ActorTab : BaseTab
                     {
                         ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");
                     }
-                    //Resets the armor index array length
-                    if (actor[index].allArmorIndexes == null)
-                    {
-                        actor[index].allArmorIndexes = new int[equipmentTypeSize];
-                    }
+                    
+                    actorSize = actorSizeTemp;
+
                     ClearNullScriptableObjects();
+
                     ListReset();
                 }
                 else if(actorSizeTemp <= 0){
@@ -258,6 +280,24 @@ public class ActorTab : BaseTab
                                 {
                                     actor[index].actorName = GUILayout.TextField(actor[index].actorName, GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 8));
                                     actorDisplayName[index] = actor[index].actorName;
+                                    
+                                    //Remove Name Duplicates
+                                    string originalName = actor[index].actorName;
+                                    bool sameNameFound = true;
+                                    int nameIncrement = 0;
+                                    while (sameNameFound)
+                                    {
+                                        sameNameFound = false;
+                                        for (int j = 0; j < actorSize; j++)
+                                        {
+                                            if (actor[j].actorName == actor[index].actorName && index!=j)
+                                                sameNameFound = true;
+                                        }
+
+                                        if (sameNameFound)
+                                            actor[index].actorName = originalName + ' ' + ++nameIncrement;
+                                    }
+            
                                 }
                                 else
                                 { 
