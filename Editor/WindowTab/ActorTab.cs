@@ -11,7 +11,7 @@ public class ActorTab : BaseTab
     public List<TraitsData> traits = new List<TraitsData>();
     public List<TypeEquipmentData> equipmentType = new List<TypeEquipmentData>();
     public List<ArmorData> armors = new List<ArmorData>();
-
+    
     //List of names. Why you ask? because selectionGrid require
     //array of string, which we cannot obtain in ActorData.
     //I hope later got better solution about this to not do
@@ -199,30 +199,24 @@ public class ActorTab : BaseTab
                     //Remove Name Duplicates
                     if (actorSize < actorSizeTemp)
                     {
-                        for (int i = actorSize; i < actorSizeTemp; i++)
+                        int oldActorSize = actorSize;
+                        actorSize = actorSizeTemp;
+                        ListReset();
+
+                        for (int i = oldActorSize; i < actorSizeTemp; i++)
                         {
                             //Resets the armor index array length
                             if (actor[i].allArmorIndexes == null)
                             {
                                 actor[i].allArmorIndexes = new int[equipmentTypeSize];
                             }
-                            string originalName = actor[i].actorName;
-                            bool sameNameFound = true;
-                            int nameIncrement = 0;
-                            while (sameNameFound)
-                            {
-                                sameNameFound = false;
-                                for(int j = 0; j < i; j++)
-                                {
-                                    if (actor[j].actorName == actor[i].actorName)
-                                        sameNameFound = true;
-                                }
 
-                                if (sameNameFound)
-                                    actor[i].actorName = originalName + ' ' + ++nameIncrement;
-                            }
+                            //Function Calling from BaseTab to check same names
+                            actor[i].actorName = RemoveDuplicates(actorSizeTemp, i, actor[i].actorName, actorDisplayName);
+                            ListReset();
                         }
                     }
+
 
                     //New TraitSize array length
                     int[] tempArr = new int[traitSize.Length];
@@ -280,24 +274,9 @@ public class ActorTab : BaseTab
                                 {
                                     actor[index].actorName = GUILayout.TextField(actor[index].actorName, GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 8));
                                     actorDisplayName[index] = actor[index].actorName;
-                                    
-                                    //Remove Name Duplicates
-                                    string originalName = actor[index].actorName;
-                                    bool sameNameFound = true;
-                                    int nameIncrement = 0;
-                                    while (sameNameFound)
-                                    {
-                                        sameNameFound = false;
-                                        for (int j = 0; j < actorSize; j++)
-                                        {
-                                            if (actor[j].actorName == actor[index].actorName && index!=j)
-                                                sameNameFound = true;
-                                        }
 
-                                        if (sameNameFound)
-                                            actor[index].actorName = originalName + ' ' + ++nameIncrement;
-                                    }
-            
+                                    //Remove Name Duplicates
+                                    actor[index].actorName = RemoveDuplicates(actorSize, index, actor[index].actorName, actorDisplayName);
                                 }
                                 else
                                 { 

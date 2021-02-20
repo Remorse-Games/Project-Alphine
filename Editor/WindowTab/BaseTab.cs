@@ -47,6 +47,7 @@ public abstract class BaseTab
     public void FolderCreator(int dataSize, string dataPath, string dataName)
     {
         // dataPath = "Assets/Resources/Data/ActorData"
+
         int counter = 0;
         while (AssetDatabase.IsValidFolder(dataPath + "/"  + dataName + (counter + 1)))
         {
@@ -240,7 +241,38 @@ public abstract class BaseTab
         }
     }
 
+    /// <summary>
+    /// Remove name duplicates using function from a list
+    /// </summary>
+    /// <param name="lastIndex">last item index to be checked using for loop</param>
+    /// <param name="currentIndex">current item index in the list.</param>
+    /// /// <param name="currentName">the last name changed by user.</param>
+    /// /// <param name="names">list of item that you want to check.</param>
+    public string RemoveDuplicates(int lastIndex, int currentIndex, string currentName, List<string> names)
+    {
+        names[currentIndex] = currentName;
 
+        string originalName = currentName;
+        bool sameNameFound = true;
+        int nameIncrement = 0;
+        while (sameNameFound)
+        {
+            sameNameFound = false;
+            for (int j = 0; j < lastIndex; j++)
+            {
+                if (names[j] == names[currentIndex] && currentIndex != j)
+                {
+                    sameNameFound = true;
+                    break;
+                }
+            }
+
+            if (sameNameFound)
+                names[currentIndex] = originalName + ' ' + ++nameIncrement;
+        }
+
+        return names[currentIndex];
+    }
     /// <summary>
     /// Change Maximum function , when we change the size
     /// and click Change Maximum button in Editor, it will update
