@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
+using Remorse.Tools.RPGDatabase.Utility;
+
 public class ClassExpWindow : EditorWindow {
 
     GUIStyle classStyle;
@@ -76,26 +78,26 @@ public class ClassExpWindow : EditorWindow {
                         GUILayout.Label("Base Value:");
                         GUILayout.BeginHorizontal();
                             thisClass.baseValue = Mathf.RoundToInt(GUILayout.HorizontalSlider(thisClass.baseValue, 10f, 50f, GUILayout.Width(200f), GUILayout.Height(20f)));
-                            thisClass.baseValue = EditorGUILayout.IntField(thisClass.baseValue, GUILayout.Width(50), GUILayout.Height(20));
+                            thisClass.baseValue = EditorGUILayoutExt.IntField(0, 999, thisClass.baseValue, GUILayout.Width(50), GUILayout.Height(20));
                         GUILayout.EndHorizontal();
                         GUILayout.Space(20);
                         GUILayout.Label("Acceleration A");
                         GUILayout.BeginHorizontal();
                             thisClass.accelA = Mathf.RoundToInt(GUILayout.HorizontalSlider(thisClass.accelA, 10, 50, GUILayout.Width(200), GUILayout.Height(20f)));
-                            thisClass.accelA = EditorGUILayout.IntField(thisClass.accelA, GUILayout.Width(50), GUILayout.Height(20));
+                            thisClass.accelA = EditorGUILayoutExt.IntField(0, 999, thisClass.accelA, GUILayout.Width(50), GUILayout.Height(20));
                         GUILayout.EndHorizontal();
                     GUILayout.EndVertical(); 
                     GUILayout.BeginVertical(); 
                         GUILayout.Label("Extra Value:");
                         GUILayout.BeginHorizontal();
                             thisClass.extraValue = Mathf.RoundToInt(GUILayout.HorizontalSlider(thisClass.extraValue, 0,40, GUILayout.Width(200), GUILayout.Height(20f)));
-                            thisClass.extraValue = EditorGUILayout.IntField(thisClass.extraValue, GUILayout.Width(50), GUILayout.Height(20));
+                            thisClass.extraValue = EditorGUILayoutExt.IntField(0, 999, thisClass.extraValue, GUILayout.Width(50), GUILayout.Height(20));
                         GUILayout.EndHorizontal();
                         GUILayout.Space(20);
                         GUILayout.Label("Acceleration B: ");
                         GUILayout.BeginHorizontal();
                             thisClass.accelB = Mathf.RoundToInt(GUILayout.HorizontalSlider(thisClass.accelB, 10, 50, GUILayout.Width(200), GUILayout.Height(20f)));
-                            thisClass.accelB = EditorGUILayout.IntField(thisClass.accelB, GUILayout.Width(50), GUILayout.Height(20));
+                            thisClass.accelB = EditorGUILayoutExt.IntField(0, 999, thisClass.accelB, GUILayout.Width(50), GUILayout.Height(20));
                         GUILayout.EndHorizontal();
                     GUILayout.EndVertical();
                 GUILayout.EndHorizontal();

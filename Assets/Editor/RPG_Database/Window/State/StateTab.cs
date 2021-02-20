@@ -186,7 +186,7 @@ namespace Remorse.Tools.RPGDatabase.Window
             }
 
             // Change Maximum field and button
-            stateSizeTemp = EditorGUILayout.IntField(stateSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
+            stateSizeTemp = EditorGUILayoutExt.IntField(0, 999, stateSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
             if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
             {
                 stateSize = stateSizeTemp;
@@ -306,14 +306,14 @@ namespace Remorse.Tools.RPGDatabase.Window
             GUILayout.Label("Priority:"); // MP Cost class label
             if (stateSize > 0)
             {
-                state[index].statePriority = EditorGUILayout.IntField(state[index].statePriority,
+                state[index].statePriority = EditorGUILayoutExt.IntField(0, 999, state[index].statePriority,
                                                                         GUILayout.Width(generalBox.width / 4 - 2),
                                                                         GUILayout.Height(generalBox.height / 8)
                                                                      );
             }
             else
             {
-                EditorGUILayout.IntField(-1, GUILayout.Width(generalBox.width / 4 - 2), GUILayout.Height(generalBox.height / 8));
+                EditorGUILayoutExt.IntField(0, 999, -1, GUILayout.Width(generalBox.width / 4 - 2), GUILayout.Height(generalBox.height / 8));
             }
             GUILayout.BeginHorizontal();
             GUILayout.Space(generalBox.width * .5f);
@@ -409,15 +409,15 @@ namespace Remorse.Tools.RPGDatabase.Window
             GUILayout.Space(generalBox.width * .20f);
             if (state[index].selectedAutoRemoval > 0)
             {
-                state[index].durationInTurnsA = EditorGUILayout.IntField(state[index].durationInTurnsA, GUILayout.Width(generalBox.width / 2 * .4f), GUILayout.Height(generalBox.height / 8));
+                state[index].durationInTurnsA = EditorGUILayoutExt.IntField(0, 999, state[index].durationInTurnsA, GUILayout.Width(generalBox.width / 2 * .4f), GUILayout.Height(generalBox.height / 8));
                 GUILayout.Label(" ~");
-                state[index].durationInTurnsB = EditorGUILayout.IntField(state[index].durationInTurnsB, GUILayout.Width(generalBox.width / 2 * .4f), GUILayout.Height(generalBox.height / 8));
+                state[index].durationInTurnsB = EditorGUILayoutExt.IntField(0, 999, state[index].durationInTurnsB, GUILayout.Width(generalBox.width / 2 * .4f), GUILayout.Height(generalBox.height / 8));
             }
             else
             {
-                EditorGUILayout.IntField(1, GUILayout.Width(generalBox.width / 2 * .4f), GUILayout.Height(generalBox.height / 8));
+                EditorGUILayoutExt.IntField(0, 999, 1, GUILayout.Width(generalBox.width / 2 * .4f), GUILayout.Height(generalBox.height / 8));
                 GUILayout.Label(" ~");
-                EditorGUILayout.IntField(1, GUILayout.Width(generalBox.width / 2 * .4f), GUILayout.Height(generalBox.height / 8));
+                EditorGUILayoutExt.IntField(0, 999, 1, GUILayout.Width(generalBox.width / 2 * .4f), GUILayout.Height(generalBox.height / 8));
             }
             GUILayout.EndHorizontal();
 
@@ -429,7 +429,7 @@ namespace Remorse.Tools.RPGDatabase.Window
             if (EditorGUILayout.Toggle("Remove By Damage", state[index].stateRemoveByDamage))
             {
                 state[index].stateRemoveByDamage = true;
-                state[index].removeByDamageValue = EditorGUILayout.IntField(state[index].removeByDamageValue, GUILayout.Width(generalBox.width / 2 * .4f), GUILayout.Height(generalBox.height / 8));
+                state[index].removeByDamageValue = EditorGUILayoutExt.IntField(0, 999, state[index].removeByDamageValue, GUILayout.Width(generalBox.width / 2 * .4f), GUILayout.Height(generalBox.height / 8));
             }
             else
             {
@@ -441,7 +441,7 @@ namespace Remorse.Tools.RPGDatabase.Window
             if (EditorGUILayout.Toggle("Remove By Walking", state[index].stateRemoveByWalking))
             {
                 state[index].stateRemoveByWalking = true;
-                state[index].removeByWalkingValue = EditorGUILayout.IntField(state[index].removeByWalkingValue, GUILayout.Width(generalBox.width / 2 * .4f), GUILayout.Height(generalBox.height / 8));
+                state[index].removeByWalkingValue = EditorGUILayoutExt.IntField(0, 999, state[index].removeByWalkingValue, GUILayout.Width(generalBox.width / 2 * .4f), GUILayout.Height(generalBox.height / 8));
             }
             else
             {

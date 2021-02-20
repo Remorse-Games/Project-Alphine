@@ -224,7 +224,7 @@ namespace Remorse.Tools.RPGDatabase.Window
             }
 
             // Change Maximum field and button
-            skillSizeTemp = EditorGUILayout.IntField(skillSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
+            skillSizeTemp = EditorGUILayoutExt.IntField(0, 999, skillSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
             if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
             {
                 skillSize = skillSizeTemp;
@@ -349,17 +349,17 @@ namespace Remorse.Tools.RPGDatabase.Window
             GUILayout.BeginVertical();
             GUILayout.Label("MP Cost:"); // MP Cost class label
             if (skillSize > 0)
-            { skill[index].skillMPCost = EditorGUILayout.IntField(skill[index].skillMPCost, GUILayout.Width(generalBox.width / 4 - 2), GUILayout.Height(generalBox.height / 8 - 9)); }
+            { skill[index].skillMPCost = EditorGUILayoutExt.IntField(0, 999, skill[index].skillMPCost, GUILayout.Width(generalBox.width / 4 - 2), GUILayout.Height(generalBox.height / 8 - 9)); }
             else
-            { EditorGUILayout.IntField(-1, GUILayout.Width(generalBox.width / 4 - 2), GUILayout.Height(generalBox.height / 8 - 9)); }
+            { EditorGUILayoutExt.IntField(0, 999, -1, GUILayout.Width(generalBox.width / 4 - 2), GUILayout.Height(generalBox.height / 8 - 9)); }
             GUILayout.EndVertical();
 
             GUILayout.BeginVertical();
             GUILayout.Label("TP Cost:"); // TP Cost class label
             if (skillSize > 0)
-            { skill[index].skillTPCost = EditorGUILayout.IntField(skill[index].skillTPCost, GUILayout.Width(generalBox.width / 4 - 2), GUILayout.Height(generalBox.height / 8 - 9)); }
+            { skill[index].skillTPCost = EditorGUILayoutExt.IntField(0, 999, skill[index].skillTPCost, GUILayout.Width(generalBox.width / 4 - 2), GUILayout.Height(generalBox.height / 8 - 9)); }
             else
-            { EditorGUILayout.IntField(-1, GUILayout.Width(generalBox.width / 4 - 2), GUILayout.Height(generalBox.height / 8 - 9)); }
+            { EditorGUILayoutExt.IntField(0, 999, -1, GUILayout.Width(generalBox.width / 4 - 2), GUILayout.Height(generalBox.height / 8 - 9)); }
             GUILayout.EndVertical();
 
 
@@ -417,33 +417,33 @@ namespace Remorse.Tools.RPGDatabase.Window
             GUILayout.BeginVertical();
             GUILayout.Label("Initial Level:");
             if (skillSize > 0)
-            { skill[index].skillSpeed = EditorGUILayout.IntField(skill[index].skillSpeed, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
+            { skill[index].skillSpeed = EditorGUILayoutExt.IntField(0, 999, skill[index].skillSpeed, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
             else
-            { EditorGUILayout.IntField(-1, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
+            { EditorGUILayoutExt.IntField(0, 999, -1, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
             GUILayout.EndVertical();
 
             GUILayout.BeginVertical();
             GUILayout.Label("Success:");
             if (skillSize > 0)
-            { skill[index].skillSuccessLevel = EditorGUILayout.IntField(skill[index].skillSuccessLevel, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
+            { skill[index].skillSuccessLevel = EditorGUILayoutExt.IntField(0, 999, skill[index].skillSuccessLevel, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
             else
-            { EditorGUILayout.IntField(-1, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
+            { EditorGUILayoutExt.IntField(0, 999, -1, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
             GUILayout.EndVertical();
 
             GUILayout.BeginVertical();
             GUILayout.Label("Repeat:");
             if (skillSize > 0)
-            { skill[index].skillRepeat = EditorGUILayout.IntField(skill[index].skillRepeat, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
+            { skill[index].skillRepeat = EditorGUILayoutExt.IntField(0, 999, skill[index].skillRepeat, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
             else
-            { EditorGUILayout.IntField(-1, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
+            { EditorGUILayoutExt.IntField(0, 999, -1, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
             GUILayout.EndVertical();
 
             GUILayout.BeginVertical();
             GUILayout.Label("TP Gain:");
             if (skillSize > 0)
-            { skill[index].skillTPGain = EditorGUILayout.IntField(skill[index].skillTPGain, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
+            { skill[index].skillTPGain = EditorGUILayoutExt.IntField(0, 999, skill[index].skillTPGain, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
             else
-            { EditorGUILayout.IntField(-1, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
+            { EditorGUILayoutExt.IntField(0, 999, -1, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
             GUILayout.EndVertical();
 
             GUILayout.EndHorizontal();
@@ -647,11 +647,11 @@ namespace Remorse.Tools.RPGDatabase.Window
             GUILayout.Label("Variance:");
             if (skillSize > 0)
             {
-                skill[index].skillVariance = EditorGUILayout.IntField(skill[index].skillVariance, GUILayout.Width(.25f * (damageBox.width - 8)), GUILayout.Height(damageBox.height / 4 - 17));
+                skill[index].skillVariance = EditorGUILayoutExt.IntField(0, 999, skill[index].skillVariance, GUILayout.Width(.25f * (damageBox.width - 8)), GUILayout.Height(damageBox.height / 4 - 17));
             }
             else
             {
-                EditorGUILayout.IntField(-1, GUILayout.Width(.25f * (damageBox.width - 8)), GUILayout.Height(damageBox.height / 4 - 17));
+                EditorGUILayoutExt.IntField(0, 999, -1, GUILayout.Width(.25f * (damageBox.width - 8)), GUILayout.Height(damageBox.height / 4 - 17));
             }
             GUILayout.EndVertical();
             #endregion

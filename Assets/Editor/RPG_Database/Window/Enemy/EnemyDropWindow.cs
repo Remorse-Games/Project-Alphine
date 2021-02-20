@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEditor;
 using UnityEditor.AnimatedValues;
 
+using Remorse.Tools.RPGDatabase.Utility;
+
 public class EnemyDropWindow : EditorWindow
 {
     //All GUIStyle variable initialization.
@@ -108,7 +110,7 @@ public class EnemyDropWindow : EditorWindow
 
                                     if(thisClass.selectedToggle[windowOrder] > 0)
                                     {     
-                                        thisClass.enemyProbability[windowOrder] = EditorGUILayout.IntField(
+                                        thisClass.enemyProbability[windowOrder] = EditorGUILayoutExt.IntField(0, 999, 
                                                                                                         thisClass.enemyProbability[windowOrder], 
                                                                                                         GUILayout.Width(probabilityBox.width - 40), 
                                                                                                         GUILayout.Height(20)
@@ -116,7 +118,7 @@ public class EnemyDropWindow : EditorWindow
                                     }
                                     else
                                     {
-                                        EditorGUILayout.IntField(1, GUILayout.Width(probabilityBox.width - 40), GUILayout.Height(20));
+                                        EditorGUILayoutExt.IntField(0, 999, 1, GUILayout.Width(probabilityBox.width - 40), GUILayout.Height(20));
                                     }
                                 GUILayout.EndHorizontal();
                             GUILayout.EndVertical();

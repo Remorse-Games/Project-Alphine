@@ -161,7 +161,7 @@ namespace Remorse.Tools.RPGDatabase.Window
                 GUILayout.TextField("Null", GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
             }
             //Int field of change Maximum
-            elementSizeTemp = EditorGUILayout.IntField(elementSizeTemp, GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
+            elementSizeTemp = EditorGUILayoutExt.IntField(0, 999, elementSizeTemp, GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
             if (GUILayout.Button("Change Maximum", GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
             {
                 elementIndex = 0;
@@ -212,7 +212,7 @@ namespace Remorse.Tools.RPGDatabase.Window
                 GUILayout.TextField("Null", GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
             }
             //Int field of change Maximum
-            skillSizeTemp = EditorGUILayout.IntField(skillSizeTemp, GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
+            skillSizeTemp = EditorGUILayoutExt.IntField(0, 999, skillSizeTemp, GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
             if (GUILayout.Button("Change Maximum", GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
             {
                 skillIndex = 0;
@@ -263,7 +263,7 @@ namespace Remorse.Tools.RPGDatabase.Window
                 GUILayout.TextField("Null", GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
             }
             //Int field of change Maximum
-            weaponSizeTemp = EditorGUILayout.IntField(weaponSizeTemp, GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
+            weaponSizeTemp = EditorGUILayoutExt.IntField(0, 999, weaponSizeTemp, GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
             if (GUILayout.Button("Change Maximum", GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
             {
                 weaponIndex = 0;
@@ -314,7 +314,7 @@ namespace Remorse.Tools.RPGDatabase.Window
                 GUILayout.TextField("Null", GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
             }
             //Int field of change Maximum
-            armorSizeTemp = EditorGUILayout.IntField(armorSizeTemp, GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
+            armorSizeTemp = EditorGUILayoutExt.IntField(0, 999, armorSizeTemp, GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
             if (GUILayout.Button("Change Maximum", GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
             {
                 armorIndex = 0;
@@ -365,7 +365,7 @@ namespace Remorse.Tools.RPGDatabase.Window
                 GUILayout.TextField("Null", GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
             }
             //Int field of change Maximum
-            equipmentSizeTemp = EditorGUILayout.IntField(equipmentSizeTemp, GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
+            equipmentSizeTemp = EditorGUILayoutExt.IntField(0, 999, equipmentSizeTemp, GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
             if (GUILayout.Button("Change Maximum", GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
             {
                 equipmentIndex = 0;

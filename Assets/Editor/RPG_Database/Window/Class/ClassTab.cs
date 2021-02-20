@@ -160,7 +160,7 @@ namespace Remorse.Tools.RPGDatabase.Window
                 indexTemp = -1;
             }
 
-            classSizeTemp = EditorGUILayout.IntField(classSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
+            classSizeTemp = EditorGUILayoutExt.IntField(0, 999, classSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
             if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
             {
                 classSize = classSizeTemp;

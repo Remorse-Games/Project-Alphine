@@ -115,7 +115,7 @@ public class ActionPatternsWindow : EditorWindow
 
                                     GUILayout.BeginVertical();
                                         GUILayout.Label("Rating:");
-                                        thisClass[actionIndex].ratingValue = EditorGUILayout.IntField(thisClass[actionIndex].ratingValue, 
+                                        thisClass[actionIndex].ratingValue = EditorGUILayoutExt.IntField(0, 999, thisClass[actionIndex].ratingValue, 
                                                                                                             GUILayout.Width(skillRating.width * .45f), 
                                                                                                             GUILayout.Height(20));
                                     GUILayout.EndVertical();
@@ -234,9 +234,9 @@ public class ActionPatternsWindow : EditorWindow
         {
             MemsetArray(1, tabToggle);
             GUILayout.BeginHorizontal();
-                thisClass[actionIndex].additionalValue1 = EditorGUILayout.IntField(thisClass[actionIndex].additionalValue1, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                thisClass[actionIndex].additionalValue1 = EditorGUILayoutExt.IntField(0, 999, thisClass[actionIndex].additionalValue1, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
                 GUILayout.Label(" + ");
-                thisClass[actionIndex].additionalValue2 = EditorGUILayout.IntField(thisClass[actionIndex].additionalValue2, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                thisClass[actionIndex].additionalValue2 = EditorGUILayoutExt.IntField(0, 999, thisClass[actionIndex].additionalValue2, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
                 GUILayout.Space(widthSpace);
             GUILayout.EndHorizontal();
 
@@ -248,9 +248,9 @@ public class ActionPatternsWindow : EditorWindow
         {
             MemsetArray(2, tabToggle);
             GUILayout.BeginHorizontal();
-                thisClass[actionIndex].additionalValue1 = EditorGUILayout.IntField(thisClass[actionIndex].additionalValue1, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                thisClass[actionIndex].additionalValue1 = EditorGUILayoutExt.IntField(0, 999, thisClass[actionIndex].additionalValue1, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
                 GUILayout.Label(" ~ ");
-                thisClass[actionIndex].additionalValue2 = EditorGUILayout.IntField(thisClass[actionIndex].additionalValue2, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                thisClass[actionIndex].additionalValue2 = EditorGUILayoutExt.IntField(0, 999, thisClass[actionIndex].additionalValue2, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
                 GUILayout.Space(widthSpace);
             GUILayout.EndHorizontal();
 
@@ -262,9 +262,9 @@ public class ActionPatternsWindow : EditorWindow
         {
             MemsetArray(3, tabToggle);
             GUILayout.BeginHorizontal();
-                thisClass[actionIndex].additionalValue1 = EditorGUILayout.IntField(thisClass[actionIndex].additionalValue1, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                thisClass[actionIndex].additionalValue1 = EditorGUILayoutExt.IntField(0, 999, thisClass[actionIndex].additionalValue1, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
                 GUILayout.Label(" ~ ");
-                thisClass[actionIndex].additionalValue2 = EditorGUILayout.IntField(thisClass[actionIndex].additionalValue2, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                thisClass[actionIndex].additionalValue2 = EditorGUILayoutExt.IntField(0, 999, thisClass[actionIndex].additionalValue2, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
                 GUILayout.Space(widthSpace);
             GUILayout.EndHorizontal();
             thisClass[actionIndex].selectedConditionIndex = 3;
@@ -286,7 +286,7 @@ public class ActionPatternsWindow : EditorWindow
         {
             MemsetArray(5, tabToggle);
             GUILayout.BeginHorizontal();
-                thisClass[actionIndex].additionalValue1 = EditorGUILayout.IntField(thisClass[actionIndex].additionalValue1, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                thisClass[actionIndex].additionalValue1 = EditorGUILayoutExt.IntField(0, 999, thisClass[actionIndex].additionalValue1, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
                 GUILayout.Label(" or above ");
                 GUILayout.Space(widthSpace);
                 thisClass[actionIndex].selectedConditionIndex = 5;

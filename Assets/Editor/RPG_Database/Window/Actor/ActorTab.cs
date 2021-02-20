@@ -195,7 +195,7 @@ namespace Remorse.Tools.RPGDatabase.Window
             }
 
             //Int field of change Maximum
-            actorSizeTemp = EditorGUILayout.IntField(actorSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
+            actorSizeTemp = EditorGUILayoutExt.IntField(0, 999, actorSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
             if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)) && actorSizeTemp > 0)
             {
                 actorSize = actorSizeTemp;
@@ -285,19 +285,19 @@ namespace Remorse.Tools.RPGDatabase.Window
             GUILayout.Label("Initial Level:");
             if (actorSize > 0)
             {
-                actor[index].initLevel = EditorGUILayout.IntField(actor[index].initLevel, GUILayout.Width(generalBox.width / 4 - 20), GUILayout.Height(generalBox.height / 8));
+                actor[index].initLevel = EditorGUILayoutExt.IntField(0, 999, actor[index].initLevel, GUILayout.Width(generalBox.width / 4 - 20), GUILayout.Height(generalBox.height / 8));
             }
             else
-            { EditorGUILayout.IntField(-1, GUILayout.Width(generalBox.width / 4 - 20), GUILayout.Height(generalBox.height / 8)); }
+            { EditorGUILayoutExt.IntField(0, 999, -1, GUILayout.Width(generalBox.width / 4 - 20), GUILayout.Height(generalBox.height / 8)); }
             GUILayout.EndVertical();
             #endregion
             #region MaxLevel
             GUILayout.BeginVertical();
             GUILayout.Label("Max Level:");
             if (actorSize > 0)
-            { actor[index].maxLevel = EditorGUILayout.IntField(actor[index].maxLevel, GUILayout.Width(generalBox.width / 4 - 20), GUILayout.Height(generalBox.height / 8)); }
+            { actor[index].maxLevel = EditorGUILayoutExt.IntField(0, 999, actor[index].maxLevel, GUILayout.Width(generalBox.width / 4 - 20), GUILayout.Height(generalBox.height / 8)); }
             else
-            { EditorGUILayout.IntField(-1, GUILayout.Width(generalBox.width / 4 - 20), GUILayout.Height(generalBox.height / 8)); }
+            { EditorGUILayoutExt.IntField(0, 999, -1, GUILayout.Width(generalBox.width / 4 - 20), GUILayout.Height(generalBox.height / 8)); }
             GUILayout.EndVertical();
             #endregion
             GUILayout.EndHorizontal();

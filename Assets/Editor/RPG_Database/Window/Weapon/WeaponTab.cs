@@ -165,7 +165,7 @@ namespace Remorse.Tools.RPGDatabase.Window
             }
 
             // Change Maximum field and button
-            weaponSizeTemp = EditorGUILayout.IntField(weaponSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
+            weaponSizeTemp = EditorGUILayoutExt.IntField(0, 999, weaponSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
             if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
             {
                 weaponSize = weaponSizeTemp;
@@ -294,11 +294,11 @@ namespace Remorse.Tools.RPGDatabase.Window
             GUILayout.Label("Price:"); // Price label
             if (weaponSize > 0)
             {
-                weapon[index].weaponPrice = EditorGUILayout.IntField(weapon[index].weaponPrice, GUILayout.Width(generalBox.width / 4 - 2), GUILayout.Height(generalBox.height / 8 - 9));
+                weapon[index].weaponPrice = EditorGUILayoutExt.IntField(0, 999, weapon[index].weaponPrice, GUILayout.Width(generalBox.width / 4 - 2), GUILayout.Height(generalBox.height / 8 - 9));
             }
             else
             {
-                EditorGUILayout.IntField(-1, GUILayout.Width(generalBox.width / 4 - 2), GUILayout.Height(generalBox.height / 8 - 9));
+                EditorGUILayoutExt.IntField(0, 999, -1, GUILayout.Width(generalBox.width / 4 - 2), GUILayout.Height(generalBox.height / 8 - 9));
             }
             GUILayout.EndVertical();
 
@@ -326,33 +326,33 @@ namespace Remorse.Tools.RPGDatabase.Window
             GUILayout.BeginVertical();
             GUILayout.Label("Attack:");
             if (weaponSize > 0)
-            { weapon[index].weaponAttack = EditorGUILayout.IntField(weapon[index].weaponAttack, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+            { weapon[index].weaponAttack = EditorGUILayoutExt.IntField(0, 999, weapon[index].weaponAttack, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
             else
-            { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+            { EditorGUILayoutExt.IntField(0, 999, -1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
             GUILayout.EndVertical();
 
             GUILayout.BeginVertical();
             GUILayout.Label("Defense:");
             if (weaponSize > 0)
-            { weapon[index].weaponDefense = EditorGUILayout.IntField(weapon[index].weaponDefense, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+            { weapon[index].weaponDefense = EditorGUILayoutExt.IntField(0, 999, weapon[index].weaponDefense, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
             else
-            { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+            { EditorGUILayoutExt.IntField(0, 999, -1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
             GUILayout.EndVertical();
 
             GUILayout.BeginVertical();
             GUILayout.Label("M.Attack:");
             if (weaponSize > 0)
-            { weapon[index].weaponMAttack = EditorGUILayout.IntField(weapon[index].weaponMAttack, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+            { weapon[index].weaponMAttack = EditorGUILayoutExt.IntField(0, 999, weapon[index].weaponMAttack, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
             else
-            { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+            { EditorGUILayoutExt.IntField(0, 999, -1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
             GUILayout.EndVertical();
 
             GUILayout.BeginVertical();
             GUILayout.Label("M.Defense:");
             if (weaponSize > 0)
-            { weapon[index].weaponMDefense = EditorGUILayout.IntField(weapon[index].weaponMDefense, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+            { weapon[index].weaponMDefense = EditorGUILayoutExt.IntField(0, 999, weapon[index].weaponMDefense, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
             else
-            { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+            { EditorGUILayoutExt.IntField(0, 999, -1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
             GUILayout.EndVertical();
 
             GUILayout.EndHorizontal();
@@ -363,33 +363,33 @@ namespace Remorse.Tools.RPGDatabase.Window
             GUILayout.BeginVertical();
             GUILayout.Label("Agility:");
             if (weaponSize > 0)
-            { weapon[index].weaponAgility = EditorGUILayout.IntField(weapon[index].weaponAgility, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+            { weapon[index].weaponAgility = EditorGUILayoutExt.IntField(0, 999, weapon[index].weaponAgility, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
             else
-            { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+            { EditorGUILayoutExt.IntField(0, 999, -1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
             GUILayout.EndVertical();
 
             GUILayout.BeginVertical();
             GUILayout.Label("Luck:");
             if (weaponSize > 0)
-            { weapon[index].weaponLuck = EditorGUILayout.IntField(weapon[index].weaponLuck, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+            { weapon[index].weaponLuck = EditorGUILayoutExt.IntField(0, 999, weapon[index].weaponLuck, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
             else
-            { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+            { EditorGUILayoutExt.IntField(0, 999, -1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
             GUILayout.EndVertical();
 
             GUILayout.BeginVertical();
             GUILayout.Label("Max HP:");
             if (weaponSize > 0)
-            { weapon[index].weaponMaxHP = EditorGUILayout.IntField(weapon[index].weaponMaxHP, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+            { weapon[index].weaponMaxHP = EditorGUILayoutExt.IntField(0, 999, weapon[index].weaponMaxHP, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
             else
-            { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+            { EditorGUILayoutExt.IntField(0, 999, -1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
             GUILayout.EndVertical();
 
             GUILayout.BeginVertical();
             GUILayout.Label("Max MP:");
             if (weaponSize > 0)
-            { weapon[index].weaponMaxMP = EditorGUILayout.IntField(weapon[index].weaponMaxMP, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+            { weapon[index].weaponMaxMP = EditorGUILayoutExt.IntField(0, 999, weapon[index].weaponMaxMP, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
             else
-            { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+            { EditorGUILayoutExt.IntField(0, 999, -1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
             GUILayout.EndVertical();
 
             GUILayout.EndHorizontal();

@@ -184,7 +184,7 @@ namespace Remorse.Tools.RPGDatabase.Window
             }
 
             // Change Maximum field and button
-            troopSizeTemp = EditorGUILayout.IntField(troopSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
+            troopSizeTemp = EditorGUILayoutExt.IntField(0, 999, troopSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
             if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
             {
                 if (troopSizeTemp < troopSize)

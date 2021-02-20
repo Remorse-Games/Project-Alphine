@@ -282,7 +282,7 @@ namespace Remorse.Tools.RPGDatabase.Commons
                 GUILayout.BeginVertical();
                 GUILayout.BeginHorizontal();
 
-                effects[effectIndex].effectValue[0] = EditorGUILayout.IntField(effects[effectIndex].effectValue[0], GUILayout.Width(fieldWidth));
+                effects[effectIndex].effectValue[0] = EditorGUILayoutExt.IntField(0, 999, effects[effectIndex].effectValue[0], GUILayout.Width(fieldWidth));
                 GUILayout.Label("%", GUILayout.Width(15));
 
                 if (GUILayout.Button("+", GUILayout.Width(25)) && effects[effectIndex].effectValue[0] < 100)
@@ -298,7 +298,7 @@ namespace Remorse.Tools.RPGDatabase.Commons
                 GUILayout.EndHorizontal();
                 GUILayout.BeginHorizontal();
 
-                effects[effectIndex].effectValue[1] = EditorGUILayout.IntField(effects[effectIndex].effectValue[1], GUILayout.Width(fieldWidth));
+                effects[effectIndex].effectValue[1] = EditorGUILayoutExt.IntField(0, 999, effects[effectIndex].effectValue[1], GUILayout.Width(fieldWidth));
                 GUILayout.Space(20);
 
                 if (GUILayout.Button("+", GUILayout.Width(25)) && effects[effectIndex].effectValue[1] < 100)
@@ -337,7 +337,7 @@ namespace Remorse.Tools.RPGDatabase.Commons
                 GUILayout.BeginVertical();
                 GUILayout.BeginHorizontal();
 
-                effects[effectIndex].effectValue[0] = EditorGUILayout.IntField(effects[effectIndex].effectValue[0], GUILayout.Width(fieldWidth));
+                effects[effectIndex].effectValue[0] = EditorGUILayoutExt.IntField(0, 999, effects[effectIndex].effectValue[0], GUILayout.Width(fieldWidth));
                 GUILayout.Label("%", GUILayout.Width(15));
 
                 if (GUILayout.Button("+", GUILayout.Width(25)) && effects[effectIndex].effectValue[0] < 100)
@@ -353,7 +353,7 @@ namespace Remorse.Tools.RPGDatabase.Commons
                 GUILayout.EndHorizontal();
                 GUILayout.BeginHorizontal();
 
-                effects[effectIndex].effectValue[1] = EditorGUILayout.IntField(effects[effectIndex].effectValue[1], GUILayout.Width(fieldWidth));
+                effects[effectIndex].effectValue[1] = EditorGUILayoutExt.IntField(0, 999, effects[effectIndex].effectValue[1], GUILayout.Width(fieldWidth));
                 GUILayout.Space(20);
 
                 if (GUILayout.Button("+", GUILayout.Width(25)) && effects[effectIndex].effectValue[1] < 100)
@@ -392,7 +392,7 @@ namespace Remorse.Tools.RPGDatabase.Commons
                 GUILayout.BeginVertical();
                 GUILayout.BeginHorizontal();
 
-                effects[effectIndex].effectValue[1] = EditorGUILayout.IntField(effects[effectIndex].effectValue[1], GUILayout.Width(fieldWidth));
+                effects[effectIndex].effectValue[1] = EditorGUILayoutExt.IntField(0, 999, effects[effectIndex].effectValue[1], GUILayout.Width(fieldWidth));
                 GUILayout.Space(20);
 
                 if (GUILayout.Button("+", GUILayout.Width(25)) && effects[effectIndex].effectValue[1] < 100)
@@ -455,7 +455,7 @@ namespace Remorse.Tools.RPGDatabase.Commons
 
                 GUILayout.BeginHorizontal();
 
-                effects[effectIndex].effectValue[0] = EditorGUILayout.IntField(effects[effectIndex].effectValue[0], GUILayout.Width(fieldWidth));
+                effects[effectIndex].effectValue[0] = EditorGUILayoutExt.IntField(0, 999, effects[effectIndex].effectValue[0], GUILayout.Width(fieldWidth));
                 GUILayout.Label("%", GUILayout.Width(15));
 
                 if (GUILayout.Button("+", GUILayout.Width(25)) && effects[effectIndex].effectValue[0] < 100)
@@ -502,7 +502,7 @@ namespace Remorse.Tools.RPGDatabase.Commons
 
                 GUILayout.BeginHorizontal();
 
-                effects[effectIndex].effectValue[0] = EditorGUILayout.IntField(effects[effectIndex].effectValue[0], GUILayout.Width(fieldWidth));
+                effects[effectIndex].effectValue[0] = EditorGUILayoutExt.IntField(0, 999, effects[effectIndex].effectValue[0], GUILayout.Width(fieldWidth));
                 GUILayout.Label("%", GUILayout.Width(15));
 
                 if (GUILayout.Button("+", GUILayout.Width(25)) && effects[effectIndex].effectValue[0] < 100)
@@ -567,7 +567,7 @@ namespace Remorse.Tools.RPGDatabase.Commons
 
                 GUILayout.BeginHorizontal();
 
-                effects[effectIndex].effectValue[1] = EditorGUILayout.IntField(effects[effectIndex].effectValue[1], GUILayout.Width(fieldWidth));
+                effects[effectIndex].effectValue[1] = EditorGUILayoutExt.IntField(0, 999, effects[effectIndex].effectValue[1], GUILayout.Width(fieldWidth));
 
                 if (GUILayout.Button("+", GUILayout.Width(25)) && effects[effectIndex].effectValue[1] < 100)
                 {
@@ -613,7 +613,7 @@ namespace Remorse.Tools.RPGDatabase.Commons
 
                 GUILayout.BeginHorizontal();
 
-                effects[effectIndex].effectValue[1] = EditorGUILayout.IntField(effects[effectIndex].effectValue[1], GUILayout.Width(fieldWidth));
+                effects[effectIndex].effectValue[1] = EditorGUILayoutExt.IntField(0, 999, effects[effectIndex].effectValue[1], GUILayout.Width(fieldWidth));
 
                 if (GUILayout.Button("+", GUILayout.Width(25)) && effects[effectIndex].effectValue[1] < 100)
                 {
@@ -767,7 +767,7 @@ namespace Remorse.Tools.RPGDatabase.Commons
 
                 GUILayout.BeginHorizontal();
 
-                effects[effectIndex].effectValue[1] = EditorGUILayout.IntField(effects[effectIndex].effectValue[1], GUILayout.Width(fieldWidth));
+                effects[effectIndex].effectValue[1] = EditorGUILayoutExt.IntField(0, 999, effects[effectIndex].effectValue[1], GUILayout.Width(fieldWidth));
 
                 if (GUILayout.Button("+", GUILayout.Width(25)) && effects[effectIndex].effectValue[1] < 100)
                 {

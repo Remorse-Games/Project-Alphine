@@ -183,7 +183,7 @@ namespace Remorse.Tools.RPGDatabase.Window
             }
 
             // Change Maximum field and button
-            enemySizeTemp = EditorGUILayout.IntField(enemySizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
+            enemySizeTemp = EditorGUILayoutExt.IntField(0, 999, enemySizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
             if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
             {
                 enemySize = enemySizeTemp;
@@ -287,40 +287,40 @@ namespace Remorse.Tools.RPGDatabase.Window
             GUILayout.Label("Max HP:");
             if (enemySize > 0)
             {
-                enemy[index].enemyMaxHP = EditorGUILayout.IntField(enemy[index].enemyMaxHP, GUILayout.Width(generalBox.width / 4 - 5), GUILayout.Height(generalBox.height / 8));
+                enemy[index].enemyMaxHP = EditorGUILayoutExt.IntField(0, 999, enemy[index].enemyMaxHP, GUILayout.Width(generalBox.width / 4 - 5), GUILayout.Height(generalBox.height / 8));
             }
             else
             {
-                EditorGUILayout.IntField(-1, GUILayout.Width(generalBox.width / 4 - 5), GUILayout.Height(generalBox.height / 8));
+                EditorGUILayoutExt.IntField(0, 999, -1, GUILayout.Width(generalBox.width / 4 - 5), GUILayout.Height(generalBox.height / 8));
             }
 
             GUILayout.Label("Attack:");
             if (enemySize > 0)
             {
-                enemy[index].enemyAttack = EditorGUILayout.IntField(enemy[index].enemyAttack, GUILayout.Width(generalBox.width / 4 - 5), GUILayout.Height(generalBox.height / 8));
+                enemy[index].enemyAttack = EditorGUILayoutExt.IntField(0, 999, enemy[index].enemyAttack, GUILayout.Width(generalBox.width / 4 - 5), GUILayout.Height(generalBox.height / 8));
             }
             else
             {
-                EditorGUILayout.IntField(-1, GUILayout.Width(generalBox.width / 4 - 5), GUILayout.Height(generalBox.height / 8));
+                EditorGUILayoutExt.IntField(0, 999, -1, GUILayout.Width(generalBox.width / 4 - 5), GUILayout.Height(generalBox.height / 8));
             }
 
             GUILayout.Label("M.Attack:");
             if (enemySize > 0)
             {
-                enemy[index].enemyMAttack = EditorGUILayout.IntField(enemy[index].enemyMAttack, GUILayout.Width(generalBox.width / 4 - 5), GUILayout.Height(generalBox.height / 8));
+                enemy[index].enemyMAttack = EditorGUILayoutExt.IntField(0, 999, enemy[index].enemyMAttack, GUILayout.Width(generalBox.width / 4 - 5), GUILayout.Height(generalBox.height / 8));
             }
             else
             {
-                EditorGUILayout.IntField(-1, GUILayout.Width(generalBox.width / 4 - 5), GUILayout.Height(generalBox.height / 8));
+                EditorGUILayoutExt.IntField(0, 999, -1, GUILayout.Width(generalBox.width / 4 - 5), GUILayout.Height(generalBox.height / 8));
             }
             GUILayout.Label("Agility:");
             if (enemySize > 0)
             {
-                enemy[index].enemyAgility = EditorGUILayout.IntField(enemy[index].enemyAgility, GUILayout.Width(generalBox.width / 4 - 5), GUILayout.Height(generalBox.height / 8));
+                enemy[index].enemyAgility = EditorGUILayoutExt.IntField(0, 999, enemy[index].enemyAgility, GUILayout.Width(generalBox.width / 4 - 5), GUILayout.Height(generalBox.height / 8));
             }
             else
             {
-                EditorGUILayout.IntField(-1, GUILayout.Width(generalBox.width / 4 - 5), GUILayout.Height(generalBox.height / 8));
+                EditorGUILayoutExt.IntField(0, 999, -1, GUILayout.Width(generalBox.width / 4 - 5), GUILayout.Height(generalBox.height / 8));
             }
 
             GUILayout.EndVertical();
@@ -329,41 +329,41 @@ namespace Remorse.Tools.RPGDatabase.Window
             GUILayout.Label("Max MP:");
             if (enemySize > 0)
             {
-                enemy[index].enemyMaxMP = EditorGUILayout.IntField(enemy[index].enemyMaxMP, GUILayout.Width(generalBox.width / 4 - 5), GUILayout.Height(generalBox.height / 8));
+                enemy[index].enemyMaxMP = EditorGUILayoutExt.IntField(0, 999, enemy[index].enemyMaxMP, GUILayout.Width(generalBox.width / 4 - 5), GUILayout.Height(generalBox.height / 8));
             }
             else
             {
-                EditorGUILayout.IntField(-1, GUILayout.Width(generalBox.width / 4 - 5), GUILayout.Height(generalBox.height / 8));
+                EditorGUILayoutExt.IntField(0, 999, -1, GUILayout.Width(generalBox.width / 4 - 5), GUILayout.Height(generalBox.height / 8));
             }
 
             GUILayout.Label("Defense:");
             if (enemySize > 0)
             {
-                enemy[index].enemyDefense = EditorGUILayout.IntField(enemy[index].enemyDefense, GUILayout.Width(generalBox.width / 4 - 5), GUILayout.Height(generalBox.height / 8));
+                enemy[index].enemyDefense = EditorGUILayoutExt.IntField(0, 999, enemy[index].enemyDefense, GUILayout.Width(generalBox.width / 4 - 5), GUILayout.Height(generalBox.height / 8));
             }
             else
             {
-                EditorGUILayout.IntField(-1, GUILayout.Width(generalBox.width / 4 - 5), GUILayout.Height(generalBox.height / 8));
+                EditorGUILayoutExt.IntField(0, 999, -1, GUILayout.Width(generalBox.width / 4 - 5), GUILayout.Height(generalBox.height / 8));
             }
 
             GUILayout.Label("M.Defense:");
             if (enemySize > 0)
             {
-                enemy[index].enemyMDefense = EditorGUILayout.IntField(enemy[index].enemyMDefense, GUILayout.Width(generalBox.width / 4 - 5), GUILayout.Height(generalBox.height / 8));
+                enemy[index].enemyMDefense = EditorGUILayoutExt.IntField(0, 999, enemy[index].enemyMDefense, GUILayout.Width(generalBox.width / 4 - 5), GUILayout.Height(generalBox.height / 8));
             }
             else
             {
-                EditorGUILayout.IntField(-1, GUILayout.Width(generalBox.width / 4 - 5), GUILayout.Height(generalBox.height / 8));
+                EditorGUILayoutExt.IntField(0, 999, -1, GUILayout.Width(generalBox.width / 4 - 5), GUILayout.Height(generalBox.height / 8));
             }
 
             GUILayout.Label("Luck:");
             if (enemySize > 0)
             {
-                enemy[index].enemyLuck = EditorGUILayout.IntField(enemy[index].enemyLuck, GUILayout.Width(generalBox.width / 4 - 5), GUILayout.Height(generalBox.height / 8));
+                enemy[index].enemyLuck = EditorGUILayoutExt.IntField(0, 999, enemy[index].enemyLuck, GUILayout.Width(generalBox.width / 4 - 5), GUILayout.Height(generalBox.height / 8));
             }
             else
             {
-                EditorGUILayout.IntField(-1, GUILayout.Width(generalBox.width / 4 - 5), GUILayout.Height(generalBox.height / 8));
+                EditorGUILayoutExt.IntField(0, 999, -1, GUILayout.Width(generalBox.width / 4 - 5), GUILayout.Height(generalBox.height / 8));
             }
 
             GUILayout.EndVertical();
@@ -381,20 +381,20 @@ namespace Remorse.Tools.RPGDatabase.Window
             GUILayout.Label("EXP:");
             if (enemySize > 0)
             {
-                enemy[index].enemyEXP = EditorGUILayout.IntField(enemy[index].enemyEXP, GUILayout.Width(firstTabWidth - 210), GUILayout.Height(generalBox.height / 8));
+                enemy[index].enemyEXP = EditorGUILayoutExt.IntField(0, 999, enemy[index].enemyEXP, GUILayout.Width(firstTabWidth - 210), GUILayout.Height(generalBox.height / 8));
             }
             else
             {
-                EditorGUILayout.IntField(-1, GUILayout.Width(firstTabWidth - 210), GUILayout.Height(generalBox.height / 8));
+                EditorGUILayoutExt.IntField(0, 999, -1, GUILayout.Width(firstTabWidth - 210), GUILayout.Height(generalBox.height / 8));
             }
             GUILayout.Label("Gold:");
             if (enemySize > 0)
             {
-                enemy[index].enemyGold = EditorGUILayout.IntField(enemy[index].enemyGold, GUILayout.Width(firstTabWidth - 210), GUILayout.Height(generalBox.height / 8));
+                enemy[index].enemyGold = EditorGUILayoutExt.IntField(0, 999, enemy[index].enemyGold, GUILayout.Width(firstTabWidth - 210), GUILayout.Height(generalBox.height / 8));
             }
             else
             {
-                EditorGUILayout.IntField(-1, GUILayout.Width(firstTabWidth - 210), GUILayout.Height(generalBox.height / 8));
+                EditorGUILayoutExt.IntField(0, 999, -1, GUILayout.Width(firstTabWidth - 210), GUILayout.Height(generalBox.height / 8));
             }
             GUILayout.EndVertical();
             GUILayout.EndArea();

@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
+using Remorse.Tools.RPGDatabase.Utility;
+
 #region HP Window
 //Show max hp window
 public class MaxHPWindow : EditorWindow
@@ -37,13 +39,13 @@ public class MaxHPWindow : EditorWindow
         GUILayout.BeginHorizontal();
         GUILayout.BeginVertical();
         GUILayout.Label("Level: ");
-        levelIndex = EditorGUILayout.IntField(levelIndex, GUILayout.Width(50), GUILayout.Height(30));
+        levelIndex = EditorGUILayoutExt.IntField(0, 999, levelIndex, GUILayout.Width(50), GUILayout.Height(30));
         GUILayout.EndVertical();
         GUILayout.Space(20);
         GUILayout.Label(" \n\n > ");
         GUILayout.BeginVertical();
         GUILayout.Label("Value: ");
-        editedKeyframeValue = EditorGUILayout.IntField(editedKeyframeValue, GUILayout.Width(50), GUILayout.Height(30));
+        editedKeyframeValue = EditorGUILayoutExt.IntField(0, 999, editedKeyframeValue, GUILayout.Width(50), GUILayout.Height(30));
         GUILayout.EndVertical();
         GUILayout.Space(30);
         if (GUILayout.Button("Update Value", GUILayout.Width(100), GUILayout.Height(50)))
@@ -63,11 +65,11 @@ public class MaxHPWindow : EditorWindow
         GUILayout.Space(30);
         GUILayout.BeginVertical();
         GUILayout.Label("Level 1:");
-        genCurveStartValue = EditorGUILayout.IntField(genCurveStartValue, GUILayout.Height(30), GUILayout.Width(50));
+        genCurveStartValue = EditorGUILayoutExt.IntField(0, 999, genCurveStartValue, GUILayout.Height(30), GUILayout.Width(50));
         GUILayout.EndVertical();
         GUILayout.BeginVertical();
         GUILayout.Label("Level 100:");
-        genCurveEndValue = EditorGUILayout.IntField(genCurveEndValue, GUILayout.Height(30), GUILayout.Width(50));
+        genCurveEndValue = EditorGUILayoutExt.IntField(0, 999, genCurveEndValue, GUILayout.Height(30), GUILayout.Width(50));
         GUILayout.EndVertical();
         GUILayout.Space(600);
         GUILayout.EndHorizontal();
@@ -183,13 +185,13 @@ public class MaxMPWindow : EditorWindow
         GUILayout.BeginHorizontal();
         GUILayout.BeginVertical();
         GUILayout.Label("Level: ");
-        levelIndex = EditorGUILayout.IntField(levelIndex, GUILayout.Width(50), GUILayout.Height(30));
+        levelIndex = EditorGUILayoutExt.IntField(0, 999, levelIndex, GUILayout.Width(50), GUILayout.Height(30));
         GUILayout.EndVertical();
         GUILayout.Space(20);
         GUILayout.Label(" \n\n > ");
         GUILayout.BeginVertical();
         GUILayout.Label("Value: ");
-        editedKeyframeValue = EditorGUILayout.IntField(editedKeyframeValue, GUILayout.Width(50), GUILayout.Height(30));
+        editedKeyframeValue = EditorGUILayoutExt.IntField(0, 999, editedKeyframeValue, GUILayout.Width(50), GUILayout.Height(30));
         GUILayout.EndVertical();
         GUILayout.Space(30);
         if (GUILayout.Button("Update Value", GUILayout.Width(100), GUILayout.Height(50)))
@@ -209,11 +211,11 @@ public class MaxMPWindow : EditorWindow
         GUILayout.Space(30);
         GUILayout.BeginVertical();
         GUILayout.Label("Level 1:");
-        genCurveStartValue = EditorGUILayout.IntField(genCurveStartValue, GUILayout.Height(30), GUILayout.Width(50));
+        genCurveStartValue = EditorGUILayoutExt.IntField(0, 999, genCurveStartValue, GUILayout.Height(30), GUILayout.Width(50));
         GUILayout.EndVertical();
         GUILayout.BeginVertical();
         GUILayout.Label("Level 100:");
-        genCurveEndValue = EditorGUILayout.IntField(genCurveEndValue, GUILayout.Height(30), GUILayout.Width(50));
+        genCurveEndValue = EditorGUILayoutExt.IntField(0, 999, genCurveEndValue, GUILayout.Height(30), GUILayout.Width(50));
         GUILayout.EndVertical();
         GUILayout.Space(600);
         GUILayout.EndHorizontal();
@@ -328,13 +330,13 @@ public class AttackWindow : EditorWindow
         GUILayout.BeginHorizontal();
         GUILayout.BeginVertical();
         GUILayout.Label("Level: ");
-        levelIndex = EditorGUILayout.IntField(levelIndex, GUILayout.Width(50), GUILayout.Height(30));
+        levelIndex = EditorGUILayoutExt.IntField(0, 999, levelIndex, GUILayout.Width(50), GUILayout.Height(30));
         GUILayout.EndVertical();
         GUILayout.Space(20);
         GUILayout.Label(" \n\n > ");
         GUILayout.BeginVertical();
         GUILayout.Label("Value: ");
-        editedKeyframeValue = EditorGUILayout.IntField(editedKeyframeValue, GUILayout.Width(50), GUILayout.Height(30));
+        editedKeyframeValue = EditorGUILayoutExt.IntField(0, 999, editedKeyframeValue, GUILayout.Width(50), GUILayout.Height(30));
         GUILayout.EndVertical();
         GUILayout.Space(30);
         if (GUILayout.Button("Update Value", GUILayout.Width(100), GUILayout.Height(50)))
@@ -354,11 +356,11 @@ public class AttackWindow : EditorWindow
         GUILayout.Space(30);
         GUILayout.BeginVertical();
         GUILayout.Label("Level 1:");
-        genCurveStartValue = EditorGUILayout.IntField(genCurveStartValue, GUILayout.Height(30), GUILayout.Width(50));
+        genCurveStartValue = EditorGUILayoutExt.IntField(0, 999, genCurveStartValue, GUILayout.Height(30), GUILayout.Width(50));
         GUILayout.EndVertical();
         GUILayout.BeginVertical();
         GUILayout.Label("Level 100:");
-        genCurveEndValue = EditorGUILayout.IntField(genCurveEndValue, GUILayout.Height(30), GUILayout.Width(50));
+        genCurveEndValue = EditorGUILayoutExt.IntField(0, 999, genCurveEndValue, GUILayout.Height(30), GUILayout.Width(50));
         GUILayout.EndVertical();
         GUILayout.Space(600);
         GUILayout.EndHorizontal();
@@ -473,13 +475,13 @@ public class DefenseWindow : EditorWindow
         GUILayout.BeginHorizontal();
         GUILayout.BeginVertical();
         GUILayout.Label("Level: ");
-        levelIndex = EditorGUILayout.IntField(levelIndex, GUILayout.Width(50), GUILayout.Height(30));
+        levelIndex = EditorGUILayoutExt.IntField(0, 999, levelIndex, GUILayout.Width(50), GUILayout.Height(30));
         GUILayout.EndVertical();
         GUILayout.Space(20);
         GUILayout.Label(" \n\n > ");
         GUILayout.BeginVertical();
         GUILayout.Label("Value: ");
-        editedKeyframeValue = EditorGUILayout.IntField(editedKeyframeValue, GUILayout.Width(50), GUILayout.Height(30));
+        editedKeyframeValue = EditorGUILayoutExt.IntField(0, 999, editedKeyframeValue, GUILayout.Width(50), GUILayout.Height(30));
         GUILayout.EndVertical();
         GUILayout.Space(30);
         if (GUILayout.Button("Update Value", GUILayout.Width(100), GUILayout.Height(50)))
@@ -499,11 +501,11 @@ public class DefenseWindow : EditorWindow
         GUILayout.Space(30);
         GUILayout.BeginVertical();
         GUILayout.Label("Level 1:");
-        genCurveStartValue = EditorGUILayout.IntField(genCurveStartValue, GUILayout.Height(30), GUILayout.Width(50));
+        genCurveStartValue = EditorGUILayoutExt.IntField(0, 999, genCurveStartValue, GUILayout.Height(30), GUILayout.Width(50));
         GUILayout.EndVertical();
         GUILayout.BeginVertical();
         GUILayout.Label("Level 100:");
-        genCurveEndValue = EditorGUILayout.IntField(genCurveEndValue, GUILayout.Height(30), GUILayout.Width(50));
+        genCurveEndValue = EditorGUILayoutExt.IntField(0, 999, genCurveEndValue, GUILayout.Height(30), GUILayout.Width(50));
         GUILayout.EndVertical();
         GUILayout.Space(600);
         GUILayout.EndHorizontal();
@@ -595,13 +597,13 @@ public class MAttackWindow : EditorWindow
         GUILayout.BeginHorizontal();
         GUILayout.BeginVertical();
         GUILayout.Label("Level: ");
-        levelIndex = EditorGUILayout.IntField(levelIndex, GUILayout.Width(50), GUILayout.Height(30));
+        levelIndex = EditorGUILayoutExt.IntField(0, 999, levelIndex, GUILayout.Width(50), GUILayout.Height(30));
         GUILayout.EndVertical();
         GUILayout.Space(20);
         GUILayout.Label(" \n\n > ");
         GUILayout.BeginVertical();
         GUILayout.Label("Value: ");
-        editedKeyframeValue = EditorGUILayout.IntField(editedKeyframeValue, GUILayout.Width(50), GUILayout.Height(30));
+        editedKeyframeValue = EditorGUILayoutExt.IntField(0, 999, editedKeyframeValue, GUILayout.Width(50), GUILayout.Height(30));
         GUILayout.EndVertical();
         GUILayout.Space(30);
         if (GUILayout.Button("Update Value", GUILayout.Width(100), GUILayout.Height(50)))
@@ -621,11 +623,11 @@ public class MAttackWindow : EditorWindow
         GUILayout.Space(30);
         GUILayout.BeginVertical();
         GUILayout.Label("Level 1:");
-        genCurveStartValue = EditorGUILayout.IntField(genCurveStartValue, GUILayout.Height(30), GUILayout.Width(50));
+        genCurveStartValue = EditorGUILayoutExt.IntField(0, 999, genCurveStartValue, GUILayout.Height(30), GUILayout.Width(50));
         GUILayout.EndVertical();
         GUILayout.BeginVertical();
         GUILayout.Label("Level 100:");
-        genCurveEndValue = EditorGUILayout.IntField(genCurveEndValue, GUILayout.Height(30), GUILayout.Width(50));
+        genCurveEndValue = EditorGUILayoutExt.IntField(0, 999, genCurveEndValue, GUILayout.Height(30), GUILayout.Width(50));
         GUILayout.EndVertical();
         GUILayout.Space(600);
         GUILayout.EndHorizontal();
@@ -717,13 +719,13 @@ public class MDefenseWindow : EditorWindow
         GUILayout.BeginHorizontal();
         GUILayout.BeginVertical();
         GUILayout.Label("Level: ");
-        levelIndex = EditorGUILayout.IntField(levelIndex, GUILayout.Width(50), GUILayout.Height(30));
+        levelIndex = EditorGUILayoutExt.IntField(0, 999, levelIndex, GUILayout.Width(50), GUILayout.Height(30));
         GUILayout.EndVertical();
         GUILayout.Space(20);
         GUILayout.Label(" \n\n > ");
         GUILayout.BeginVertical();
         GUILayout.Label("Value: ");
-        editedKeyframeValue = EditorGUILayout.IntField(editedKeyframeValue, GUILayout.Width(50), GUILayout.Height(30));
+        editedKeyframeValue = EditorGUILayoutExt.IntField(0, 999, editedKeyframeValue, GUILayout.Width(50), GUILayout.Height(30));
         GUILayout.EndVertical();
         GUILayout.Space(30);
         if (GUILayout.Button("Update Value", GUILayout.Width(100), GUILayout.Height(50)))
@@ -743,11 +745,11 @@ public class MDefenseWindow : EditorWindow
         GUILayout.Space(30);
         GUILayout.BeginVertical();
         GUILayout.Label("Level 1:");
-        genCurveStartValue = EditorGUILayout.IntField(genCurveStartValue, GUILayout.Height(30), GUILayout.Width(50));
+        genCurveStartValue = EditorGUILayoutExt.IntField(0, 999, genCurveStartValue, GUILayout.Height(30), GUILayout.Width(50));
         GUILayout.EndVertical();
         GUILayout.BeginVertical();
         GUILayout.Label("Level 100:");
-        genCurveEndValue = EditorGUILayout.IntField(genCurveEndValue, GUILayout.Height(30), GUILayout.Width(50));
+        genCurveEndValue = EditorGUILayoutExt.IntField(0, 999, genCurveEndValue, GUILayout.Height(30), GUILayout.Width(50));
         GUILayout.EndVertical();
         GUILayout.Space(600);
         GUILayout.EndHorizontal();
@@ -839,13 +841,13 @@ public class AgilityWindow : EditorWindow
         GUILayout.BeginHorizontal();
         GUILayout.BeginVertical();
         GUILayout.Label("Level: ");
-        levelIndex = EditorGUILayout.IntField(levelIndex, GUILayout.Width(50), GUILayout.Height(30));
+        levelIndex = EditorGUILayoutExt.IntField(0, 999, levelIndex, GUILayout.Width(50), GUILayout.Height(30));
         GUILayout.EndVertical();
         GUILayout.Space(20);
         GUILayout.Label(" \n\n > ");
         GUILayout.BeginVertical();
         GUILayout.Label("Value: ");
-        editedKeyframeValue = EditorGUILayout.IntField(editedKeyframeValue, GUILayout.Width(50), GUILayout.Height(30));
+        editedKeyframeValue = EditorGUILayoutExt.IntField(0, 999, editedKeyframeValue, GUILayout.Width(50), GUILayout.Height(30));
         GUILayout.EndVertical();
         GUILayout.Space(30);
         if (GUILayout.Button("Update Value", GUILayout.Width(100), GUILayout.Height(50)))
@@ -865,11 +867,11 @@ public class AgilityWindow : EditorWindow
         GUILayout.Space(30);
         GUILayout.BeginVertical();
         GUILayout.Label("Level 1:");
-        genCurveStartValue = EditorGUILayout.IntField(genCurveStartValue, GUILayout.Height(30), GUILayout.Width(50));
+        genCurveStartValue = EditorGUILayoutExt.IntField(0, 999, genCurveStartValue, GUILayout.Height(30), GUILayout.Width(50));
         GUILayout.EndVertical();
         GUILayout.BeginVertical();
         GUILayout.Label("Level 100:");
-        genCurveEndValue = EditorGUILayout.IntField(genCurveEndValue, GUILayout.Height(30), GUILayout.Width(50));
+        genCurveEndValue = EditorGUILayoutExt.IntField(0, 999, genCurveEndValue, GUILayout.Height(30), GUILayout.Width(50));
         GUILayout.EndVertical();
         GUILayout.Space(600);
         GUILayout.EndHorizontal();
@@ -961,13 +963,13 @@ public class LuckWindow : EditorWindow
         GUILayout.BeginHorizontal();
         GUILayout.BeginVertical();
         GUILayout.Label("Level: ");
-        levelIndex = EditorGUILayout.IntField(levelIndex, GUILayout.Width(50), GUILayout.Height(30));
+        levelIndex = EditorGUILayoutExt.IntField(0, 999, levelIndex, GUILayout.Width(50), GUILayout.Height(30));
         GUILayout.EndVertical();
         GUILayout.Space(20);
         GUILayout.Label(" \n\n > ");
         GUILayout.BeginVertical();
         GUILayout.Label("Value: ");
-        editedKeyframeValue = EditorGUILayout.IntField(editedKeyframeValue, GUILayout.Width(50), GUILayout.Height(30));
+        editedKeyframeValue = EditorGUILayoutExt.IntField(0, 999, editedKeyframeValue, GUILayout.Width(50), GUILayout.Height(30));
         GUILayout.EndVertical();
         GUILayout.Space(30);
         if (GUILayout.Button("Update Value", GUILayout.Width(100), GUILayout.Height(50)))
@@ -987,11 +989,11 @@ public class LuckWindow : EditorWindow
         GUILayout.Space(30);
         GUILayout.BeginVertical();
         GUILayout.Label("Level 1:");
-        genCurveStartValue = EditorGUILayout.IntField(genCurveStartValue, GUILayout.Height(30), GUILayout.Width(50));
+        genCurveStartValue = EditorGUILayoutExt.IntField(0, 999, genCurveStartValue, GUILayout.Height(30), GUILayout.Width(50));
         GUILayout.EndVertical();
         GUILayout.BeginVertical();
         GUILayout.Label("Level 100:");
-        genCurveEndValue = EditorGUILayout.IntField(genCurveEndValue, GUILayout.Height(30), GUILayout.Width(50));
+        genCurveEndValue = EditorGUILayoutExt.IntField(0, 999, genCurveEndValue, GUILayout.Height(30), GUILayout.Width(50));
         GUILayout.EndVertical();
         GUILayout.Space(600);
         GUILayout.EndHorizontal();

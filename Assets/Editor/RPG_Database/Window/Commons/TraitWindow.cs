@@ -299,7 +299,7 @@ namespace Remorse.Tools.RPGDatabase.Commons
                 GUILayout.EndHorizontal();
                 GUILayout.BeginHorizontal();
                 GUILayout.Label("*");
-                traits[traitIndex].traitValue = EditorGUILayout.IntField(traits[traitIndex].traitValue, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                traits[traitIndex].traitValue = EditorGUILayoutExt.IntField(0, 999, traits[traitIndex].traitValue, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
                 GUILayout.Space(widthSpace);
                 GUILayout.EndHorizontal();
                 GUILayout.Space(5);
@@ -323,7 +323,7 @@ namespace Remorse.Tools.RPGDatabase.Commons
                 GUILayout.EndHorizontal();
                 GUILayout.BeginHorizontal();
                 GUILayout.Label("*");
-                traits[traitIndex].traitValue = EditorGUILayout.IntField(traits[traitIndex].traitValue, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                traits[traitIndex].traitValue = EditorGUILayoutExt.IntField(0, 999, traits[traitIndex].traitValue, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
                 GUILayout.Space(widthSpace);
                 GUILayout.EndHorizontal();
                 GUILayout.Space(5);
@@ -347,7 +347,7 @@ namespace Remorse.Tools.RPGDatabase.Commons
                 GUILayout.EndHorizontal();
                 GUILayout.BeginHorizontal();
                 GUILayout.Label("*");
-                traits[traitIndex].traitValue = EditorGUILayout.IntField(traits[traitIndex].traitValue, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                traits[traitIndex].traitValue = EditorGUILayoutExt.IntField(0, 999, traits[traitIndex].traitValue, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
                 GUILayout.Space(widthSpace);
                 GUILayout.EndHorizontal();
                 GUILayout.Space(5);
@@ -396,7 +396,7 @@ namespace Remorse.Tools.RPGDatabase.Commons
                 GUILayout.EndHorizontal();
                 GUILayout.BeginHorizontal();
                 GUILayout.Label("*");
-                traits[traitIndex].traitValue = EditorGUILayout.IntField(traits[traitIndex].traitValue, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                traits[traitIndex].traitValue = EditorGUILayoutExt.IntField(0, 999, traits[traitIndex].traitValue, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
                 GUILayout.Space(widthSpace);
                 GUILayout.EndHorizontal();
                 GUILayout.Space(5);
@@ -420,7 +420,7 @@ namespace Remorse.Tools.RPGDatabase.Commons
                 GUILayout.EndHorizontal();
                 GUILayout.BeginHorizontal();
                 GUILayout.Label("+");
-                traits[traitIndex].traitValue = EditorGUILayout.IntField(traits[traitIndex].traitValue, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                traits[traitIndex].traitValue = EditorGUILayoutExt.IntField(0, 999, traits[traitIndex].traitValue, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
                 GUILayout.Space(widthSpace);
                 GUILayout.EndHorizontal();
                 GUILayout.Space(5);
@@ -444,7 +444,7 @@ namespace Remorse.Tools.RPGDatabase.Commons
                 GUILayout.EndHorizontal();
                 GUILayout.BeginHorizontal();
                 GUILayout.Label("*");
-                traits[traitIndex].traitValue = EditorGUILayout.IntField(traits[traitIndex].traitValue, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                traits[traitIndex].traitValue = EditorGUILayoutExt.IntField(0, 999, traits[traitIndex].traitValue, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
                 GUILayout.Space(widthSpace);
                 GUILayout.EndHorizontal();
                 GUILayout.Space(5);
@@ -493,7 +493,7 @@ namespace Remorse.Tools.RPGDatabase.Commons
                 GUILayout.EndHorizontal();
                 GUILayout.BeginHorizontal();
                 GUILayout.Label("+");
-                traits[traitIndex].traitValue = EditorGUILayout.IntField(traits[traitIndex].traitValue, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                traits[traitIndex].traitValue = EditorGUILayoutExt.IntField(0, 999, traits[traitIndex].traitValue, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
                 GUILayout.Space(widthSpace);
                 GUILayout.EndHorizontal();
                 GUILayout.Space(5);
@@ -512,7 +512,7 @@ namespace Remorse.Tools.RPGDatabase.Commons
                 GUILayout.BeginVertical();
                 GUILayout.BeginHorizontal();
                 GUILayout.Label(" ");
-                traits[traitIndex].traitValue = EditorGUILayout.IntField(traits[traitIndex].traitValue, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                traits[traitIndex].traitValue = EditorGUILayoutExt.IntField(0, 999, traits[traitIndex].traitValue, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
                 GUILayout.Space(widthSpace);
                 GUILayout.EndHorizontal();
                 GUILayout.Space(5);
@@ -531,7 +531,7 @@ namespace Remorse.Tools.RPGDatabase.Commons
                 GUILayout.BeginVertical();
                 GUILayout.BeginHorizontal();
                 GUILayout.Label("+");
-                traits[traitIndex].traitValue = EditorGUILayout.IntField(traits[traitIndex].traitValue, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                traits[traitIndex].traitValue = EditorGUILayoutExt.IntField(0, 999, traits[traitIndex].traitValue, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
                 GUILayout.Space(widthSpace);
                 GUILayout.EndHorizontal();
                 GUILayout.Space(5);
@@ -721,7 +721,7 @@ namespace Remorse.Tools.RPGDatabase.Commons
                 GUILayout.BeginVertical();
                 GUILayout.BeginHorizontal();
                 GUILayout.Label("+");
-                traits[traitIndex].traitValue = EditorGUILayout.IntField(traits[traitIndex].traitValue, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
+                traits[traitIndex].traitValue = EditorGUILayoutExt.IntField(0, 999, traits[traitIndex].traitValue, GUILayout.Width(fieldWidth), GUILayout.Height(fieldHeight));
                 GUILayout.Space(widthSpace);
                 GUILayout.EndHorizontal();
                 GUILayout.Space(5);

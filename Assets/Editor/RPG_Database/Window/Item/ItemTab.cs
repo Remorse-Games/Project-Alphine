@@ -226,7 +226,7 @@ namespace Remorse.Tools.RPGDatabase.Window
             }
 
             // Change Maximum field and button
-            itemSizeTemp = EditorGUILayout.IntField(itemSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
+            itemSizeTemp = EditorGUILayoutExt.IntField(0, 999, itemSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
             if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
             {
                 itemSize = itemSizeTemp;
@@ -353,9 +353,9 @@ namespace Remorse.Tools.RPGDatabase.Window
             GUILayout.BeginVertical();
             GUILayout.Label("Price:"); // Price label
             if (itemSize > 0)
-            { item[index].itemPrice = EditorGUILayout.IntField(item[index].itemPrice, GUILayout.Width(generalBox.width / 4 - 2), GUILayout.Height(generalBox.height / 8 - 9)); }
+            { item[index].itemPrice = EditorGUILayoutExt.IntField(0, 999, item[index].itemPrice, GUILayout.Width(generalBox.width / 4 - 2), GUILayout.Height(generalBox.height / 8 - 9)); }
             else
-            { EditorGUILayout.IntField(-1, GUILayout.Width(generalBox.width / 4 - 2), GUILayout.Height(generalBox.height / 8 - 9)); }
+            { EditorGUILayoutExt.IntField(0, 999, -1, GUILayout.Width(generalBox.width / 4 - 2), GUILayout.Height(generalBox.height / 8 - 9)); }
             GUILayout.EndVertical();
 
             GUILayout.BeginVertical();
@@ -421,33 +421,33 @@ namespace Remorse.Tools.RPGDatabase.Window
             GUILayout.BeginVertical();
             GUILayout.Label("Initial Level:");
             if (itemSize > 0)
-            { item[index].itemSpeed = EditorGUILayout.IntField(item[index].itemSpeed, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
+            { item[index].itemSpeed = EditorGUILayoutExt.IntField(0, 999, item[index].itemSpeed, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
             else
-            { EditorGUILayout.IntField(-1, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
+            { EditorGUILayoutExt.IntField(0, 999, -1, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
             GUILayout.EndVertical();
 
             GUILayout.BeginVertical();
             GUILayout.Label("Success:");
             if (itemSize > 0)
-            { item[index].itemSuccessLevel = EditorGUILayout.IntField(item[index].itemSuccessLevel, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
+            { item[index].itemSuccessLevel = EditorGUILayoutExt.IntField(0, 999, item[index].itemSuccessLevel, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
             else
-            { EditorGUILayout.IntField(-1, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
+            { EditorGUILayoutExt.IntField(0, 999, -1, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
             GUILayout.EndVertical();
 
             GUILayout.BeginVertical();
             GUILayout.Label("Repeat:");
             if (itemSize > 0)
-            { item[index].itemRepeat = EditorGUILayout.IntField(item[index].itemRepeat, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
+            { item[index].itemRepeat = EditorGUILayoutExt.IntField(0, 999, item[index].itemRepeat, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
             else
-            { EditorGUILayout.IntField(-1, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
+            { EditorGUILayoutExt.IntField(0, 999, -1, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
             GUILayout.EndVertical();
 
             GUILayout.BeginVertical();
             GUILayout.Label("TP Gain:");
             if (itemSize > 0)
-            { item[index].itemTPGain = EditorGUILayout.IntField(item[index].itemTPGain, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
+            { item[index].itemTPGain = EditorGUILayoutExt.IntField(0, 999, item[index].itemTPGain, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
             else
-            { EditorGUILayout.IntField(-1, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
+            { EditorGUILayoutExt.IntField(0, 999, -1, GUILayout.Width(invocationBox.width / 4 - 5), GUILayout.Height(invocationBox.height / 8 + 9)); }
             GUILayout.EndVertical();
 
             GUILayout.EndHorizontal();
@@ -559,11 +559,11 @@ namespace Remorse.Tools.RPGDatabase.Window
             GUILayout.Label("Variance:");
             if (itemSize > 0)
             {
-                item[index].itemVariance = EditorGUILayout.IntField(item[index].itemVariance, GUILayout.Width(.25f * (damageBox.width - 8)), GUILayout.Height(damageBox.height / 4 - 17));
+                item[index].itemVariance = EditorGUILayoutExt.IntField(0, 999, item[index].itemVariance, GUILayout.Width(.25f * (damageBox.width - 8)), GUILayout.Height(damageBox.height / 4 - 17));
             }
             else
             {
-                EditorGUILayout.IntField(-1, GUILayout.Width(.25f * (damageBox.width - 8)), GUILayout.Height(damageBox.height / 4 - 17));
+                EditorGUILayoutExt.IntField(0, 999, -1, GUILayout.Width(.25f * (damageBox.width - 8)), GUILayout.Height(damageBox.height / 4 - 17));
             }
             GUILayout.EndVertical();
             #endregion
