@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using UnityEditor;
-using LastBoss.Localize;
+using Remorse.Localize;
 
-namespace LastBossEditor.Localization
+namespace RemorseEditor.Localization
 {
     [CustomPropertyDrawer(typeof(LocalizedString))]
     public class LocalizeStringDrawer : PropertyDrawer
@@ -63,7 +63,7 @@ namespace LastBossEditor.Localization
 
             if (dropdown)
             {
-                var value = LastBoss.Localize.Localization.GetLocalizedValue(key.stringValue);
+                var value = Remorse.Localize.Localization.GetLocalizedValue(key.stringValue);
                 GUIStyle style = GUI.skin.box;
                 height = style.CalcHeight(new GUIContent(value), valueRect.width);
 

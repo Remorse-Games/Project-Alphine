@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Remorse.Localize
 {
@@ -35,8 +36,24 @@ namespace Remorse.Localize
         {
             localizedEN = csvLoader.GetDictionaryValues("en");
             localizedID = csvLoader.GetDictionaryValues("id");
+
+        }
+
+        public static Dictionary<string, string> GetDictionaryForEditor()
+        {
+            if (!isInit) { Init(); }
+            switch (languange)
+            {
+                case Languange.English:
+                    return localizedEN;
+                case Languange.Indonesia:
+                    return localizedID;
+            }
+
+            return localizedEN;
+          
             localizedSP = csvLoader.GetDictionaryValues("sp");
-            
+      
         }
 
         public static string GetLocalizedValue(string key)
@@ -60,10 +77,6 @@ namespace Remorse.Localize
             
             return value;
         }
-
-
-      
-
-      
+  
     }
 }
