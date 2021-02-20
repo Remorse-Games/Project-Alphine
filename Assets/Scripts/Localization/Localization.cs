@@ -8,13 +8,15 @@ namespace Remorse.Localize
         public enum Languange
         {
             English,
-            Indonesia
+            Indonesia,
+            Spanyol
         }
 
         public static Languange languange = Languange.English;
 
         private static Dictionary<string, string> localizedEN;
         private static Dictionary<string, string> localizedID;
+        private static Dictionary<string, string> localizedSP;
 
         public static bool isInit;
 
@@ -34,19 +36,7 @@ namespace Remorse.Localize
         {
             localizedEN = csvLoader.GetDictionaryValues("en");
             localizedID = csvLoader.GetDictionaryValues("id");
-        }
 
-        public static void ChangeLanguange(string languageId)
-        {
-            switch (languageId)
-            {
-                case "en":
-                    languange = Languange.English;
-                    break;
-                case "id":
-                    languange = Languange.Indonesia;
-                    break;
-            }
         }
 
         public static Dictionary<string, string> GetDictionaryForEditor()
@@ -61,13 +51,17 @@ namespace Remorse.Localize
             }
 
             return localizedEN;
+          
+            localizedSP = csvLoader.GetDictionaryValues("sp");
+      
         }
 
         public static string GetLocalizedValue(string key)
         {
             if (!isInit) { Init(); }
             string value = key;
-
+            
+            
             switch (languange)
             {
                 case Languange.English:
@@ -75,64 +69,14 @@ namespace Remorse.Localize
                     break;
                 case Languange.Indonesia:
                     localizedID.TryGetValue(key, out value);
+                    break; 
+                case Languange.Spanyol:
+                    localizedSP.TryGetValue(key, out value);
                     break;
             }
-
+            
             return value;
         }
-
-        public static void Add(string key, string value)
-        {
-            if (value.Contains("\""))
-            {
-                value.Replace('"', '\"');
-            }
-
-            if (csvLoader == null)
-            {
-                csvLoader = new CSVLoader();
-            }
-
-            csvLoader.LoadCSV();
-            csvLoader.Add(key, value);
-            csvLoader.LoadCSV();
-
-            UpdateDictionaries();
-        }
-
-        public static void Replace(string key, string value)
-        {
-            if (value.Contains("\""))
-            {
-                value.Replace('"', '\"');
-            }
-
-            if (csvLoader == null)
-            {
-                csvLoader = new CSVLoader();
-            }
-
-            csvLoader.LoadCSV();
-            csvLoader.Edit(key, value);
-            csvLoader.LoadCSV();
-
-            UpdateDictionaries();
-
-        }
-
-        public static void Remove(string key)
-        {
-            if (csvLoader == null)
-            {
-                csvLoader = new CSVLoader();
-            }
-
-            csvLoader.LoadCSV();
-            csvLoader.Remove(key);
-            csvLoader.LoadCSV();
-
-            UpdateDictionaries();
-
-        }
+  
     }
 }
