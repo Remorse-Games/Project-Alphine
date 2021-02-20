@@ -88,7 +88,14 @@ public class ActorTab : BaseTab
         LoadGameData<TraitsData>(ref traitSize[index], traits, PathDatabase.ActorTraitRelativeDataPath + (index + 1));
 
         LoadGameData<TypeEquipmentData>(ref equipmentTypeSize, equipmentType, PathDatabase.EquipmentRelativeDataPath);
-        actor[index].allArmorIndexes = new int[equipmentTypeSize];
+        for(int i = 0; i < actorSize; i++)
+        {
+            //Resets the armor index array length
+            if (actor[i].allArmorIndexes == null || actor[i].allArmorIndexes.Length != equipmentTypeSize)
+            {
+                actor[i].allArmorIndexes = new int[equipmentTypeSize];
+            }
+        }
         LoadGameData<ArmorData>(ref armorSize, armors, PathDatabase.ArmorTabRelativeDataPath);
         LoadClassList();
 
@@ -206,7 +213,7 @@ public class ActorTab : BaseTab
                         for (int i = oldActorSize; i < actorSizeTemp; i++)
                         {
                             //Resets the armor index array length
-                            if (actor[i].allArmorIndexes == null)
+                            if (actor[i].allArmorIndexes == null || actor[i].allArmorIndexes.Length != equipmentTypeSize)
                             {
                                 actor[i].allArmorIndexes = new int[equipmentTypeSize];
                             }
