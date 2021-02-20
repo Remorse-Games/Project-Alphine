@@ -20,11 +20,6 @@ namespace Remorse.Localize
             }
         }
 
-        public static explicit operator string(LocalizedString v)
-        {
-            throw new NotImplementedException();
-        }
-
         public static implicit operator LocalizedString(string key)
         {
             return new LocalizedString(key);
