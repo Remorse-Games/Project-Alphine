@@ -224,24 +224,40 @@ public class SkillsTab : BaseTab
 
             // Change Maximum field and button
             skillSizeTemp = EditorGUILayout.IntField(skillSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
-            if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
+            if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)) && skillSizeTemp > 0)
             {
-                skillSize = skillSizeTemp;
                 index = indexTemp = 0;
-                FolderCreator(skillSize, "Assets/Resources/Data/SkillData", "EffectData");
-                ChangeMaximum<SkillData>(skillSize, skill, PathDatabase.SkillTabExplicitDataPath);
+                FolderCreator(skillSizeTemp, "Assets/Resources/Data/SkillData", "EffectData");
+                ChangeMaximum<SkillData>(skillSizeTemp, skill, PathDatabase.SkillTabExplicitDataPath);
+
+
+                //Remove Name Duplicates
+                if (skillSize < skillSizeTemp)
+                {
+                    int oldSkillSize = skillSize;
+                    skillSize = skillSizeTemp;
+                    ListReset();
+
+                    for (int i = oldSkillSize; i < skillSizeTemp; i++)
+                    {
+                        //Function Calling from BaseTab to check same names
+                        skill[i].skillName = RemoveDuplicates(skillSizeTemp, i, skill[i].skillName, skillDisplayName);
+                        ListReset();
+                    }
+                }
+                
 
                 //new effectsize array length
                 int[] tempArr = new int[effectSize.Length];
                 for (int i = 0; i < effectSize.Length; i++)
                     tempArr[i] = effectSize[i];
 
-                effectSize = new int[skillSize];
+                effectSize = new int[skillSizeTemp];
 
                 //find the smallest between tempArr and skillSize
-                int smallestValue = tempArr.Length < skillSize ? tempArr.Length : skillSize;
+                int smallestValue = tempArr.Length < skillSizeTemp ? tempArr.Length : skillSizeTemp;
 
-                for (int i = 0; i <smallestValue; i++)
+                for (int i = 0; i < smallestValue; i++)
                     effectSize[i] = tempArr[i];
 
                 //Reload data
@@ -252,6 +268,7 @@ public class SkillsTab : BaseTab
                     ChangeMaximum<EffectData>(++effectSize[index], effects, PathDatabase.SkillEffectExplicitDataPath + (index + 1) + "/Effect_");
                 }
 
+                skillSize = skillSizeTemp;
                 ClearNullScriptableObjects();
                 ListReset();
             }
@@ -280,6 +297,9 @@ public class SkillsTab : BaseTab
                                 {
                                     skill[index].skillName = GUILayout.TextField(skill[index].skillName, GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 8));
                                     skillDisplayName[index] = skill[index].skillName;
+
+                                    //Remove Name Duplicates
+                                    skill[index].skillName = RemoveDuplicates(skillSize, index, skill[index].skillName, skillDisplayName);
                                 }
                                 else
                                 {
