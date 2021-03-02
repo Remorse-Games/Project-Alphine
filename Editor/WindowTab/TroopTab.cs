@@ -182,7 +182,7 @@ public class TroopTab : BaseTab
 
                 // Change Maximum field and button
                 troopSizeTemp = EditorGUILayout.IntField(troopSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
-                if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
+                if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)) && troopSizeTemp > 0)
                 {
                     if(troopSizeTemp < troopSize)
                     {
@@ -190,13 +190,28 @@ public class TroopTab : BaseTab
                         GUI.changed = true;
                     }
 
-                    troopSize = troopSizeTemp;
                     battleEventIndex = 0;
 
                     FolderCreator(troopSize, "Assets/Resources/Data/TroopData", "BattleEventData");
 
-                    ChangeMaximum<TroopData>(troopSize, troop, PathDatabase.TroopExplicitDataPath);
+                    ChangeMaximum<TroopData>(troopSizeTemp, troop, PathDatabase.TroopExplicitDataPath);
 
+                    //Remove Name Duplicates
+                    if (troopSize < troopSizeTemp)
+                    {
+                        int oldTroopSize = troopSize;
+                        troopSize = troopSizeTemp;
+                        ListReset();
+
+                        for (int i = oldTroopSize; i < troopSizeTemp; i++)
+                        {
+                            //Function Calling from BaseTab to check same names
+                            troop[i].troopName = RemoveDuplicates(troopSize, i, troop[i].troopName, troopDisplayName);
+                            ListReset();
+                        }
+                    }
+
+                    troopSize = troopSizeTemp;
                     int[] tempArr = new int[battleEventSize.Length];
                     for(int i = 0; i < battleEventSize.Length; i++)
                         tempArr[i] = battleEventSize[i];
@@ -238,6 +253,10 @@ public class TroopTab : BaseTab
                             {
                                 troop[index].troopName = GUILayout.TextField(troop[index].troopName, GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 12));
                                 troopDisplayName[index] = troop[index].troopName;
+
+                                
+                                //Function Calling from BaseTab to check same names
+                                troop[index].troopName = RemoveDuplicates(troopSize, index, troop[index].troopName, troopDisplayName);
                             }
                             else
                             {

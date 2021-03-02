@@ -157,13 +157,29 @@ public class ArmorTab : BaseTab
 
                 // Change Maximum field and button
                 armorSizeTemp = EditorGUILayout.IntField(armorSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
-                if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
+                if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)) && armorSizeTemp > 0)
                 {
-                    armorSize = armorSizeTemp;
                     index = indexTemp = 0;
-                    FolderCreator(armorSize, "Assets/Resources/Data/ArmorData", "TraitData");
-                    ChangeMaximum<ArmorData>(armorSize, armor, PathDatabase.ArmorTabExplicitDataPath);
+                    FolderCreator(armorSizeTemp, "Assets/Resources/Data/ArmorData", "TraitData");
+                    ChangeMaximum<ArmorData>(armorSizeTemp, armor, PathDatabase.ArmorTabExplicitDataPath);
                     
+                    //Remove Name Duplicates
+                    if (armorSize < armorSizeTemp)
+                    {
+                        int oldArmorSize = armorSize;
+                        armorSize = armorSizeTemp;
+                        ListReset();
+
+                        for (int i = oldArmorSize; i < armorSizeTemp; i++)
+                        {
+                            //Function Calling from BaseTab to check same names
+                            armor[i].armorName = RemoveDuplicates(armorSize, i, armor[i].armorName, armorDisplayName);
+                            ListReset();
+                        }
+                    }
+                    
+                    
+                    armorSize = armorSizeTemp;
                     //New TraitSize array length
                     int[] tempArr = new int[traitSize.Length];
                     for (int i = 0; i < traitSize.Length; i++)
@@ -216,6 +232,10 @@ public class ArmorTab : BaseTab
                                     {
                                         armor[index].armorName = GUILayout.TextField(armor[index].armorName, GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 8));
                                         armorDisplayName[index] = armor[index].armorName;
+
+                                        
+                                        //Function Calling from BaseTab to check same names
+                                        armor[index].armorName = RemoveDuplicates(armorSize, index, armor[index].armorName, armorDisplayName);
                                     }
                                     else
                                     {

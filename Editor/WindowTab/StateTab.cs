@@ -184,13 +184,29 @@ public class StateTab : BaseTab
 
                 // Change Maximum field and button
                 stateSizeTemp = EditorGUILayout.IntField(stateSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
-                if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
+                if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)) && stateSizeTemp > 0)
                 {
                     stateSize = stateSizeTemp;
                     index = indexTemp = 0;
-                    FolderCreator(stateSize, "Assets/Resources/Data/StateData", "TraitData");
-                    ChangeMaximum<StateData>(stateSize, state, PathDatabase.StateExplicitDataPath);
+                    FolderCreator(stateSizeTemp, "Assets/Resources/Data/StateData", "TraitData");
+                    ChangeMaximum<StateData>(stateSizeTemp, state, PathDatabase.StateExplicitDataPath);
+                    
+                    //Remove Name Duplicates
+                    if (stateSize < stateSizeTemp)
+                    {
+                        int oldStateSize = stateSizeTemp;
+                        stateSize = stateSizeTemp;
+                        ListReset();
 
+                        for (int i = oldStateSize; i < stateSizeTemp; i++)
+                        {
+                            //Function Calling from BaseTab to check same names
+                            state[i].stateName = RemoveDuplicates(stateSize, i, state[i].stateName, stateDisplayName);
+                            ListReset();
+                        }
+                    }
+
+                    stateSize = stateSizeTemp;
                     //New TraitSize array length
                     int[] tempArr = new int[traitSize.Length];
                     for (int i = 0; i < traitSize.Length; i++)
@@ -242,6 +258,10 @@ public class StateTab : BaseTab
                                     {
                                         state[index].stateName = GUILayout.TextField(state[index].stateName, GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 8));
                                         stateDisplayName[index] = state[index].stateName;
+
+                                        
+                                        //Function Calling from BaseTab to check same names
+                                        state[index].stateName = RemoveDuplicates(stateSize, index, state[index].stateName, stateDisplayName);
                                     }
                                     else
                                     {

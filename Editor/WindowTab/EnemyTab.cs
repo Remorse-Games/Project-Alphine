@@ -183,25 +183,40 @@ public class EnemyTab : BaseTab
 
                 // Change Maximum field and button
                 enemySizeTemp = EditorGUILayout.IntField(enemySizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
-                if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
+                if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)) && enemySizeTemp > 0)
                 {
-                    enemySize = enemySizeTemp;
                     index = indexTemp = 0;
-                    FolderCreator(enemySize, "Assets/Resources/Data/EnemyData", "TraitData");
-                    FolderCreator(enemySize, "Assets/Resources/Data/EnemyData", "ActionData");
-                    ChangeMaximum<EnemyData>(enemySize, enemy, PathDatabase.EnemyExplicitDataPath);
+                    FolderCreator(enemySizeTemp, "Assets/Resources/Data/EnemyData", "TraitData");
+                    FolderCreator(enemySizeTemp, "Assets/Resources/Data/EnemyData", "ActionData");
+                    ChangeMaximum<EnemyData>(enemySizeTemp, enemy, PathDatabase.EnemyExplicitDataPath);
                     
+                    //Remove Name Duplicates
+                    if (enemySize < enemySizeTemp)
+                    {
+                        int oldEnemySize = enemySize;
+                        enemySize = enemySizeTemp;
+                        ListReset();
+
+                        for (int i = oldEnemySize; i < enemySizeTemp; i++)
+                        {
+                            //Function Calling from BaseTab to check same names
+                            enemy[i].enemyName = RemoveDuplicates(enemySize, i, enemy[i].enemyName, enemyDisplayName);
+                            ListReset();
+                        }
+                    }
+                
+                    enemySize = enemySizeTemp;
                     //New TraitSize array length
                     int[] tempArr = new int[traitSize.Length];
                     for (int i = 0; i < traitSize.Length; i++)
                         tempArr[i] = traitSize[i];
 
-                    traitSize = new int[enemySize];
+                    traitSize = new int[enemySizeTemp];
 
                     #region FindSmallestBetween
                         int smallestValue;
-                        if (tempArr.Length < enemySize) smallestValue = tempArr.Length;
-                        else smallestValue = enemySize;
+                        if (tempArr.Length < enemySizeTemp) smallestValue = tempArr.Length;
+                        else smallestValue = enemySizeTemp;
                     #endregion
 
                     for (int i = 0; i < smallestValue; i++)
@@ -212,11 +227,11 @@ public class EnemyTab : BaseTab
                     for (int i = 0; i < actionSize.Length; i++)
                         tempArr[i] = actionSize[i];
 
-                    actionSize = new int[enemySize];
+                    actionSize = new int[enemySizeTemp];
 
                     #region FindSmallestBetween
-                        if (tempArr.Length < enemySize) smallestValue = tempArr.Length;
-                        else smallestValue = enemySize;
+                        if (tempArr.Length < enemySizeTemp) smallestValue = tempArr.Length;
+                        else smallestValue = enemySizeTemp;
                     #endregion
 
                     for (int i = 0; i < smallestValue; i++)
@@ -229,6 +244,7 @@ public class EnemyTab : BaseTab
                     {
                         ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.EnemyTraitExplicitDataPath + (index + 1) + "/Trait_");
                     }
+                    actionPattern.Clear();
                     LoadGameData<ActionPatternsData>(ref actionSize[index], actionPattern, PathDatabase.EnemyActionRelativeDataPath + (index + 1));
                     if (actionSize[index] <= 0)
                     {
@@ -259,6 +275,10 @@ public class EnemyTab : BaseTab
                                 {
                                     enemy[index].enemyName = GUILayout.TextField(enemy[index].enemyName, GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 8));
                                     enemyDisplayName[index] = enemy[index].enemyName;
+
+            
+                                    //Function Calling from BaseTab to check same names
+                                    enemy[index].enemyName = RemoveDuplicates(enemySize, index, enemy[index].enemyName, enemyDisplayName);
                                 }
                                 else
                                 {

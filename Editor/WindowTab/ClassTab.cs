@@ -180,7 +180,8 @@ public class ClassTab : BaseTab
                             ListReset();
                         }
                     }
-
+                    
+                    classSize = classSizeTemp;
                     //New SkillSize array length
                     int[] tempArr = new int[skillToLearnSize.Length];
                     for (int i = 0; i < skillToLearnSize.Length; i++)
@@ -225,7 +226,6 @@ public class ClassTab : BaseTab
                         ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.ClassTraitExplicitDataPath + (index + 1) + "/Trait_");
                     }
 
-                    classSize = classSizeTemp;
 
                     ClearNullScriptableObjects();
                     ListReset();

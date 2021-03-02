@@ -165,13 +165,28 @@ public class WeaponTab : BaseTab
 
                 // Change Maximum field and button
                 weaponSizeTemp = EditorGUILayout.IntField(weaponSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
-                if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
+                if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)) && weaponSizeTemp > 0)
                 {
-                    weaponSize = weaponSizeTemp;
                     index = indexTemp = 0;
-                    FolderCreator(weaponSize, "Assets/Resources/Data/WeaponData", "TraitData");
-                    ChangeMaximum<WeaponData>(weaponSize, weapon, PathDatabase.WeaponTabExplicitDataPath);
+                    FolderCreator(weaponSizeTemp, "Assets/Resources/Data/WeaponData", "TraitData");
+                    ChangeMaximum<WeaponData>(weaponSizeTemp, weapon, PathDatabase.WeaponTabExplicitDataPath);
                     
+                    //Remove Name Duplicates
+                    if (weaponSize < weaponSizeTemp)
+                    {
+                        int oldWeaponSize = weaponSize;
+                        weaponSize = weaponSizeTemp;
+                        ListReset();
+
+                        for (int i = oldWeaponSize; i < weaponSizeTemp; i++)
+                        {
+                            //Function Calling from BaseTab to check same names
+                            weapon[i].weaponName = RemoveDuplicates(weaponSize, i, weapon[i].weaponName, weaponDisplayName);
+                            ListReset();
+                        }
+                    }
+                    
+                    weaponSize = weaponSizeTemp;
                     //New TraitSize array length
                     int[] tempArr = new int[traitSize.Length];
                     for (int i = 0; i < traitSize.Length; i++)
@@ -195,6 +210,7 @@ public class WeaponTab : BaseTab
                     {
                         ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.WeaponTraitExplicitDataPath + (index + 1) + "/Trait_");
                     }
+                    
 
                     ClearNullScriptableObjects();
                     ListReset();
@@ -224,6 +240,10 @@ public class WeaponTab : BaseTab
                                     {
                                         weapon[index].weaponName = GUILayout.TextField(weapon[index].weaponName, GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 8));
                                         weaponDisplayName[index] = weapon[index].weaponName;
+
+                                        
+                                        //Function Calling from BaseTab to check same names
+                                        weapon[index].weaponName = RemoveDuplicates(weaponSize, index, weapon[index].weaponName, weaponDisplayName);
                                     }
                                     else
                                     {
