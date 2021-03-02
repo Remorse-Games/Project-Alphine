@@ -160,13 +160,27 @@ public class TypeTab : BaseTab
                 }
                 //Int field of change Maximum
                 elementSizeTemp = EditorGUILayout.IntField(elementSizeTemp, GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
-                if (GUILayout.Button("Change Maximum", GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
+                if (GUILayout.Button("Change Maximum", GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)) && elementSizeTemp > 0)
                 {
                     elementIndex = 0;
+                    ChangeMaximum<TypeElementData>(elementSizeTemp, element, PathDatabase.ElementExplicitDataPath);
+                    if (elementSize < elementSizeTemp)
+                    {
+                        int oldElementSize = elementSize;
+                        elementSize = elementSizeTemp;
+                        ElementListReset();
+
+                        for (int i = oldElementSize; i < elementSizeTemp; i++)
+                        {
+                            //Function Calling from BaseTab to check same names
+                            element[i].dataName = RemoveDuplicates(elementSizeTemp, i, element[i].dataName, elementDisplayName);
+                            ElementListReset();
+                        }
+                    }
                     elementSize = elementSizeTemp;
-                    ChangeMaximum<TypeElementData>(elementSize, element, PathDatabase.ElementExplicitDataPath);
                     ElementListReset();
-                }else if(elementSizeTemp <= 0){
+                }
+                else if(elementSizeTemp <= 0){
                     elementSizeTemp = elementSize;
                 }
             GUILayout.EndArea();
@@ -209,11 +223,25 @@ public class TypeTab : BaseTab
             }
             //Int field of change Maximum
             skillSizeTemp = EditorGUILayout.IntField(skillSizeTemp, GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
-            if (GUILayout.Button("Change Maximum", GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
+            if (GUILayout.Button("Change Maximum", GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)) && skillSizeTemp > 0)
             {
                 skillIndex = 0;
+                ChangeMaximum<TypeSkillData>(skillSizeTemp, skill, PathDatabase.SkillExplicitDataPath);
+
+                if (skillSize < skillSizeTemp)
+                {
+                    int oldSkillSize = skillSize;
+                    skillSize = skillSizeTemp;
+                    SkillListReset();
+
+                    for (int i = oldSkillSize; i < skillSizeTemp; i++)
+                    {
+                        //Function Calling from BaseTab to check same names
+                        skill[i].dataName = RemoveDuplicates(skillSizeTemp, i, skill[i].dataName, skillDisplayName);
+                        SkillListReset();
+                    }
+                }
                 skillSize = skillSizeTemp;
-                ChangeMaximum<TypeSkillData>(skillSize, skill, PathDatabase.SkillExplicitDataPath);
                 SkillListReset();
             }
             else if (skillSizeTemp <= 0)
@@ -260,11 +288,24 @@ public class TypeTab : BaseTab
             }
             //Int field of change Maximum
             weaponSizeTemp = EditorGUILayout.IntField(weaponSizeTemp, GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
-            if (GUILayout.Button("Change Maximum", GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
+            if (GUILayout.Button("Change Maximum", GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)) && weaponSizeTemp > 0)
             {
                 weaponIndex = 0;
+                ChangeMaximum<TypeWeaponData>(weaponSizeTemp, weapon, PathDatabase.WeaponExplicitDataPath);
+                if (weaponSize < weaponSizeTemp)
+                {
+                    int oldWeaponSize = weaponSize;
+                    weaponSize = weaponSizeTemp;
+                    WeaponListReset();
+
+                    for (int i = oldWeaponSize; i < weaponSizeTemp; i++)
+                    {
+                        //Function Calling from BaseTab to check same names
+                        weapon[i].dataName = RemoveDuplicates(weaponSizeTemp, i, weapon[i].dataName, weaponDisplayName);
+                        WeaponListReset();
+                    }
+                }
                 weaponSize = weaponSizeTemp;
-                ChangeMaximum<TypeWeaponData>(weaponSize, weapon, PathDatabase.WeaponExplicitDataPath);
                 WeaponListReset();
             }
             else if(weaponSizeTemp <= 0){
@@ -310,13 +351,26 @@ public class TypeTab : BaseTab
             }
             //Int field of change Maximum
             armorSizeTemp = EditorGUILayout.IntField(armorSizeTemp, GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
-            if (GUILayout.Button("Change Maximum", GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
+            if (GUILayout.Button("Change Maximum", GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)) && armorSizeTemp > 0)
             {
                 armorIndex = 0;
+                ChangeMaximum<TypeArmorData>(armorSizeTemp, armor, PathDatabase.ArmorExplicitDataPath);
+                if (armorSize < armorSizeTemp)
+                {
+                    int oldArmorSize = armorSize;
+                    armorSize = armorSizeTemp;
+                    ArmorListReset();
+
+                    for (int i = oldArmorSize; i < armorSizeTemp; i++)
+                    {
+                        //Function Calling from BaseTab to check same names
+                        armor[i].dataName = RemoveDuplicates(armorSizeTemp, i, armor[i].dataName, armorDisplayName);
+                        ArmorListReset();
+                    }
+                }
                 armorSize = armorSizeTemp;
-                ChangeMaximum<TypeArmorData>(armorSize, armor, PathDatabase.ArmorExplicitDataPath);
                 ArmorListReset();
-            }
+        }
             else if(armorSizeTemp <= 0){
                 armorSizeTemp = armorSize;
             }
@@ -360,11 +414,24 @@ public class TypeTab : BaseTab
             }
             //Int field of change Maximum
             equipmentSizeTemp = EditorGUILayout.IntField(equipmentSizeTemp, GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
-            if (GUILayout.Button("Change Maximum", GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
+            if (GUILayout.Button("Change Maximum", GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)) && equipmentSizeTemp > 0)
             {
                 equipmentIndex = 0;
+                ChangeMaximum<TypeEquipmentData>(equipmentSizeTemp, equipment, PathDatabase.EquipmentExplicitDataPath);
+                if (equipmentSize < equipmentSizeTemp)
+                {
+                    int oldEquipmentSize = equipmentSize;
+                    equipmentSize = equipmentSizeTemp;
+                    EquipmentListReset();
+
+                    for (int i = oldEquipmentSize; i < equipmentSizeTemp; i++)
+                    {
+                        //Function Calling from BaseTab to check same names
+                        equipment[i].dataName = RemoveDuplicates(equipmentSizeTemp, i, equipment[i].dataName, equipmentDisplayName);
+                        EquipmentListReset();
+                    }
+                }
                 equipmentSize = equipmentSizeTemp;
-                ChangeMaximum<TypeEquipmentData>(equipmentSize, equipment, PathDatabase.EquipmentExplicitDataPath);
                 EquipmentListReset();
             }
             else if(equipmentSizeTemp <= 0){
