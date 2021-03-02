@@ -160,13 +160,27 @@ public class ClassTab : BaseTab
                 classSizeTemp = EditorGUILayout.IntField(classSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
                 if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
                 {
-                    classSize = classSizeTemp;
                     index = indexTemp = 0;
 
-                    FolderCreator(classSize, "Assets/Resources/Data/ClassesData", "SkillToLearnData");
-                    FolderCreator(classSize, "Assets/Resources/Data/ClassesData", "TraitData");
-                    ChangeMaximum<ClassesData>(classSize, classes, PathDatabase.ClassExplicitDataPath);
+                    FolderCreator(classSizeTemp, "Assets/Resources/Data/ClassesData", "SkillToLearnData");
+                    FolderCreator(classSizeTemp, "Assets/Resources/Data/ClassesData", "TraitData");
+                    ChangeMaximum<ClassesData>(classSizeTemp, classes, PathDatabase.ClassExplicitDataPath);
                     
+                    //Remove Name Duplicates
+                    if (classSize < classSizeTemp)
+                    {
+                        int oldClassSize = classSize;
+                        classSize = classSizeTemp;
+                        ListReset();
+
+                        for (int i = oldClassSize; i < classSizeTemp; i++)
+                        {
+                            //Function Calling from BaseTab to check same names
+                            classes[i].className = RemoveDuplicates(classSize, i, classes[i].className, classesNames);
+                            ListReset();
+                        }
+                    }
+
                     //New SkillSize array length
                     int[] tempArr = new int[skillToLearnSize.Length];
                     for (int i = 0; i < skillToLearnSize.Length; i++)
@@ -210,6 +224,9 @@ public class ClassTab : BaseTab
                     {
                         ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.ClassTraitExplicitDataPath + (index + 1) + "/Trait_");
                     }
+
+                    classSize = classSizeTemp;
+
                     ClearNullScriptableObjects();
                     ListReset();
                 }
@@ -237,6 +254,9 @@ public class ClassTab : BaseTab
                                                                                 GUILayout.Width(generalSettingsBox.width / 2 - 10),
                                                                                 GUILayout.Height(generalSettingsBox.height * 0.25f));
                                 classesNames[index] = classes[index].className;
+
+                                //Remove Name Duplicates
+                                classes[index].className = RemoveDuplicates(classSize, index, classes[index].className, classesNames);
                             }
                             else
                             {
