@@ -77,6 +77,7 @@ namespace Remorse.Tools.RPGDatabase.Window
             ClearNullScriptableObjects(); //Clear Trait SO without a value
             ListReset();
         }
+
         public void OnRender(Rect position)
         {
             #region A Bit Explanation About Local Tab
@@ -116,400 +117,439 @@ namespace Remorse.Tools.RPGDatabase.Window
             //Start drawing the whole armorTab.
             GUILayout.BeginArea(new Rect(position.width / 7, 5, tabWidth, tabHeight));
 
-            //The black box behind the armorsTab? yes, this one.
-            GUILayout.Box(" ", armorStyle, GUILayout.Width(position.width - DatabaseMain.tabAreaWidth), GUILayout.Height(position.height - 25f));
+                //The black box behind the armorsTab? yes, this one.
+                GUILayout.Box(" ", armorStyle, GUILayout.Width(position.width - DatabaseMain.tabAreaWidth), GUILayout.Height(position.height - 25f));
 
 
-            #region Tab 1/3
-            //First Tab of three
-            GUILayout.BeginArea(new Rect(0, 0, tabWidth, tabHeight));
+                #region Tab 1/3
+                //First Tab of three
+                GUILayout.BeginArea(new Rect(0, 0, tabWidth, tabHeight));
 
-            GUILayout.Box("Armors", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15));
+                    GUILayout.Box("Armors", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15));
 
-            //Scroll View
-            #region ScrollView
-            scrollPos = GUILayout.BeginScrollView(scrollPos, false, true, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .82f));
-            index = GUILayout.SelectionGrid(index, armorDisplayName.ToArray(), 1, GUILayout.Width(firstTabWidth - 20), GUILayout.Height(position.height / 24 * armorSize));
-            GUILayout.EndScrollView();
-            #endregion
+                    //Scroll View
+                    #region ScrollView
+                    scrollPos = GUILayout.BeginScrollView(scrollPos, false, true, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .82f));
+                        index = GUILayout.SelectionGrid(index, armorDisplayName.ToArray(), 1, GUILayout.Width(firstTabWidth - 20), GUILayout.Height(position.height / 24 * armorSize));
+                    GUILayout.EndScrollView();
+                    #endregion
 
-            //Happen everytime selection grid is updated
-            if (GUI.changed && index != indexTemp)
-            {
-                indexTemp = index;
-                traitIndex = 0;
-                traitIndexTemp = -1;
+                    //Happen everytime selection grid is updated
+                    if (GUI.changed && index != indexTemp)
+                    {
+                        indexTemp = index;
+                        traitIndex = 0;
+                        traitIndexTemp = -1;
 
-                ItemTabLoader(indexTemp);
+                        ItemTabLoader(indexTemp);
 
-                //Load TraitsData
-                traits.Clear();
-                LoadGameData<TraitsData>(ref traitSize[index], traits, PathDatabase.ArmorTraitRelativeDataPath + (index + 1));
-                //Check if TraitsData folder is empty
-                if (traitSize[index] <= 0)
-                {
-                    ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.ArmorTraitExplicitDataPath + (index + 1) + "/Trait_");
-                    traitIndexTemp = 0;
-                }
-                ClearNullScriptableObjects();
-                ListReset();
-                indexTemp = -1;
-            }
+                        //Load TraitsData
+                        traits.Clear();
+                        LoadGameData<TraitsData>(ref traitSize[index], traits, PathDatabase.ArmorTraitRelativeDataPath + (index + 1));
+                        //Check if TraitsData folder is empty
+                        if (traitSize[index] <= 0)
+                        {
+                            ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.ArmorTraitExplicitDataPath + (index + 1) + "/Trait_");
+                            traitIndexTemp = 0;
+                        }
+                        ClearNullScriptableObjects();
+                        ListReset();
+                        indexTemp = -1;
+                    }
 
-            // Change Maximum field and button
-            armorSizeTemp = EditorGUILayout.IntField(armorSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
-            if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
-            {
-                armorSize = armorSizeTemp;
-                index = indexTemp = 0;
-                FolderCreator(armorSize, "Assets/Resources/Data/ArmorData", "TraitData");
-                ChangeMaximum<ArmorData>(armorSize, armor, PathDatabase.ArmorTabExplicitDataPath);
+                    // Change Maximum field and button
+                    armorSizeTemp = EditorGUILayout.IntField(armorSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
+                    if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)) && armorSizeTemp > 0)
+                    {
+                        index = indexTemp = 0;
+                        FolderCreator(armorSizeTemp, "Assets/Resources/Data/ArmorData", "TraitData");
+                        ChangeMaximum<ArmorData>(armorSizeTemp, armor, PathDatabase.ArmorTabExplicitDataPath);
 
-                //New TraitSize array length
-                int[] tempArr = new int[traitSize.Length];
-                for (int i = 0; i < traitSize.Length; i++)
-                    tempArr[i] = traitSize[i];
+                        //Remove Name Duplicates
+                        if (armorSize < armorSizeTemp)
+                        {
+                            int oldArmorSize = armorSize;
+                            armorSize = armorSizeTemp;
+                            ListReset();
 
-                traitSize = new int[armorSize];
-
-                #region FindSmallestBetween
-                int smallestValue;
-                if (tempArr.Length < armorSize) smallestValue = tempArr.Length;
-                else smallestValue = armorSize;
-                #endregion
-
-                for (int i = 0; i < smallestValue; i++)
-                    traitSize[i] = tempArr[i];
-
-                //Reload Data and Check SO
-                LoadGameData<TraitsData>(ref traitSize[index], traits, PathDatabase.ArmorTraitRelativeDataPath + (index + 1));
-                if (traitSize[index] <= 0)
-                {
-                    ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.ArmorTraitExplicitDataPath + (index + 1) + "/Trait_");
-                }
-
-                ClearNullScriptableObjects();
-                ListReset();
-            }
-            else if (armorSizeTemp <= 0)
-            {
-                armorSizeTemp = armorSize;
-            }
-            GUILayout.EndArea();
-            #endregion // End Of First Tab
+                            for (int i = oldArmorSize; i < armorSizeTemp; i++)
+                            {
+                                //Function Calling from BaseTab to check same names
+                                armor[i].armorName = RemoveDuplicates(armorSize, i, armor[i].armorName, armorDisplayName);
+                                ListReset();
+                            }
+                        }
 
 
-            #region Tab 2/3
-            GUILayout.BeginArea(new Rect(firstTabWidth + 5, 0, firstTabWidth + 70, tabHeight - 25), columnStyle);
+                        armorSize = armorSizeTemp;
+                        //New TraitSize array length
+                        int[] tempArr = new int[traitSize.Length];
+                        for (int i = 0; i < traitSize.Length; i++)
+                            tempArr[i] = traitSize[i];
 
-            Rect generalBox = new Rect(5, 5, firstTabWidth + 60, position.height / 4 + 120);
-            #region GeneralSettings
-            GUILayout.BeginArea(generalBox, tabStyle); // Start of General Settings tab
-            GUILayout.Label("General Settings", EditorStyles.boldLabel); // General Settings label
-            #region Vertical
-            GUILayout.BeginVertical();
-            #region Horizontal
-            GUILayout.BeginHorizontal();
-            #region Name
-            GUILayout.BeginVertical();
-            GUILayout.Label("Name:"); // Name label
-            if (armorSize > 0)
-            {
-                armor[index].armorName = GUILayout.TextField(armor[index].armorName, GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 8));
-                armorDisplayName[index] = armor[index].armorName;
-            }
-            else
-            {
-                GUILayout.TextField("Null", GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 8));
-            }
-            GUILayout.EndVertical();
-            #endregion
-            #region Icon
-            GUILayout.BeginArea(new Rect(generalBox.width / 2 - 3, generalBox.height * .05f + 5, firstTabWidth - 220, position.height / 2)); // Icon Area
-            GUILayout.BeginHorizontal();
-            GUILayout.BeginVertical();
-            GUILayout.Label("Icon:"); // Icon label
-            GUILayout.EndVertical();
+                        traitSize = new int[armorSize];
 
-            GUILayout.BeginVertical();
-            GUILayout.Box(armorIcon, GUILayout.Width(61), GUILayout.Height(61)); // Icon Box preview
-            Color tempColorIcon = GUI.backgroundColor;
-            GUI.backgroundColor = Color.green;
-            if (GUILayout.Button("Edit Icon", GUILayout.Height(20), GUILayout.Width(61))) // Icon changer Button
-            {
-                armor[index].Icon = ImageChanger(
-                index,
-                "Choose Icon",
-                "Assets/Resources/Image"
-                );
-                ItemTabLoader(index);
-            }
-            GUI.backgroundColor = tempColorIcon;
-            GUILayout.EndVertical();
-            GUILayout.EndHorizontal();
-            GUILayout.EndArea();
-            #endregion
-            GUILayout.EndHorizontal();
-            #endregion
+                        #region FindSmallestBetween
+                        int smallestValue;
+                        if (tempArr.Length < armorSize) smallestValue = tempArr.Length;
+                        else smallestValue = armorSize;
+                        #endregion
 
-            GUILayout.Space(30);
+                        for (int i = 0; i < smallestValue; i++)
+                            traitSize[i] = tempArr[i];
 
-            #region Description
-            GUILayout.Label("Description:"); // Description label
-            if (armorSize > 0)
-            {
-                armor[index].armorDescription = GUILayout.TextArea(armor[index].armorDescription, GUILayout.Width(firstTabWidth + 53), GUILayout.Height(generalBox.height / 5 + 5));
-            }
-            else
-            {
-                GUILayout.TextArea("Null", GUILayout.Width(firstTabWidth + 53), GUILayout.Height(generalBox.height / 5 + 5));
-            }
-            #endregion
-            GUILayout.Space(5);
+                        //Reload Data and Check SO
+                        traits.Clear();
+                        LoadGameData<TraitsData>(ref traitSize[index], traits, PathDatabase.ArmorTraitRelativeDataPath + (index + 1));
+                        if (traitSize[index] <= 0)
+                        {
+                            ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.ArmorTraitExplicitDataPath + (index + 1) + "/Trait_");
+                        }
 
-            #region Price ArmorType 
-            GUILayout.BeginHorizontal();
-            #region armorType
-            GUILayout.BeginVertical();
-            GUILayout.Label("Armor Type:"); // Armor Type class label
-            if (armorSize > 0)
-            {
-                armor[index].selectedArmorTypeIndex = EditorGUILayout.Popup(armor[index].selectedArmorTypeIndex, armorTypeList, GUILayout.Height(generalBox.height / 8 - 15), GUILayout.Width(generalBox.width / 2 - 15));
-            }
-            else
-            {
-                EditorGUILayout.Popup(0, armorTypeList, GUILayout.Height(generalBox.height / 8 - 15), GUILayout.Width(generalBox.width / 2 - 15));
-            }
-            GUILayout.EndVertical();
-            #endregion
-            #region Price
-            GUILayout.BeginVertical();
-            GUILayout.Label("Price:"); // Price label
-            if (armorSize > 0)
-            {
-                armor[index].armorPrice = EditorGUILayout.IntField(armor[index].armorPrice, GUILayout.Width(generalBox.width / 4 - 2), GUILayout.Height(generalBox.height / 8 - 9));
-            }
-            else
-            {
-                EditorGUILayout.IntField(-1, GUILayout.Width(generalBox.width / 4 - 2), GUILayout.Height(generalBox.height / 8 - 9));
-            }
-            GUILayout.EndVertical();
-
-            GUILayout.Space(generalBox.width / 4 - 2);
-            GUILayout.EndHorizontal();
-            #endregion
-            #endregion
-
-            #region EquipmentType
-            GUILayout.BeginHorizontal();
-            GUILayout.BeginVertical();
-            GUILayout.Label("Equipment Type:"); // Animation class label
-            if (armorSize > 0)
-            {
-                armor[index].selectedArmorEquipmentIndex = EditorGUILayout.Popup(armor[index].selectedArmorEquipmentIndex, armorEquipmentList, GUILayout.Height(generalBox.height / 8 - 15), GUILayout.Width(generalBox.width / 2 - 15));
-            }
-            else
-            {
-                EditorGUILayout.Popup(0, armorEquipmentList, GUILayout.Height(generalBox.height / 8 - 15), GUILayout.Width(generalBox.width / 2 - 15));
-            }
-            GUILayout.EndVertical();
-            GUILayout.EndHorizontal();
-            #endregion
-
-            GUILayout.EndVertical();
-            #endregion
-            GUILayout.EndArea(); // End of GeneralSettings Tab
-            #endregion
-
-            Rect parameterChangesBox = new Rect(5, generalBox.height + 10, firstTabWidth + 60, position.height / 4 - 65);
-            #region ParameterChangesBox
-            GUILayout.BeginArea(parameterChangesBox, tabStyle);
-            #region Vertical
-            GUILayout.BeginVertical();
-            GUILayout.Label("Parameter Changes", EditorStyles.boldLabel);
-
-            #region InitialLevel Success Repeat TPGain
-            GUILayout.BeginHorizontal();
-            GUILayout.BeginVertical();
-            GUILayout.Label("Attack:");
-            if (armorSize > 0)
-            { armor[index].armorAttack = EditorGUILayout.IntField(armor[index].armorAttack, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
-            else
-            { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
-            GUILayout.EndVertical();
-
-            GUILayout.BeginVertical();
-            GUILayout.Label("Defense:");
-            if (armorSize > 0)
-            { armor[index].armorDefense = EditorGUILayout.IntField(armor[index].armorDefense, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
-            else
-            { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
-            GUILayout.EndVertical();
-
-            GUILayout.BeginVertical();
-            GUILayout.Label("M.Attack:");
-            if (armorSize > 0)
-            { armor[index].armorMAttack = EditorGUILayout.IntField(armor[index].armorMAttack, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
-            else
-            { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
-            GUILayout.EndVertical();
-
-            GUILayout.BeginVertical();
-            GUILayout.Label("M.Defense:");
-            if (armorSize > 0)
-            { armor[index].armorMDefense = EditorGUILayout.IntField(armor[index].armorMDefense, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
-            else
-            { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
-            GUILayout.EndVertical();
-
-            GUILayout.EndHorizontal();
-            #endregion
-
-            #region Agility Luck MaxHP MaxMP
-            GUILayout.BeginHorizontal();
-            GUILayout.BeginVertical();
-            GUILayout.Label("Agility:");
-            if (armorSize > 0)
-            { armor[index].armorAgility = EditorGUILayout.IntField(armor[index].armorAgility, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
-            else
-            { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
-            GUILayout.EndVertical();
-
-            GUILayout.BeginVertical();
-            GUILayout.Label("Luck:");
-            if (armorSize > 0)
-            { armor[index].armorLuck = EditorGUILayout.IntField(armor[index].armorLuck, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
-            else
-            { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
-            GUILayout.EndVertical();
-
-            GUILayout.BeginVertical();
-            GUILayout.Label("Max HP:");
-            if (armorSize > 0)
-            { armor[index].armorMaxHP = EditorGUILayout.IntField(armor[index].armorMaxHP, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
-            else
-            { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
-            GUILayout.EndVertical();
-
-            GUILayout.BeginVertical();
-            GUILayout.Label("Max MP:");
-            if (armorSize > 0)
-            { armor[index].armorMaxMP = EditorGUILayout.IntField(armor[index].armorMaxMP, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
-            else
-            { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
-            GUILayout.EndVertical();
-
-            GUILayout.EndHorizontal();
-            #endregion
-
-            GUILayout.EndVertical();
-            #endregion
-
-            GUILayout.EndArea();
-            #endregion // End Of ParameterChanges Settings
-
-            GUILayout.EndArea();
-            #endregion // End of Second Tab
+                        ClearNullScriptableObjects();
+                        ListReset();
+                    }
+                    else if (armorSizeTemp <= 0)
+                    {
+                        armorSizeTemp = armorSize;
+                    }
+                GUILayout.EndArea();
+                #endregion // End Of First Tab
 
 
-            #region Tab 3/3
-            //Third Column
-            GUILayout.BeginArea(new Rect(position.width - (position.width - firstTabWidth * 2) + 77, 0, firstTabWidth + 25, tabHeight - 15), columnStyle);
+                #region Tab 2/3
+                GUILayout.BeginArea(new Rect(firstTabWidth + 5, 0, firstTabWidth + 70, tabHeight - 25), columnStyle);
 
-            //Traits
-            Rect traitsBox = new Rect(5, 5, firstTabWidth + 15, position.height * 5 / 8);
-            #region Traits
-            ListReset();
-            GUILayout.BeginArea(traitsBox, tabStyle);
-            GUILayout.Space(2);
-            GUILayout.Label("Traits", EditorStyles.boldLabel);
-            GUILayout.Space(5);
-            #region Horizontal For Type And Content
-            GUILayout.BeginHorizontal();
-            GUILayout.Label(PadString("Type", string.Format("{0}", "  Content")), GUILayout.Width(traitsBox.width));
-            GUILayout.EndHorizontal();
-            #endregion
-            #region ScrollView
-            traitsScrollPos = GUILayout.BeginScrollView(
-                traitsScrollPos,
-                false,
-                true,
-                GUILayout.Width(firstTabWidth + 5),
-                GUILayout.Height(traitsBox.height * 0.83f)
-                );
-
-            GUI.changed = false;
-            GUI.skin.button.alignment = TextAnchor.MiddleLeft;
-            traitIndex = GUILayout.SelectionGrid(
-                traitIndex,
-                traitDisplayName.ToArray(),
-                1,
-                GUILayout.Width(firstTabWidth - 20),
-                GUILayout.Height(position.height / 24 * traitSize[index]
-                ));
-            GUI.skin.button.alignment = TextAnchor.MiddleCenter;
-            GUILayout.EndScrollView();
-            #endregion
-
-            //Happen everytime selection grid is updated
-            if (GUI.changed)
-            {
-                if (traitIndex != traitIndexTemp)
-                {
-                    TraitWindow.ShowWindow(traits, traitIndex, traitSize[index], TabType.Armor);
-
-                    traitIndexTemp = traitIndex;
-                }
-            }
-
-            //Create Empty SO if there isn't any null SO left
-            if ((traits[traitSize[index] - 1].traitName != null && traits[traitSize[index] - 1].traitName != "") && traitSize[index] > 0)
-            {
-                traitIndex = 0;
-                ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.ArmorTraitExplicitDataPath + (index + 1) + "/Trait_");
-            }
-
-            Color tempColor = GUI.backgroundColor;
-            GUI.backgroundColor = Color.red;
-            //Delete All Data Button
-            if (GUILayout.Button("Delete All Data", GUILayout.Width(traitsBox.width * .3f), GUILayout.Height(traitsBox.height * .055f)))
-            {
-                if (EditorUtility.DisplayDialog("Delete All Trait Data", "Are you sure want to delete all Trait Data?", "Yes", "No"))
-                {
-                    traitIndex = 0;
-                    traitSize[index] = 1;
-                    ChangeMaximum<TraitsData>(0, traits, PathDatabase.ArmorTraitExplicitDataPath + (index + 1) + "/Trait_");
-                    ChangeMaximum<TraitsData>(1, traits, PathDatabase.ArmorTraitExplicitDataPath + (index + 1) + "/Trait_");
-                }
-            }
-            GUI.backgroundColor = tempColor;
-            GUILayout.EndArea();
-            #endregion //End of TraitboxArea
+                    Rect generalBox = new Rect(5, 5, firstTabWidth + 60, position.height / 4 + 120);
+                    #region GeneralSettings
+                    GUILayout.BeginArea(generalBox, tabStyle); // Start of General Settings tab
+                        GUILayout.Label("General Settings", EditorStyles.boldLabel); // General Settings label
+                        #region Vertical
+                        GUILayout.BeginVertical();
+                            #region Horizontal
+                            GUILayout.BeginHorizontal();
+                                #region Name
+                                GUILayout.BeginVertical();
+                                    GUILayout.Label("Name:"); // Name label
+                                    if (armorSize > 0)
+                                    {
+                                        armor[index].armorName = GUILayout.TextField(armor[index].armorName, GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 8));
+                                        armorDisplayName[index] = armor[index].armorName;
 
 
-            //Notes
-            Rect notesBox = new Rect(5, traitsBox.height + 15, firstTabWidth + 15, position.height * 2.5f / 8);
-            #region NoteBox
-            GUILayout.BeginArea(notesBox, tabStyle);
-            GUILayout.Space(2);
-            GUILayout.Label("Notes", EditorStyles.boldLabel);
-            GUILayout.Space(notesBox.height / 50);
-            if (armorSize > 0)
-            {
-                armor[index].notes = GUILayout.TextArea(armor[index].notes, GUILayout.Width(notesBox.width - 5), GUILayout.Height(notesBox.height * 0.9f));
-            }
-            else
-            {
-                GUILayout.TextArea("Null", GUILayout.Width(notesBox.width - 5), GUILayout.Height(notesBox.height * 0.85f));
-            }
-            GUILayout.EndArea();
-            #endregion //End of notebox area
+                                        //Function Calling from BaseTab to check same names
+                                        armor[index].armorName = RemoveDuplicates(armorSize, index, armor[index].armorName, armorDisplayName);
+                                    }
+                                    else
+                                    {
+                                        GUILayout.TextField("Null", GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 8));
+                                    }
+                                GUILayout.EndVertical();
+                                #endregion
+                                #region Icon
+                                GUILayout.BeginArea(new Rect(generalBox.width / 2 - 3, generalBox.height * .05f + 5, firstTabWidth - 220, position.height / 2)); // Icon Area
+                                    GUILayout.BeginHorizontal();
+                                        GUILayout.BeginVertical();
+                                            GUILayout.Label("Icon:"); // Icon label
+                                        GUILayout.EndVertical();
 
-            GUILayout.EndArea();
-            #endregion // End of third column
+                                        GUILayout.BeginVertical();
+                                            GUILayout.Box(armorIcon, GUILayout.Width(61), GUILayout.Height(61)); // Icon Box preview
+                                            Color tempColorIcon = GUI.backgroundColor;
+                                            GUI.backgroundColor = Color.green;
+                                            if (GUILayout.Button("Edit Icon", GUILayout.Height(20), GUILayout.Width(61))) // Icon changer Button
+                                            {
+                                                armor[index].Icon = ImageChanger(
+                                                index,
+                                                "Choose Icon",
+                                                "Assets/Resources/Image"
+                                                );
+                                                ItemTabLoader(index);
+                                            }
+                                            GUI.backgroundColor = tempColorIcon;
+                                        GUILayout.EndVertical();
+                                    GUILayout.EndHorizontal();
+                                GUILayout.EndArea();
+                                #endregion
+                            GUILayout.EndHorizontal();
+                            #endregion
+
+                            GUILayout.Space(30);
+
+                            #region Description
+                            GUILayout.Label("Description:"); // Description label
+                            if (armorSize > 0)
+                            {
+                                armor[index].armorDescription = GUILayout.TextArea(armor[index].armorDescription, GUILayout.Width(firstTabWidth + 53), GUILayout.Height(generalBox.height / 5 + 5));
+                            }
+                            else
+                            {
+                                GUILayout.TextArea("Null", GUILayout.Width(firstTabWidth + 53), GUILayout.Height(generalBox.height / 5 + 5));
+                            }
+                            #endregion
+                            GUILayout.Space(5);
+
+                            #region Price ArmorType 
+                            GUILayout.BeginHorizontal();
+                                #region armorType
+                                GUILayout.BeginVertical();
+                                    GUILayout.Label("Armor Type:"); // Armor Type class label
+                                    if (armorSize > 0)
+                                    {
+                                        armor[index].selectedArmorTypeIndex = EditorGUILayout.Popup(armor[index].selectedArmorTypeIndex, armorTypeList, GUILayout.Height(generalBox.height / 8 - 15), GUILayout.Width(generalBox.width / 2 - 15));
+                                    }
+                                    else
+                                    {
+                                        EditorGUILayout.Popup(0, armorTypeList, GUILayout.Height(generalBox.height / 8 - 15), GUILayout.Width(generalBox.width / 2 - 15));
+                                    }
+                                GUILayout.EndVertical();
+                                #endregion
+
+                                #region Price
+                                GUILayout.BeginVertical();
+                                    GUILayout.Label("Price:"); // Price label
+                                    if (armorSize > 0)
+                                    {
+                                        armor[index].armorPrice = EditorGUILayout.IntField(armor[index].armorPrice, GUILayout.Width(generalBox.width / 4 - 2), GUILayout.Height(generalBox.height / 8 - 9));
+                                    }
+                                    else
+                                    {
+                                        EditorGUILayout.IntField(-1, GUILayout.Width(generalBox.width / 4 - 2), GUILayout.Height(generalBox.height / 8 - 9));
+                                    }
+                                GUILayout.EndVertical();
+                                #endregion
+                            GUILayout.Space(generalBox.width / 4 - 2);
+                            GUILayout.EndHorizontal();
+                        
+                            #endregion
+
+                            #region EquipmentType
+                            GUILayout.BeginHorizontal();
+                                GUILayout.BeginVertical();
+                                    GUILayout.Label("Equipment Type:"); // Animation class label
+                                    if (armorSize > 0)
+                                    {
+                                        armor[index].selectedArmorEquipmentIndex = EditorGUILayout.Popup(armor[index].selectedArmorEquipmentIndex, armorEquipmentList, GUILayout.Height(generalBox.height / 8 - 15), GUILayout.Width(generalBox.width / 2 - 15));
+                                    }
+                                    else
+                                    {
+                                        EditorGUILayout.Popup(0, armorEquipmentList, GUILayout.Height(generalBox.height / 8 - 15), GUILayout.Width(generalBox.width / 2 - 15));
+                                    }
+                                GUILayout.EndVertical();
+                            GUILayout.EndHorizontal();
+                            #endregion
+
+                        GUILayout.EndVertical();
+                        #endregion
+                    GUILayout.EndArea(); // End of GeneralSettings Tab
+                    #endregion
+
+                    Rect parameterChangesBox = new Rect(5, generalBox.height + 10, firstTabWidth + 60, position.height / 4 - 65);
+                    #region ParameterChangesBox
+                    GUILayout.BeginArea(parameterChangesBox, tabStyle);
+                        #region Vertical
+                        GUILayout.BeginVertical();
+                            GUILayout.Label("Parameter Changes", EditorStyles.boldLabel);
+
+                            #region InitialLevel Success Repeat TPGain
+                            GUILayout.BeginHorizontal();
+                                GUILayout.BeginVertical();
+                                    GUILayout.Label("Attack:");
+                                    if (armorSize > 0)
+                                    { armor[index].armorAttack = EditorGUILayout.IntField(armor[index].armorAttack, 
+                                                                                            GUILayout.Width(parameterChangesBox.width / 4 - 5), 
+                                                                                            GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                    else
+                                    { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                GUILayout.EndVertical();
+
+                                GUILayout.BeginVertical();
+                                    GUILayout.Label("Defense:");
+                                    if (armorSize > 0)
+                                    { armor[index].armorDefense = EditorGUILayout.IntField(armor[index].armorDefense, 
+                                                                                            GUILayout.Width(parameterChangesBox.width / 4 - 5), 
+                                                                                            GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                    else
+                                    { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                GUILayout.EndVertical();
+
+                                GUILayout.BeginVertical();
+                                    GUILayout.Label("M.Attack:");
+                                    if (armorSize > 0)
+                                    { armor[index].armorMAttack = EditorGUILayout.IntField(armor[index].armorMAttack, 
+                                                                                            GUILayout.Width(parameterChangesBox.width / 4 - 5), 
+                                                                                            GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                    else
+                                    { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                GUILayout.EndVertical();
+
+                                GUILayout.BeginVertical();
+                                    GUILayout.Label("M.Defense:");
+                                    if (armorSize > 0)
+                                    { armor[index].armorMDefense = EditorGUILayout.IntField(armor[index].armorMDefense, 
+                                                                                                GUILayout.Width(parameterChangesBox.width / 4 - 5), 
+                                                                                                GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                    else
+                                    { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                GUILayout.EndVertical();
+
+                            GUILayout.EndHorizontal();
+                            #endregion
+
+                            #region Agility Luck MaxHP MaxMP
+                            GUILayout.BeginHorizontal();
+                                GUILayout.BeginVertical();
+                                    GUILayout.Label("Agility:");
+                                    if (armorSize > 0)
+                                    { armor[index].armorAgility = EditorGUILayout.IntField(armor[index].armorAgility, 
+                                                                                            GUILayout.Width(parameterChangesBox.width / 4 - 5), 
+                                                                                            GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                    else
+                                    { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                GUILayout.EndVertical();
+
+                                GUILayout.BeginVertical();
+                                    GUILayout.Label("Luck:");
+                                    if (armorSize > 0)
+                                    { armor[index].armorLuck = EditorGUILayout.IntField(armor[index].armorLuck, 
+                                                                                        GUILayout.Width(parameterChangesBox.width / 4 - 5), 
+                                                                                        GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                    else
+                                    { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                GUILayout.EndVertical();
+
+                                GUILayout.BeginVertical();
+                                    GUILayout.Label("Max HP:");
+                                    if (armorSize > 0)
+                                    { armor[index].armorMaxHP = EditorGUILayout.IntField(armor[index].armorMaxHP, 
+                                                                                            GUILayout.Width(parameterChangesBox.width / 4 - 5), 
+                                                                                            GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                    else
+                                    { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                GUILayout.EndVertical();
+
+                                GUILayout.BeginVertical();
+                                    GUILayout.Label("Max MP:");
+                                    if (armorSize > 0)
+                                    { armor[index].armorMaxMP = EditorGUILayout.IntField(armor[index].armorMaxMP, 
+                                                                                            GUILayout.Width(parameterChangesBox.width / 4 - 5), 
+                                                                                            GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                    else
+                                    { EditorGUILayout.IntField(-1, GUILayout.Width(parameterChangesBox.width / 4 - 5), GUILayout.Height(parameterChangesBox.height / 8 + 9)); }
+                                GUILayout.EndVertical();
+
+                            GUILayout.EndHorizontal();
+                            #endregion
+
+                        GUILayout.EndVertical();
+                        #endregion
+
+                    GUILayout.EndArea();
+                    #endregion // End Of ParameterChanges Settings
+
+                GUILayout.EndArea();
+                #endregion // End of Second Tab
+
+
+                #region Tab 3/3
+                //Third Column
+                GUILayout.BeginArea(new Rect(position.width - (position.width - firstTabWidth * 2) + 77, 0, firstTabWidth + 25, tabHeight - 15), columnStyle);
+
+                    //Traits
+                    Rect traitsBox = new Rect(5, 5, firstTabWidth + 15, position.height * 5 / 8);
+                    #region Traits
+                    ListReset();
+                    GUILayout.BeginArea(traitsBox, tabStyle);
+                        GUILayout.Space(2);
+                        GUILayout.Label("Traits", EditorStyles.boldLabel);
+                        GUILayout.Space(5);
+                        #region Horizontal For Type And Content
+                        GUILayout.BeginHorizontal();
+                            GUILayout.Label(PadString("Type", string.Format("{0}", "  Content")), GUILayout.Width(traitsBox.width));
+                        GUILayout.EndHorizontal();
+                        #endregion
+                        #region ScrollView
+                        traitsScrollPos = GUILayout.BeginScrollView(
+                            traitsScrollPos,
+                            false,
+                            true,
+                            GUILayout.Width(firstTabWidth + 5),
+                            GUILayout.Height(traitsBox.height * 0.83f)
+                            );
+
+                        GUI.changed = false;
+                        GUI.skin.button.alignment = TextAnchor.MiddleLeft;
+                        traitIndex = GUILayout.SelectionGrid(
+                            traitIndex,
+                            traitDisplayName.ToArray(),
+                            1,
+                            GUILayout.Width(firstTabWidth - 20),
+                            GUILayout.Height(position.height / 24 * traitSize[index]
+                            ));
+                        GUI.skin.button.alignment = TextAnchor.MiddleCenter;
+                        GUILayout.EndScrollView();
+                        #endregion
+
+                        //Happen everytime selection grid is updated
+                        if (GUI.changed)
+                        {
+                            if (traitIndex != traitIndexTemp)
+                            {
+                                TraitWindow.ShowWindow(traits, traitIndex, traitSize[index], TabType.Armor);
+
+                                traitIndexTemp = traitIndex;
+                            }
+                        }
+
+                        //Create Empty SO if there isn't any null SO left
+                        if ((traits[traitSize[index] - 1].traitName != null && traits[traitSize[index] - 1].traitName != "") && traitSize[index] > 0)
+                        {
+                            traitIndex = 0;
+                            ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.ArmorTraitExplicitDataPath + (index + 1) + "/Trait_");
+                        }
+
+                        Color tempColor = GUI.backgroundColor;
+                        GUI.backgroundColor = Color.red;
+                        //Delete All Data Button
+                        if (GUILayout.Button("Delete All Data", GUILayout.Width(traitsBox.width * .3f), GUILayout.Height(traitsBox.height * .055f)))
+                        {
+                            if (EditorUtility.DisplayDialog("Delete All Trait Data", "Are you sure want to delete all Trait Data?", "Yes", "No"))
+                            {
+                                traitIndex = 0;
+                                traitSize[index] = 1;
+                                ChangeMaximum<TraitsData>(0, traits, PathDatabase.ArmorTraitExplicitDataPath + (index + 1) + "/Trait_");
+                                ChangeMaximum<TraitsData>(1, traits, PathDatabase.ArmorTraitExplicitDataPath + (index + 1) + "/Trait_");
+                            }
+                        }
+                        GUI.backgroundColor = tempColor;
+                    GUILayout.EndArea();
+                    #endregion //End of TraitboxArea
+
+
+                    //Notes
+                    Rect notesBox = new Rect(5, traitsBox.height + 15, firstTabWidth + 15, position.height * 2.5f / 8);
+                    #region NoteBox
+                    GUILayout.BeginArea(notesBox, tabStyle);
+                        GUILayout.Space(2);
+                            GUILayout.Label("Notes", EditorStyles.boldLabel);
+                        GUILayout.Space(notesBox.height / 50);
+                        if (armorSize > 0)
+                        {
+                            armor[index].notes = GUILayout.TextArea(armor[index].notes, GUILayout.Width(notesBox.width - 5), GUILayout.Height(notesBox.height * 0.9f));
+                        }
+                        else
+                        {
+                            GUILayout.TextArea("Null", GUILayout.Width(notesBox.width - 5), GUILayout.Height(notesBox.height * 0.85f));
+                        }
+                    GUILayout.EndArea();
+                    #endregion //End of notebox area
+
+                GUILayout.EndArea();
+                #endregion // End of third column
 
             GUILayout.EndArea(); // End drawing the whole ArmorTab
             #endregion
+
             EditorUtility.SetDirty(armor[index]);
         }
 
@@ -589,7 +629,6 @@ namespace Remorse.Tools.RPGDatabase.Window
                 }
             }
         }
-
 
         #endregion
     }
