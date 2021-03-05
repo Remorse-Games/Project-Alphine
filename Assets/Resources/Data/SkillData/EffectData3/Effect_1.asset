@@ -9,14 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b738a9d3211009c4fabfb697a3751244, type: 3}
-  m_Name: Troop_1
+  m_Script: {fileID: 11500000, guid: d54e7b59e81aab54c8fd087b1f3199fb, type: 3}
+  m_Name: Effect_1
   m_EditorClassIdentifier: 
-  troopName: Orc
-  background: {fileID: 0}
-  troopAddedList: []
-  indexAddedListTemp: -1
-  indexAvailableListTemp: -1
-  indexAddedList: 0
-  indexAvailableList: 1
-  notes: 
+  effectName: 
+  selectedTabToggle: 0
+  selectedTabIndex: 0
+  selectedArrayIndex: 0
+  effectValue: 6400000000000000

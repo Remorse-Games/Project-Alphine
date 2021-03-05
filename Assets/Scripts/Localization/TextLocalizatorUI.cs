@@ -15,7 +15,10 @@ namespace Remorse.Localize
         }
         public void Update()
         {
-            text.text = localizedString.value;
+            if(text.text != localizedString.value)
+            {
+                text.text = localizedString.value;
+            }
         }
     }
 }

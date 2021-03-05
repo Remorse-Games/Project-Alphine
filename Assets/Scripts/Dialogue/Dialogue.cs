@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
+using Remorse.Localize;
 
-namespace Remorse.Localize
-{
+namespace Remorse.Chat{
     [System.Serializable]
     public class Dialogue
     {
         public LocalizedString name;
-        public LocalizedString[] sentences;
+        public List<LocalizedString> sentences;
     }
 }

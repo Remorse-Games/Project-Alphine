@@ -15,27 +15,39 @@ namespace RemorseEditor.Localization
         }
 
         public string key;
-        public string value;
+        public string english;
+        public string indonesia;
 
         public void OnGUI()
         {
             key = EditorGUILayout.TextField("Key :", key);
+
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("value :", GUILayout.MaxWidth(50));
+            EditorGUILayout.LabelField("English :", GUILayout.MaxWidth(70));
 
             EditorStyles.textArea.wordWrap = true;
-            value = EditorGUILayout.TextArea(value, EditorStyles.textArea, GUILayout.Height(100), GUILayout.Width(400));
+            english = EditorGUILayout.TextArea(english, EditorStyles.textArea, GUILayout.Height(100), GUILayout.Width(400));
             EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+
+            EditorGUILayout.LabelField("Indonesia :", GUILayout.MaxWidth(70));
+
+            EditorStyles.textArea.wordWrap = true;
+            indonesia = EditorGUILayout.TextArea(indonesia, EditorStyles.textArea, GUILayout.Height(100), GUILayout.Width(400));
+            EditorGUILayout.EndHorizontal();
+
+            string[] values = { english, indonesia };
 
             if (GUILayout.Button("Add"))
             {
                 if (Remorse.Localize.Localization.GetLocalizedValue(key) != string.Empty)
                 {
-                    Remorse.Localize.Localization.Replace(key, value);
+                    Remorse.Localize.Localization.Replace(key, values);
                 }
                 else
                 {
-                    Remorse.Localize.Localization.Add(key, value);
+                    Remorse.Localize.Localization.Add(key, values);
                 }
             }
 
@@ -56,7 +68,7 @@ namespace RemorseEditor.Localization
             window.ShowAsDropDown(r, new Vector2(500, 300));
         }
 
-        public string value;
+        public string value = "";
         public Vector2 scroll;
         public Dictionary<string, string> dictionary;
 
@@ -77,7 +89,7 @@ namespace RemorseEditor.Localization
 
         private void GetSearchResult()
         {
-            if (value == null) { return; }
+            if (value == null) return;
 
             EditorGUILayout.BeginVertical();
             scroll = EditorGUILayout.BeginScrollView(scroll);

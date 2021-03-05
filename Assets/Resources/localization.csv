@@ -1,5 +1,4 @@
 "key","en","id"
-"game_welcome","Welcome to Alphine","Selamat datang di Alphine"
 "game_quest","Are you sure?","Apa kamu yakin?"
 "charlie_name","Charlie","Jali"
 "quest1_sentence1","Hello, My name is Charlie...","Hallo, nama saya Jali"
@@ -8,3 +7,5 @@
 "next_btn","Next","Selanjutnya"
 "start_dialogue","Start Dialogue","Mulai Percakapan"
 "back_btn","Back","Kembali"
+"setting","Settings","Pengaturan"
+"game_welcome","Welcome to Alphine","Selamat datang di Alphine"
