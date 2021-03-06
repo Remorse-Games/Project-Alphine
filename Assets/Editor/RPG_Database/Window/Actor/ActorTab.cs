@@ -32,9 +32,6 @@ namespace Remorse.Tools.RPGDatabase.Window
 
         #region  DeleteLater
 
-        //Index for selected Class.
-        public int selectedClassIndex;
-
         //How many actor in ChangeMaximum Func
         public int armorSize;
         public int actorSize;
@@ -293,7 +290,7 @@ namespace Remorse.Tools.RPGDatabase.Window
                                     }
                                     GUILayout.Space(generalBox.height / 20);
                                     GUILayout.Label("Class:");
-                                    selectedClassIndex = EditorGUILayout.Popup(selectedClassIndex, classDisplayName, GUILayout.Height(generalBox.height / 8), GUILayout.Width(generalBox.width / 2 - 15));
+                                    actor[index].selectedClassIndex = EditorGUILayout.Popup(actor[index].selectedClassIndex, classDisplayName, GUILayout.Height(generalBox.height / 8), GUILayout.Width(generalBox.width / 2 - 15));
                                 GUILayout.EndVertical(); //Name label, name field, class label, and class popup (ending)
                                 #endregion
                                 #region Names Classes

@@ -95,10 +95,6 @@ namespace Remorse.Tools.RPGDatabase.Window
             {
                 AssetDatabase.CreateFolder("Assets/Resources/Data", "ActorData");
             }
-            if (!AssetDatabase.IsValidFolder("Assets/Resources/Data/ActorData/TraitData1"))
-            {
-                AssetDatabase.CreateFolder("Assets/Resources/Data/ActorData", "TraitData1");
-            }
             if (!AssetDatabase.IsValidFolder("Assets/Resources/Image"))
             {
                 AssetDatabase.CreateFolder("Assets/Resources", "Image");
