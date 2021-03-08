@@ -14,9 +14,17 @@ namespace Remorse.Localize
         private char surround = '"';
         private string[] fieldSeparator = { "\",\"" };
 
+        private string csvPath = "Assets/Resources/localization.csv";
+        string[] CSVDump;
+        Regex CSVParser = new Regex(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
+        List<List<string>> CSV;
+        Vector2 scrollPos;
+
         public void LoadCSV()
         {
             csvFile = Resources.Load<TextAsset>("localization");
+            CSVDump = File.ReadAllLines(csvPath);
+            CSV = CSVDump.Select(x => CSVParser.Split(x).ToList()).ToList();
         }
 
         public Dictionary<string, string> GetDictionaryValues(string attributeId)
@@ -44,7 +52,7 @@ namespace Remorse.Localize
                 for (int f = 0; f < fields.Length; f++)
                 {
                     fields[f] = fields[f].TrimStart(' ', surround);
-                    fields[f] = fields[f].TrimEnd(surround);
+                    fields[f] = fields[f].TrimEnd('\r',surround);
                 }
 
                 if (fields.Length > attributeIndex)
@@ -66,11 +74,11 @@ namespace Remorse.Localize
             {
                 append += string.Format(",\"{0}\"", languageValue);
             }
-            File.AppendAllText("Assets/Resources/localization.csv", append);
+            File.AppendAllText(csvPath, append);
 
-#if UNITY_EDITOR
+            #if UNITY_EDITOR
             AssetDatabase.Refresh();
-#endif
+            #endif
         }
 
         public void Remove(string key)
@@ -97,9 +105,10 @@ namespace Remorse.Localize
             {
                 string[] newLines;
                 newLines = lines.Where(w => w != lines[index]).ToArray();
-
+               
                 string replaced = string.Join(lineSeparator.ToString(), newLines);
-                File.WriteAllText("Assets/Resources/localization.csv", replaced);
+                Debug.Log(replaced);
+                File.WriteAllText(csvPath, replaced);
             }
         }
 
@@ -109,28 +118,68 @@ namespace Remorse.Localize
             Add(key, values);
         }
 
-        public string[] GetLanguages()
+        public string[] GetCSVHeaders()
         {
             string[] lines = csvFile.text.Split(lineSeparator);
             string[] headers = lines[0].Split(fieldSeparator, StringSplitOptions.None);
+            
+            for(int i = 0; i < headers.Length; i++)
+            {
+                headers[i] = headers[i].TrimStart(' ', surround);
+                headers[i] = headers[i].TrimEnd('\r', surround);
+            }
 
             return headers;
         }
 
-        public void AddLanguage()
+        public void AddLanguage(string newLanguage)
         {
-            string[] CSVDump = File.ReadAllLines("Assets/Resources/localization.csv");
-            List<List<string>> CSV = CSVDump.Select(x => x.Split(',').ToList()).ToList();
+            if (string.IsNullOrEmpty(newLanguage))
+            {
+                Debug.Log("Input field can't be empty");
+                return;
+            }
 
-            for (int i = 0; i < CSV.Count; i++)
+            CSV[0].Insert(CSV[0].Count, string.Format("\"{0}\"", newLanguage));
+
+            for (int i = 1; i < CSV.Count; i++)
             {
                 CSV[i].Insert(CSV[i].Count, "\"\"");
             }
-            File.WriteAllLines("Assets/Resources/localization.csv", CSV.Select(x => string.Join(",", x)));
-            #if UNITY_EDITOR
-                        AssetDatabase.Refresh();
-            #endif
+
+            File.WriteAllLines(csvPath, CSV.Select(x => string.Join(",", x)));
+#if UNITY_EDITOR
+            AssetDatabase.Refresh();
+#endif
         }
 
+        public void RemoveLanguage(int langguageIndex)
+        {
+            for (int i = 0; i < CSV.Count; i++)
+            {
+                CSV[i].RemoveAt(langguageIndex);
+            }
+
+            File.WriteAllLines(csvPath, CSV.Select(x => string.Join(",", x)));
+#if UNITY_EDITOR
+            AssetDatabase.Refresh();
+#endif
+        }
+
+        public void EditLanguage(int langguageIndex, string newLanguage)
+        {
+            if (string.IsNullOrEmpty(newLanguage))
+            {
+                Debug.Log("language Id can't be null");
+                return;
+            }
+
+            CSV[0][langguageIndex] = string.Format("\"{0}\"", newLanguage);
+
+            File.WriteAllLines(csvPath, CSV.Select(x => string.Join(",", x)));
+#if UNITY_EDITOR
+            AssetDatabase.Refresh();
+#endif
+        }
     }
 }
