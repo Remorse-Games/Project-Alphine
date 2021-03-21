@@ -8,6 +8,13 @@ namespace RemorseWindow
 {
     public class Tab : BaseControll
     {
+        /* Enum Replacement */
+        public static class TabType
+        {
+            public const int HORIZONTAL = 0;
+            public const int VERICAL = 1;
+            public const int SUM = 2;
+        }
         public Tab(EditorWindow currentEditorWindow, BaseControll parent, String name, Rect rect, Rect contentRect)
         : base(currentEditorWindow, parent, name, rect)
         {   
@@ -52,15 +59,12 @@ namespace RemorseWindow
                 {
                     winNames = listWinName;
                     selectedTab = 0;
-                    
-        /*             rect.width = rect.width*0.5f;
-                    rect.height = rect.height*0.2f; */
                 }
                 
                 public override void Draw()
                 {
                     GUILayout.BeginVertical("Box");
-                    selectedTab = GUILayout.SelectionGrid(selectedTab, winNames.ToArray(), 1, GUILayout.Width(rect.width), GUILayout.Height(rect.height));
+                    selectedTab = GUILayout.SelectionGrid(selectedTab, winNames.ToArray(), 1, options );
                     GUILayout.EndVertical();
                 }
             }

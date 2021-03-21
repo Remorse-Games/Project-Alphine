@@ -20,6 +20,7 @@ namespace Remorse.Tools.RPGDatabaseTest
             /* Add Your Window Class Here */
             tab.AddTabWindow( new ActorWindow(this, tab, "Actors Tab", tab.contentRect ) );
             tab.AddTabWindow( new ClassWindow(this, tab, "Classes Tab", tab.contentRect)  );
+            tab.AddTabWindow( new SkillWindow(this, tab, "Skills Tab", tab.contentRect)  );
             
         }
         private void OnGUI()

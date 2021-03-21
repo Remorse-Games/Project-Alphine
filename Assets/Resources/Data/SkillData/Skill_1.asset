@@ -15,7 +15,7 @@ MonoBehaviour:
   skillName: Attack
   Icon: {fileID: 0}
   skillDescription: Insert your description here
-  skillUserNameMessage: '! !'
+  skillUserNameMessage: '"uses *!"'
   skillMessage: 
   selectedSkillTypeIndex: 0
   selectedSkillScopeIndex: 0

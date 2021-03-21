@@ -8,30 +8,36 @@ namespace RemorseWindow
 {
     public class TextBox : BaseControll
     {
-        public enum Mode { NORMAL, INTFIELD};
-        
+        /* Enum Replacement */
+        public static class Mode
+        {
+            public const int NORMAL = 0;
+            public const int INTFIELD = 1;
+            public const int SUM = 2;
+        }
         public TextBox(EditorWindow currentEditorWindow, BaseControll parent, String name, Rect rect)
         : base(currentEditorWindow, parent, name, rect)
-        {
-            text = name;
+        {   
+            guiStyle = new GUIStyle("textField");
             mode = Mode.NORMAL;
         }
         
-        public int textInt;
-        public String text;
-        public Mode mode;
+        public int mode;
+        private int intText = 0;
         
         private void NormalTextBox()
         {
             GUILayout.BeginArea(rect);
-            text = GUILayout.TextField(text, GUILayout.Width(rect.width), GUILayout.Height(rect.height));
+            text = GUILayout.TextField(text, guiStyle, options);
             GUILayout.EndArea();
         }
         private void IntTextBox()
         {
             GUILayout.BeginArea(rect);
-            textInt = EditorGUILayout.IntField(textInt, GUILayout.Width(rect.width), GUILayout.Height(rect.height));
+            intText = EditorGUILayout.IntField( intText, guiStyle, options);
             GUILayout.EndArea();
+            
+            text = intText.ToString();
         }
         
         
@@ -46,6 +52,8 @@ namespace RemorseWindow
                     IntTextBox();
                 break;
             }
+            
+            ExecuteEvents(); 
         }
     }
 }

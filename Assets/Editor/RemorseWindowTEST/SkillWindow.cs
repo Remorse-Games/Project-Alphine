@@ -9,26 +9,26 @@ using RemorseWindow;
 
 namespace Remorse.Tools.RPGDatabaseTest
 {
-    public class ActorWindow : BaseControll
+    public class SkillWindow : BaseControll
     {
         
-        public ActorWindow(EditorWindow currentEditorWindow, BaseControll parent, String name, Rect rect)
+        public SkillWindow(EditorWindow currentEditorWindow, BaseControll parent, String name, Rect rect)
         : base(currentEditorWindow, parent, name, rect)
         {
             
-            panel1 = new Panel(currentEditorWindow, this, "Actors Panel", new Rect(0, 0, 100, 100) );
-            panel2 = new Panel(currentEditorWindow, this, "Actors Panel 2",
+            panel1 = new Panel(currentEditorWindow, this, "Skill Panel", new Rect(0, 0, 100, 100) );
+            panel2 = new Panel(currentEditorWindow, this, "Skill Panel 2",
                                       new Rect(panel1.rect.width , 0, 400, 100) );
-            panel3 = new Panel(currentEditorWindow, this, "Actors Panel 3",
+            panel3 = new Panel(currentEditorWindow, this, "Skill Panel 3",
                                       new Rect(panel1.rect.width + panel2.rect.width , 0, 100, 100) );
                                       
             label1 =  new Label(currentEditorWindow, panel3, "Im Label", new Rect(0, 20, 100, 100) );
             dropdown1 =  new DropDown(currentEditorWindow, panel3, "DropDown", new Rect(0, 20, 100, 25) );
             
             List<String> test = new List<String>();
-            test.Add("HERO");
-            test.Add("VILLAIN");
-            test.Add("NPC");
+            test.Add("FIRE");
+            test.Add("WATER");
+            test.Add("EARTH");
             
             dropdown1.GetListData(test);
             dropdown1.AddEvent(DropDown.DropDownEvent.ONSELECTED, dropdown1_OnSelected);

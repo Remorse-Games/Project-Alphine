@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 using UnityEngine;
 using UnityEditor;
@@ -13,7 +14,7 @@ namespace Remorse.Tools.RPGDatabaseTest
         
         public ClassWindow(EditorWindow currentEditorWindow, BaseControll parent, String name, Rect rect)
         : base(currentEditorWindow, parent, name, rect)
-        {
+        {   
             panel1 = new Panel(currentEditorWindow, this, "Classes Panel", new Rect(0, 0, 900, 600) );
             
             button1 = new Button(currentEditorWindow, panel1, "Click Me, Button Classes", 
@@ -31,6 +32,14 @@ namespace Remorse.Tools.RPGDatabaseTest
             
             textboxt3 = new TextBox(currentEditorWindow, panel1, "TextBox for Change", 
                         new Rect( panel1.rect.width*0.5f - 70, panel1.rect.height*0.5f + 250, 140, 20) );
+                        
+                        
+            listDraw =  new List<BaseControll>();
+            listDraw.Add( panel1 );
+            listDraw.Add( button1 );
+            listDraw.Add( textboxt1 );
+            listDraw.Add( textboxt2 );
+            listDraw.Add( textboxt3);
         }
         
         Panel panel1;
@@ -46,13 +55,5 @@ namespace Remorse.Tools.RPGDatabaseTest
             textboxt1.text = textboxt3.text;
         }
         
-        public override void Draw()
-        {
-            panel1.Draw();
-            button1.Draw();
-            textboxt1.Draw();
-            textboxt2.Draw();
-            textboxt3.Draw();
-        }
     }
 }

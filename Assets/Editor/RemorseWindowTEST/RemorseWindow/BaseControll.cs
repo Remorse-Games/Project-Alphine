@@ -16,21 +16,46 @@ namespace RemorseWindow
             
             this.rect =  (this.parent != null)? 
                     new Rect( parent.rect.position + rect.position, rect.size) : rect;
+                    
+            listOptions = new List<GUILayoutOption>();
+            guiContent  = new GUIContent();
+            
+            listOptions.Add( GUILayout.Width(rect.width) );
+            listOptions.Add( GUILayout.Height(rect.height) );
+            text = name;
+            options = listOptions.ToArray();
+            guiContent.text = text;
+            
+            isActive = true;
         }
         
-        public String name;
-        public EditorWindow m_editorWindow ;
-       /*  public Vector2 position; */
-        public Rect rect;
-        public BaseControll parent;
+        public String               name;
+        public String               text;
         
-        protected List<bool> condition;
-        public List<Action> listEvents;
+        public bool                 isActive;
+        public EditorWindow         m_editorWindow ;
+
+        public Rect                 rect;
+        public BaseControll         parent;
+        
+        public GUIContent           guiContent;
+        public GUIStyle             guiStyle;
+        protected GUILayoutOption[]    options;
+        public List<GUILayoutOption>   listOptions;
+        
+        protected List<bool>        condition;
+        public List<Action>         listEvents;
+        public List<BaseControll>   listDraw;
         
         public virtual void Draw()
-        { }
-        protected virtual void ExecuteEvents()
-        {
+        { 
+            for(int i = 0; i < listDraw.Count; i++)
+            {
+                if( listDraw[i].isActive )
+                    listDraw[i].Draw();
+            }
         }
+        protected virtual void ExecuteEvents()
+        { }
     }
 }

@@ -6,18 +6,18 @@ using UnityEditor;
 
 namespace RemorseWindow
 {
-    public class Panel : BaseControll
+    public class Label : BaseControll
     {
-        public Panel(EditorWindow currentEditorWindow, BaseControll parent, String name, Rect rect)
+        public Label(EditorWindow currentEditorWindow, BaseControll parent, String name, Rect rect)
         : base(currentEditorWindow, parent, name, rect)
         {
-            guiStyle = new GUIStyle("box");
+            guiStyle = new GUIStyle("label");
         }
         
         public override void Draw()
         {
             GUILayout.BeginArea(rect);
-            GUILayout.Box(guiContent, guiStyle,  options);
+            GUILayout.Label(guiContent, guiStyle, options);
             GUILayout.EndArea();
             
             ExecuteEvents(); 
