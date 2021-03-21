@@ -7,8 +7,10 @@ using Remorse.Tools.RPGDatabase.Utility;
 
 namespace Remorse.Tools.RPGDatabase.Window
 {
+
     public class TroopTab : BaseTab
     {
+
         //Having list of all troops exist in data.
         public List<TroopData> troop = new List<TroopData>();
 
@@ -26,23 +28,23 @@ namespace Remorse.Tools.RPGDatabase.Window
 
         //page index string list
         List<string> pageIndexList = new List<string>()
-        {
-            "1",
-            "2",
-            "3"
-        };
+    {
+        "1",
+        "2",
+        "3"
+    };
 
         List<string> spanList = new List<string>()
-        {
-            "Battle",
-            "Turn",
-            "Moment"
-        };
+    {
+        "Battle",
+        "Turn",
+        "Moment"
+    };
 
         List<string> eventCommandList = new List<string>()
-        {
-            "- "
-        };
+    {
+        "- "
+    };
 
         //All GUIStyle variable initialization.
         GUIStyle tabStyle;
@@ -89,7 +91,7 @@ namespace Remorse.Tools.RPGDatabase.Window
 
             FolderCreator(troopSize, "Assets/Resources/Data/TroopData", "BattleEventData");
 
-            if(battleEventSize[index] <= 0)
+            if (battleEventSize[index] <= 0)
             {
                 battleEventIndex = 0;
                 ChangeMaximum<BattleEventData>(++battleEventSize[index], battleEvents, PathDatabase.BattleEventExplicitDataPath + (index + 1) + "/BattleEvent_");
@@ -140,387 +142,369 @@ namespace Remorse.Tools.RPGDatabase.Window
             //Start drawing the whole TroopTab.
             GUILayout.BeginArea(new Rect(position.width / 7, 5, tabWidth, tabHeight));
 
-                //The black box behind the TroopTab? yes, this one.
-                GUILayout.Box(" ", troopStyle, GUILayout.Width(position.width - DatabaseMain.tabAreaWidth), GUILayout.Height(position.height - 25f));
-
-                #region Tab 1/2
-
-                //First Tab of two
-                GUILayout.BeginArea(new Rect(0, 0, tabWidth, tabHeight));
-                    GUILayout.Box("Troops", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15));
-
-                    //Scroll View
-                    #region ScrollView
-                    scrollPos = GUILayout.BeginScrollView(scrollPos, false, true, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .82f));
-                    index = GUILayout.SelectionGrid(index, troopDisplayName.ToArray(), 1, GUILayout.Width(firstTabWidth - 20), GUILayout.Height(position.height / 24 * troopSize));
-                    GUILayout.EndScrollView();
-                    #endregion
-
-                    //Happen everytime selection grid is updated
-                    if (GUI.changed && index != indexTemp)
-                    {
-                        indexTemp = index;
-                        battleEventIndex = 0;
-
-                        // load battle events data
-                        battleEvents.Clear();
-                        LoadGameData<BattleEventData>(ref battleEventSize[index], battleEvents, PathDatabase.BattleEventRelativeDataPath + (index + 1));
-
-                        //check if battle event folder empty
-                        if(battleEventSize[index] <= 0)
-                        {
-                            ChangeMaximum<BattleEventData>(++battleEventSize[index], battleEvents, PathDatabase.BattleEventExplicitDataPath + (index + 1) + "/BattleEvent_");
-                            battleEventIndex = 0;
-                        }
-
-                        ClearNullScriptableObjects();
-
-                        ItemTabLoader(indexTemp);
-
-                        ListReset();
-                        indexTemp = -1;
-                    }
-
-                    // Change Maximum field and button
-                    troopSizeTemp = EditorGUILayout.IntField(troopSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
-                    if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)) && troopSizeTemp > 0)
-                    {
-                        if(troopSizeTemp < troopSize)
-                        {
-                            index = troopSizeTemp - 1;
-                            GUI.changed = true;
-                        }
-
-                        battleEventIndex = 0;
-
-                        FolderCreator(troopSize, "Assets/Resources/Data/TroopData", "BattleEventData");
-
-                        ChangeMaximum<TroopData>(troopSizeTemp, troop, PathDatabase.TroopExplicitDataPath);
-
-                        //Remove Name Duplicates
-                        if (troopSize < troopSizeTemp)
-                        {
-                            int oldTroopSize = troopSize;
-                            troopSize = troopSizeTemp;
-                            ListReset();
-
-                            for (int i = oldTroopSize; i < troopSizeTemp; i++)
-                            {
-                                //Function Calling from BaseTab to check same names
-                                troop[i].troopName = RemoveDuplicates(troopSize, i, troop[i].troopName, troopDisplayName);
-                                ListReset();
-                            }
-                        }
-
-                        troopSize = troopSizeTemp;
-                        int[] tempArr = new int[battleEventSize.Length];
-                        for(int i = 0; i < battleEventSize.Length; i++)
-                            tempArr[i] = battleEventSize[i];
-
-                        battleEventSize = new int[troopSize];
-
-                        int smallestValue = tempArr.Length < troopSize ? tempArr.Length : troopSize;
-
-                        for(int i = 0; i < smallestValue; i++)
-                            battleEventSize[i] = tempArr[i];
-
-                        // Reload data and check SO
-                        battleEvents.Clear();
-                        LoadGameData<BattleEventData>(ref battleEventSize[index], battleEvents, PathDatabase.BattleEventRelativeDataPath + (index + 1));
-                        if(battleEventSize[index] <= 0)
-                        {
-                            ChangeMaximum<BattleEventData>(++battleEventSize[index], battleEvents, PathDatabase.BattleEventExplicitDataPath + (index + 1) + "/BattleEvent_");
-                        }
-
-                        ClearNullScriptableObjects();
-                        ListReset();
-                    }
-                    else if(troopSizeTemp <= 0){
-                        troopSizeTemp = troopSize;
-                    }
-                GUILayout.EndArea();
-                #endregion // End Of First Tab
-
-                #region Tab 2/2
-                GUILayout.BeginArea(new Rect(firstTabWidth + 5, 0, tabWidth - firstTabWidth - 15, tabHeight - 25), columnStyle);
-
-                    Rect generalBox = new Rect(5, 5, .7f * (tabWidth - firstTabWidth - 15), position.height / 4 + 125);
-                        #region GeneralSettings
-                        GUILayout.BeginArea(generalBox, tabStyle);
-                            GUILayout.Label("General Settings", EditorStyles.boldLabel);
-                            GUILayout.BeginVertical();
-                                GUILayout.Label("Name:");
-                                if (troopSize > 0)
-                                {
-                                    troop[index].troopName = GUILayout.TextField(troop[index].troopName, GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 12));
-                                    troopDisplayName[index] = troop[index].troopName;
-
-                                
-                                    //Function Calling from BaseTab to check same names
-                                    troop[index].troopName = RemoveDuplicates(troopSize, index, troop[index].troopName, troopDisplayName);
-                                }
-                                else
-                                {
-                                    GUILayout.TextField("Null", GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 12));
-                                }
-                            GUILayout.EndVertical();
-
-                            GUILayout.BeginHorizontal();
-                                GUILayout.BeginVertical();
-
-                                    GUILayout.BeginArea(new Rect(5, 45+generalBox.height/9, 25 + (firstTabWidth * .4f), generalBox.height * .725f), troopStyle);
-                                    #region ScrollView
-                                    scrollAddedListPos = GUILayout.BeginScrollView(scrollAddedListPos, false, true, GUILayout.Width(20 + (firstTabWidth * .4f)), GUILayout.Height(generalBox.height * .725f));
-                                    troop[index].indexAddedList = GUILayout.SelectionGrid(troop[index].indexAddedList, troop[index].troopAddedList.ToArray(), 1, GUILayout.Width(firstTabWidth * .4f), GUILayout.Height(generalBox.height * .72f / 10 * troop[index].troopAddedList.Count));
-                                    GUILayout.EndScrollView();
-                                    #endregion
-
-                                    //Happen everytime selection grid is updated
-                                    if (GUI.changed && troop[index].indexAddedList != troop[index].indexAddedListTemp)
-                                    {
-                                        troop[index].indexAddedListTemp = troop[index].indexAddedList;
-                                        troop[index].indexAddedListTemp = -1;
-                                    }
-                                GUILayout.EndArea();
-
-                                GUILayout.Space(generalBox.width * .30f);
-                                GUILayout.EndVertical();
-                                GUILayout.BeginVertical();
-                                    GUILayout.Space(generalBox.height * .20f);
-                                
-                                    EditorGUI.BeginDisabledGroup(troopAvailableList.Count <= 0);
-            
-                                    if(GUILayout.Button("< Add",GUILayout.Width(firstTabWidth * .4f),GUILayout.Height(position.height * .3f / 8)))
-                                    {
-                                        troop[index].troopAddedList.Add(troopAvailableList[troop[index].indexAvailableList]);
-                                    }
-
-                                    EditorGUI.EndDisabledGroup();
-
-                                    EditorGUI.BeginDisabledGroup(troop[index].troopAddedList.Count <= 0);
-                                
-                                    Color tempColorRemove = GUI.backgroundColor;
-                                    GUI.backgroundColor = Color.yellow;
-                                    if (GUILayout.Button("Remove >", GUILayout.Width(firstTabWidth * .4f), GUILayout.Height(position.height * .3f / 8)))
-                                    {
-                                        troop[index].troopAddedList.RemoveAt(troop[index].indexAddedList);
-                                    }
-                                    GUI.backgroundColor = tempColorRemove;
-                                
-                                    Color tempColorClear = GUI.backgroundColor;
-                                    GUI.backgroundColor = Color.red;
-                                    if (GUILayout.Button("Clear", GUILayout.Width(firstTabWidth * .4f), GUILayout.Height(position.height * .3f / 8)))
-                                    {
-                                        troop[index].troopAddedList.Clear();
-                                    }
-                                    GUI.backgroundColor = tempColorClear;
-                                    EditorGUI.EndDisabledGroup();
-
-                                GUILayout.EndVertical();
-
-                                GUILayout.BeginArea(new Rect(generalBox.width - (30 + (firstTabWidth * .4f)), 45 + generalBox.height / 9, 25 + (firstTabWidth * .4f), generalBox.height * .725f), troopStyle);
-                                    #region ScrollView
-                                    scrollAvailableTroopListPos = GUILayout.BeginScrollView(scrollAvailableTroopListPos, false, true, GUILayout.Width(20 + (firstTabWidth * .4f)), GUILayout.Height(generalBox.height * .725f));
-                                    troop[index].indexAvailableList = GUILayout.SelectionGrid(troop[index].indexAvailableList, troopAvailableList.ToArray(), 1, GUILayout.Width(firstTabWidth * .4f), GUILayout.Height(generalBox.height * .72f / 10 * troopAvailableList.Count));
-                                    GUILayout.EndScrollView();
-                                    #endregion
-
-                                    //Happen everytime selection grid is updated
-                                    if (GUI.changed && troop[index].indexAvailableList != troop[index].indexAvailableListTemp)
-                                    {
-                                        troop[index].indexAvailableListTemp = troop[index].indexAvailableList;
-                                        troop[index].indexAvailableListTemp = -1;
-                                    }
-                                GUILayout.EndArea();
-                            GUILayout.EndHorizontal();
-
-                        GUILayout.EndArea();
-                        #endregion
-
-                    Rect battleEventRect = new Rect(5, generalBox.height + 10, tabWidth - firstTabWidth - 25, position.height - generalBox.height - 50);
-                        #region BattleEvent
-                        GUILayout.BeginArea(battleEventRect, tabStyle);
-                            GUILayout.Label("Battle Event", EditorStyles.boldLabel);
-
-                            GUILayout.Space(10);
-
-                            GUILayout.BeginHorizontal();
-
-                                #region Buttons
-
-                                    GUILayout.BeginVertical(GUILayout.Width(100));
-                                        GUILayout.Space(40);
-
-                                        GUIStyle button = new GUIStyle(GUI.skin.button);
-                                        button.margin = new RectOffset(20, 20, 5, 5);
-                                    
-                                        if (GUILayout.Button("New Event Page", button, GUILayout.Height(50)))
-                                        {
-                                            ChangeMaximum<BattleEventData>(++battleEventSize[index], battleEvents, PathDatabase.BattleEventExplicitDataPath + (index + 1) + "/BattleEvent_");
-                                            battleEvents.Clear();
-                                            LoadGameData<BattleEventData>(ref battleEventSize[index], battleEvents, PathDatabase.BattleEventRelativeDataPath + (index + 1));
-
-                                            ListReset();
-                                        }
-
-                                        Color tempColorCopy = GUI.backgroundColor;
-                                        GUI.backgroundColor = Color.cyan;
-                                        if (GUILayout.Button("Copy Event Page", button, GUILayout.Height(50)))
-                                        {
-                                            CopyData = battleEvents[battleEventIndex];
-                                        }
-                                        GUI.backgroundColor = tempColorCopy;
-                                        EditorGUI.BeginDisabledGroup(CopyData == null);
-
-                                        if (GUILayout.Button("Paste Event Page", button, GUILayout.Height(50)))
-                                        {
-                                            PasteData();
-                                            battleEvents.Clear();
-                                            LoadGameData<BattleEventData>(ref battleEventSize[index], battleEvents, PathDatabase.BattleEventRelativeDataPath + (index + 1));
-
-                                            ListReset();
-                                        }
-
-                                        EditorGUI.EndDisabledGroup();
-
-                                        Color tempColor2 = GUI.backgroundColor;
-                                        GUI.backgroundColor = Color.yellow;
-
-                                        EditorGUI.BeginDisabledGroup(battleEventSize[index] <= 1);
-                                    
-                                        if (GUILayout.Button("Delete Event Page", button, GUILayout.Height(50)))
-                                        {
-                                            DeleteEventData();
-                                            battleEvents.Clear();
-                                            LoadGameData<BattleEventData>(ref battleEventSize[index], battleEvents, PathDatabase.BattleEventRelativeDataPath + (index + 1));
-
-                                            ListReset();
-                                        }
-                                        EditorGUI.EndDisabledGroup();
-                                    
-                                        GUI.backgroundColor = tempColor2;
-
-                                        Color tempColor = GUI.backgroundColor;
-                                        GUI.backgroundColor = Color.red;
-                                        if (GUILayout.Button("Clear Event Page", button, GUILayout.Height(50)))
-                                        {
-                                            battleEvents[battleEventIndex].condition = "Don't Run";
-                                            battleEvents[battleEventIndex].span = 0;
-                                            battleEvents[battleEventIndex].eventCommand.Clear();
-                                        
-                                            ListReset();
-                                        }
-                                        GUI.backgroundColor = tempColor;
-
-                                    GUILayout.EndVertical();
-
-                                #endregion
-
-                                #region Event Page
-
-                                    #region Front-end
-
-                                    GUILayout.BeginVertical();
-
-                                        #region page index
-
-                                        scrollPageIndex = GUILayout.BeginScrollView(scrollPageIndex, false, false, GUILayout.Height(40));
-                                            battleEventIndex = GUILayout.SelectionGrid(
-                                                battleEventIndex,
-                                                pageIndexList.ToArray(),
-                                                pageIndexList.Count,
-                                                GUILayout.Width(position.width / 30 * pageIndexList.Count)
-                                            );
-
-                                        GUILayout.EndScrollView();
-
-                                        #endregion
-
-                                        #region pages
-
-                                            #region Header
-
-                                            GUILayout.Space(5);
-
-                                            GUILayout.BeginHorizontal();
-                                            
-                                                GUIStyle labelStyle = new GUIStyle(GUI.skin.label);
-                                                labelStyle.margin = new RectOffset(0, 20, 2, 2);
-
-                                                GUI.skin.button.alignment = TextAnchor.MiddleLeft;
-                                            
-                                                GUILayout.Label("Condition: ", labelStyle, GUILayout.Width(70));
-                                                if(GUILayout.Button(battleEvents[battleEventIndex].condition))
-                                                {
-                                                    // TODO: Open Condition Window
-                                                }
-
-                                                GUILayout.Label("Span: ", labelStyle, GUILayout.Width(70));
-                                                battleEvents[battleEventIndex].span = EditorGUILayout.Popup(battleEvents[battleEventIndex].span, spanList.ToArray(), GUILayout.Width(100));
-
-                                                GUI.skin.button.alignment = TextAnchor.MiddleCenter;
-
-
-                                            GUILayout.EndHorizontal();
-
-                                            #endregion
-
-                                            #region Main Pages
-            
-                                            // init style and position
-                                            GUIStyle pageStyle = new GUIStyle(GUI.skin.box);
-                                            pageStyle.normal.background = CreateTexture(1,1,Color.gray);
-                                    
-                                            Rect pageRect = new Rect(160, 100, tabWidth - firstTabWidth - 190, position.height - generalBox.height - 155);
-
-                                            // pages
-                                            GUILayout.BeginArea(pageRect, pageStyle);
-
-                                                #region ScrollView
-
-                                                scrollPage = GUILayout.BeginScrollView(scrollPage, false,true);
-
-                                                    GUI.skin.button.alignment = TextAnchor.MiddleLeft;
-
-                                                    eventCommandIndex = GUILayout.SelectionGrid(
-                                                        eventCommandIndex,
-                                                        eventCommandList.ToArray(),
-                                                        1,
-                                                        GUILayout.Height(position.height / 30 * eventCommandList.Count)
-                                                    );
-
-                                                    GUI.skin.button.alignment = TextAnchor.MiddleCenter;
-
-                                                GUILayout.EndScrollView();
-
-                                                #endregion
-
-                                            GUILayout.EndArea();
-
-                                            #endregion
-
-                                        #endregion
-
-                                    GUILayout.EndVertical();
-
-                                    #endregion
-
-                                    #region Back-end
-
-
-
-                                    #endregion
-
-                                #endregion
-
-                            GUILayout.EndHorizontal();
-
-                        GUILayout.EndArea();
-                        #endregion
+            //The black box behind the TroopTab? yes, this one.
+            GUILayout.Box(" ", troopStyle, GUILayout.Width(position.width - DatabaseMain.tabAreaWidth), GUILayout.Height(position.height - 25f));
+
+            #region Tab 1/2
+
+            //First Tab of two
+            GUILayout.BeginArea(new Rect(0, 0, tabWidth, tabHeight));
+            GUILayout.Box("Troops", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15));
+
+            //Scroll View
+            #region ScrollView
+            scrollPos = GUILayout.BeginScrollView(scrollPos, false, true, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .82f));
+            index = GUILayout.SelectionGrid(index, troopDisplayName.ToArray(), 1, GUILayout.Width(firstTabWidth - 20), GUILayout.Height(position.height / 24 * troopSize));
+            GUILayout.EndScrollView();
+            #endregion
+
+            //Happen everytime selection grid is updated
+            if (GUI.changed && index != indexTemp)
+            {
+                indexTemp = index;
+                battleEventIndex = 0;
+
+                // load battle events data
+                battleEvents.Clear();
+                LoadGameData<BattleEventData>(ref battleEventSize[index], battleEvents, PathDatabase.BattleEventRelativeDataPath + (index + 1));
+
+                //check if battle event folder empty
+                if (battleEventSize[index] <= 0)
+                {
+                    ChangeMaximum<BattleEventData>(++battleEventSize[index], battleEvents, PathDatabase.BattleEventExplicitDataPath + (index + 1) + "/BattleEvent_");
+                    battleEventIndex = 0;
+                }
+
+                ClearNullScriptableObjects();
+
+                ItemTabLoader(indexTemp);
+
+                ListReset();
+                indexTemp = -1;
+            }
+
+            // Change Maximum field and button
+            troopSizeTemp = EditorGUILayout.IntField(troopSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
+            if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)))
+            {
+                if (troopSizeTemp < troopSize)
+                {
+                    index = troopSizeTemp - 1;
+                    GUI.changed = true;
+                }
+
+                troopSize = troopSizeTemp;
+                battleEventIndex = 0;
+
+                FolderCreator(troopSize, "Assets/Resources/Data/TroopData", "BattleEventData");
+
+                ChangeMaximum<TroopData>(troopSize, troop, PathDatabase.TroopExplicitDataPath);
+
+                int[] tempArr = new int[battleEventSize.Length];
+                for (int i = 0; i < battleEventSize.Length; i++)
+                    tempArr[i] = battleEventSize[i];
+
+                battleEventSize = new int[troopSize];
+
+                int smallestValue = tempArr.Length < troopSize ? tempArr.Length : troopSize;
+
+                for (int i = 0; i < smallestValue; i++)
+                    battleEventSize[i] = tempArr[i];
+
+                // Reload data and check SO
+                LoadGameData<BattleEventData>(ref battleEventSize[index], battleEvents, PathDatabase.BattleEventRelativeDataPath + (index + 1));
+                if (battleEventSize[index] <= 0)
+                {
+                    ChangeMaximum<BattleEventData>(++battleEventSize[index], battleEvents, PathDatabase.BattleEventExplicitDataPath + (index + 1) + "/BattleEvent_");
+                }
+
+                ClearNullScriptableObjects();
+                ListReset();
+            }
+            else if (troopSizeTemp <= 0)
+            {
+                troopSizeTemp = troopSize;
+            }
+            GUILayout.EndArea();
+            #endregion // End Of First Tab
+
+            #region Tab 2/2
+            GUILayout.BeginArea(new Rect(firstTabWidth + 5, 0, tabWidth - firstTabWidth - 15, tabHeight - 25), columnStyle);
+
+            Rect generalBox = new Rect(5, 5, .7f * (tabWidth - firstTabWidth - 15), position.height / 4 + 125);
+            #region GeneralSettings
+            GUILayout.BeginArea(generalBox, tabStyle);
+            GUILayout.Label("General Settings", EditorStyles.boldLabel);
+            GUILayout.BeginVertical();
+            GUILayout.Label("Name:");
+            if (troopSize > 0)
+            {
+                troop[index].troopName = GUILayout.TextField(troop[index].troopName, GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 12));
+                troopDisplayName[index] = troop[index].troopName;
+            }
+            else
+            {
+                GUILayout.TextField("Null", GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 12));
+            }
+            GUILayout.EndVertical();
+
+            GUILayout.BeginHorizontal();
+            GUILayout.BeginVertical();
+
+            GUILayout.BeginArea(new Rect(5, 45 + generalBox.height / 9, 25 + (firstTabWidth * .4f), generalBox.height * .725f), troopStyle);
+            #region ScrollView
+            scrollAddedListPos = GUILayout.BeginScrollView(scrollAddedListPos, false, true, GUILayout.Width(20 + (firstTabWidth * .4f)), GUILayout.Height(generalBox.height * .725f));
+            troop[index].indexAddedList = GUILayout.SelectionGrid(troop[index].indexAddedList, troop[index].troopAddedList.ToArray(), 1, GUILayout.Width(firstTabWidth * .4f), GUILayout.Height(generalBox.height * .72f / 10 * troop[index].troopAddedList.Count));
+            GUILayout.EndScrollView();
+            #endregion
+
+            //Happen everytime selection grid is updated
+            if (GUI.changed && troop[index].indexAddedList != troop[index].indexAddedListTemp)
+            {
+                troop[index].indexAddedListTemp = troop[index].indexAddedList;
+                troop[index].indexAddedListTemp = -1;
+            }
+            GUILayout.EndArea();
+
+            GUILayout.Space(generalBox.width * .30f);
+            GUILayout.EndVertical();
+            GUILayout.BeginVertical();
+            GUILayout.Space(generalBox.height * .20f);
+
+            EditorGUI.BeginDisabledGroup(troopAvailableList.Count <= 0);
+
+            if (GUILayout.Button("< Add", GUILayout.Width(firstTabWidth * .4f), GUILayout.Height(position.height * .3f / 8)))
+            {
+                troop[index].troopAddedList.Add(troopAvailableList[troop[index].indexAvailableList]);
+            }
+
+            EditorGUI.EndDisabledGroup();
+
+            EditorGUI.BeginDisabledGroup(troop[index].troopAddedList.Count <= 0);
+
+            Color tempColorRemove = GUI.backgroundColor;
+            GUI.backgroundColor = Color.yellow;
+            if (GUILayout.Button("Remove >", GUILayout.Width(firstTabWidth * .4f), GUILayout.Height(position.height * .3f / 8)))
+            {
+                troop[index].troopAddedList.RemoveAt(troop[index].indexAddedList);
+            }
+            GUI.backgroundColor = tempColorRemove;
+
+            Color tempColorClear = GUI.backgroundColor;
+            GUI.backgroundColor = Color.red;
+            if (GUILayout.Button("Clear", GUILayout.Width(firstTabWidth * .4f), GUILayout.Height(position.height * .3f / 8)))
+            {
+                troop[index].troopAddedList.Clear();
+            }
+            GUI.backgroundColor = tempColorClear;
+            EditorGUI.EndDisabledGroup();
+
+            GUILayout.EndVertical();
+
+            GUILayout.BeginArea(new Rect(generalBox.width - (30 + (firstTabWidth * .4f)), 45 + generalBox.height / 9, 25 + (firstTabWidth * .4f), generalBox.height * .725f), troopStyle);
+            #region ScrollView
+            scrollAvailableTroopListPos = GUILayout.BeginScrollView(scrollAvailableTroopListPos, false, true, GUILayout.Width(20 + (firstTabWidth * .4f)), GUILayout.Height(generalBox.height * .725f));
+            troop[index].indexAvailableList = GUILayout.SelectionGrid(troop[index].indexAvailableList, troopAvailableList.ToArray(), 1, GUILayout.Width(firstTabWidth * .4f), GUILayout.Height(generalBox.height * .72f / 10 * troopAvailableList.Count));
+            GUILayout.EndScrollView();
+            #endregion
+
+            //Happen everytime selection grid is updated
+            if (GUI.changed && troop[index].indexAvailableList != troop[index].indexAvailableListTemp)
+            {
+                troop[index].indexAvailableListTemp = troop[index].indexAvailableList;
+                troop[index].indexAvailableListTemp = -1;
+            }
+            GUILayout.EndArea();
+            GUILayout.EndHorizontal();
+
+            GUILayout.EndArea();
+            #endregion
+
+            Rect battleEventRect = new Rect(5, generalBox.height + 10, tabWidth - firstTabWidth - 25, position.height - generalBox.height - 50);
+            #region BattleEvent
+            GUILayout.BeginArea(battleEventRect, tabStyle);
+            GUILayout.Label("Battle Event", EditorStyles.boldLabel);
+
+            GUILayout.Space(10);
+
+            GUILayout.BeginHorizontal();
+
+            #region Buttons
+
+            GUILayout.BeginVertical(GUILayout.Width(100));
+            GUILayout.Space(40);
+
+            GUIStyle button = new GUIStyle(GUI.skin.button);
+            button.margin = new RectOffset(20, 20, 5, 5);
+
+            if (GUILayout.Button("New Event Page", button, GUILayout.Height(50)))
+            {
+                ChangeMaximum<BattleEventData>(++battleEventSize[index], battleEvents, PathDatabase.BattleEventExplicitDataPath + (index + 1) + "/BattleEvent_");
+                battleEvents.Clear();
+                LoadGameData<BattleEventData>(ref battleEventSize[index], battleEvents, PathDatabase.BattleEventRelativeDataPath + (index + 1));
+
+                ListReset();
+            }
+
+            Color tempColorCopy = GUI.backgroundColor;
+            GUI.backgroundColor = Color.cyan;
+            if (GUILayout.Button("Copy Event Page", button, GUILayout.Height(50)))
+            {
+                CopyData = battleEvents[battleEventIndex];
+            }
+            GUI.backgroundColor = tempColorCopy;
+            EditorGUI.BeginDisabledGroup(CopyData == null);
+
+            if (GUILayout.Button("Paste Event Page", button, GUILayout.Height(50)))
+            {
+                PasteData();
+                battleEvents.Clear();
+                LoadGameData<BattleEventData>(ref battleEventSize[index], battleEvents, PathDatabase.BattleEventRelativeDataPath + (index + 1));
+
+                ListReset();
+            }
+
+            EditorGUI.EndDisabledGroup();
+
+            Color tempColor2 = GUI.backgroundColor;
+            GUI.backgroundColor = Color.yellow;
+
+            EditorGUI.BeginDisabledGroup(battleEventSize[index] <= 1);
+
+            if (GUILayout.Button("Delete Event Page", button, GUILayout.Height(50)))
+            {
+                DeleteEventData();
+                battleEvents.Clear();
+                LoadGameData<BattleEventData>(ref battleEventSize[index], battleEvents, PathDatabase.BattleEventRelativeDataPath + (index + 1));
+
+                ListReset();
+            }
+            EditorGUI.EndDisabledGroup();
+
+            GUI.backgroundColor = tempColor2;
+
+            Color tempColor = GUI.backgroundColor;
+            GUI.backgroundColor = Color.red;
+            if (GUILayout.Button("Clear Event Page", button, GUILayout.Height(50)))
+            {
+                battleEvents[battleEventIndex].condition = "Don't Run";
+                battleEvents[battleEventIndex].span = 0;
+                battleEvents[battleEventIndex].eventCommand.Clear();
+
+                ClearNullScriptableObjects();
+                ListReset();
+            }
+            GUI.backgroundColor = tempColor;
+
+            GUILayout.EndVertical();
+
+            #endregion
+
+            #region Event Page
+
+            #region Front-end
+
+            GUILayout.BeginVertical();
+
+            #region page index
+
+            scrollPageIndex = GUILayout.BeginScrollView(scrollPageIndex, false, false, GUILayout.Height(40));
+            battleEventIndex = GUILayout.SelectionGrid(
+                battleEventIndex,
+                pageIndexList.ToArray(),
+                pageIndexList.Count,
+                GUILayout.Width(position.width / 30 * pageIndexList.Count)
+            );
+
+            GUILayout.EndScrollView();
+
+            #endregion
+
+            #region pages
+
+            #region Header
+
+            GUILayout.Space(5);
+
+            GUILayout.BeginHorizontal();
+
+            GUIStyle labelStyle = new GUIStyle(GUI.skin.label);
+            labelStyle.margin = new RectOffset(0, 20, 2, 2);
+
+            GUI.skin.button.alignment = TextAnchor.MiddleLeft;
+
+            GUILayout.Label("Condition: ", labelStyle, GUILayout.Width(70));
+            if (GUILayout.Button(battleEvents[battleEventIndex].condition))
+            {
+                // TODO: Open Condition Window
+            }
+
+            GUILayout.Label("Span: ", labelStyle, GUILayout.Width(70));
+            battleEvents[battleEventIndex].span = EditorGUILayout.Popup(battleEvents[battleEventIndex].span, spanList.ToArray(), GUILayout.Width(100));
+
+            GUI.skin.button.alignment = TextAnchor.MiddleCenter;
+
+
+            GUILayout.EndHorizontal();
+
+            #endregion
+
+            #region Main Pages
+
+            // init style and position
+            GUIStyle pageStyle = new GUIStyle(GUI.skin.box);
+            pageStyle.normal.background = CreateTexture(1, 1, Color.gray);
+
+            Rect pageRect = new Rect(160, 100, tabWidth - firstTabWidth - 190, position.height - generalBox.height - 155);
+
+            // pages
+            GUILayout.BeginArea(pageRect, pageStyle);
+
+            #region ScrollView
+
+            scrollPage = GUILayout.BeginScrollView(scrollPage, false, true);
+
+            GUI.skin.button.alignment = TextAnchor.MiddleLeft;
+
+            eventCommandIndex = GUILayout.SelectionGrid(
+                eventCommandIndex,
+                eventCommandList.ToArray(),
+                1,
+                GUILayout.Height(position.height / 30 * eventCommandList.Count)
+            );
+
+            GUI.skin.button.alignment = TextAnchor.MiddleCenter;
+
+            GUILayout.EndScrollView();
+
+            #endregion
+
+            GUILayout.EndArea();
+
+            #endregion
+
+            #endregion
+
+            GUILayout.EndVertical();
+
+            #endregion
+
+            #region Back-end
+
+
+
+            #endregion
+
+            #endregion
+
+            GUILayout.EndHorizontal();
+
+            GUILayout.EndArea();
+            #endregion
 
 
             GUILayout.EndArea();
-                #endregion
+            #endregion
             GUILayout.EndArea(); //End drawing the whole TroopTab
             #endregion
 
@@ -542,7 +526,7 @@ namespace Remorse.Tools.RPGDatabase.Window
             }
 
             pageIndexList.Clear();
-            for(int i = 0; i < battleEventSize[index]; i++)
+            for (int i = 0; i < battleEventSize[index]; i++)
             {
                 pageIndexList.Add((i + 1).ToString());
             }
@@ -554,12 +538,12 @@ namespace Remorse.Tools.RPGDatabase.Window
             while (availableNull)
             {
                 availableNull = false;
-                for(int i = 0; i < battleEventSize[index] - 1; i++)
+                for (int i = 0; i < battleEventSize[index] - 1; i++)
                 {
-                    if(battleEvents[i].condition == "Don't Run")
+                    if (battleEvents[i].condition == "Don't Run")
                     {
                         availableNull = true;
-                        for(int j = i; j < battleEventSize[index] - 1; j++)
+                        for (int j = i; j < battleEventSize[index] - 1; j++)
                         {
                             battleEvents[j].condition = battleEvents[j + 1].condition;
                             battleEvents[j].span = battleEvents[j + 1].span;

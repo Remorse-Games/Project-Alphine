@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   troopName: Orc
   background: {fileID: 0}
+  troopAddedList: []
   indexAddedListTemp: -1
   indexAvailableListTemp: -1
   indexAddedList: 0

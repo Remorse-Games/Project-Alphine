@@ -13,7 +13,7 @@ namespace Remorse.Tools.RPGDatabase.Window
         public List<TraitsData> traits = new List<TraitsData>();
         public List<TypeEquipmentData> equipmentType = new List<TypeEquipmentData>();
         public List<ArmorData> armors = new List<ArmorData>();
-    
+
         //List of names. Why you ask? because selectionGrid require
         //array of string, which we cannot obtain in ActorData.
         //I hope later got better solution about this to not do
@@ -31,6 +31,9 @@ namespace Remorse.Tools.RPGDatabase.Window
         GUIStyle columnStyle;
 
         #region  DeleteLater
+
+        //Index for selected Class.
+        public int selectedClassIndex;
 
         //How many actor in ChangeMaximum Func
         public int armorSize;
@@ -87,14 +90,7 @@ namespace Remorse.Tools.RPGDatabase.Window
             LoadGameData<TraitsData>(ref traitSize[index], traits, PathDatabase.ActorTraitRelativeDataPath + (index + 1));
 
             LoadGameData<TypeEquipmentData>(ref equipmentTypeSize, equipmentType, PathDatabase.EquipmentRelativeDataPath);
-            for(int i = 0; i < actorSize; i++)
-            {
-                //Resets the armor index array length
-                if (actor[i].allArmorIndexes == null || actor[i].allArmorIndexes.Length != equipmentTypeSize)
-                {
-                    actor[i].allArmorIndexes = new int[equipmentTypeSize];
-                }
-            }
+            actor[index].allArmorIndexes = new int[equipmentTypeSize];
             LoadGameData<ArmorData>(ref armorSize, armors, PathDatabase.ArmorTabRelativeDataPath);
             LoadClassList();
 
@@ -134,10 +130,10 @@ namespace Remorse.Tools.RPGDatabase.Window
             columnStyle = new GUIStyle(GUI.skin.box);
             columnStyle.normal.background = CreateTexture(1, 1, new Color32(99, 100, 100, 200));
             tabStyle = new GUIStyle(GUI.skin.box);
-            if(EditorGUIUtility.isProSkin)
-            tabStyle.normal.background = CreateTexture(1, 1, new Color32(76, 76, 76, 200));
+            if (EditorGUIUtility.isProSkin)
+                tabStyle.normal.background = CreateTexture(1, 1, new Color32(76, 76, 76, 200));
             else
-            tabStyle.normal.background = CreateTexture(1,1, new Color32(200,200,200,200));
+                tabStyle.normal.background = CreateTexture(1, 1, new Color32(200, 200, 200, 200));
 
             ////////////////////////////////////////////////////////////////////////////////////////
             /////////////////////////////END REGION OF VALUE INIT///////////////////////////////////
@@ -147,431 +143,413 @@ namespace Remorse.Tools.RPGDatabase.Window
             //Start drawing the whole ActorTab.
             GUILayout.BeginArea(new Rect(position.width / 7, 5, tabWidth, tabHeight));
 
-                //The black box behind the ActorTab? yes, this one.
-                GUILayout.Box(" ", actorStyle, GUILayout.Width(position.width - DatabaseMain.tabAreaWidth), GUILayout.Height(position.height - 25f));
+            //The black box behind the ActorTab? yes, this one.
+            GUILayout.Box(" ", actorStyle, GUILayout.Width(position.width - DatabaseMain.tabAreaWidth), GUILayout.Height(position.height - 25f));
 
-                #region Tab 1/3
-                //First Tab of three
-                GUILayout.BeginArea(new Rect(0, 0, tabWidth, tabHeight));
-                    GUILayout.Box("Actors", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15));
+            #region Tab 1/3
+            //First Tab of three
+            GUILayout.BeginArea(new Rect(0, 0, tabWidth, tabHeight));
+            GUILayout.Box("Actors", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15));
 
-                    //Scroll View
-                    #region ScrollView
-                    scrollPos = GUILayout.BeginScrollView(scrollPos, false, true, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .82f));
-                        index = GUILayout.SelectionGrid(
-                            index, 
-                            actorDisplayName.ToArray(), 
-                            1, 
-                            GUILayout.Width(firstTabWidth - 20), 
-                            GUILayout.Height(position.height / 24 * actorSize
-                            ));
-                    GUILayout.EndScrollView();
-                    #endregion
+            //Scroll View
+            #region ScrollView
+            scrollPos = GUILayout.BeginScrollView(scrollPos, false, true, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .82f));
+            index = GUILayout.SelectionGrid(
+                index,
+                actorDisplayName.ToArray(),
+                1,
+                GUILayout.Width(firstTabWidth - 20),
+                GUILayout.Height(position.height / 24 * actorSize
+                ));
+            GUILayout.EndScrollView();
+            #endregion
 
-                    //Happen everytime selection grid is updated
-                    if (GUI.changed && index != indexTemp)
-                    {
-                        //Index Resetting
-                        indexTemp = index;
-                        traitIndex = typeIndex = 0;
-                        traitIndexTemp = typeIndexTemp = -1;
+            //Happen everytime selection grid is updated
+            if (GUI.changed && index != indexTemp)
+            {
+                //Index Resetting
+                indexTemp = index;
+                traitIndex = typeIndex = 0;
+                traitIndexTemp = typeIndexTemp = -1;
 
-                        ItemTabLoader(index);
+                ItemTabLoader(index);
 
-                        //Load TraitsData
-                        traits.Clear();
-                        LoadGameData<TraitsData>(ref traitSize[index], traits, PathDatabase.ActorTraitRelativeDataPath + (index + 1));
+                //Load TraitsData
+                traits.Clear();
+                LoadGameData<TraitsData>(ref traitSize[index], traits, PathDatabase.ActorTraitRelativeDataPath + (index + 1));
+                //Check if TraitsData folder is empty
+                if (traitSize[index] <= 0)
+                {
+                    ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");
+                    traitIndexTemp = 0;
+                }
+                ClearNullScriptableObjects();
 
-                        //Check if TraitsData folder is empty
-                        if (traitSize[index] <= 0)
-                        {
-                            ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");
-                            traitIndexTemp = 0;
-                        }
-                        ClearNullScriptableObjects();
+                //Resets the armor index array length
+                if (actor[index].allArmorIndexes == null)
+                {
+                    actor[index].allArmorIndexes = new int[equipmentTypeSize];
+                }
+                ListReset();
+                indexTemp = -1;
+            }
 
-                        ListReset();
-                        indexTemp = -1;
-                    }
-                
-                    //Int field of change Maximum
-                    actorSizeTemp = EditorGUILayout.IntField(actorSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
-                    if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)) && actorSizeTemp > 0)
-                    {
-                        index = indexTemp = 0;
-                        FolderCreator(actorSizeTemp, "Assets/Resources/Data/ActorData", "TraitData");
-                        ChangeMaximum<ActorData>(actorSizeTemp, actor, PathDatabase.ActorExplicitDataPath);
-                    
-                        //Remove Name Duplicates
-                        if (actorSize < actorSizeTemp)
-                        {
-                            int oldActorSize = actorSize;
-                            actorSize = actorSizeTemp;
-                            ListReset();
+            //Int field of change Maximum
+            actorSizeTemp = EditorGUILayout.IntField(actorSizeTemp, GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
+            if (GUILayout.Button("Change Maximum", GUILayout.Width(firstTabWidth), GUILayout.Height(position.height * .75f / 15 - 10)) && actorSizeTemp > 0)
+            {
+                actorSize = actorSizeTemp;
+                index = indexTemp = 0;
+                FolderCreator(actorSize, "Assets/Resources/Data/ActorData", "TraitData");
+                ChangeMaximum<ActorData>(actorSize, actor, PathDatabase.ActorExplicitDataPath);
 
-                            for (int i = oldActorSize; i < actorSizeTemp; i++)
-                            {
-                                //Resets the armor index array length
-                                if (actor[i].allArmorIndexes == null || actor[i].allArmorIndexes.Length != equipmentTypeSize)
-                                {
-                                    actor[i].allArmorIndexes = new int[equipmentTypeSize];
-                                }
+                //New TraitSize array length
+                int[] tempArr = new int[traitSize.Length];
+                for (int i = 0; i < traitSize.Length; i++)
+                    tempArr[i] = traitSize[i];
 
-                                //Function Calling from BaseTab to check same names
-                                actor[i].actorName = RemoveDuplicates(actorSizeTemp, i, actor[i].actorName, actorDisplayName);
-                                ListReset();
-                            }
-                        }
+                traitSize = new int[actorSize];
 
-
-                        //New TraitSize array length
-                        int[] tempArr = new int[traitSize.Length];
-                        for (int i = 0; i < traitSize.Length; i++)
-                            tempArr[i] = traitSize[i];
-
-                        traitSize = new int[actorSizeTemp];
-
-                        #region FindSmallestBetween
-                            int smallestValue;
-                            if (tempArr.Length < actorSizeTemp) smallestValue = tempArr.Length;
-                            else smallestValue = actorSizeTemp;
-                        #endregion
-
-                        for (int i = 0; i < smallestValue; i++)
-                            traitSize[i] = tempArr[i];
-
-                        //Reload Data and Check SO
-                        traits.Clear();
-                        LoadGameData<TraitsData>(ref traitSize[index], traits, PathDatabase.ActorTraitRelativeDataPath + (index + 1));
-                        if (traitSize[index] <= 0)
-                        {
-                            ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");
-                        }
-                    
-                        actorSize = actorSizeTemp;
-
-                        ClearNullScriptableObjects();
-
-                        ListReset();
-                    }
-                    else if(actorSizeTemp <= 0){
-                        actorSizeTemp = actorSize;
-                    }
-                GUILayout.EndArea();
+                #region FindSmallestBetween
+                int smallestValue;
+                if (tempArr.Length < actorSize) smallestValue = tempArr.Length;
+                else smallestValue = actorSize;
                 #endregion
 
-                #region Tab 2/3
-                //second Column
-                GUILayout.BeginArea(new Rect(firstTabWidth + 5, 0, firstTabWidth + 70, tabHeight - 15), columnStyle);
+                for (int i = 0; i < smallestValue; i++)
+                    traitSize[i] = tempArr[i];
 
-                //GeneralSettings tab
-                    Rect generalBox = new Rect(5, 5, firstTabWidth + 60, position.height / 3 - 50);
-                    #region GeneralSettings
-                    GUILayout.BeginArea(generalBox, tabStyle); //Start of general settings tab
-                        GUILayout.Label("General Settings", EditorStyles.boldLabel); //general settings label
-                        #region Vertical
-                        GUILayout.BeginVertical();
-                            #region Horizontal
-                            GUILayout.BeginHorizontal();
-                                #region Name Classes
-                                GUILayout.BeginVertical(); //Name label, name field, class label, and class popup
-                                    GUILayout.Label("Name:");
-                                    if (actorSize > 0)
-                                    {
-                                        actor[index].actorName = GUILayout.TextField(actor[index].actorName, GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 8));
-                                        actorDisplayName[index] = actor[index].actorName;
+                //Reload Data and Check SO
+                LoadGameData<TraitsData>(ref traitSize[index], traits, PathDatabase.ActorTraitRelativeDataPath + (index + 1));
+                if (traitSize[index] <= 0)
+                {
+                    ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");
+                }
+                //Resets the armor index array length
+                if (actor[index].allArmorIndexes == null)
+                {
+                    actor[index].allArmorIndexes = new int[equipmentTypeSize];
+                }
+                ClearNullScriptableObjects();
+                ListReset();
+            }
+            else if (actorSizeTemp <= 0)
+            {
+                actorSizeTemp = actorSize;
+            }
+            GUILayout.EndArea();
+            #endregion
 
-                                        //Remove Name Duplicates
-                                        actor[index].actorName = RemoveDuplicates(actorSize, index, actor[index].actorName, actorDisplayName);
-                                    }
-                                    else
-                                    { 
-                                        GUILayout.TextField("Null", GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 8)); 
-                                    }
-                                    GUILayout.Space(generalBox.height / 20);
-                                    GUILayout.Label("Class:");
-                                    actor[index].selectedClassIndex = EditorGUILayout.Popup(actor[index].selectedClassIndex, classDisplayName, GUILayout.Height(generalBox.height / 8), GUILayout.Width(generalBox.width / 2 - 15));
-                                GUILayout.EndVertical(); //Name label, name field, class label, and class popup (ending)
-                                #endregion
-                                #region Names Classes
-                                GUILayout.BeginVertical(); //Nickname label, nickname field, initial level and max level label and field
-                                    GUILayout.Label("Nickname:");
-                                    if (actorSize > 0)
-                                    { actor[index].actorNickname = GUILayout.TextField(actor[index].actorNickname, GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 8)); }
-                                    else
-                                    {GUILayout.TextField("Null", GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 8)); }
-                                    GUILayout.Space(generalBox.height / 20);
-                                    #region Level Area
-                                    GUILayout.BeginHorizontal();
-                                        #region Initial Level
-                                        GUILayout.BeginVertical();
-                                            GUILayout.Label("Initial Level:");
-                                            if (actorSize > 0){
-                                                actor[index].initLevel = EditorGUILayout.IntField(actor[index].initLevel, GUILayout.Width(generalBox.width / 4 - 20), GUILayout.Height(generalBox.height / 8)); 
-                                           }
-                                            else
-                                                {EditorGUILayout.IntField(-1, GUILayout.Width(generalBox.width / 4 - 20), GUILayout.Height(generalBox.height / 8));}
-                                        GUILayout.EndVertical();
-                                        #endregion
-                                        #region MaxLevel
-                                        GUILayout.BeginVertical();
-                                            GUILayout.Label("Max Level:");
-                                            if (actorSize > 0)
-                                                {actor[index].maxLevel = EditorGUILayout.IntField(actor[index].maxLevel, GUILayout.Width(generalBox.width / 4 - 20), GUILayout.Height(generalBox.height / 8));}
-                                            else
-                                                {EditorGUILayout.IntField(-1, GUILayout.Width(generalBox.width / 4 - 20), GUILayout.Height(generalBox.height / 8));}
-                                        GUILayout.EndVertical();
-                                        #endregion
-                                    GUILayout.EndHorizontal();
-                                    #endregion
-                                GUILayout.EndVertical(); //Nickname label, nickname field, initial level and max level label and field (ending)
-                                #endregion
-                            GUILayout.EndHorizontal();
-                            #endregion
-                            GUILayout.Label("Profile:");
-                            if (actorSize > 0)
-                                {
-                                    actor[index].description = GUILayout.TextArea
-                                        (
-                                        actor[index].description,
-                                        GUILayout.Width(firstTabWidth + 50), 
-                                        GUILayout.Height(generalBox.height / 5)
-                                        );
-                                }
-                            else
-                                {
-                                    GUILayout.TextArea
-                                    ("Null", 
-                                    GUILayout.Width(firstTabWidth + 50), 
-                                    GUILayout.Height(generalBox.height / 5)
-                                    );
-                                }
-                        GUILayout.EndVertical();
-                        #endregion
-                    GUILayout.EndArea();
-                    #endregion
+            #region Tab 2/3
+            //second Column
+            GUILayout.BeginArea(new Rect(firstTabWidth + 5, 0, firstTabWidth + 70, tabHeight - 15), columnStyle);
 
-
-                    //Images tab
-                    Rect imageBox = new Rect(5, generalBox.height + 10, firstTabWidth + 60, position.height / 3 - 30); //Second Row
-                    #region ImageArea
-                    GUILayout.BeginArea(imageBox, tabStyle); //Image Tab
-                        GUILayout.Space(2);
-                        GUILayout.Label("Images", EditorStyles.boldLabel); //Image Label
-                        GUILayout.Space(imageBox.height / 15);
-                        //Three image parts
-                        #region ImagePart
-                        GUILayout.BeginHorizontal();
-                            #region Face
-                            GUILayout.BeginVertical();
-                                GUILayout.Label("Face:");
-                                GUILayout.Box(faceImage, GUILayout.Width(imageBox.width / 3 - 10), GUILayout.Height(imageBox.width / 3 - 10));
-                                Color tempColor1 = GUI.backgroundColor;
-                                GUI.backgroundColor = Color.green;
-                                if (GUILayout.Button("Edit Face", GUILayout.Height(imageBox.height / 10), GUILayout.Width(imageBox.width / 3 - 10))) 
-                                {
-                                        actor[index].face = ImageChanger(
-                                        index,
-                                        "Choose Face", 
-                                        "Assets/Resources/Image"
-                                        );
-                                        ItemTabLoader(index);
-                                }
-                                GUI.backgroundColor = tempColor1;
-                            GUILayout.EndVertical();
-                            #endregion
-                            #region Character
-                            GUILayout.BeginVertical();
-                                GUILayout.Label("Character:");
-                                GUILayout.Box(characterImage, GUILayout.Width(imageBox.width / 3 - 10), GUILayout.Height(imageBox.width / 3 - 10));
-                                Color tempColor2 = GUI.backgroundColor;
-                                GUI.backgroundColor = Color.green;
-                                if (GUILayout.Button("Edit Character", GUILayout.Height(imageBox.height / 10), GUILayout.Width(imageBox.width / 3 - 10))) 
-                                {
-                                        actor[index].characterWorld = ImageChanger(
-                                        index,                                    
-                                        "Choose Character",
-                                        "Assets/Resources/Image"
-                                        );
-                                        ItemTabLoader(index);
-                                }
-                                GUI.backgroundColor = tempColor2;
-                            GUILayout.EndVertical();
-                            #endregion
-                            #region SV Battler
-                            GUILayout.BeginVertical();
-                                GUILayout.Label("[SV] Battler: ");
-                                GUILayout.Box(battlerImage, GUILayout.Width(imageBox.width / 3 - 10), GUILayout.Height(imageBox.width / 3 - 10));
-                                Color tempColor3 = GUI.backgroundColor;
-                                GUI.backgroundColor = Color.green;
-                                if (GUILayout.Button("Edit Battler", GUILayout.Height(imageBox.height / 10), GUILayout.Width(imageBox.width / 3 - 10))) 
-                                {
-                                        actor[index].battler = ImageChanger(
-                                        index, 
-                                        "Choose Face", 
-                                        "Assets/Resources/Image" 
-                                        );
-                                        ItemTabLoader(index);
-
-                                }
-                                GUI.backgroundColor = tempColor3;
-                                GUILayout.EndVertical();
-                                                #endregion
-                                            GUILayout.EndHorizontal();
-                                            #endregion
-                                        GUILayout.EndArea();
-                                        #endregion
-
-                
-                    //Initial Equipment
-                    Rect equipmentBox = new Rect(5, generalBox.height + imageBox.height + 20, firstTabWidth + 60, position.height / 3 + 20);
-                    #region Equipment
-                    GUILayout.BeginArea(equipmentBox, tabStyle);
-                        GUILayout.Space(2);
-                        GUILayout.Label("Initial Equipment", EditorStyles.boldLabel);
-                        #region Vertical
-                        GUILayout.BeginVertical();
-                            GUILayout.Space(equipmentBox.height / 10);
-                            #region Horizontal
-                            GUILayout.BeginHorizontal();
-                                GUILayout.Label(PadString("Type", string.Format("{0}", " Equipment Item")), GUILayout.Width(equipmentBox.width));
-                                //GUILayout.Label("Equipment Item", GUILayout.Width(equipmentBox.width * 0.35f));
-                            GUILayout.EndHorizontal();
-                            #endregion
-                            #region ScrollView
-                                equipmentScrollPos = GUILayout.BeginScrollView(
-                                                    equipmentScrollPos,
-                                                    false,
-                                                    true,
-                                                    GUILayout.Width(firstTabWidth + 50),
-                                                    GUILayout.Height(equipmentBox.height * 0.7f)
-                                                    );
-                                GUI.changed = false;
-                                GUI.skin.button.alignment = TextAnchor.MiddleLeft;
-                                typeIndex = GUILayout.SelectionGrid(
-                                                    typeIndex, 
-                                                    initialEquipName.ToArray(), 
-                                                    1, 
-                                                    GUILayout.Width(equipmentBox.width * .90f),
-                                                    GUILayout.Height(position.height / 24 * equipmentTypeSize)
-                                                    );
-                                GUI.skin.button.alignment = TextAnchor.MiddleLeft;
-                            GUILayout.EndScrollView();
-                            #endregion
-
-                            if (GUI.changed)
-                            {
-                                if (typeIndex != typeIndexTemp)
-                                {
-                                    LoadArmorList(typeIndex);
-                                    InitialEquipmentWindow.ShowWindow(actor[index], equipmentType[typeIndex].dataName, tempArmorList, typeIndex);
-                                    typeIndexTemp = typeIndex;
-                                }
-                            }
-                        GUILayout.EndVertical();
-                        #endregion
-                    GUILayout.EndArea();
-                    #endregion
-                GUILayout.EndArea();
-                #endregion
+            //GeneralSettings tab
+            Rect generalBox = new Rect(5, 5, firstTabWidth + 60, position.height / 3 - 50);
+            #region GeneralSettings
+            GUILayout.BeginArea(generalBox, tabStyle); //Start of general settings tab
+            GUILayout.Label("General Settings", EditorStyles.boldLabel); //general settings label
+            #region Vertical
+            GUILayout.BeginVertical();
+            #region Horizontal
+            GUILayout.BeginHorizontal();
+            #region Name Classes
+            GUILayout.BeginVertical(); //Name label, name field, class label, and class popup
+            GUILayout.Label("Name:");
+            if (actorSize > 0)
+            {
+                actor[index].actorName = GUILayout.TextField(actor[index].actorName, GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 8));
+                actorDisplayName[index] = actor[index].actorName;
+            }
+            else
+            {
+                GUILayout.TextField("Null", GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 8));
+            }
+            GUILayout.Space(generalBox.height / 20);
+            GUILayout.Label("Class:");
+            selectedClassIndex = EditorGUILayout.Popup(selectedClassIndex, classDisplayName, GUILayout.Height(generalBox.height / 8), GUILayout.Width(generalBox.width / 2 - 15));
+            GUILayout.EndVertical(); //Name label, name field, class label, and class popup (ending)
+            #endregion
+            #region Names Classes
+            GUILayout.BeginVertical(); //Nickname label, nickname field, initial level and max level label and field
+            GUILayout.Label("Nickname:");
+            if (actorSize > 0)
+            { actor[index].actorNickname = GUILayout.TextField(actor[index].actorNickname, GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 8)); }
+            else
+            { GUILayout.TextField("Null", GUILayout.Width(generalBox.width / 2 - 15), GUILayout.Height(generalBox.height / 8)); }
+            GUILayout.Space(generalBox.height / 20);
+            #region Level Area
+            GUILayout.BeginHorizontal();
+            #region Initial Level
+            GUILayout.BeginVertical();
+            GUILayout.Label("Initial Level:");
+            if (actorSize > 0)
+            {
+                actor[index].initLevel = EditorGUILayout.IntField(actor[index].initLevel, GUILayout.Width(generalBox.width / 4 - 20), GUILayout.Height(generalBox.height / 8));
+            }
+            else
+            { EditorGUILayout.IntField(-1, GUILayout.Width(generalBox.width / 4 - 20), GUILayout.Height(generalBox.height / 8)); }
+            GUILayout.EndVertical();
+            #endregion
+            #region MaxLevel
+            GUILayout.BeginVertical();
+            GUILayout.Label("Max Level:");
+            if (actorSize > 0)
+            { actor[index].maxLevel = EditorGUILayout.IntField(actor[index].maxLevel, GUILayout.Width(generalBox.width / 4 - 20), GUILayout.Height(generalBox.height / 8)); }
+            else
+            { EditorGUILayout.IntField(-1, GUILayout.Width(generalBox.width / 4 - 20), GUILayout.Height(generalBox.height / 8)); }
+            GUILayout.EndVertical();
+            #endregion
+            GUILayout.EndHorizontal();
+            #endregion
+            GUILayout.EndVertical(); //Nickname label, nickname field, initial level and max level label and field (ending)
+            #endregion
+            GUILayout.EndHorizontal();
+            #endregion
+            GUILayout.Label("Profile:");
+            if (actorSize > 0)
+            {
+                actor[index].description = GUILayout.TextArea
+                    (
+                    actor[index].description,
+                    GUILayout.Width(firstTabWidth + 50),
+                    GUILayout.Height(generalBox.height / 5)
+                    );
+            }
+            else
+            {
+                GUILayout.TextArea
+                ("Null",
+                GUILayout.Width(firstTabWidth + 50),
+                GUILayout.Height(generalBox.height / 5)
+                );
+            }
+            GUILayout.EndVertical();
+            #endregion
+            GUILayout.EndArea();
+            #endregion
 
 
-                #region Tab 3/3
-                //Third Column
-                GUILayout.BeginArea(new Rect(position.width - (position.width - firstTabWidth * 2) + 77, 0, firstTabWidth + 25, tabHeight - 15), columnStyle);
-            
-                    //Traits
-                    Rect traitsBox = new Rect(5, 5, firstTabWidth + 15, position.height * 5 / 8);
-                    #region Traits
-                    ListReset();
-                    GUILayout.BeginArea(traitsBox, tabStyle);
-                        GUILayout.Space(2);
-                        GUILayout.Label("Traits", EditorStyles.boldLabel);
-                        GUILayout.Space(5);
-                        #region Horizontal For Type And Content
-                        GUILayout.BeginHorizontal();
-                            GUILayout.Label(PadString("Type", string.Format("{0}", "  Content")), GUILayout.Width(traitsBox.width));
-                        GUILayout.EndHorizontal();
-                        #endregion
-                        #region ScrollView
-                            traitsScrollPos = GUILayout.BeginScrollView(
-                                traitsScrollPos, 
-                                false, 
-                                true, 
-                                GUILayout.Width(firstTabWidth + 5), 
-                                GUILayout.Height(traitsBox.height * 0.83f)
+            //Images tab
+            Rect imageBox = new Rect(5, generalBox.height + 10, firstTabWidth + 60, position.height / 3 - 30); //Second Row
+            #region ImageArea
+            GUILayout.BeginArea(imageBox, tabStyle); //Image Tab
+            GUILayout.Space(2);
+            GUILayout.Label("Images", EditorStyles.boldLabel); //Image Label
+            GUILayout.Space(imageBox.height / 15);
+            //Three image parts
+            #region ImagePart
+            GUILayout.BeginHorizontal();
+            #region Face
+            GUILayout.BeginVertical();
+            GUILayout.Label("Face:");
+            GUILayout.Box(faceImage, GUILayout.Width(imageBox.width / 3 - 10), GUILayout.Height(imageBox.width / 3 - 10));
+            Color tempColor1 = GUI.backgroundColor;
+            GUI.backgroundColor = Color.green;
+            if (GUILayout.Button("Edit Face", GUILayout.Height(imageBox.height / 10), GUILayout.Width(imageBox.width / 3 - 10)))
+            {
+                actor[index].face = ImageChanger(
+                index,
+                "Choose Face",
+                "Assets/Resources/Image"
+                );
+                ItemTabLoader(index);
+            }
+            GUI.backgroundColor = tempColor1;
+            GUILayout.EndVertical();
+            #endregion
+            #region Character
+            GUILayout.BeginVertical();
+            GUILayout.Label("Character:");
+            GUILayout.Box(characterImage, GUILayout.Width(imageBox.width / 3 - 10), GUILayout.Height(imageBox.width / 3 - 10));
+            Color tempColor2 = GUI.backgroundColor;
+            GUI.backgroundColor = Color.green;
+            if (GUILayout.Button("Edit Character", GUILayout.Height(imageBox.height / 10), GUILayout.Width(imageBox.width / 3 - 10)))
+            {
+                actor[index].characterWorld = ImageChanger(
+                index,
+                "Choose Character",
+                "Assets/Resources/Image"
+                );
+                ItemTabLoader(index);
+            }
+            GUI.backgroundColor = tempColor2;
+            GUILayout.EndVertical();
+            #endregion
+            #region SV Battler
+            GUILayout.BeginVertical();
+            GUILayout.Label("[SV] Battler: ");
+            GUILayout.Box(battlerImage, GUILayout.Width(imageBox.width / 3 - 10), GUILayout.Height(imageBox.width / 3 - 10));
+            Color tempColor3 = GUI.backgroundColor;
+            GUI.backgroundColor = Color.green;
+            if (GUILayout.Button("Edit Battler", GUILayout.Height(imageBox.height / 10), GUILayout.Width(imageBox.width / 3 - 10)))
+            {
+                actor[index].battler = ImageChanger(
+                index,
+                "Choose Face",
+                "Assets/Resources/Image"
+                );
+                ItemTabLoader(index);
+
+            }
+            GUI.backgroundColor = tempColor3;
+            GUILayout.EndVertical();
+            #endregion
+            GUILayout.EndHorizontal();
+            #endregion
+            GUILayout.EndArea();
+            #endregion
+
+
+            //Initial Equipment
+            Rect equipmentBox = new Rect(5, generalBox.height + imageBox.height + 20, firstTabWidth + 60, position.height / 3 + 20);
+            #region Equipment
+            GUILayout.BeginArea(equipmentBox, tabStyle);
+            GUILayout.Space(2);
+            GUILayout.Label("Initial Equipment", EditorStyles.boldLabel);
+            #region Vertical
+            GUILayout.BeginVertical();
+            GUILayout.Space(equipmentBox.height / 10);
+            #region Horizontal
+            GUILayout.BeginHorizontal();
+            GUILayout.Label(PadString("Type", string.Format("{0}", " Equipment Item")), GUILayout.Width(equipmentBox.width));
+            //GUILayout.Label("Equipment Item", GUILayout.Width(equipmentBox.width * 0.35f));
+            GUILayout.EndHorizontal();
+            #endregion
+            #region ScrollView
+            equipmentScrollPos = GUILayout.BeginScrollView(
+                                equipmentScrollPos,
+                                false,
+                                true,
+                                GUILayout.Width(firstTabWidth + 50),
+                                GUILayout.Height(equipmentBox.height * 0.7f)
                                 );
-        
-                            GUI.changed = false;
-                            GUI.skin.button.alignment = TextAnchor.MiddleLeft;
-                            traitIndex = GUILayout.SelectionGrid(
-                                traitIndex,
-                                traitDisplayName.ToArray(),
+            GUI.changed = false;
+            GUI.skin.button.alignment = TextAnchor.MiddleLeft;
+            typeIndex = GUILayout.SelectionGrid(
+                                typeIndex,
+                                initialEquipName.ToArray(),
                                 1,
-                                GUILayout.Width(firstTabWidth - 20),
-                                GUILayout.Height(position.height / 24 * traitSize[index]
-                                ));
-                            GUI.skin.button.alignment = TextAnchor.MiddleCenter;
-                        GUILayout.EndScrollView();
-                        #endregion
-        
-                        //Happen everytime selection grid is updated
-                        if (GUI.changed)
-                        {
-                            if (traitIndex != traitIndexTemp)
-                            {
-                                TraitWindow.ShowWindow(traits, traitIndex, traitSize[index], TabType.Actor);
-                            
-                                traitIndexTemp = traitIndex;
-                            }
-                        }
+                                GUILayout.Width(equipmentBox.width * .90f),
+                                GUILayout.Height(position.height / 24 * equipmentTypeSize)
+                                );
+            GUI.skin.button.alignment = TextAnchor.MiddleLeft;
+            GUILayout.EndScrollView();
+            #endregion
 
-                        //Create Empty SO if there isn't any null SO left
-                        if ((traits[traitSize[index] - 1].traitName != null && traits[traitSize[index] - 1].traitName != "") && traitSize[index] > 0)
-                        {
-                            traitIndex = 0;
-                            ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");
-                        }
-
-                    
-                        Color tempColor = GUI.backgroundColor;
-                        GUI.backgroundColor = Color.red;
-                        //Delete All Data Button
-                        if (GUILayout.Button("Delete All Data", GUILayout.Width(traitsBox.width * .3f), GUILayout.Height(traitsBox.height * .055f)))
-                        {
-                            if (EditorUtility.DisplayDialog("Delete All Trait Data", "Are you sure want to delete all Trait Data?", "Yes", "No"))
-                            {
-                                traitIndex = 0;
-                                traitSize[index] = 1;
-                                ChangeMaximum<TraitsData>(0, traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");
-                                ChangeMaximum<TraitsData>(1, traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");
-                            }
-                        }
-                        GUI.backgroundColor = tempColor;
-                    GUILayout.EndArea();
-                    #endregion //End of TraitboxArea
+            if (GUI.changed)
+            {
+                if (typeIndex != typeIndexTemp)
+                {
+                    LoadArmorList(typeIndex);
+                    InitialEquipmentWindow.ShowWindow(actor[index], equipmentType[typeIndex].dataName, tempArmorList, typeIndex);
+                    typeIndexTemp = typeIndex;
+                }
+            }
+            GUILayout.EndVertical();
+            #endregion
+            GUILayout.EndArea();
+            #endregion
+            GUILayout.EndArea();
+            #endregion
 
 
-                    //Notes
-                    Rect notesBox = new Rect(5, traitsBox.height + 15, firstTabWidth + 15, position.height * 2.5f / 8);
-                    #region NoteBox
-                    GUILayout.BeginArea(notesBox, tabStyle);
-                        GUILayout.Space(2);
-                        GUILayout.Label("Notes", EditorStyles.boldLabel);
-                        GUILayout.Space(notesBox.height / 50);
-                        if (actorSize > 0)
-                        {
-                            actor[index].notes = GUILayout.TextArea(actor[index].notes, GUILayout.Width(notesBox.width - 5), GUILayout.Height(notesBox.height * 0.9f));
-                        }
-                        else
-                        {
-                            GUILayout.TextArea("Null", GUILayout.Width(notesBox.width - 5), GUILayout.Height(notesBox.height * 0.85f));
-                        }
-                    GUILayout.EndArea();
-                    #endregion //End of notebox area
-            
-                GUILayout.EndArea();
-                #endregion // End of third column
+            #region Tab 3/3
+            //Third Column
+            GUILayout.BeginArea(new Rect(position.width - (position.width - firstTabWidth * 2) + 77, 0, firstTabWidth + 25, tabHeight - 15), columnStyle);
+
+            //Traits
+            Rect traitsBox = new Rect(5, 5, firstTabWidth + 15, position.height * 5 / 8);
+            #region Traits
+            ListReset();
+            GUILayout.BeginArea(traitsBox, tabStyle);
+            GUILayout.Space(2);
+            GUILayout.Label("Traits", EditorStyles.boldLabel);
+            GUILayout.Space(5);
+            #region Horizontal For Type And Content
+            GUILayout.BeginHorizontal();
+            GUILayout.Label(PadString("Type", string.Format("{0}", "  Content")), GUILayout.Width(traitsBox.width));
+            GUILayout.EndHorizontal();
+            #endregion
+            #region ScrollView
+            traitsScrollPos = GUILayout.BeginScrollView(
+                traitsScrollPos,
+                false,
+                true,
+                GUILayout.Width(firstTabWidth + 5),
+                GUILayout.Height(traitsBox.height * 0.83f)
+                );
+
+            GUI.changed = false;
+            GUI.skin.button.alignment = TextAnchor.MiddleLeft;
+            traitIndex = GUILayout.SelectionGrid(
+                traitIndex,
+                traitDisplayName.ToArray(),
+                1,
+                GUILayout.Width(firstTabWidth - 20),
+                GUILayout.Height(position.height / 24 * traitSize[index]
+                ));
+            GUI.skin.button.alignment = TextAnchor.MiddleCenter;
+            GUILayout.EndScrollView();
+            #endregion
+
+            //Happen everytime selection grid is updated
+            if (GUI.changed)
+            {
+                if (traitIndex != traitIndexTemp)
+                {
+                    TraitWindow.ShowWindow(traits, traitIndex, traitSize[index], TabType.Actor);
+
+                    traitIndexTemp = traitIndex;
+                }
+            }
+
+            //Create Empty SO if there isn't any null SO left
+            if ((traits[traitSize[index] - 1].traitName != null && traits[traitSize[index] - 1].traitName != "") && traitSize[index] > 0)
+            {
+                traitIndex = 0;
+                ChangeMaximum<TraitsData>(++traitSize[index], traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");
+            }
+
+
+            Color tempColor = GUI.backgroundColor;
+            GUI.backgroundColor = Color.red;
+            //Delete All Data Button
+            if (GUILayout.Button("Delete All Data", GUILayout.Width(traitsBox.width * .3f), GUILayout.Height(traitsBox.height * .055f)))
+            {
+                if (EditorUtility.DisplayDialog("Delete All Trait Data", "Are you sure want to delete all Trait Data?", "Yes", "No"))
+                {
+                    traitIndex = 0;
+                    traitSize[index] = 1;
+                    ChangeMaximum<TraitsData>(0, traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");
+                    ChangeMaximum<TraitsData>(1, traits, PathDatabase.ActorTraitExplicitDataPath + (index + 1) + "/Trait_");
+                }
+            }
+            GUI.backgroundColor = tempColor;
+            GUILayout.EndArea();
+            #endregion //End of TraitboxArea
+
+
+            //Notes
+            Rect notesBox = new Rect(5, traitsBox.height + 15, firstTabWidth + 15, position.height * 2.5f / 8);
+            #region NoteBox
+            GUILayout.BeginArea(notesBox, tabStyle);
+            GUILayout.Space(2);
+            GUILayout.Label("Notes", EditorStyles.boldLabel);
+            GUILayout.Space(notesBox.height / 50);
+            if (actorSize > 0)
+            {
+                actor[index].notes = GUILayout.TextArea(actor[index].notes, GUILayout.Width(notesBox.width - 5), GUILayout.Height(notesBox.height * 0.9f));
+            }
+            else
+            {
+                GUILayout.TextArea("Null", GUILayout.Width(notesBox.width - 5), GUILayout.Height(notesBox.height * 0.85f));
+            }
+            GUILayout.EndArea();
+            #endregion //End of notebox area
+
+            GUILayout.EndArea();
+            #endregion // End of third column
 
             GUILayout.EndArea();
             #endregion
@@ -592,7 +570,7 @@ namespace Remorse.Tools.RPGDatabase.Window
             }
             //Equip Reset
             initialEquipName.Clear();
-            if(actor[index].allArmorIndexes == null)
+            if (actor[index].allArmorIndexes == null)
             {
                 actor[index].allArmorIndexes = new int[equipmentTypeSize];
             }
@@ -689,5 +667,4 @@ namespace Remorse.Tools.RPGDatabase.Window
             }
         }
     }
-
 }
