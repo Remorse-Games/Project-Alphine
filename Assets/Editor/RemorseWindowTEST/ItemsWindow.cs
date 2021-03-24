@@ -9,23 +9,19 @@ using RemorseWindow;
 
 namespace Remorse.Tools.RPGDatabaseTest
 {
-    public class ClassWindow : BaseControll
+    public class ItemsWindow : BaseControll
     {
         
-        public ClassWindow(EditorWindow currentEditorWindow, BaseControll parent, String name, Rect rect)
+        public ItemsWindow(EditorWindow currentEditorWindow, BaseControll parent, String name, Rect rect)
         : base(currentEditorWindow, parent, name, rect)
         {   
-            panel1 = new Panel(currentEditorWindow, this, "Classes Panel", new Rect(0, 0, 900, 600) );
+            panel1 = new Panel(currentEditorWindow, this, "Items Panel", new Rect(0, 0, 300, 600) );
             
             button1 = new Button(currentEditorWindow, panel1, "Click Me, Button Classes", 
                         new Rect( panel1.rect.width*0.5f - 70, panel1.rect.height*0.5f - 45, 190, 70) );
             
             /* Here Add some events for button and the function */
             button1.AddEvent(Button.ButtonEvent.ONCLICK, button1_OnClick);
-            
-            button1.guiStyle.normal.background = button1.GetMagentaTexture;
-            button1.guiStyle.normal.textColor  = Color.white;
-            
             
             textboxt1 = new TextBox(currentEditorWindow, panel1, "This is a Free TextBoxt", 
                         new Rect( panel1.rect.width*0.5f - 70, panel1.rect.height*0.5f + 50, 140, 20) );
@@ -37,6 +33,8 @@ namespace Remorse.Tools.RPGDatabaseTest
             textboxt3 = new TextBox(currentEditorWindow, panel1, "TextBox for Change", 
                         new Rect( panel1.rect.width*0.5f - 70, panel1.rect.height*0.5f + 250, 140, 20) );
                         
+            traitPanel1 = new TraitPanel(currentEditorWindow, this, "Trait Panel", 
+                        new Rect( panel1.rect.width + 10 , 0, 100, 50) );
                         
             listDraw =  new List<BaseControll>();
             listDraw.Add( panel1 );
@@ -44,6 +42,7 @@ namespace Remorse.Tools.RPGDatabaseTest
             listDraw.Add( textboxt1 );
             listDraw.Add( textboxt2 );
             listDraw.Add( textboxt3);
+            listDraw.Add( traitPanel1 );
         }
         
         Panel panel1;
@@ -53,22 +52,12 @@ namespace Remorse.Tools.RPGDatabaseTest
         TextBox textboxt2;
         TextBox textboxt3;
         
-        bool changing = true;
+        TraitPanel traitPanel1;
+
         /* Button OnCLick Event */
         public void button1_OnClick()
         {
-            textboxt1.text = textboxt3.text;
-            
-            if( changing )
-            {
-                panel1.guiStyle.normal.background = panel1.GetBlueTexture;
-                changing = !changing;
-            }
-            else
-            {
-                panel1.guiStyle.normal.background = panel1.GetGreenTexture;
-                changing = !changing;
-            }
+
         }
         
     }
