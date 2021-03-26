@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -59,13 +60,24 @@ namespace RemorseWindow
         protected virtual void ExecuteEvents()
         { }
         
-        public  Texture2D SetCustomTextureColor( Color color )
+        public Texture2D SetCustomTextureColor( Color color, string name )
         {
             Texture2D texture = new Texture2D((int)rect.width, (int)rect.height);
             SetTexture( texture, color );
             
+            customTexture[name] = texture;
             return texture;
         }
+
+        public Texture2D GetCustomTextureColor( string name )
+        {
+            Texture2D texture;
+            if (customTexture.TryGetValue(name, out texture))
+                return texture;
+            
+            return null;
+        }
+        
         
         private void SetTexture(Texture2D texture, Color color)
         {
@@ -74,6 +86,9 @@ namespace RemorseWindow
             texture.Apply();
         }
         
+        private Dictionary<string, Texture2D> customTexture = 
+                        new Dictionary<string, Texture2D>(StringComparer.OrdinalIgnoreCase);
+                        
         private Texture2D RedTexture     ;
         private Texture2D BlueTexture    ;
         private Texture2D GreenTexture   ;

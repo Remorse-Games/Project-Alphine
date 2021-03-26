@@ -6,6 +6,7 @@ using UnityEditor;
 
 /*  Our Remorse Window Framework */
 using RemorseWindow;
+using RemorseWindow.Utility;
 
 namespace Remorse.Tools.RPGDatabaseTest
 {
@@ -20,8 +21,11 @@ namespace Remorse.Tools.RPGDatabaseTest
             panel2 = new Panel(currentEditorWindow, this, "Actors Panel 2",
                                       new Rect(panel1.rect.width , 0, 400, 100) );
             panel3 = new Panel(currentEditorWindow, this, "Actors Panel 3",
-                                      new Rect(panel1.rect.width + panel2.rect.width , 0, 100, 100) );
-                                      
+                                      new Rect(panel1.rect.width + panel2.rect.width , 0, 300, 300) );
+            
+            imageHolder = RemorseImaging.LoadImageToTexture(@"e:\ok.jpg");
+            panel3.guiStyle.normal.background = imageHolder;
+            
             label1 =  new Label(currentEditorWindow, panel3, "Im Label", new Rect(0, 20, 100, 100) );
             dropdown1 =  new DropDown(currentEditorWindow, panel3, "DropDown", new Rect(0, 20, 100, 25) );
             
@@ -30,11 +34,16 @@ namespace Remorse.Tools.RPGDatabaseTest
             test.Add("VILLAIN");
             test.Add("NPC");
             
-            dropdown1.GetListData(test);
+            dropdown1.SetListData(test);
             dropdown1.AddEvent(DropDown.DropDownEvent.ONSELECTED, dropdown1_OnSelected);
             
             button1 = new Button(currentEditorWindow, panel1, "Click Me", 
-                        new Rect( 0, 20, 100, 30) );
+                        new Rect( 0, 20, 100, 30) );            
+            button1.guiStyle.normal.background = button1.SetCustomTextureColor( new Color(0.85f, 0.08f, 0.23f, 1), "crimson");
+            button1.guiStyle.hover.background = button1.GetRedTexture;
+            button1.guiStyle.active.background = button1.SetCustomTextureColor( new Color(0.85f, 0.2f, 0.23f, 1), "untitled");
+            
+            button1.guiStyle.normal.textColor  = Color.white;
             
             /* Here Add some events for button and the function */
             button1.AddEvent(Button.ButtonEvent.ONCLICK, button1_OnClick);
@@ -65,10 +74,25 @@ namespace Remorse.Tools.RPGDatabaseTest
         TextBox textboxt1;
         TextBox textboxt2;
         
+        Texture2D imageHolder;
+       
         /* Button OnCLick Event */
         public void button1_OnClick()
         {
             textboxt1.text = dropdown1.text;
+            string path = UnityEditor.EditorUtility.OpenFilePanelWithFilters(
+                                "Choose Your Actor Image",  AlphineDataCenter.DataManager.CurrentPath, 
+                                AlphineDataCenter.DataManager.listImageExtension );
+                                
+            if( path != "" )
+            {
+                AlphineDataCenter.DataManager.CurrentPath = path;
+                if ( UnityEditor.EditorUtility.DisplayDialog("Change Avatar", "Are U Sure to change your Avatar ", "OKAY", "NOOOO") )
+                {
+                    RemorseImaging.LoadImageToTexture( path, ref imageHolder );
+                    panel3.guiStyle.normal.background = imageHolder;
+                }
+            }
         }
         
         /* DropDown OnSelected Event */

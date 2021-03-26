@@ -30,7 +30,7 @@ namespace Remorse.Tools.RPGDatabaseTest
             test.Add("WATER");
             test.Add("EARTH");
             
-            dropdown1.GetListData(test);
+            dropdown1.SetListData(test);
             dropdown1.AddEvent(DropDown.DropDownEvent.ONSELECTED, dropdown1_OnSelected);
             
             button1 = new Button(currentEditorWindow, panel1, "Click Me", 

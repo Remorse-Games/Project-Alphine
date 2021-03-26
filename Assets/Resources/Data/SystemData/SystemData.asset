@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: SystemData
   m_EditorClassIdentifier: 
   startingParty:
-  - Kenneth Alvision
+  - 
   gameTitle: Game Title
   currencyUnit: G
   magicSkills:
   - 
   windowColor:
     serializedVersion: 2
-    rgba: 4283585106
+    rgba: 4286611584

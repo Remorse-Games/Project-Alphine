@@ -56,7 +56,7 @@ namespace Remorse.Tools.RPGDatabaseTest
             test.Add("BLUE");
             test.Add("GRAY");
             
-            dropdown1.GetListData(test);
+            dropdown1.SetListData(test);
             dropdown1.AddEvent(DropDown.DropDownEvent.ONSELECTED, dropdown1_OnSelected);        
                     
             traitPanel1 = new TraitPanel(currentEditorWindow, panel2, "Trait Panel", 

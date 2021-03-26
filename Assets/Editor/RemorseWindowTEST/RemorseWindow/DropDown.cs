@@ -42,7 +42,7 @@ namespace RemorseWindow
                 OnSelectedMethod();
         }
         
-        public void GetListData(List<String> listNames)
+        public void SetListData(List<String> listNames)
         {
             this.listNames = listNames;
             selectedList = 0;
