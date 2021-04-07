@@ -1,13 +1,21 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using Remorse.Localize;
 
-namespace LastBossEditor.Localization
+namespace RemorseEditor.Localization
 {
     public class TextLocalizerEditor : EditorWindow
     {
+        public static List<string> languages;
+        public static CSVLoader csvLoader = new CSVLoader();
+        Vector2 scrollPos;
         public static void Open(string key)
         {
+            csvLoader.LoadCSV();
+            string[] headers = csvLoader.GetCSVHeaders();
+            languages = new List<string>(headers);
+
             TextLocalizerEditor window = (TextLocalizerEditor)CreateInstance(typeof(TextLocalizerEditor));
             window.titleContent = new GUIContent("Localizer Window");
             window.ShowUtility();
@@ -15,27 +23,33 @@ namespace LastBossEditor.Localization
         }
 
         public string key;
-        public string value;
+        string[] values = new string[languages.Count - 1];
 
         public void OnGUI()
         {
             key = EditorGUILayout.TextField("Key :", key);
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("value :", GUILayout.MaxWidth(50));
 
-            EditorStyles.textArea.wordWrap = true;
-            value = EditorGUILayout.TextArea(value, EditorStyles.textArea, GUILayout.Height(100), GUILayout.Width(400));
-            EditorGUILayout.EndHorizontal();
+            scrollPos = EditorGUILayout.BeginScrollView(scrollPos, GUILayout.Height(200));
+            for (int i = 1; i < languages.Count; i++)
+            {
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField(languages[i] + " :", GUILayout.MaxWidth(70));
+
+                EditorStyles.textArea.wordWrap = true;
+                values[i - 1] = EditorGUILayout.TextArea(values[i - 1], EditorStyles.textArea, GUILayout.Height(100));
+                EditorGUILayout.EndHorizontal();
+            }
+            EditorGUILayout.EndScrollView();
 
             if (GUILayout.Button("Add"))
             {
-                if (LastBoss.Localize.Localization.GetLocalizedValue(key) != string.Empty)
+                if (Remorse.Localize.Localization.GetLocalizedValue(key) != string.Empty)
                 {
-                    LastBoss.Localize.Localization.Replace(key, value);
+                    Remorse.Localize.Localization.Replace(key, values);
                 }
                 else
                 {
-                    LastBoss.Localize.Localization.Add(key, value);
+                    Remorse.Localize.Localization.Add(key, values);
                 }
             }
 
@@ -56,13 +70,13 @@ namespace LastBossEditor.Localization
             window.ShowAsDropDown(r, new Vector2(500, 300));
         }
 
-        public string value;
+        public string value = "";
         public Vector2 scroll;
         public Dictionary<string, string> dictionary;
 
         private void OnEnable()
         {
-            dictionary = LastBoss.Localize.Localization.GetDictionaryForEditor();
+            dictionary = Remorse.Localize.Localization.GetDictionaryForEditor();
         }
 
         public void OnGUI()
@@ -77,7 +91,7 @@ namespace LastBossEditor.Localization
 
         private void GetSearchResult()
         {
-            if (value == null) { return; }
+            if (value == null) return;
 
             EditorGUILayout.BeginVertical();
             scroll = EditorGUILayout.BeginScrollView(scroll);
@@ -94,10 +108,10 @@ namespace LastBossEditor.Localization
                     {
                         if (EditorUtility.DisplayDialog("Remove Key" + element.Key + "?", "This will remove the element of localization, are you sure?", "Yes"))
                         {
-                            LastBoss.Localize.Localization.Remove(element.Key);
+                            Remorse.Localize.Localization.Remove(element.Key);
                             AssetDatabase.Refresh();
-                            LastBoss.Localize.Localization.Init();
-                            dictionary = LastBoss.Localize.Localization.GetDictionaryForEditor();
+                            Remorse.Localize.Localization.Init();
+                            dictionary = Remorse.Localize.Localization.GetDictionaryForEditor();
                         }
                     }
 

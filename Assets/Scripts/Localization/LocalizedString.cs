@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LastBoss.Localize
+namespace Remorse.Localize
 {
     [Serializable]
     public class LocalizedString
