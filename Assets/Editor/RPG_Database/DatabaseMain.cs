@@ -62,6 +62,7 @@ namespace Remorse.Tools.RPGDatabase
         {
             DatabaseMain dbMain = (DatabaseMain)EditorWindow.GetWindow(typeof(DatabaseMain));
             dbMain.minSize = new Vector2(1280f, 720f);
+            dbMain.titleContent = new GUIContent("RPG Database");
             dbMain.Show();
         }
 
