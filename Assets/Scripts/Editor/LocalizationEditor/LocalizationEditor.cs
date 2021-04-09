@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class LocalizationEditor : EditorWindow
 {
-    #region Variabel Declaration
+    #region Variable Declaration
     public static CSVLoader csvLoader = new CSVLoader();
     public static TextAsset csvFile;
 
