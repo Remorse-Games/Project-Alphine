@@ -14,15 +14,14 @@ namespace Remorse.Localize
         private char surround = '"';
         private string[] fieldSeparator = { "\",\"" };
 
-        private string csvPath = "Assets/Resources/localization.csv";
+        private string csvPath = "Assets/Resources/Data/LocalizationData/localization.csv";
         string[] CSVDump;
         Regex CSVParser = new Regex(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
         List<List<string>> CSV;
-        Vector2 scrollPos;
 
         public void LoadCSV()
         {
-            csvFile = Resources.Load<TextAsset>("localization");
+            csvFile = Resources.Load<TextAsset>("Data/LocalizationData/localization");
             CSVDump = File.ReadAllLines(csvPath);
             CSV = CSVDump.Select(x => CSVParser.Split(x).ToList()).ToList();
         }
