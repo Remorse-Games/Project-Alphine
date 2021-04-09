@@ -317,15 +317,20 @@ namespace Remorse.Tools.RPGDatabase.Window
 
                                     GUILayout.BeginVertical();
                                         GUILayout.Box(skillIcon, GUILayout.Width(61), GUILayout.Height(61)); // Icon Box preview
-                                        if (GUILayout.Button("Edit Icon", GUILayout.Height(20), GUILayout.Width(61))) // Icon changer Button
-                                        {
-                                            skill[index].Icon = ImageChanger(
-                                            index,
-                                            "Choose Icon",
-                                            "Assets/Resources/Image"
-                                            );
-                                            ItemTabLoader(index);
-                                        }
+                                    Color tempColor = GUI.backgroundColor;
+                                    GUI.backgroundColor = Color.green;
+            
+                                    if (GUILayout.Button("Edit Icon", GUILayout.Height(20), GUILayout.Width(61))) // Icon changer Button
+                                                                {
+                                                                    skill[index].Icon = ImageChanger(
+                                                                    index,
+                                                                    "Choose Icon",
+                                                                    "Assets/Resources/Image"
+                                                                    );
+                                                                    ItemTabLoader(index);
+                                                                }
+                                    GUI.backgroundColor = tempColor;
+
                                     GUILayout.EndVertical();
                                 GUILayout.EndHorizontal();
                                 GUILayout.EndArea();
@@ -496,7 +501,7 @@ namespace Remorse.Tools.RPGDatabase.Window
                                     {
                                         EditorGUILayout.Popup(0, skillAnimation, GUILayout.Height(invocationBox.height / 8 + 3), GUILayout.Width(invocationBox.width / 2 - 5));
                                     }*/
-                                    Color tempColor = GUI.backgroundColor;
+                                    tempColor = GUI.backgroundColor;
                                     GUI.backgroundColor = Color.red;
                                     if (GUILayout.Button("**UnderWorking**", EditorStyles.boldLabel, GUILayout.Width(invocationBox.width * .3f)))
                                     {
