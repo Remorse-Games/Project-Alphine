@@ -54,7 +54,6 @@ public class InitialEquipmentWindow : EditorWindow
         GUILayout.BeginArea(primaryBox, windowStyle);
         GUILayout.BeginVertical();
         GUILayout.Label("Armor:", EditorStyles.boldLabel);
-        Debug.Log(armorList.Length);
         thisClass.allArmorIndexes[windowOrder] = EditorGUILayout.Popup(thisClass.allArmorIndexes[windowOrder], armorList, GUILayout.Height(primaryBox.height / 7), GUILayout.Width(primaryBox.width / 2));
 
         GUILayout.Space(30);

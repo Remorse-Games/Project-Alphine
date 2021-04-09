@@ -487,18 +487,24 @@ namespace Remorse.Tools.RPGDatabase.Window
                                 GUILayout.BeginVertical();
                                         GUILayout.BeginHorizontal();
                                             GUILayout.Label("Animation:"); // item Animation label
-                                            GUILayout.Label("**UnderWorking**", EditorStyles.boldLabel);
                                         GUILayout.EndHorizontal();
-                                    if (skillSize > 0)
+                                    /*if (skillSize > 0)
                                     {
                                         skill[index].selectedSkillAnimationIndex = EditorGUILayout.Popup(skill[index].selectedSkillAnimationIndex, skillAnimation, GUILayout.Height(invocationBox.height / 8 + 3), GUILayout.Width(invocationBox.width / 2 - 5));
                                     }
                                     else
                                     {
                                         EditorGUILayout.Popup(0, skillAnimation, GUILayout.Height(invocationBox.height / 8 + 3), GUILayout.Width(invocationBox.width / 2 - 5));
+                                    }*/
+                                    Color tempColor = GUI.backgroundColor;
+                                    GUI.backgroundColor = Color.red;
+                                    if (GUILayout.Button("**UnderWorking**", EditorStyles.boldLabel, GUILayout.Width(invocationBox.width * .3f)))
+                                    {
+                            
                                     }
+                                    GUI.backgroundColor = tempColor;
                                 GUILayout.EndVertical();
-        
+                                
 
                             GUILayout.EndHorizontal();
                             #endregion
@@ -753,7 +759,7 @@ namespace Remorse.Tools.RPGDatabase.Window
                                 ChangeMaximum<EffectData>(++effectSize[index], effects, PathDatabase.SkillEffectExplicitDataPath + (index + 1) + "/Effect_");
                             }
 
-                            Color tempColor = GUI.backgroundColor;
+                            tempColor = GUI.backgroundColor;
                             GUI.backgroundColor = Color.red;
                             if (GUILayout.Button("Delete All Data", GUILayout.Width(effectsBox.width * .3f)))
                             {
