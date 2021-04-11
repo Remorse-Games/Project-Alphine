@@ -26,8 +26,8 @@ namespace Remorse.BehaviorEditor
 
                 b.collapse = EditorGUILayout.Toggle(" ", b.collapse);
             }
-
-            b.stateRef.currentState = (AI.State)EditorGUILayout.ObjectField(b.stateRef.currentState, typeof(UnityEditor.Animations.AnimatorState), false);
+ 
+            b.stateRef.currentState = (AI.State)EditorGUILayout.ObjectField(b.stateRef.currentState, typeof(AI.State), false);
 
             if(b.previousCollapse != b.collapse)
             {

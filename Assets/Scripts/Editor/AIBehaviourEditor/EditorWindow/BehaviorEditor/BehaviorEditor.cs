@@ -123,7 +123,7 @@ namespace Remorse.BehaviorEditor
 
 			if (GUI.changed)
 			{
-				settings.currentGraph.DeleteWindowsThatNeedTo();
+				/* settings.currentGraph.DeleteWindowsThatNeedTo(); */ 
 				Repaint();
 			}
 
