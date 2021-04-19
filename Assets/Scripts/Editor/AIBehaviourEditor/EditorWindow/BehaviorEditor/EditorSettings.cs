@@ -16,6 +16,40 @@ namespace Remorse.BehaviorEditor
         public GUISkin skin;
 		public GUISkin activeSkin;
         
+         private void OnEnable()
+        {
+            /* Check if there is no assets data, then create a new Instance */
+            
+            skin = Resources.Load("GUISkin") as GUISkin;
+            if(skin==null)
+            skin = (GUISkin)ScriptableObject.CreateInstance( typeof(GUISkin) );
+        
+            activeSkin = skin;
+            
+            currentGraph = Resources.Load("BehaviorGraph") as BehaviorGraph;
+            if(currentGraph==null)
+            currentGraph = (BehaviorGraph)ScriptableObject.CreateInstance( typeof(BehaviorGraph) );
+        
+            stateNode = Resources.Load("StateNode") as StateNode;
+            if(stateNode==null)
+            stateNode = (StateNode)ScriptableObject.CreateInstance( typeof(StateNode) );
+        
+            portalNode = Resources.Load("PortalNode") as PortalNode;
+            if(portalNode==null)
+            portalNode = (PortalNode)ScriptableObject.CreateInstance( typeof(PortalNode) );
+        
+            transitionNode = Resources.Load("TransitionNode") as TransitionNode;
+            if(transitionNode==null)
+            transitionNode = (TransitionNode)ScriptableObject.CreateInstance( typeof(TransitionNode) );
+        
+            commentNode = Resources.Load("CommentNode") as CommentNode;
+            if(commentNode==null)
+            commentNode = (CommentNode)ScriptableObject.CreateInstance( typeof(CommentNode) );
+            
+            makeTransition = false;
+
+		}
+        
         public BaseNode AddNodeOnGraph(DrawNode type, float width,float height, string title, Vector3 pos)
         {
             BaseNode baseNode = new BaseNode();

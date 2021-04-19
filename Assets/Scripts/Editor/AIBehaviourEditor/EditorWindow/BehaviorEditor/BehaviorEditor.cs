@@ -48,12 +48,19 @@ namespace Remorse.BehaviorEditor
         {
             editor = EditorWindow.GetWindow<BehaviorEditor>();
             editor.minSize = new Vector2(800, 600);
-        
+            editor.Show();
         }
 
         private void OnEnable()
         {
+            /* Should we create folder assets (question mark) */
             settings = Resources.Load("EditorSettings") as EditorSettings;
+            /* Check if there is no assets data, then create a new Instance */
+            if(settings == null){
+                Debug.Log("EditorSettings Null");
+                settings = (EditorSettings)ScriptableObject.CreateInstance( typeof(EditorSettings) );
+            }
+                
             style = settings.skin.GetStyle("window");
 			activeStyle = settings.activeSkin.GetStyle("window");
 
@@ -85,8 +92,7 @@ namespace Remorse.BehaviorEditor
         #region GUI Methods
         private void OnGUI()
         {
-            DrawGrid(20, 0.2f, Color.gray);
-            DrawGrid(100, 0.4f, Color.gray);
+            DrawDoubleGrid(20, 0.2f, 5, 0.4f, Color.gray);
 
             if (Selection.activeTransform != null)
 			{
@@ -117,7 +123,7 @@ namespace Remorse.BehaviorEditor
 
 			if (GUI.changed)
 			{
-				settings.currentGraph.DeleteWindowsThatNeedTo();
+				/* settings.currentGraph.DeleteWindowsThatNeedTo(); */ 
 				Repaint();
 			}
 
@@ -144,33 +150,38 @@ namespace Remorse.BehaviorEditor
 			
 				}
 
-			}
-			
+			}	
 		}
 
-        private void DrawGrid(float gridSpacing, float gridOpacity, Color gridColor)
+        private void DrawDoubleGrid(float gridSpacing, float gridOpacity, int gap, float secondGOpacity, Color gridColor)
         {
             int widthDivs = Mathf.CeilToInt(position.width / gridSpacing);
             int heightDivs = Mathf.CeilToInt(position.height / gridSpacing);
 
             Handles.BeginGUI();
-            Handles.color = new Color(gridColor.r, gridColor.g, gridColor.b, gridOpacity);
+            Color theColor =  new Color(gridColor.r, gridColor.g, gridColor.b, gridOpacity);
 
-           
-                offset += drag * 0.5f;
-            
-                Vector3 newOffset = new Vector3(offset.x % gridSpacing, offset.y % gridSpacing, 0);
-            
-                for (int i = 0; i < widthDivs; i++)
-                {
-                    Handles.DrawLine(new Vector3(gridSpacing * i, -gridSpacing, 0) + newOffset, new Vector3(gridSpacing * i, position.height, 0f) + newOffset);
-                }
-
-                for (int j = 0; j < heightDivs; j++)
-                {
-                    Handles.DrawLine(new Vector3(-gridSpacing, gridSpacing * j, 0) + newOffset, new Vector3(position.width, gridSpacing * j, 0f) + newOffset);
-                }
-            
+            offset += drag * 0.1f;
+        
+            float theGapSpacing = (gridSpacing*gap);
+            Vector3 newOffset = new Vector3(offset.x % theGapSpacing, offset.y % theGapSpacing, 0);
+        
+            for (int i = -(gap); i <= widthDivs+gap; i++)
+            {
+                if( i % gap == 0) theColor[3]=secondGOpacity;         
+                else theColor[3]=gridOpacity;  
+                    
+                Handles.color =  theColor;
+                Handles.DrawLine(new Vector3(gridSpacing * i, -theGapSpacing, 0) + newOffset, new Vector3(gridSpacing * i, (position.height + theGapSpacing ), 0f) + newOffset);     
+            }
+            for (int j = -(gap); j <= heightDivs+gap; j++)
+            {
+                if( j % gap == 0) theColor[3]=secondGOpacity;         
+                else theColor[3]=gridOpacity;  
+                    
+                Handles.color =  theColor;
+                Handles.DrawLine(new Vector3(-theGapSpacing, gridSpacing * j, 0) + newOffset, new Vector3(position.width + theGapSpacing, gridSpacing * j, 0f) + newOffset);
+            }  
             Handles.color = Color.white;
             Handles.EndGUI();
         }
@@ -224,7 +235,7 @@ namespace Remorse.BehaviorEditor
 
 		void DrawNodeWindow(int id)
         {
-            settings.currentGraph.windows[id].DrawWindow();
+            settings.currentGraph.windows[id].DrawWindow();  /* Draw the Nodes Window*/
             GUI.DragWindow();
         }
 
@@ -258,7 +269,7 @@ namespace Remorse.BehaviorEditor
                 }
             }
 
-			if (e.button == 2)
+			if (e.button == 2 )
 			{
 				if (e.type == EventType.MouseDown)
 				{
@@ -287,7 +298,7 @@ namespace Remorse.BehaviorEditor
 				BaseNode b = settings.currentGraph.windows[i];
 				b.windowRect.x += diff.x;
 				b.windowRect.y += diff.y;
-                drag = new Vector2(b.windowRect.x, b.windowRect.y);
+                drag.Set(diff.x, diff.y);
 			}
 		}
 
