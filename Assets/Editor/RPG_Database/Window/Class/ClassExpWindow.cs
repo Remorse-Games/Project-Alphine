@@ -20,6 +20,11 @@ public class ClassExpWindow : EditorWindow {
         window.Show();
     }
 
+    public void OnEnable()
+    {
+        UpdateCurve();
+    }
+
     private void OnGUI() {
 
         //Styling
