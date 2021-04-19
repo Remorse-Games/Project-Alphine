@@ -1,12 +1,16 @@
 ﻿using UnityEngine;
-using Remorse.Localize;
-public class DialogueTrigger : MonoBehaviour
-{
-    public Dialogue dialogue;
-    public DialogueManager dialogueManager;
 
-    public void TriggerDialogue()
+namespace Remorse.Chat
+{
+    public class DialogueTrigger : MonoBehaviour
     {
-        dialogueManager.StartDialogue(dialogue);
+        public Dialogue dialogue;
+        public DialogueManager dialogueManager;
+
+        public void TriggerDialogue()
+        {
+            dialogueManager.StartDialogue(dialogue);
+        }
     }
+
 }

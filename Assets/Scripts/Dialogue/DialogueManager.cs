@@ -1,87 +1,74 @@
-﻿using Remorse.Localize;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DialogueManager : MonoBehaviour
+namespace Remorse.Chat
 {
-    public Text nameText;
-    public Text dialogueText;
-
-    string[] sentencesValues;
-
-    private Queue<string> sentences;
-
-    // Start is called before the first frame update
-    void Start()
+    public class DialogueManager : MonoBehaviour
     {
-        sentences = new Queue<string>();
-    }
+        public Text nameText;
+        public Text dialogueText;
 
-    /*public void SetDialogue(Dialogue dialogue)
-    {
-        if(dialogue.name.value != nameText.text)
+        string[] sentencesValues;
+
+        private Queue<string> sentences;
+
+        // Start is called before the first frame update
+        void Start()
+        {
+            sentences = new Queue<string>();
+        }
+
+        public void StartDialogue(Dialogue dialogue)
         {
             nameText.text = dialogue.name.value;
+
+            int sentencesLength = dialogue.sentences.Count;
+            sentencesValues = new string[sentencesLength];
+
+            for (int i = 0; i < sentencesLength; i++)
+            {
+                sentencesValues[i] = dialogue.sentences[i].value;
+            }
+
+            sentences.Clear();
+
+            foreach (string sentence in sentencesValues)
+            {
+                sentences.Enqueue(sentence);
+            }
+
+            DisplayNextSentences();
         }
 
-        int sentencesLength = dialogue.sentences.Length;
-        sentencesValues = new string[sentencesLength];
-
-        for (int i = 0; i < sentencesLength; i++)
+        public void DisplayNextSentences()
         {
-            sentencesValues[i] = dialogue.sentences[i].value;
-        }
-    }*/
+            if(sentences.Count == 0)
+            {
+                EndDialogue();
+                return;
+            }
 
-    public void StartDialogue(Dialogue dialogue)
-    {
-        nameText.text = dialogue.name.value;
-
-        int sentencesLength = dialogue.sentences.Length;
-        sentencesValues = new string[sentencesLength];
-
-        for (int i = 0; i < sentencesLength; i++)
-        {
-            sentencesValues[i] = dialogue.sentences[i].value;
+            string sentence = sentences.Dequeue();
+            StopAllCoroutines();
+            StartCoroutine(TypeSentence(sentence));
         }
 
-        sentences.Clear();
-
-        foreach (string sentence in sentencesValues)
+        IEnumerator TypeSentence(string sentence)
         {
-            sentences.Enqueue(sentence);
+            dialogueText.text = "";
+            foreach (char letter in sentence.ToCharArray())
+            {
+                dialogueText.text += letter;
+                yield return null;
+            }
         }
 
-        DisplayNextSentences();
-    }
-
-    public void DisplayNextSentences()
-    {
-        if(sentences.Count == 0)
+        public void EndDialogue()
         {
-            EndDialogue();
-            return;
-        }
-
-        string sentence = sentences.Dequeue();
-        StopAllCoroutines();
-        StartCoroutine(TypeSentence(sentence));
-    }
-
-    IEnumerator TypeSentence(string sentence)
-    {
-        dialogueText.text = "";
-        foreach (char letter in sentence.ToCharArray())
-        {
-            dialogueText.text += letter;
-            yield return null;
+            Debug.Log("End Dialogue");
         }
     }
 
-    public void EndDialogue()
-    {
-        Debug.Log("End Dialogue");
-    }
 }

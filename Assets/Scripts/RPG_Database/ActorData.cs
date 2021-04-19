@@ -7,6 +7,7 @@ public class ActorData : ScriptableObject
     public string actorName;
     public string actorNickname;
     public int initLevel;
+    public int selectedClassIndex;
     public int maxLevel;
 
     [TextArea]

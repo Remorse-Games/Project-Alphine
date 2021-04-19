@@ -250,10 +250,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 136329037}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7327e81c38cdd0f45966eb756e4f20b3, type: 3}
+  m_Script: {fileID: 11500000, guid: f84b5a93d924c6c46bb67d5549bb73e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  languangeId: en
+  languageId: en
 --- !u!114 &136329040
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -298,7 +298,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 136329039}
-        m_MethodName: TriggerChange
+        m_MethodName: TriggerChangeLanguage
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -987,10 +987,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2012631113}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7327e81c38cdd0f45966eb756e4f20b3, type: 3}
+  m_Script: {fileID: 11500000, guid: f84b5a93d924c6c46bb67d5549bb73e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  languangeId: id
+  languageId: id
 --- !u!114 &2012631116
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1035,7 +1035,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2012631115}
-        m_MethodName: TriggerChange
+        m_MethodName: TriggerChangeLanguage
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
