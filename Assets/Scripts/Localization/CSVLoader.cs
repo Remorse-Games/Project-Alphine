@@ -14,14 +14,14 @@ namespace Remorse.Localize
         private char surround = '"';
         private string[] fieldSeparator = { "\",\"" };
 
-        private string csvPath = "Assets/Resources/Data/LocalizationData/localization.csv";
+        private string csvPath = "Assets/Resources/Data/LocalizationData/localizations.csv";
         string[] CSVDump;
         Regex CSVParser = new Regex(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
         List<List<string>> CSV;
 
         public void LoadCSV()
         {
-            csvFile = Resources.Load<TextAsset>("Data/LocalizationData/localization");
+            csvFile = Resources.Load<TextAsset>("Data/LocalizationData/localizations");
             CSVDump = File.ReadAllLines(csvPath);
             CSV = CSVDump.Select(x => CSVParser.Split(x).ToList()).ToList();
         }
@@ -106,7 +106,6 @@ namespace Remorse.Localize
                 newLines = lines.Where(w => w != lines[index]).ToArray();
                
                 string replaced = string.Join(lineSeparator.ToString(), newLines);
-                Debug.Log(replaced);
                 File.WriteAllText(csvPath, replaced);
             }
         }
