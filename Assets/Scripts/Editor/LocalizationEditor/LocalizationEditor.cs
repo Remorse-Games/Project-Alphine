@@ -94,6 +94,7 @@ public class LocalizationEditor : EditorWindow
                 index = languages.IndexOf(language);
                 state = State.Edit;
             }
+
             if (GUILayout.Button("Delete", GUILayout.Height(20), GUILayout.Width(50)))
             {
                 Init();
