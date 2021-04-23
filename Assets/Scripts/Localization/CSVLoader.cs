@@ -17,7 +17,8 @@ namespace Remorse.Localize
         private string csvPath = "Assets/Resources/Data/LocalizationData/localizations.csv";
         string[] CSVDump;
         Regex CSVParser = new Regex(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
-        List<List<string>> CSV;
+
+        static List<List<string>> CSV;
 
         public void LoadCSV()
         {
@@ -64,6 +65,14 @@ namespace Remorse.Localize
             }
 
             return dictionary;
+        }
+        public string getCSVPath()
+        {
+            return csvPath;
+        }
+        public List<List<string>> getListCSV()
+        {
+            return CSV;
         }
 
         public void Add(string key, string[] values)
@@ -126,58 +135,13 @@ namespace Remorse.Localize
                 headers[i] = headers[i].TrimStart(' ', surround);
                 headers[i] = headers[i].TrimEnd('\r', surround);
             }
+            
 
             return headers;
         }
 
-        public void AddLanguage(string newLanguage)
-        {
-            if (string.IsNullOrEmpty(newLanguage))
-            {
-                Debug.Log("Input field can't be empty");
-                return;
-            }
+        
 
-            CSV[0].Insert(CSV[0].Count, string.Format("\"{0}\"", newLanguage));
-
-            for (int i = 1; i < CSV.Count; i++)
-            {
-                CSV[i].Insert(CSV[i].Count, "\"\"");
-            }
-
-            File.WriteAllLines(csvPath, CSV.Select(x => string.Join(",", x)));
-#if UNITY_EDITOR
-            AssetDatabase.Refresh();
-#endif
-        }
-
-        public void RemoveLanguage(int langguageIndex)
-        {
-            for (int i = 0; i < CSV.Count; i++)
-            {
-                CSV[i].RemoveAt(langguageIndex);
-            }
-
-            File.WriteAllLines(csvPath, CSV.Select(x => string.Join(",", x)));
-#if UNITY_EDITOR
-            AssetDatabase.Refresh();
-#endif
-        }
-
-        public void EditLanguage(int langguageIndex, string newLanguage)
-        {
-            if (string.IsNullOrEmpty(newLanguage))
-            {
-                Debug.Log("language Id can't be null");
-                return;
-            }
-
-            CSV[0][langguageIndex] = string.Format("\"{0}\"", newLanguage);
-
-            File.WriteAllLines(csvPath, CSV.Select(x => string.Join(",", x)));
-#if UNITY_EDITOR
-            AssetDatabase.Refresh();
-#endif
-        }
+ 
     }
 }

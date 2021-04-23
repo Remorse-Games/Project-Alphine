@@ -7,6 +7,8 @@ public class LocalizationEditor : EditorWindow
 {
     #region Variabel Decalration
     public static CSVLoader csvLoader = new CSVLoader();
+    public static LocalizationLanguage localizationLanguage = new LocalizationLanguage();
+    
     public static TextAsset csvFile;
 
     public static List<string> languages;
@@ -32,6 +34,7 @@ public class LocalizationEditor : EditorWindow
         csvLoader.LoadCSV();
         string[] headers = csvLoader.GetCSVHeaders();
         languages = new List<string>(headers);
+
 
         LocalizationEditor window = (LocalizationEditor)EditorWindow.GetWindow(typeof(LocalizationEditor));
         window.Show();
@@ -59,7 +62,7 @@ public class LocalizationEditor : EditorWindow
                 if (GUILayout.Button("Add New Language"))
                 {
                     Init();
-                    csvLoader.AddLanguage(newLanguage);
+                    localizationLanguage.AddLanguage(newLanguage);
                     Init();
                 }
                 break;
@@ -67,7 +70,7 @@ public class LocalizationEditor : EditorWindow
                 if (GUILayout.Button("Edit"))
                 {
                     Init();
-                    csvLoader.EditLanguage(index, newLanguage);
+                    localizationLanguage.EditLanguage(index, newLanguage);
                     Init();
                 }
                 break;
@@ -98,7 +101,7 @@ public class LocalizationEditor : EditorWindow
             if (GUILayout.Button("Delete", GUILayout.Height(20), GUILayout.Width(50)))
             {
                 Init();
-                csvLoader.RemoveLanguage(languages.IndexOf(language));
+                localizationLanguage.RemoveLanguage(languages.IndexOf(language));
                 Init();
                 state = State.Add;
                 newLanguage = "";
