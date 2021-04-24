@@ -88,7 +88,7 @@ namespace Remorse.BehaviorEditor
 						b.stateRef.onFixedList.DoLayoutList();
 						EditorGUILayout.LabelField("");
 						b.stateRef.onUpdateList.DoLayoutList();
-						standard += 100 + 40 + (b.stateRef.onUpdateList.count + b.stateRef.onFixedList.count) * 20;
+						standard += 100 + 40 + Mathf.Clamp((b.stateRef.onUpdateList.count + b.stateRef.onFixedList.count), 1, Mathf.Infinity) * 20;
 					}
 					b.showEnterExit = EditorGUILayout.Toggle("Show Enter/Exit ", b.showEnterExit);
 					if (b.showEnterExit)
@@ -97,7 +97,7 @@ namespace Remorse.BehaviorEditor
 						b.stateRef.onEnterList.DoLayoutList();
 						EditorGUILayout.LabelField("");
 						b.stateRef.onExitList.DoLayoutList();
-						standard += 100 + 40 + (b.stateRef.onEnterList.count + b.stateRef.onExitList.count) * 20;
+						standard += 100 + 40 + Mathf.Clamp((b.stateRef.onEnterList.count + b.stateRef.onExitList.count), 1, Mathf.Infinity) * 20;
 					}
 
 					b.stateRef.serializedState.ApplyModifiedProperties();
