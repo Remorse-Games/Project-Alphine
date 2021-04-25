@@ -14,18 +14,19 @@ namespace Remorse.AI
 
         [Header("Combat")]
         public float distanceForCombat;
+        public float combatCooldown;
         public GameObject bullet;
         public Transform spawnBullet;
-        public float combatCooldown;
 
         [Header("Patrol")]
         public State currentState;
         public Transform[] patrolArea;
-        [HideInInspector] public int index;
 
-        [Header("Vision")]
-        [Range(0, 20)] public float radius;
-        [Range(0, 360)] public float fov;
+        public float radius;
+        public float fov;
+
+        [HideInInspector] public int index;
+        [HideInInspector] public bool editPatrolArea;
 
         //[HideInInspector] public FieldOfView fov;
         private float tempCooldown;
