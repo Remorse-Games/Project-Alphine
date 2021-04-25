@@ -82,6 +82,7 @@ namespace Remorse.Tools.RPGDatabase.Window
 
             //Load Every List needed in ActorTab
             LoadGameData<ActorData>(ref actorSize, actor, PathDatabase.ActorRelativeDataPath);
+            ItemTabLoader(index);
 
             traitSize = new int[actorSize]; //Resets Trait Sizing
             LoadGameData<TraitsData>(ref traitSize[index], traits, PathDatabase.ActorTraitRelativeDataPath + (index + 1));

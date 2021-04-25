@@ -319,17 +319,18 @@ namespace Remorse.Tools.RPGDatabase.Window
             {
                 int findResourcesPath = rawPath[0].IndexOf("Resources", 0, rawPath[0].Length);
                 // relative path to the Resources folder.
-                // I add + 10 because to get end of Resouces words + backslash
+                // I added +10 because of the process to get the end of "Resources\"
                 // to get relative path directly even we had subfolder.
                 string relativePath = rawPath[0].Remove(0, findResourcesPath + 10);
                 // remove the file extension.
                 string finalPath = relativePath.Remove(relativePath.Length - 4, 4);
-
+                
                 Sprite imageChosen = Resources.Load<Sprite>(finalPath);
 
+                Debug.Log(finalPath);
                 if (imageChosen == null)
                 {
-                    Debug.LogError("File did not found! Try to check path / file extension.");
+                    Debug.LogError("File did not found! Try to check path/file extension.");
                 }
 
                 return imageChosen;
