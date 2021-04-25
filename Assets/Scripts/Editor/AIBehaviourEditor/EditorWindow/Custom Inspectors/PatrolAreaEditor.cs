@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using UnityEngine.EventSystems;
 
 namespace Remorse.AI
 {
@@ -20,10 +21,15 @@ namespace Remorse.AI
 
         bool editPatrolArea;
 
+        AIBehaviour myTarget;
+
+        private void OnEnable()
+        {
+            myTarget = (AIBehaviour)target;
+        }
+
         public override void OnInspectorGUI()
         {
-            AIBehaviour myTarget = (AIBehaviour)target;
-
             index = GUILayout.SelectionGrid(index, tabNames, tabNames.Length);
 
             switch (index)
@@ -64,6 +70,8 @@ namespace Remorse.AI
         {
             if (editPatrolArea)
             {
+                ActiveEditorTracker.sharedTracker.isLocked = true;
+
                 Vector3 mousePosition = Event.current.mousePosition;
                 Ray ray = HandleUtility.GUIPointToWorldRay(mousePosition);
 
@@ -73,9 +81,13 @@ namespace Remorse.AI
                 {
                     if (Event.current.type == EventType.MouseDown && Event.current.button == 0)
                     {
-                        Debug.Log(hit.point);
+
                     }
                 }
+            }
+            else
+            {
+                ActiveEditorTracker.sharedTracker.isLocked = false;
             }
         }
     }
