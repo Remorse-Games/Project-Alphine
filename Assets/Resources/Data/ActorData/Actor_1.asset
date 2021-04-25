@@ -15,7 +15,6 @@ MonoBehaviour:
   actorName: Kenneth Alvision
   actorNickname: Kennetha123
   initLevel: 1
-  selectedClassIndex: 0
   maxLevel: 99
   description: insert your description here
   face: {fileID: 0}

@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9f7afc353b2b69429ed1b1379975b38, type: 3}
+  m_Name: Item_1
+  m_EditorClassIdentifier: 
+  itemName: Potion
+  Icon: {fileID: 0}
+  itemDescription: Insert your description here
+  itemUserNameMessage: 
+  itemMessage: 
+  selecteditemTypeIndex: 0
+  selecteditemScopeIndex: 0
+  selecteditemOccasionIndex: 0
+  selecteditemHitTypeIndex: 0
+  selecteditemAnimationIndex: 0
+  selectedConsumableIndex: 0
+  selectedTypeIndex: 0
+  selectedElementIndex: 0
+  selectedCriticalHits: 0
+  itemPrice: 0
+  itemSpeed: 0
+  itemSuccessLevel: 100
+  itemRepeat: 1
+  itemTPGain: 10
+  itemFormula: b.mhp / 2
+  itemVariance: 20
+  notes: 
