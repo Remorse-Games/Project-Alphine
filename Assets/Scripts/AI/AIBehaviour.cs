@@ -76,13 +76,13 @@ namespace Remorse.AI
 
                 Vector3 pos = new Vector3(
                     Mathf.Sin(deg) * radius,
-                    0,
+                    -0.5f,
                     Mathf.Cos(deg) * radius
                 );
 
                 Vector3 nextPos = new Vector3(
                     Mathf.Sin(nextDeg) * radius,
-                    0,
+                    -0.5f,
                     Mathf.Cos(nextDeg) * radius
                 );
 
@@ -94,18 +94,20 @@ namespace Remorse.AI
 
             Vector3 rPos = new Vector3(
                 Mathf.Sin(Mathf.Deg2Rad * defaultDeg) * radius,
-                0,
+                -0.5f,
                 Mathf.Cos(Mathf.Deg2Rad * defaultDeg) * radius
             );
 
             Vector3 lPos = new Vector3(
                 Mathf.Sin(Mathf.Deg2Rad * (360 - defaultDeg)) * radius,
-                0,
+                -0.5f,
                 Mathf.Cos(Mathf.Deg2Rad * (360 - defaultDeg)) * radius
             );
 
-            Gizmos.DrawLine(transform.position, rPos + transform.position);
-            Gizmos.DrawLine(transform.position, lPos + transform.position);
+            Vector3 center = new Vector3(0, -0.5f, 0) + transform.position;
+
+            Gizmos.DrawLine(center, rPos + transform.position);
+            Gizmos.DrawLine(center, lPos + transform.position);
         }
     }
 }
