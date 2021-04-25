@@ -26,7 +26,6 @@ namespace Remorse.AI
         public float fov;
 
         [HideInInspector] public int index;
-        [HideInInspector] public bool editPatrolArea;
 
         //[HideInInspector] public FieldOfView fov;
         private float tempCooldown;
@@ -63,6 +62,8 @@ namespace Remorse.AI
         {
 
         }
+
+#if UNITY_EDITOR
 
         private void OnDrawGizmosSelected()
         {
@@ -109,5 +110,8 @@ namespace Remorse.AI
             Gizmos.DrawLine(center, rPos + transform.position);
             Gizmos.DrawLine(center, lPos + transform.position);
         }
+
+#endif
+
     }
 }

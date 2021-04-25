@@ -18,6 +18,8 @@ namespace Remorse.AI
 
         int index = 0;
 
+        bool editPatrolArea;
+
         public override void OnInspectorGUI()
         {
             AIBehaviour myTarget = (AIBehaviour)target;
@@ -53,8 +55,27 @@ namespace Remorse.AI
 
                     GUILayout.Space(10);
 
-                    myTarget.editPatrolArea = GUILayout.Toggle(myTarget.editPatrolArea, "Edit Patrol Area", "Button");
+                    editPatrolArea = GUILayout.Toggle(editPatrolArea, "Edit Patrol Area", "Button");
                     break;
+            }
+        }
+
+        private void OnSceneGUI()
+        {
+            if (editPatrolArea)
+            {
+                Vector3 mousePosition = Event.current.mousePosition;
+                Ray ray = HandleUtility.GUIPointToWorldRay(mousePosition);
+
+                RaycastHit hit;
+
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+                {
+                    if (Event.current.type == EventType.MouseDown && Event.current.button == 0)
+                    {
+                        Debug.Log(hit.point);
+                    }
+                }
             }
         }
     }
