@@ -131,9 +131,9 @@ namespace Remorse.AI
 
                                         if (removeIndex != -1)
                                         {
+                                            pointIndex = -1;
                                             myTarget.patrolArea.RemoveAt(removeIndex);
                                             removeIndex = -1;
-                                            pointIndex = -1;
                                         }
 
                                     GUILayout.EndHorizontal();
@@ -167,9 +167,9 @@ namespace Remorse.AI
                     {
                         Vector3 point = hit.point - gameObject.transform.position;
                         myTarget.patrolArea[pointIndex] = new Vector3(
-                            Mathf.Ceil(point.x) - 0.5f,
+                            Mathf.Round(point.x),
                             point.y,
-                            Mathf.Ceil(point.z) - 0.5f
+                            Mathf.Round(point.z)
                         );
                     }
 
@@ -184,7 +184,11 @@ namespace Remorse.AI
 
                 for (int i = 0; i < length; i++)
                 {
-                    Handles.Label(myTarget.patrolArea[i] + Vector3.up, string.Format("Point {0}", i + 1), style);
+                    Handles.Label(
+                        myTarget.patrolArea[i] + Vector3.up + gameObject.transform.position, 
+                        string.Format("Point {0}", i + 1), 
+                        style
+                    );
                 }
             }
             else
