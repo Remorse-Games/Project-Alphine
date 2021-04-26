@@ -69,48 +69,62 @@ namespace Remorse.AI
 
         private void OnDrawGizmosSelected()
         {
-            // draw circle gizmo
-            float defaultDeg = 360 / 36;
-
-            for (int i = 0; i < 36; i++)
+            if (!editPatrolArea)
             {
-                float deg = defaultDeg * i * Mathf.Deg2Rad;
-                float nextDeg = defaultDeg * (i == 36 ? 0 : i + 1) * Mathf.Deg2Rad;
+                // draw circle gizmo
+                float defaultDeg = 360 / 36;
 
-                Vector3 pos = new Vector3(
-                    Mathf.Sin(deg) * radius,
+                for (int i = 0; i < 36; i++)
+                {
+                    float deg = defaultDeg * i * Mathf.Deg2Rad;
+                    float nextDeg = defaultDeg * (i == 36 ? 0 : i + 1) * Mathf.Deg2Rad;
+
+                    Vector3 pos = new Vector3(
+                        Mathf.Sin(deg) * radius,
+                        -0.5f,
+                        Mathf.Cos(deg) * radius
+                    );
+
+                    Vector3 nextPos = new Vector3(
+                        Mathf.Sin(nextDeg) * radius,
+                        -0.5f,
+                        Mathf.Cos(nextDeg) * radius
+                    );
+
+                    Gizmos.DrawLine(pos + transform.position, nextPos + transform.position);
+                }
+
+                // draw FOV
+                defaultDeg = fov / 2;
+
+                Vector3 rPos = new Vector3(
+                    Mathf.Sin(Mathf.Deg2Rad * defaultDeg) * radius,
                     -0.5f,
-                    Mathf.Cos(deg) * radius
+                    Mathf.Cos(Mathf.Deg2Rad * defaultDeg) * radius
                 );
 
-                Vector3 nextPos = new Vector3(
-                    Mathf.Sin(nextDeg) * radius,
+                Vector3 lPos = new Vector3(
+                    Mathf.Sin(Mathf.Deg2Rad * (360 - defaultDeg)) * radius,
                     -0.5f,
-                    Mathf.Cos(nextDeg) * radius
+                    Mathf.Cos(Mathf.Deg2Rad * (360 - defaultDeg)) * radius
                 );
 
-                Gizmos.DrawLine(pos + transform.position, nextPos + transform.position);
+                Vector3 center = new Vector3(0, -0.5f, 0) + transform.position;
+
+                Gizmos.DrawLine(center, rPos + transform.position);
+                Gizmos.DrawLine(center, lPos + transform.position);
             }
+        }
 
-            // draw FOV
-            defaultDeg = fov / 2;
-
-            Vector3 rPos = new Vector3(
-                Mathf.Sin(Mathf.Deg2Rad * defaultDeg) * radius,
-                -0.5f,
-                Mathf.Cos(Mathf.Deg2Rad * defaultDeg) * radius
-            );
-
-            Vector3 lPos = new Vector3(
-                Mathf.Sin(Mathf.Deg2Rad * (360 - defaultDeg)) * radius,
-                -0.5f,
-                Mathf.Cos(Mathf.Deg2Rad * (360 - defaultDeg)) * radius
-            );
-
-            Vector3 center = new Vector3(0, -0.5f, 0) + transform.position;
-
-            Gizmos.DrawLine(center, rPos + transform.position);
-            Gizmos.DrawLine(center, lPos + transform.position);
+        private void OnDrawGizmos()
+        {
+            if (editPatrolArea)
+            {
+                for (int i = 0; i < patrolArea.Count - 1; i++)
+                {
+                    Gizmos.DrawLine(patrolArea[i] + transform.position, patrolArea[i + 1] + transform.position);
+                }
+            }
         }
 
 #endif
