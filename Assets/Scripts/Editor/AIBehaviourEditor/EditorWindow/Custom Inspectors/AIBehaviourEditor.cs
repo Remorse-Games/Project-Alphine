@@ -165,7 +165,7 @@ namespace Remorse.AI
                 {
                     if (pointIndex != -1)
                     {
-                        Vector3 point = hit.point - gameObject.transform.position;
+                        Vector3 point = hit.point;
                         myTarget.patrolArea[pointIndex] = new Vector3(
                             Mathf.Round(point.x),
                             point.y,
@@ -185,7 +185,7 @@ namespace Remorse.AI
                 for (int i = 0; i < length; i++)
                 {
                     Handles.Label(
-                        myTarget.patrolArea[i] + Vector3.up + gameObject.transform.position, 
+                        myTarget.patrolArea[i] + Vector3.up, 
                         string.Format("Point {0}", i + 1), 
                         style
                     );

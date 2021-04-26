@@ -120,21 +120,21 @@ namespace Remorse.AI
         {
             if (editPatrolArea && patrolArea.Count > 0)
             {
-                Vector3 centerPoint = new Vector3(transform.position.x, 0, transform.position.z);
+                Vector3 centerPoint = new Vector3(transform.position.x, patrolArea[0].y, transform.position.z);
 
                 Gizmos.DrawLine(
                     centerPoint,
-                    patrolArea[0] + transform.position
+                    patrolArea[0]
                 );
 
                 Gizmos.DrawLine(
-                    patrolArea[patrolArea.Count - 1] + transform.position,
+                    patrolArea[patrolArea.Count - 1],
                     centerPoint
                 );
 
                 for (int i = 0; i < patrolArea.Count - 1; i++)
                 {
-                    Gizmos.DrawLine(patrolArea[i] + transform.position, patrolArea[i + 1] + transform.position);
+                    Gizmos.DrawLine(patrolArea[i], patrolArea[i + 1]);
                 }
             }
         }
