@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 namespace Remorse.AI
 {
@@ -20,12 +21,13 @@ namespace Remorse.AI
 
         [Header("Patrol")]
         public State currentState;
-        public Transform[] patrolArea;
+        public List<Vector3> patrolArea;
 
         public float radius;
         public float fov;
 
         [HideInInspector] public int index;
+        [HideInInspector] public bool editPatrolArea;
 
         //[HideInInspector] public FieldOfView fov;
         private float tempCooldown;
