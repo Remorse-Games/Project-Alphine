@@ -55,6 +55,8 @@ namespace Remorse.Tools.RPGDatabase.Window
         Texture2D faceImage;
         Texture2D characterImage;
         Texture2D battlerImage;
+
+        public static string[] sliceSpritePath;
         #endregion
 
         #region TempValues
@@ -395,6 +397,7 @@ namespace Remorse.Tools.RPGDatabase.Window
                                         "Assets/Resources/Image"
                                         );
                                         ItemTabLoader(index);
+                                        SliceSprite(sliceSpritePath, 64, 64);
                                 }
                                 GUI.backgroundColor = tempColor2;
                             GUILayout.EndVertical();

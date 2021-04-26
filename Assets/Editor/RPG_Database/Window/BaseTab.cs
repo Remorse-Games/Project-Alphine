@@ -310,10 +310,45 @@ namespace Remorse.Tools.RPGDatabase.Window
                 new ExtensionFilter("All Files", "*" ),
         };
 
+        public void SliceSprite(string[] assetPath, int sliceWidth, int sliceHeight)
+        {
+            int findResourcesPath = assetPath[0].IndexOf("Assets", 0, assetPath[0].Length);
+            string relativePath = assetPath[0].Remove(0, findResourcesPath);
+            // Remove Path Until The First Index Of Assets
+
+            Texture2D myTexture = (Texture2D)AssetDatabase.LoadAssetAtPath<Texture2D>(relativePath);
+
+            string path = AssetDatabase.GetAssetPath(myTexture);
+            TextureImporter ti = AssetImporter.GetAtPath(path) as TextureImporter;
+            ti.isReadable = true;
+            List<SpriteMetaData> newData = new List<SpriteMetaData>();
+
+            for (int i = 0; i < myTexture.width; i += sliceWidth)
+            {
+                for (int j = myTexture.height; j > 0; j -= sliceHeight)
+                {
+                    SpriteMetaData smd = new SpriteMetaData();
+                    smd.pivot = new Vector2(0.5f, 0.5f);
+                    smd.alignment = 9;
+                    smd.name = myTexture.name + "_" + (i / sliceWidth);
+                    smd.rect = new Rect(i, j - sliceHeight, sliceWidth, sliceHeight);
+
+                    newData.Add(smd);
+                }
+            }
+            ti.spritesheet = newData.ToArray();
+            AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceUpdate);
+
+            if (ti.spriteImportMode == SpriteImportMode.Single)
+            {
+                ti.spriteImportMode = SpriteImportMode.Multiple;
+                AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceUpdate);
+            }
+        }
+
         public Sprite ImageChanger(int index, string panelName, string assetPath)
         {
             string[] rawPath = StandaloneFileBrowser.OpenFilePanel(panelName, assetPath, fileExtensions, false);
-            string fileName = Path.GetFileNameWithoutExtension(rawPath[0]);
 
             if (rawPath.Length != 0)
             {
@@ -324,15 +359,16 @@ namespace Remorse.Tools.RPGDatabase.Window
                 string relativePath = rawPath[0].Remove(0, findResourcesPath + 10);
                 // remove the file extension.
                 string finalPath = relativePath.Remove(relativePath.Length - 4, 4);
-                
-                Sprite imageChosen = Resources.Load<Sprite>(finalPath);
 
-                Debug.Log(finalPath);
+                ActorTab.sliceSpritePath = rawPath; // Give string to ActorTab to run SliceSprite()
+
+                Sprite imageChosen = Resources.Load<Sprite>(finalPath);
+                // rawPath[0] = "D:Documents\Assets\ResourcesData\pict.png";
+
                 if (imageChosen == null)
                 {
                     Debug.LogError("File did not found! Try to check path/file extension.");
                 }
-
                 return imageChosen;
             }
 
