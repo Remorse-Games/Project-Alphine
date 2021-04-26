@@ -732,7 +732,7 @@ namespace Remorse.Tools.RPGDatabase.Window
                     if (item[index].Icon == null)
                         itemIcon = defTex;
                     else
-                        itemIcon = TextureToSprite(item[index].Icon);
+                        itemIcon = SpriteToTexture(item[index].Icon);
                 }
             }
         }

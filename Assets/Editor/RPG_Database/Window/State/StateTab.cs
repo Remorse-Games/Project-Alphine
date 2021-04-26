@@ -673,7 +673,7 @@ namespace Remorse.Tools.RPGDatabase.Window
                     if (state[index].icon == null)
                         stateIcon = defTex;
                     else
-                        stateIcon = TextureToSprite(state[index].icon);
+                        stateIcon = SpriteToTexture(state[index].icon);
 
                 }
             }

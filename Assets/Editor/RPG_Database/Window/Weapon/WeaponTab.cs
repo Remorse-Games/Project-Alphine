@@ -567,7 +567,7 @@ namespace Remorse.Tools.RPGDatabase.Window
                     if (weapon[index].Icon == null)
                         weaponIcon = defTex;
                     else
-                        weaponIcon = TextureToSprite(weapon[index].Icon);
+                        weaponIcon = SpriteToTexture(weapon[index].Icon);
                 }
             }
         }

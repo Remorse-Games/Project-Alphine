@@ -582,7 +582,7 @@ namespace Remorse.Tools.RPGDatabase.Window
                     if (troop[index].background == null)
                         background = defTex;
                     else
-                        background = TextureToSprite(troop[index].background);
+                        background = SpriteToTexture(troop[index].background);
 
                 }
             }

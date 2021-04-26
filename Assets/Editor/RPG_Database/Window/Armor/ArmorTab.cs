@@ -600,7 +600,7 @@ namespace Remorse.Tools.RPGDatabase.Window
                     if (armor[index].Icon == null)
                         armorIcon = defTex;
                     else
-                        armorIcon = TextureToSprite(armor[index].Icon);
+                        armorIcon = SpriteToTexture(armor[index].Icon);
                 }
             }
         }

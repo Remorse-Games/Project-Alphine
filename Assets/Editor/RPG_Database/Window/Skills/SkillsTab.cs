@@ -880,7 +880,7 @@ namespace Remorse.Tools.RPGDatabase.Window
                     if (skill[index].Icon == null)
                         skillIcon= defTex;
                     else
-                        skillIcon = TextureToSprite(skill[index].Icon);
+                        skillIcon = SpriteToTexture(skill[index].Icon);
 
                 }
             }

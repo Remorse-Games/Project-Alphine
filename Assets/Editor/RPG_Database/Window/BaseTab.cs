@@ -210,7 +210,7 @@ namespace Remorse.Tools.RPGDatabase.Window
         /// </summary>
         /// <param name="sprite">the sprite that wants to be converted into texture</param>
         /// <returns></returns>
-        public Texture2D TextureToSprite(Sprite sprite)
+        public Texture2D SpriteToTexture(Sprite sprite)
         {
             if (sprite.rect.width != sprite.texture.width)
             {

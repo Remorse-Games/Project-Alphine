@@ -676,19 +676,19 @@ namespace Remorse.Tools.RPGDatabase.Window
                     if (actor[index].face == null)
                         faceImage = defTex;
                     else
-                        faceImage = TextureToSprite(actor[index].face);
+                        faceImage = SpriteToTexture(actor[index].face);
 
 
                     if (actor[index].characterWorld == null)
                         characterImage = defTex;
                     else
-                        characterImage = TextureToSprite(actor[index].characterWorld);
+                        characterImage = SpriteToTexture(actor[index].characterWorld);
 
 
                     if (actor[index].battler == null)
                         battlerImage = defTex;
                     else
-                        battlerImage = TextureToSprite(actor[index].battler);
+                        battlerImage = SpriteToTexture(actor[index].battler);
                 }
             }
         }

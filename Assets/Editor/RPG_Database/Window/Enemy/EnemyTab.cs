@@ -729,7 +729,7 @@ namespace Remorse.Tools.RPGDatabase.Window
                     if (enemy[index].Image == null)
                         enemyImage = defTex;
                     else
-                        enemyImage = TextureToSprite(enemy[index].Image);
+                        enemyImage = SpriteToTexture(enemy[index].Image);
                 }
             }
         }
