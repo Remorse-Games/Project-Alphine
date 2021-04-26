@@ -22,12 +22,14 @@ namespace Remorse.AI
         int removeIndex = -1;
 
         Vector2 scrollPos = Vector2.zero;
+        GameObject gameObject;
 
         AIBehaviour myTarget;
 
         private void OnEnable()
         {
             myTarget = (AIBehaviour)target;
+            gameObject = myTarget.gameObject;
         }
 
         public override void OnInspectorGUI()
@@ -166,7 +168,7 @@ namespace Remorse.AI
                 {
                     if (pointIndex != -1)
                     {
-                        myTarget.patrolArea[pointIndex] = hit.point;
+                        myTarget.patrolArea[pointIndex] = hit.point - gameObject.transform.position;
                     }
 
                     if (Event.current.type == EventType.MouseDown && Event.current.button == 0)
