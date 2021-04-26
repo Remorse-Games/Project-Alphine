@@ -118,8 +118,20 @@ namespace Remorse.AI
 
         private void OnDrawGizmos()
         {
-            if (editPatrolArea)
+            if (editPatrolArea && patrolArea.Count > 0)
             {
+                Vector3 centerPoint = new Vector3(transform.position.x, 0, transform.position.z);
+
+                Gizmos.DrawLine(
+                    centerPoint,
+                    patrolArea[0] + transform.position
+                );
+
+                Gizmos.DrawLine(
+                    patrolArea[patrolArea.Count - 1] + transform.position,
+                    centerPoint
+                );
+
                 for (int i = 0; i < patrolArea.Count - 1; i++)
                 {
                     Gizmos.DrawLine(patrolArea[i] + transform.position, patrolArea[i + 1] + transform.position);
