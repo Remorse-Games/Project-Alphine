@@ -79,17 +79,8 @@ namespace Remorse.AI
                     float deg = defaultDeg * i * Mathf.Deg2Rad;
                     float nextDeg = defaultDeg * (i == 36 ? 0 : i + 1) * Mathf.Deg2Rad;
 
-                    Vector3 pos = new Vector3(
-                        Mathf.Sin(deg) * radius,
-                        -0.5f,
-                        Mathf.Cos(deg) * radius
-                    );
-
-                    Vector3 nextPos = new Vector3(
-                        Mathf.Sin(nextDeg) * radius,
-                        -0.5f,
-                        Mathf.Cos(nextDeg) * radius
-                    );
+                    Vector3 pos = Math.Math.GetPositionByAngle(deg, radius, -0.5f);
+                    Vector3 nextPos = Math.Math.GetPositionByAngle(nextDeg, radius, -0.5f);
 
                     Gizmos.DrawLine(pos + transform.position, nextPos + transform.position);
                 }
@@ -97,17 +88,8 @@ namespace Remorse.AI
                 // draw FOV
                 defaultDeg = fov / 2;
 
-                Vector3 rPos = new Vector3(
-                    Mathf.Sin(Mathf.Deg2Rad * defaultDeg) * radius,
-                    -0.5f,
-                    Mathf.Cos(Mathf.Deg2Rad * defaultDeg) * radius
-                );
-
-                Vector3 lPos = new Vector3(
-                    Mathf.Sin(Mathf.Deg2Rad * (360 - defaultDeg)) * radius,
-                    -0.5f,
-                    Mathf.Cos(Mathf.Deg2Rad * (360 - defaultDeg)) * radius
-                );
+                Vector3 rPos = Math.Math.GetPositionByAngle(Mathf.Deg2Rad * defaultDeg, radius, -0.5f);
+                Vector3 lPos = Math.Math.GetPositionByAngle(Mathf.Deg2Rad * (360 - defaultDeg), radius, -0.5f);
 
                 Vector3 center = new Vector3(0, -0.5f, 0) + transform.position;
 
@@ -120,7 +102,7 @@ namespace Remorse.AI
         {
             if (editPatrolArea && patrolArea.Count > 0)
             {
-                Vector3 centerPoint = new Vector3(transform.position.x, patrolArea[0].y, transform.position.z);
+                Vector3 centerPoint = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
 
                 Gizmos.DrawLine(
                     centerPoint,
