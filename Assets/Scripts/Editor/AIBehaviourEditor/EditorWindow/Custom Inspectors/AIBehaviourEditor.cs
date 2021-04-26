@@ -112,18 +112,14 @@ namespace Remorse.AI
 
                                         for (int i = 0; i < length; i++)
                                         {
-                                            pointNames[i] = myTarget.patrolArea[i].ToString();
+                                            pointNames[i] = string.Format("Point {0}", i + 1);
                                             removeNames[i] = "-";
                                         }
-
-                                        var leftAlign = new GUIStyle(GUI.skin.button);
-                                        leftAlign.alignment = TextAnchor.MiddleLeft;    
 
                                         pointIndex = GUILayout.SelectionGrid(
                                             pointIndex,
                                             pointNames,
-                                            1,
-                                            leftAlign
+                                            1
                                         );
 
                                         removeIndex = GUILayout.SelectionGrid(
@@ -137,6 +133,7 @@ namespace Remorse.AI
                                         {
                                             myTarget.patrolArea.RemoveAt(removeIndex);
                                             removeIndex = -1;
+                                            pointIndex = -1;
                                         }
 
                                     GUILayout.EndHorizontal();
@@ -168,13 +165,26 @@ namespace Remorse.AI
                 {
                     if (pointIndex != -1)
                     {
-                        myTarget.patrolArea[pointIndex] = hit.point - gameObject.transform.position;
+                        Vector3 point = hit.point - gameObject.transform.position;
+                        myTarget.patrolArea[pointIndex] = new Vector3(
+                            Mathf.Ceil(point.x) - 0.5f,
+                            point.y,
+                            Mathf.Ceil(point.z) - 0.5f
+                        );
                     }
 
                     if (Event.current.type == EventType.MouseDown && Event.current.button == 0)
                     {
                         pointIndex = -1;
                     }
+                }
+
+                style.normal.textColor = Color.yellow;
+                style.alignment = TextAnchor.MiddleCenter;
+
+                for (int i = 0; i < length; i++)
+                {
+                    Handles.Label(myTarget.patrolArea[i] + Vector3.up, string.Format("Point {0}", i + 1), style);
                 }
             }
             else
