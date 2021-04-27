@@ -60,8 +60,15 @@ namespace Remorse.AI
 
                 case 3:
                     myTarget.currentState = (State)EditorGUILayout.ObjectField("Current State", myTarget.currentState, typeof(State), true);
-                    myTarget.radius = EditorGUILayout.Slider("Vision Radius", myTarget.radius, 0, 50);
-                    myTarget.fov = EditorGUILayout.Slider("Vision FOV", myTarget.fov, 0, 360);
+
+                    GUILayout.Space(10);
+
+                    EditorGUI.BeginDisabledGroup(myTarget.editPatrolArea);
+
+                        myTarget.radius = EditorGUILayout.Slider("Vision Radius", myTarget.radius, 0, 50);
+                        myTarget.fov = EditorGUILayout.Slider("Vision FOV", myTarget.fov, 0, 360);
+
+                    EditorGUI.EndDisabledGroup();
 
                     GUILayout.Space(10);
 
