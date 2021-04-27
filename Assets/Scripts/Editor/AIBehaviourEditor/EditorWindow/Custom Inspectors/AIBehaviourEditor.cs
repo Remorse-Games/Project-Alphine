@@ -21,15 +21,15 @@ namespace Remorse.AI
         int pointIndex = -1;
         int removeIndex = -1;
 
+        int clickCount = 0;
+
         Vector2 scrollPos = Vector2.zero;
-        GameObject gameObject;
 
         AIBehaviour myTarget;
 
         private void OnEnable()
         {
             myTarget = (AIBehaviour)target;
-            gameObject = myTarget.gameObject;
         }
 
         public override void OnInspectorGUI()
@@ -156,6 +156,7 @@ namespace Remorse.AI
 
                 #endregion
 
+                // Get Mouse Raycast
                 Vector3 mousePosition = Event.current.mousePosition;
                 Ray ray = HandleUtility.GUIPointToWorldRay(mousePosition);
 
@@ -163,6 +164,7 @@ namespace Remorse.AI
 
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity))
                 {
+                    // Drag point when a point is selected
                     if (pointIndex != -1)
                     {
                         Vector3 point = hit.point;
@@ -173,11 +175,41 @@ namespace Remorse.AI
                         );
                     }
 
+                    // On left mouse down
                     if (Event.current.type == EventType.MouseDown && Event.current.button == 0)
                     {
-                        pointIndex = -1;
+                        // click count are used to make this function just called once
+                        clickCount++;
+
+                        if (clickCount == 2)
+                        {
+                            /* Select the point that the mouse click or release the point that selected */
+
+                            int lastPointIndex = -1;
+
+                            Vector3 point = new Vector3(
+                                Mathf.Round(hit.point.x),
+                                hit.point.y,
+                                Mathf.Round(hit.point.z)
+                            );
+
+                            for (int i = 0; i < length; i++)
+                            {
+                                if (point == myTarget.patrolArea[i])
+                                {
+                                    lastPointIndex = i;
+                                    break;
+                                }
+                            }
+
+                            pointIndex = lastPointIndex == pointIndex ? -1 : lastPointIndex;
+
+                            clickCount = 0;
+                        }
                     }
                 }
+
+                /* Draw label on each point */
 
                 style.normal.textColor = Color.yellow;
                 style.alignment = TextAnchor.MiddleCenter;
