@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 namespace Remorse.Utility
 {
@@ -56,6 +57,24 @@ namespace Remorse.Utility
 
         public static implicit operator Vector3(Grid grid) => new Vector3(grid.x, 0, grid.y);
         public static implicit operator Vector2(Grid grid) => new Vector2(grid.x, grid.y);
+
+        public static Grid operator +(Grid a, Grid b) => new Grid(a.x + b.x, a.y + b.y);
+        public static Grid operator -(Grid a, Grid b) => new Grid(a.x - b.x, a.y - b.y);
+        public static Grid operator *(Grid a, Grid b) => new Grid(a.x * b.x, a.y * b.y);
+        public static Grid operator /(Grid a, Grid b)
+        {
+            if (b.x == 0 || b.y == 0)
+            {
+                throw new DivideByZeroException();
+            }
+
+            return new Grid(a.x / b.x, a.y / b.y);
+        }
+
+        public override string ToString()
+        {
+            return string.Format("({0}, {1})", _x, _y);
+        }
     }
 
 }
