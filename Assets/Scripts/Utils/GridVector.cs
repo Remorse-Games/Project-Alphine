@@ -27,6 +27,11 @@ namespace Remorse.Utility
             }
         }
 
+        public GridVector()
+        {
+            _x = _y = 0;
+        }
+
         public GridVector(float x, float y)
         {
             _x = Mathf.Round(x);

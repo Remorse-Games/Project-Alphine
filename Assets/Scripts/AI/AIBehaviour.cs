@@ -22,7 +22,7 @@ namespace Remorse.AI
 
         [Header("Patrol")]
         public State currentState;
-        public List<Vector3> patrolArea = new List<Vector3>();
+        public List<GridVector> patrolArea = new List<GridVector>();
 
         public float radius;
         public float fov;

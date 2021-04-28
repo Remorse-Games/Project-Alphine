@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.EventSystems;
+using Remorse.Utility;
 
 namespace Remorse.AI
 {
@@ -147,7 +148,7 @@ namespace Remorse.AI
                 
                                     if (GUILayout.Button("Add"))
                                     {   
-                                        myTarget.patrolArea.Add(new Vector3());
+                                        myTarget.patrolArea.Add(new GridVector());
                                         pointIndex = myTarget.patrolArea.Count - 1;
                                     }
 
@@ -175,10 +176,9 @@ namespace Remorse.AI
                     if (pointIndex != -1)
                     {
                         Vector3 point = hit.point;
-                        myTarget.patrolArea[pointIndex] = new Vector3(
-                            Mathf.Round(point.x),
-                            point.y,
-                            Mathf.Round(point.z)
+                        myTarget.patrolArea[pointIndex] = new GridVector(
+                            point.x,
+                            point.z
                         );
                     }
 
