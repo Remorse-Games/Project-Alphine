@@ -9,14 +9,9 @@ namespace Remorse.AI
 
         public static Vector3[] FindPath(Vector3 currentPos, Vector3 destination)
         {
-            Vector3[] result =
-            {
-                currentPos,
-                new Vector3(currentPos.x, (currentPos.y + destination.z) / 2, destination.z),
-                destination
-            };
+            List<Vector3> result = new List<Vector3>();
 
-            return result;
+            return result.ToArray();
         }
 
     }
