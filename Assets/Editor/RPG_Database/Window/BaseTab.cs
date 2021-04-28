@@ -338,7 +338,7 @@ namespace Remorse.Tools.RPGDatabase.Window
         /// <summary>
         /// Sprite Slicer into NxN Size
         /// </summary>
-        /// <param name="assetPath">Current Sprite Path</param>
+        /// <param name="assetPath">Current Sprite Path ["Assets/Resources/..."]</param>
         /// <param name="sliceWidth">Slice Width</param>
         /// <param name="sliceHeight">Slice Height</param>
         public void SliceSprite(string[] assetPath, int sliceWidth, int sliceHeight)
@@ -380,13 +380,13 @@ namespace Remorse.Tools.RPGDatabase.Window
         /// <summary>
         /// Create Animation File
         /// </summary>
-        /// <param name="spritePath">Path of The Sprite To Be Added In The Animation</param>
+        /// <param name="spritePath">Path of The Sprite To Be Added In The Animation [Takes only "sprite" from (Assets/Resources/sprite)]</param>
         /// <param name="fps">FPS in Animation</param>
-        /// <param name="animCreatePath">Location To Create The Animator</param>
+        /// <param name="animCreatePath">Location To Create The Animator ["Assets/Resources/..."]</param>
         /// <param name="spriteName">Sprite Property Name</param>
         public void AnimationCreator(string spritePath, int fps, string animCreatePath, string spriteName)
         {
-            Sprite[] sprites = Resources.LoadAll<Sprite>(spritePath); // load all sprites in "assets/Resources/sprite" folder
+            Sprite[] sprites = Resources.LoadAll<Sprite>(spritePath);
             AnimationClip animClip = new AnimationClip();
             animClip.frameRate = fps;
             EditorCurveBinding spriteBinding = new EditorCurveBinding();
@@ -410,7 +410,7 @@ namespace Remorse.Tools.RPGDatabase.Window
         /// <summary>
         /// Create Controller
         /// </summary>
-        /// <param name="animationPath">Path of The Animation To Be Added In The Controller</param>
+        /// <param name="animationPath">Path of The Animation To Be Added In The Controller [Takes only "sprite" from (Assets/Resources/sprite)]</param>
         /// <param name="controllerCreatePath">Location To Create The Animator</param>
         public void ControllerCreator(string animationPath, string controllerCreatePath)
         {
@@ -429,7 +429,7 @@ namespace Remorse.Tools.RPGDatabase.Window
         /// Image Importer
         /// </summary>
         /// <param name="panelName">Up Left Corner Window Name</param>
-        /// <param name="assetPath">Data Path</param>
+        /// <param name="assetPath">Data Path ["Assets/Resources/..."]</param>
         /// <returns></returns>
         public Sprite ImageChanger(string panelName, string assetPath)
         {
