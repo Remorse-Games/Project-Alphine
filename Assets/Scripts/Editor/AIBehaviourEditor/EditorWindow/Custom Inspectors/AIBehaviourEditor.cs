@@ -21,7 +21,7 @@ namespace Remorse.AI
         int pointIndex = -1;
         int removeIndex = -1;
 
-        int clickCount = 0;
+        float clickTimer = 0;
 
         Vector2 scrollPos = Vector2.zero;
 
@@ -183,36 +183,28 @@ namespace Remorse.AI
                     }
 
                     // On left mouse down
-                    if (Event.current.type == EventType.MouseDown && Event.current.button == 0)
+                    if (Event.current.type == EventType.MouseDown && Event.current.button == 0 && clickTimer <= 0)
                     {
-                        // click count are used to make this function just called once
-                        clickCount++;
+                        int lastPointIndex = -1;
 
-                        if (clickCount == 2)
+                        Vector3 point = new Vector3(
+                            Mathf.Round(hit.point.x),
+                            hit.point.y,
+                            Mathf.Round(hit.point.z)
+                        );
+
+                        for (int i = 0; i < length; i++)
                         {
-                            /* Select the point that the mouse click or release the point that selected */
-
-                            int lastPointIndex = -1;
-
-                            Vector3 point = new Vector3(
-                                Mathf.Round(hit.point.x),
-                                hit.point.y,
-                                Mathf.Round(hit.point.z)
-                            );
-
-                            for (int i = 0; i < length; i++)
+                            if (point == myTarget.patrolArea[i])
                             {
-                                if (point == myTarget.patrolArea[i])
-                                {
-                                    lastPointIndex = i;
-                                    break;
-                                }
+                                lastPointIndex = i;
+                                break;
                             }
-
-                            pointIndex = lastPointIndex == pointIndex ? -1 : lastPointIndex;
-
-                            clickCount = 0;
                         }
+
+                        pointIndex = lastPointIndex == pointIndex ? -1 : lastPointIndex;
+
+                        clickTimer = 0.1f;
                     }
                 }
 
@@ -229,10 +221,22 @@ namespace Remorse.AI
                         style
                     );
                 }
+
+                if (clickTimer > 0)
+                {
+                    clickTimer -= Time.deltaTime;
+
+                    if (clickTimer < 0)
+                    {
+                        clickTimer = 0;
+                    }
+                }
             }
             else
             {
                 ActiveEditorTracker.sharedTracker.isLocked = false;
+
+                clickTimer = 0;
             }
         }
     }
