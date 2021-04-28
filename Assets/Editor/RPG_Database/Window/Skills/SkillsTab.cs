@@ -323,7 +323,6 @@ namespace Remorse.Tools.RPGDatabase.Window
                                     if (GUILayout.Button("Edit Icon", GUILayout.Height(20), GUILayout.Width(61))) // Icon changer Button
                                                                 {
                                                                     skill[index].Icon = ImageChanger(
-                                                                    index,
                                                                     "Choose Icon",
                                                                     "Assets/Resources/Image"
                                                                     );

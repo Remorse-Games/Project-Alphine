@@ -374,7 +374,6 @@ namespace Remorse.Tools.RPGDatabase.Window
                                 if (GUILayout.Button("Edit Face", GUILayout.Height(imageBox.height / 10), GUILayout.Width(imageBox.width / 3 - 10))) 
                                 {
                                         actor[index].face = ImageChanger(
-                                        index,
                                         "Choose Face", 
                                         "Assets/Resources/Image"
                                         );
@@ -391,8 +390,7 @@ namespace Remorse.Tools.RPGDatabase.Window
                                 GUI.backgroundColor = Color.green;
                                 if (GUILayout.Button("Edit Character", GUILayout.Height(imageBox.height / 10), GUILayout.Width(imageBox.width / 3 - 10))) 
                                 {
-                                        actor[index].characterWorld = ImageChanger(
-                                        index,                                    
+                                        actor[index].characterWorld = ImageChanger(     
                                         "Choose Character",
                                         "Assets/Resources/Image"
                                         );
@@ -411,7 +409,6 @@ namespace Remorse.Tools.RPGDatabase.Window
                                 if (GUILayout.Button("Edit Battler", GUILayout.Height(imageBox.height / 10), GUILayout.Width(imageBox.width / 3 - 10))) 
                                 {
                                         actor[index].battler = ImageChanger(
-                                        index, 
                                         "Choose Face", 
                                         "Assets/Resources/Image" 
                                         );

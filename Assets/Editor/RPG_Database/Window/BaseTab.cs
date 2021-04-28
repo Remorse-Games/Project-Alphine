@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using UnityEditor.Animations;
 using System.IO;
 using SFB;
 
@@ -29,6 +30,12 @@ namespace Remorse.Tools.RPGDatabase.Window
     public abstract class BaseTab
     {
         #region Features
+        /// <summary>
+        /// The Function That Makes Effect Like Tab Button In The Keyboard for Two Seperated Words
+        /// </summary>
+        /// <param name="key">First String</param>
+        /// <param name="value">Second String (After Tab)</param>
+        /// <returns></returns>
         public string PadString(string key, string value)
         {
             int pad = 4 - (key.Length / 4);
@@ -45,6 +52,13 @@ namespace Remorse.Tools.RPGDatabase.Window
             }
             return string.Format(format + "{0}", value);
         }
+
+        /// <summary>
+        /// Create Folder For RPG Scriptable Objects' Data
+        /// </summary>
+        /// <param name="dataSize">Current Folder Amount</param>
+        /// <param name="dataPath">Folder Path</param>
+        /// <param name="dataName">Folder Name</param>
         public void FolderCreator(int dataSize, string dataPath, string dataName)
         {
             // dataPath = "Assets/Resources/Data/ActorData"
@@ -71,6 +85,7 @@ namespace Remorse.Tools.RPGDatabase.Window
                 }
             }
         }
+
         /// <summary>
         /// This called when actor list on active.
         /// pick item to load it.
@@ -165,7 +180,7 @@ namespace Remorse.Tools.RPGDatabase.Window
             }
         }
         /// <summary>
-        /// 
+        /// Creates Line In The EditorWindow
         /// </summary>
         /// <param name="color">Line Color (ex. Color.black)</param>
         /// <param name="thickness">Line Thickness (int)</param>
@@ -184,8 +199,8 @@ namespace Remorse.Tools.RPGDatabase.Window
         /// <summary>
         /// Create Texture for GUI skin.
         /// </summary>
-        /// <param name="width">pixel width of GUI Skin.</param>
-        /// <param name="height">pixel height of GUI Skin.</param>
+        /// <param name="width">Pixel Width of GUI Skin.</param>
+        /// <param name="height">Pixel Height of GUI Skin.</param>
         /// <param name="col">Color of GUI Skin.</param>
         /// <returns></returns>
         public Texture2D CreateTexture(int width, int height, Color col)
@@ -206,9 +221,9 @@ namespace Remorse.Tools.RPGDatabase.Window
 
 
         /// <summary>
-        /// Create a texture from a sprite (Used for changing actors' images)
+        /// Create a Texture From a Sprite (To Change Actors' Images)
         /// </summary>
-        /// <param name="sprite">the sprite that wants to be converted into texture</param>
+        /// <param name="sprite">The Sprite Which Will Be Converted To Texture</param>
         /// <returns></returns>
         public Texture2D SpriteToTexture(Sprite sprite)
         {
@@ -227,6 +242,13 @@ namespace Remorse.Tools.RPGDatabase.Window
                 return sprite.texture;
         }
 
+        /// <summary>
+        /// Load Scriptable Objects' Data From Folder
+        /// </summary>
+        /// <typeparam name="GameData"></typeparam>
+        /// <param name="dataSize">Current Data Amount</param>
+        /// <param name="listTabData">The List that Will Be Updated Later</param>
+        /// <param name="dataPath">Folder Path</param>
         public void LoadGameData<GameData>(ref int dataSize, List<GameData> listTabData, string dataPath) where GameData : ScriptableObject
         {
             GameData[] list = Resources.LoadAll<GameData>(dataPath);
@@ -239,12 +261,12 @@ namespace Remorse.Tools.RPGDatabase.Window
         }
 
         /// <summary>
-        /// Remove name duplicates using function from a list
+        /// Remove Name Duplicates Using Function From List
         /// </summary>
-        /// <param name="lastIndex">last item index to be checked using for loop</param>
-        /// <param name="currentIndex">current item index in the list.</param>
-        /// /// <param name="currentName">the last name changed by user.</param>
-        /// /// <param name="names">list of item that you want to check.</param>
+        /// <param name="lastIndex">Last Index To Be Checked</param>
+        /// <param name="currentIndex">Current Data Index</param>
+        /// /// <param name="currentName">Current Data Name</param>
+        /// /// <param name="names">Name List</param>
         public string RemoveDuplicates(int lastIndex, int currentIndex, string currentName, List<string> names)
         {
             names[currentIndex] = currentName;
@@ -275,9 +297,9 @@ namespace Remorse.Tools.RPGDatabase.Window
         /// and click Change Maximum button in Editor, it will update
         /// and change the size while creating new data.
         /// </summary>
-        /// <param name="size">get size from actorSize</param>
-        /// <param name="listTabData">list of item that you want to display.</param>
-        /// <param name="dataTabName">get size from actorSize</param>
+        /// <param name="size">Get Size from dataSize</param>
+        /// <param name="listTabData">List of Item that You Want to Display.</param>
+        /// <param name="dataTabName">Get Size From dataSize</param>
         public void ChangeMaximum<GameData>(int dataSize, List<GameData> listTabData, string dataPath) where GameData : ScriptableObject
         {
             int counter = listTabData.Count;
@@ -304,12 +326,21 @@ namespace Remorse.Tools.RPGDatabase.Window
             }
         }
 
+        /// <summary>
+        /// File Filter
+        /// </summary>
         ExtensionFilter[] fileExtensions = new[] {
                 new ExtensionFilter("Image Files", "png", "jpg", "jpeg" ),
                 new ExtensionFilter("Sound Files", "mp3", "wav" ),
                 new ExtensionFilter("All Files", "*" ),
         };
 
+        /// <summary>
+        /// Sprite Slicer into NxN Size
+        /// </summary>
+        /// <param name="assetPath">Current Sprite Path</param>
+        /// <param name="sliceWidth">Slice Width</param>
+        /// <param name="sliceHeight">Slice Height</param>
         public void SliceSprite(string[] assetPath, int sliceWidth, int sliceHeight)
         {
             int findResourcesPath = assetPath[0].IndexOf("Assets", 0, assetPath[0].Length);
@@ -332,7 +363,7 @@ namespace Remorse.Tools.RPGDatabase.Window
                     smd.alignment = 9;
                     smd.name = myTexture.name + "_" + (i / sliceWidth);
                     smd.rect = new Rect(i, j - sliceHeight, sliceWidth, sliceHeight);
-
+                    
                     newData.Add(smd);
                 }
             }
@@ -346,7 +377,61 @@ namespace Remorse.Tools.RPGDatabase.Window
             }
         }
 
-        public Sprite ImageChanger(int index, string panelName, string assetPath)
+        /// <summary>
+        /// Create Animation File
+        /// </summary>
+        /// <param name="spritePath">Path of The Sprite To Be Added In The Animation</param>
+        /// <param name="fps">FPS in Animation</param>
+        /// <param name="animCreatePath">Location To Create The Animator</param>
+        /// <param name="spriteName">Sprite Property Name</param>
+        public void AnimationCreator(string spritePath, int fps, string animCreatePath, string spriteName)
+        {
+            Sprite[] sprites = Resources.LoadAll<Sprite>(spritePath); // load all sprites in "assets/Resources/sprite" folder
+            AnimationClip animClip = new AnimationClip();
+            animClip.frameRate = fps;
+            EditorCurveBinding spriteBinding = new EditorCurveBinding();
+            spriteBinding.type = typeof(SpriteRenderer);
+            spriteBinding.path = "";
+            spriteBinding.propertyName = spriteName;
+            ObjectReferenceKeyframe[] spriteKeyFrames = new ObjectReferenceKeyframe[sprites.Length];
+            for (int i = 0; i < (sprites.Length); i++)
+            {
+                spriteKeyFrames[i] = new ObjectReferenceKeyframe();
+                spriteKeyFrames[i].time = i / (11.99999976f);
+                spriteKeyFrames[i].value = sprites[i];
+
+                AnimationUtility.SetObjectReferenceCurve(animClip, spriteBinding, spriteKeyFrames);
+                AssetDatabase.CreateAsset(animClip, animCreatePath);
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
+            }
+        }
+
+        /// <summary>
+        /// Create Controller
+        /// </summary>
+        /// <param name="animationPath">Path of The Animation To Be Added In The Controller</param>
+        /// <param name="controllerCreatePath">Location To Create The Animator</param>
+        public void ControllerCreator(string animationPath, string controllerCreatePath)
+        {
+            AnimationClip animClip = Resources.Load<AnimationClip>(animationPath);
+            // Creates the controller
+            var controller = UnityEditor.Animations.AnimatorController.CreateAnimatorControllerAtPath(controllerCreatePath);
+
+            AnimatorState emptyState = new AnimatorState();
+
+            emptyState.name = "Main State";
+            var stateComponent = controller.layers[0].stateMachine.AddState(emptyState.name);
+            stateComponent.motion = animClip;
+        }
+
+        /// <summary>
+        /// Image Importer
+        /// </summary>
+        /// <param name="panelName">Up Left Corner Window Name</param>
+        /// <param name="assetPath">Data Path</param>
+        /// <returns></returns>
+        public Sprite ImageChanger(string panelName, string assetPath)
         {
             string[] rawPath = StandaloneFileBrowser.OpenFilePanel(panelName, assetPath, fileExtensions, false);
 

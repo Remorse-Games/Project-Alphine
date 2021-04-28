@@ -294,7 +294,6 @@ namespace Remorse.Tools.RPGDatabase.Window
                                     if (GUILayout.Button("Edit Image", GUILayout.Height(20), GUILayout.Width(generalBox.width / 2 - 15))) // Image changer Button
                                     {
                                         enemy[index].Image = ImageChanger(
-                                        index,
                                         "Choose Image",
                                         "Assets/Resources/Image"
                                         );
