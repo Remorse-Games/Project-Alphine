@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Remorse.Math
+namespace Remorse.Utility
 {
 
     public static class Math
@@ -18,9 +18,9 @@ namespace Remorse.Math
         public static Vector3 GetPositionByAngle(float angle, float radius, float y = 0)
         {
             return new Vector3(
-                Mathf.Sin(angle) * radius,
+                Mathf.Sin(angle * Mathf.Deg2Rad) * radius,
                 y,
-                Mathf.Cos(angle) * radius
+                Mathf.Cos(angle * Mathf.Deg2Rad) * radius
             );
         }
 
