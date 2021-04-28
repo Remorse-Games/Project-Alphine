@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using Remorse.Utility;
 
 namespace Remorse.AI
 {
@@ -76,11 +77,11 @@ namespace Remorse.AI
 
                 for (int i = 0; i < 36; i++)
                 {
-                    float deg = defaultDeg * i * Mathf.Deg2Rad;
-                    float nextDeg = defaultDeg * (i == 36 ? 0 : i + 1) * Mathf.Deg2Rad;
+                    float deg = defaultDeg * i;
+                    float nextDeg = defaultDeg * (i == 36 ? 0 : i + 1);
 
-                    Vector3 pos = Math.Math.GetPositionByAngle(deg, radius, -0.5f);
-                    Vector3 nextPos = Math.Math.GetPositionByAngle(nextDeg, radius, -0.5f);
+                    Vector3 pos = Math.GetPositionByAngle(deg, radius, -0.5f);
+                    Vector3 nextPos = Math.GetPositionByAngle(nextDeg, radius, -0.5f);
 
                     Gizmos.DrawLine(pos + transform.position, nextPos + transform.position);
                 }
@@ -88,8 +89,8 @@ namespace Remorse.AI
                 // draw FOV
                 defaultDeg = fov / 2;
 
-                Vector3 rPos = Math.Math.GetPositionByAngle(Mathf.Deg2Rad * defaultDeg, radius, -0.5f);
-                Vector3 lPos = Math.Math.GetPositionByAngle(Mathf.Deg2Rad * (360 - defaultDeg), radius, -0.5f);
+                Vector3 rPos = Math.GetPositionByAngle(defaultDeg, radius, -0.5f);
+                Vector3 lPos = Math.GetPositionByAngle(360 - defaultDeg, radius, -0.5f);
 
                 Vector3 center = new Vector3(0, -0.5f, 0) + transform.position;
 
