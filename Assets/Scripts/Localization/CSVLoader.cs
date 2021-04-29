@@ -17,7 +17,8 @@ namespace Remorse.Localize
         private string csvPath = "Assets/Resources/Data/LocalizationData/localizations.csv";
         string[] CSVDump;
         Regex CSVParser = new Regex(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
-        List<List<string>> CSV;
+
+        static List<List<string>> CSV;
 
         public void LoadCSV()
         {
@@ -64,6 +65,14 @@ namespace Remorse.Localize
             }
 
             return dictionary;
+        }
+        public string getCSVPath()
+        {
+            return csvPath;
+        }
+        public List<List<string>> getListCSV()
+        {
+            return CSV;
         }
 
         public void Add(string key, string[] values)
@@ -126,6 +135,7 @@ namespace Remorse.Localize
                 headers[i] = headers[i].TrimStart(' ', surround);
                 headers[i] = headers[i].TrimEnd('\r', surround);
             }
+            
 
             return headers;
         }
