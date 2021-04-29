@@ -43,12 +43,16 @@ public class LocalizationEditor : EditorWindow
     {
         GUILayout.BeginHorizontal();
         GUILayout.Label("Language");
-        if(GUILayout.Button("Add", GUILayout.Width(50)))
+
+        Color tempColor1 = GUI.backgroundColor;
+        GUI.backgroundColor = Color.green;
+        if (GUILayout.Button("Add", GUILayout.Width(50)))
         {
             state = State.Add;
             newLanguage = "";
             index = 0;
         }
+        GUI.backgroundColor = tempColor1;
         GUILayout.EndHorizontal();
 
         scrollPos = EditorGUILayout.BeginScrollView(scrollPos, GUILayout.Height(100));
@@ -59,20 +63,26 @@ public class LocalizationEditor : EditorWindow
         switch (state)
         {
             case State.Add:
+                tempColor1 = GUI.backgroundColor;
+                GUI.backgroundColor = Color.green;
                 if (GUILayout.Button("Add New Language"))
                 {
                     Init();
                     localizationLanguage.AddLanguage(newLanguage);
                     Init();
                 }
+                GUI.backgroundColor = tempColor1;
                 break;
             case State.Edit:
+                tempColor1 = GUI.backgroundColor;
+                GUI.backgroundColor = Color.magenta;
                 if (GUILayout.Button("Edit"))
                 {
                     Init();
                     localizationLanguage.EditLanguage(index, newLanguage);
                     Init();
                 }
+                GUI.backgroundColor = tempColor1;
                 break;
         }    
     }
@@ -98,6 +108,8 @@ public class LocalizationEditor : EditorWindow
                 state = State.Edit;
             }
 
+            Color tempColor1 = GUI.backgroundColor;
+            GUI.backgroundColor = Color.red;
             if (GUILayout.Button("Delete", GUILayout.Height(20), GUILayout.Width(50)))
             {
                 Init();
@@ -107,6 +119,7 @@ public class LocalizationEditor : EditorWindow
                 newLanguage = "";
                 index = 0;
             }
+            GUI.backgroundColor = tempColor1;
             GUILayout.EndHorizontal();
         }
     }
