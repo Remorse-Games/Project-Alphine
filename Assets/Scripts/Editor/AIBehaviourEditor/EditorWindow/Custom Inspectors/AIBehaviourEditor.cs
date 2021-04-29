@@ -206,8 +206,6 @@ namespace Remorse.AI
                         pointIndex = lastPointIndex == pointIndex ? -1 : lastPointIndex;
 
                         clickTimer = 0.1f;
-
-                        Debug.Log("test");
                     }
                 }
 
