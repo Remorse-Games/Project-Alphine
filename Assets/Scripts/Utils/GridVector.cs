@@ -16,7 +16,7 @@ namespace Remorse.Utility
 
         public float y
         {
-            get { return Mathf.Round(_y); }
+            get { return _y; }
         }
 
         public float z
@@ -86,9 +86,9 @@ namespace Remorse.Utility
             return new GridVector(a.origin.x / b.x, a.origin.y / b.y, a.origin.z / b.z);
         }
 
-        public static GridVector operator +(GridVector a, Vector2 b) => new GridVector(a.origin.x + b.x, 0, a.origin.z + b.y);
-        public static GridVector operator -(GridVector a, Vector2 b) => new GridVector(a.origin.x - b.x, 0, a.origin.z - b.y);
-        public static GridVector operator *(GridVector a, Vector2 b) => new GridVector(a.origin.x * b.x, 0, a.origin.z * b.y);
+        public static GridVector operator +(GridVector a, Vector2 b) => new GridVector(a.origin.x + b.x, a.origin.y, a.origin.z + b.y);
+        public static GridVector operator -(GridVector a, Vector2 b) => new GridVector(a.origin.x - b.x, a.origin.y, a.origin.z - b.y);
+        public static GridVector operator *(GridVector a, Vector2 b) => new GridVector(a.origin.x * b.x, a.origin.y, a.origin.z * b.y);
         public static GridVector operator /(GridVector a, Vector2 b)
         {
             if (b.x == 0 || b.y == 0)
@@ -96,11 +96,14 @@ namespace Remorse.Utility
                 throw new DivideByZeroException();
             }
 
-            return new GridVector(a.origin.x / b.x, 0, a.origin.z / b.y);
+            return new GridVector(a.origin.x / b.x, a.origin.y, a.origin.z / b.y);
         }
 
         public static implicit operator Vector3(GridVector grid) => new Vector3(grid.x, grid.y, grid.z);
         public static implicit operator Vector2(GridVector grid) => new Vector2(grid.x, grid.z);
+
+        public static implicit operator GridVector(Vector3 pos) => new GridVector(pos);
+        public static implicit operator GridVector(Vector2 pos) => new GridVector(pos);
 
         public override string ToString()
         {
