@@ -54,6 +54,25 @@ namespace Remorse.Tools.RPGDatabase.Window
         }
 
         /// <summary>
+        /// Create GameObject that can be played
+        /// </summary>
+        /// <param name="mainSprite">Sprite Thumbnail For The GameObject</param>
+        /// <param name="gameObjectName">Game Object Name in Hierarchy</param>
+        /// <param name="controllerPath">The Loaded Controller Path</param>
+        public void GameObjectForAnimationCreator(Sprite mainSprite, string gameObjectName, string controllerPath)
+        {
+            AnimatorController animatorController = Resources.Load<AnimatorController>(controllerPath);
+
+            GameObject objToSpawn;
+            objToSpawn = new GameObject(gameObjectName);
+            //Add Components
+            objToSpawn.AddComponent<SpriteRenderer>();
+            objToSpawn.GetComponent<SpriteRenderer>().sprite = mainSprite;
+            objToSpawn.AddComponent<Animator>();
+            objToSpawn.GetComponent<Animator>().runtimeAnimatorController = animatorController;
+        }
+
+        /// <summary>
         /// Create Folder For RPG Scriptable Objects' Data
         /// </summary>
         /// <param name="dataSize">Current Folder Amount</param>
