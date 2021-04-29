@@ -11,20 +11,17 @@ namespace Remorse.Utility
 
         public float x
         {
-            get { return _x; }
-            set
-            {
-                _x = Mathf.Round(value);
-            }
+            get { return Mathf.Round(_x); }
         }
 
         public float y
         {
-            get { return _y; }
-            set
-            {
-                _y = Mathf.Round(value);
-            }
+            get { return Mathf.Round(_y); }
+        }
+
+        public Vector2 origin
+        {
+            get { return new Vector2(_x, _y); }
         }
 
         public GridVector()
@@ -34,34 +31,21 @@ namespace Remorse.Utility
 
         public GridVector(float x, float y)
         {
-            _x = Mathf.Round(x);
-            _y = Mathf.Round(y);
+            _x = x;
+            _y = y;
         }
 
         public GridVector(Vector2 pos)
         {
-            _x = Mathf.Round(pos.x);
-            _y = Mathf.Round(pos.y);
+            _x = pos.x;
+            _y = pos.y;
         }
 
         public GridVector(Vector3 pos)
         {
-            _x = Mathf.Round(pos.x);
-            _y = Mathf.Round(pos.y);
+            _x = pos.x;
+            _y = pos.y;
         }
-
-        public Vector3 ToVector3()
-        {
-            return new Vector3(_x, 0, _y);
-        }
-
-        public Vector2 ToVector2()
-        {
-            return new Vector3(_x, _y);
-        }
-
-        public static implicit operator Vector3(GridVector grid) => new Vector3(grid.x, 0, grid.y);
-        public static implicit operator Vector2(GridVector grid) => new Vector2(grid.x, grid.y);
 
         public static GridVector operator +(GridVector a, GridVector b) => new GridVector(a.x + b.x, a.y + b.y);
         public static GridVector operator -(GridVector a, GridVector b) => new GridVector(a.x - b.x, a.y - b.y);
@@ -76,9 +60,38 @@ namespace Remorse.Utility
             return new GridVector(a.x / b.x, a.y / b.y);
         }
 
+        public static GridVector operator +(GridVector a, Vector3 b) => new GridVector(a.origin.x + b.x, a.origin.y + b.z);
+        public static GridVector operator -(GridVector a, Vector3 b) => new GridVector(a.origin.x - b.x, a.origin.y - b.z);
+        public static GridVector operator *(GridVector a, Vector3 b) => new GridVector(a.origin.x * b.x, a.origin.y * b.z);
+        public static GridVector operator /(GridVector a, Vector3 b)
+        {
+            if (b.x == 0 || b.y == 0)
+            {
+                throw new DivideByZeroException();
+            }
+
+            return new GridVector(a.origin.x / b.x, a.origin.y / b.z);
+        }
+
+        public static GridVector operator +(GridVector a, Vector2 b) => new GridVector(a.origin + b);
+        public static GridVector operator -(GridVector a, Vector2 b) => new GridVector(a.origin - b);
+        public static GridVector operator *(GridVector a, Vector2 b) => new GridVector(a.origin.x * b.x, a.origin.y * b.y);
+        public static GridVector operator /(GridVector a, Vector2 b)
+        {
+            if (b.x == 0 || b.y == 0)
+            {
+                throw new DivideByZeroException();
+            }
+
+            return new GridVector(a.origin.x / b.x, a.origin.y / b.y);
+        }
+
+        public static implicit operator Vector3(GridVector grid) => new Vector3(grid.x, 0, grid.y);
+        public static implicit operator Vector2(GridVector grid) => new Vector2(grid.x, grid.y);
+
         public override string ToString()
         {
-            return string.Format("({0}, {1})", _x, _y);
+            return string.Format("({0}, {1})", x, y);
         }
     }
 
