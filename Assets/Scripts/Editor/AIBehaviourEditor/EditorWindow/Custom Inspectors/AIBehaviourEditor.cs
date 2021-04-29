@@ -178,6 +178,7 @@ namespace Remorse.AI
                         Vector3 point = hit.point;
                         myTarget.patrolArea[pointIndex] = new GridVector(
                             point.x,
+                            point.y,
                             point.z
                         );
                     }
@@ -189,7 +190,7 @@ namespace Remorse.AI
 
                         Vector3 point = new Vector3(
                             Mathf.Round(hit.point.x),
-                            hit.point.y,
+                            Mathf.Round(hit.point.y),
                             Mathf.Round(hit.point.z)
                         );
 
@@ -205,6 +206,8 @@ namespace Remorse.AI
                         pointIndex = lastPointIndex == pointIndex ? -1 : lastPointIndex;
 
                         clickTimer = 0.1f;
+
+                        Debug.Log("test");
                     }
                 }
 
