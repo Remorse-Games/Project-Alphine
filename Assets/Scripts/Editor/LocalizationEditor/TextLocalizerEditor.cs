@@ -10,6 +10,10 @@ namespace RemorseEditor.Localization
         public static List<string> languages;
         public static CSVLoader csvLoader = new CSVLoader();
         Vector2 scrollPos;
+
+        public string key;
+        string[] values = new string[languages.Count - 1];
+
         public static void Open(string key)
         {
             csvLoader.LoadCSV();
@@ -20,10 +24,12 @@ namespace RemorseEditor.Localization
             window.titleContent = new GUIContent("Localizer Window");
             window.ShowUtility();
             window.key = key;
-        }
 
-        public string key;
-        string[] values = new string[languages.Count - 1];
+            for (int i = 1; i < languages.Count; i++)
+            {
+                csvLoader.GetDictionaryValues(languages[i]).TryGetValue(key, out window.values[i - 1]);
+            }
+        }
 
         public void OnGUI()
         {

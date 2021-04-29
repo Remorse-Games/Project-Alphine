@@ -14,14 +14,15 @@ namespace Remorse.Localize
         private char surround = '"';
         private string[] fieldSeparator = { "\",\"" };
 
-        private string csvPath = "Assets/Resources/Data/LocalizationData/localization.csv";
+        private string csvPath = "Assets/Resources/Data/LocalizationData/localizations.csv";
         string[] CSVDump;
         Regex CSVParser = new Regex(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
-        List<List<string>> CSV;
+
+        static List<List<string>> CSV;
 
         public void LoadCSV()
         {
-            csvFile = Resources.Load<TextAsset>("Data/LocalizationData/localization");
+            csvFile = Resources.Load<TextAsset>("Data/LocalizationData/localizations");
             CSVDump = File.ReadAllLines(csvPath);
             CSV = CSVDump.Select(x => CSVParser.Split(x).ToList()).ToList();
         }
@@ -65,6 +66,14 @@ namespace Remorse.Localize
 
             return dictionary;
         }
+        public string getCSVPath()
+        {
+            return csvPath;
+        }
+        public List<List<string>> getListCSV()
+        {
+            return CSV;
+        }
 
         public void Add(string key, string[] values)
         {
@@ -106,7 +115,6 @@ namespace Remorse.Localize
                 newLines = lines.Where(w => w != lines[index]).ToArray();
                
                 string replaced = string.Join(lineSeparator.ToString(), newLines);
-                Debug.Log(replaced);
                 File.WriteAllText(csvPath, replaced);
             }
         }
@@ -127,6 +135,7 @@ namespace Remorse.Localize
                 headers[i] = headers[i].TrimStart(' ', surround);
                 headers[i] = headers[i].TrimEnd('\r', surround);
             }
+            
 
             return headers;
         }
@@ -146,7 +155,9 @@ namespace Remorse.Localize
                 CSV[i].Insert(CSV[i].Count, "\"\"");
             }
 
-            File.WriteAllLines(csvPath, CSV.Select(x => string.Join(",", x)));
+            string allLines = InsertAllLines(CSV);
+
+            File.WriteAllText(csvPath, allLines);
 #if UNITY_EDITOR
             AssetDatabase.Refresh();
 #endif
@@ -159,7 +170,9 @@ namespace Remorse.Localize
                 CSV[i].RemoveAt(langguageIndex);
             }
 
-            File.WriteAllLines(csvPath, CSV.Select(x => string.Join(",", x)));
+            string allLines = InsertAllLines(CSV);
+
+            File.WriteAllText(csvPath, allLines);
 #if UNITY_EDITOR
             AssetDatabase.Refresh();
 #endif
@@ -175,10 +188,32 @@ namespace Remorse.Localize
 
             CSV[0][langguageIndex] = string.Format("\"{0}\"", newLanguage);
 
-            File.WriteAllLines(csvPath, CSV.Select(x => string.Join(",", x)));
+            string allLines = InsertAllLines(CSV);
+
+            File.WriteAllText(csvPath, allLines);
 #if UNITY_EDITOR
             AssetDatabase.Refresh();
 #endif
+        }
+
+        private string InsertAllLines(List<List<string>> CSV)
+        {
+            List<string> csvLines = CSV.Select(x => string.Join(",", x)).ToList();
+
+            string allLines = "";
+
+            foreach (string line in csvLines)
+            {
+                if (csvLines.IndexOf(line) == csvLines.Count - 1)
+                {
+                    allLines += line;
+                    continue;
+                }
+
+                allLines += line + "\n";
+            }
+
+            return allLines;
         }
     }
 }
