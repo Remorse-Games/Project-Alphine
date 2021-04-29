@@ -387,6 +387,10 @@ namespace Remorse.Tools.RPGDatabase.Window
         public void AnimationCreator(string spritePath, int fps, string animCreatePath, string spriteName)
         {
             Sprite[] sprites = Resources.LoadAll<Sprite>(spritePath);
+            if (sprites == null)
+            {
+                Debug.LogError("File Not Found!\nCheck Path / File Extension (sprite)");
+            }
             AnimationClip animClip = new AnimationClip();
             animClip.frameRate = fps;
             EditorCurveBinding spriteBinding = new EditorCurveBinding();
@@ -415,6 +419,11 @@ namespace Remorse.Tools.RPGDatabase.Window
         public void ControllerCreator(string animationPath, string controllerCreatePath)
         {
             AnimationClip animClip = Resources.Load<AnimationClip>(animationPath);
+            if (animClip == null)
+            {
+                Debug.LogError("File Not Found!\nCheck Path / File Extension (anim)");
+            }
+
             // Creates the controller
             var controller = UnityEditor.Animations.AnimatorController.CreateAnimatorControllerAtPath(controllerCreatePath);
 
@@ -452,7 +461,7 @@ namespace Remorse.Tools.RPGDatabase.Window
 
                 if (imageChosen == null)
                 {
-                    Debug.LogError("File did not found! Try to check path/file extension.");
+                    Debug.LogError("File Not Found!\nCheck Path / File Extension (sprite)");
                 }
                 return imageChosen;
             }
