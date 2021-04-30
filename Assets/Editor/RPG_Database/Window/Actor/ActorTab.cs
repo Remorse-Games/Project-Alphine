@@ -396,6 +396,9 @@ namespace Remorse.Tools.RPGDatabase.Window
                                         );
                                         ItemTabLoader(index);
                                         SliceSprite(sliceSpritePath, 64, 64);
+                AnimationCreator("sprites", 25, "Assets/Resources/sprites/Mai.anim");
+                ControllerCreator("sprites/Mai", "Assets/Resources/sprites/asfd.controller");
+                GameObjectForAnimationCreator(actor[index].characterWorld, "Random", "sprites/asfd");
                                 }
                                 GUI.backgroundColor = tempColor2;
                             GUILayout.EndVertical();

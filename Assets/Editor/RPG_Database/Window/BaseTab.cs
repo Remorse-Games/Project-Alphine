@@ -403,7 +403,7 @@ namespace Remorse.Tools.RPGDatabase.Window
         /// <param name="fps">FPS in Animation</param>
         /// <param name="animCreatePath">Location To Create The Animator ["Assets/Resources/..."]</param>
         /// <param name="spriteName">Sprite Property Name</param>
-        public void AnimationCreator(string spritePath, int fps, string animCreatePath, string spriteName)
+        public void AnimationCreator(string spritePath, int fps, string animCreatePath)
         {
             Sprite[] sprites = Resources.LoadAll<Sprite>(spritePath);
             if (sprites == null)
@@ -415,25 +415,31 @@ namespace Remorse.Tools.RPGDatabase.Window
             EditorCurveBinding spriteBinding = new EditorCurveBinding();
             spriteBinding.type = typeof(SpriteRenderer);
             spriteBinding.path = "";
-            spriteBinding.propertyName = spriteName;
+            spriteBinding.propertyName = "m_Sprite";
             ObjectReferenceKeyframe[] spriteKeyFrames = new ObjectReferenceKeyframe[sprites.Length];
             for (int i = 0; i < (sprites.Length); i++)
             {
                 spriteKeyFrames[i] = new ObjectReferenceKeyframe();
-                spriteKeyFrames[i].time = i / (11.99999976f);
+                spriteKeyFrames[i].time = (float)i / animClip.frameRate; //TIME?
                 spriteKeyFrames[i].value = sprites[i];
+            }
 
-                AnimationUtility.SetObjectReferenceCurve(animClip, spriteBinding, spriteKeyFrames);
+            AnimationClipSettings animClipSettings = new AnimationClipSettings();
+            animClipSettings.loopTime = true;
+
+            AnimationUtility.SetAnimationClipSettings(animClip, animClipSettings);
+
+            AnimationUtility.SetObjectReferenceCurve(animClip, spriteBinding, spriteKeyFrames);
                 AssetDatabase.CreateAsset(animClip, animCreatePath);
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh();
-            }
+            
         }
 
         /// <summary>
         /// Create Controller
         /// </summary>
-        /// <param name="animationPath">Path of The Animation To Be Added In The Controller [Takes only "sprite" from (Assets/Resources/sprite)]</param>
+        /// <param name="animationPath">Path of The Animation To Be Added In The Controller</param>
         /// <param name="controllerCreatePath">Location To Create The Animator</param>
         public void ControllerCreator(string animationPath, string controllerCreatePath)
         {
