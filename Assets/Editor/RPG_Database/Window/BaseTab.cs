@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEditor.Animations;
 using System.IO;
 using SFB;
+using System;
 
 /*BASE TAB v 1.0
  * This base tab used for base tabbing, so we won't use
@@ -369,7 +370,11 @@ namespace Remorse.Tools.RPGDatabase.Window
             Texture2D myTexture = (Texture2D)AssetDatabase.LoadAssetAtPath<Texture2D>(relativePath);
 
             string path = AssetDatabase.GetAssetPath(myTexture);
-            TextureImporter ti = AssetImporter.GetAtPath(path) as TextureImporter;
+            string outputPath = path.Split(new string[] { myTexture.name }, StringSplitOptions.None)[0] + "sliced/" + myTexture.name + ".png";
+
+            AssetDatabase.CopyAsset(path, outputPath);
+
+            TextureImporter ti = AssetImporter.GetAtPath(outputPath) as TextureImporter;
             ti.isReadable = true;
             List<SpriteMetaData> newData = new List<SpriteMetaData>();
 
@@ -386,13 +391,14 @@ namespace Remorse.Tools.RPGDatabase.Window
                     newData.Add(smd);
                 }
             }
+
             ti.spritesheet = newData.ToArray();
-            AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceUpdate);
+            AssetDatabase.ImportAsset(outputPath, ImportAssetOptions.ForceUpdate);
 
             if (ti.spriteImportMode == SpriteImportMode.Single)
             {
                 ti.spriteImportMode = SpriteImportMode.Multiple;
-                AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceUpdate);
+                AssetDatabase.ImportAsset(outputPath, ImportAssetOptions.ForceUpdate);
             }
         }
 
