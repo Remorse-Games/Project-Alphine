@@ -396,8 +396,8 @@ namespace Remorse.Tools.RPGDatabase.Window
                                         );
                                         ItemTabLoader(index);
                 SliceSprite(sliceSpritePath, 64, 64); // The Sprite Slicing Must Be Into Another Folder, So That The Original File
-                                                        // Won't Be Affected
-                AnimationCreator("sprites", 25, "Assets/Resources/sprites/Mai.anim");
+                                                      // Won't Be Affected
+                AnimationCreator("sprites", 60, "Assets/Resources/sprites/Mai.anim");
                                                         // AnimationCreator() Takes The Sprite From The SliceSprite Folder
                 //ControllerCreator("sprites/Mai", "Assets/Resources/sprites/asfd.controller");
                 //Change Controller Create Path at The Animation Creator Function

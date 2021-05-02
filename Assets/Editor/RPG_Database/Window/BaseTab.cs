@@ -370,8 +370,6 @@ namespace Remorse.Tools.RPGDatabase.Window
             TextureImporter ti = AssetImporter.GetAtPath(path) as TextureImporter;
             ti.isReadable = true;
             List<SpriteMetaData> newData = new List<SpriteMetaData>();
-
-            Sprite[] temp = new Sprite[myTexture.width/sliceWidth + 2];
             for (int i = 0; i < myTexture.width; i += sliceWidth)
             {
                 Vector2 a = new Vector2();
@@ -387,7 +385,6 @@ namespace Remorse.Tools.RPGDatabase.Window
                     a = smd.pivot;
                     b = smd.rect;
                 }
-                temp[i / sliceWidth] = Sprite.Create(myTexture, b, a);
             }
 
             ti.spritesheet = newData.ToArray();
@@ -399,10 +396,6 @@ namespace Remorse.Tools.RPGDatabase.Window
                 AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceUpdate);
             }
 
-
-            AssetDatabase.CreateAsset(temp[0], "Assets/Resources/Rand/0.png");
-            AssetDatabase.CreateAsset(temp[1], "Assets/Resources/Rand/1.png");
-            AssetDatabase.CreateAsset(temp[2], "Assets/Resources/Rand/2.png");
         }
 
         /// <summary>
@@ -413,7 +406,8 @@ namespace Remorse.Tools.RPGDatabase.Window
         /// <param name="animCreatePath">Location To Create The Animator ["Assets/Resources/..."]</param>
         public void AnimationCreator(string spritePath, int fps, string animCreatePath)
         {
-            Sprite[] sprites = Resources.LoadAll<Sprite>(spritePath);
+            Object[] sprites = Resources.LoadAll<Sprite>("Image/kiri idle");
+            Debug.Log("MMM:" + sprites.Length);
             if (sprites == null)
             {
                 Debug.LogError("File Not Found!\nCheck Path / File Extension (sprite)");
