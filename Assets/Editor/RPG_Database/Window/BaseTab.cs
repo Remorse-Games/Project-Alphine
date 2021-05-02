@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEditor.Animations;
 using System.IO;
 using SFB;
+using System;
 
 /*BASE TAB v 1.0
  * This base tab used for base tabbing, so we won't use
@@ -365,9 +366,13 @@ namespace Remorse.Tools.RPGDatabase.Window
             // Remove Path Until The First Index Of Assets
 
             Texture2D myTexture = Resources.Load<Texture2D>(assetPath);
-            Debug.Log(assetPath);
             string path = AssetDatabase.GetAssetPath(myTexture);
-            TextureImporter ti = AssetImporter.GetAtPath(path) as TextureImporter;
+            string outputPath = path.Split(new string[] { myTexture.name }, StringSplitOptions.None)[0] + "sliced/" + myTexture.name + "/" + myTexture.name + ".png";
+            string outputDirectory = outputPath.Split(new string[] { myTexture.name }, StringSplitOptions.None)[0] + myTexture.name + "/";
+            Directory.CreateDirectory(outputDirectory);
+            AssetDatabase.CopyAsset(path, outputPath);
+
+            TextureImporter ti = AssetImporter.GetAtPath(outputPath) as TextureImporter;
             ti.isReadable = true;
             List<SpriteMetaData> newData = new List<SpriteMetaData>();
             for (int i = 0; i < myTexture.width; i += sliceWidth)
@@ -388,12 +393,12 @@ namespace Remorse.Tools.RPGDatabase.Window
             }
 
             ti.spritesheet = newData.ToArray();
-            AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceUpdate);
+            AssetDatabase.ImportAsset(outputPath, ImportAssetOptions.ForceUpdate);
 
             if (ti.spriteImportMode == SpriteImportMode.Single)
             {
                 ti.spriteImportMode = SpriteImportMode.Multiple;
-                AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceUpdate);
+                AssetDatabase.ImportAsset(outputPath, ImportAssetOptions.ForceUpdate);
             }
 
         }
@@ -406,7 +411,7 @@ namespace Remorse.Tools.RPGDatabase.Window
         /// <param name="animCreatePath">Location To Create The Animator ["Assets/Resources/..."]</param>
         public void AnimationCreator(string spritePath, int fps, string animCreatePath)
         {
-            Object[] sprites = Resources.LoadAll<Sprite>("Image/kiri idle");
+            Sprite[] sprites = Resources.LoadAll<Sprite>("Image/kiri idle");
             Debug.Log("MMM:" + sprites.Length);
             if (sprites == null)
             {
@@ -490,12 +495,16 @@ namespace Remorse.Tools.RPGDatabase.Window
                 // remove the file extension.
                 string finalPath = relativePath.Remove(relativePath.Length - 4, 4);
 
-                ActorTab.sliceSpritePath = finalPath; // Give string to ActorTab to run SliceSprite()
+                ActorTab.sliceSpritePath = finalPath; // Give string to ActorTab to run SliceSprite
 
-                Sprite imageChosen = Resources.Load<Sprite>(finalPath);
-                AssetDatabase.CopyAsset("Assets/Resources/Image/kiri idle.png", "Assets/Resources/Data/ActorData/CharacterWorld/copy1.png");
-                imageChosen = Resources.Load<Sprite>("Data/ActorData/CharacterWorld/copy1");
+                string fileName = finalPath.Split(new string[] { @"Image\" }, StringSplitOptions.None)[1];
 
+                Directory.CreateDirectory("Assets/Resources/Data/ActorData/CharacterWorld/");
+                AssetDatabase.CopyAsset("Assets/Resources/" + finalPath + ".png", "Assets/Resources/Data/ActorData/CharacterWorld/" + fileName + ".png");
+
+                Debug.Log(fileName);
+
+                Sprite imageChosen = Resources.Load<Sprite>("Data/ActorData/CharacterWorld/" + fileName);
 
                 string path = AssetDatabase.GetAssetPath(imageChosen);
                 TextureImporter ti = AssetImporter.GetAtPath(path) as TextureImporter;
@@ -504,6 +513,7 @@ namespace Remorse.Tools.RPGDatabase.Window
                 ti.ReadTextureSettings(tiS);
                 ti.maxTextureSize = 128;
                 ti.SetTextureSettings(tiS);
+                ti.spriteImportMode = SpriteImportMode.Single;
                 AssetDatabase.WriteImportSettingsIfDirty(path);
                 AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceUpdate);
 
