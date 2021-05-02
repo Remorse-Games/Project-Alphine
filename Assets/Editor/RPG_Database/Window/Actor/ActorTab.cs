@@ -399,16 +399,10 @@ namespace Remorse.Tools.RPGDatabase.Window
                                 {
                                         actor[index].characterWorld = ImageChanger(
                                                     "Choose Character",
-                                                    "Assets/Resources/Image"
+                                                    "Assets/Resources/Image",
+                                                    "Data/ActorData/Image" + index + "/Character"
                                         );
                                         ItemTabLoader(index);
-                SliceSprite(sliceSpritePath, 64, 64); // The Sprite Slicing Must Be Into Another Folder, So That The Original File
-                                                      // Won't Be Affected
-                AnimationCreator("sprites", 60, "Assets/Resources/sprites/Mai.anim");
-                                                        // AnimationCreator() Takes The Sprite From The SliceSprite Folder
-                //ControllerCreator("sprites/Mai", "Assets/Resources/sprites/asfd.controller");
-                //Change Controller Create Path at The Animation Creator Function
-                GameObjectForAnimationCreator(actor[index].characterWorld, "Random", "sprites/asfd");
                                 }
                                 GUI.backgroundColor = tempColor2;
                             GUILayout.EndVertical();
@@ -423,10 +417,9 @@ namespace Remorse.Tools.RPGDatabase.Window
                                 {
                                         actor[index].battler = ImageChanger(
                                         "Choose Face", 
-                                        "Assets/Resources/Image" 
+                                        "Assets/Resources/Image"
                                         );
                                         ItemTabLoader(index);
-
                                 }
                                 GUI.backgroundColor = tempColor3;
                                 GUILayout.EndVertical();
@@ -575,12 +568,24 @@ namespace Remorse.Tools.RPGDatabase.Window
                         GUILayout.Space(notesBox.height / 50);
                         if (actorSize > 0)
                         {
-                            actor[index].notes = GUILayout.TextArea(actor[index].notes, GUILayout.Width(notesBox.width - 5), GUILayout.Height(notesBox.height * 0.9f));
+                            actor[index].notes = GUILayout.TextArea(actor[index].notes, GUILayout.Width(notesBox.width - 5), GUILayout.Height(notesBox.height * 0.7f));
                         }
                         else
                         {
-                            GUILayout.TextArea("Null", GUILayout.Width(notesBox.width - 5), GUILayout.Height(notesBox.height * 0.85f));
+                            GUILayout.TextArea("Null", GUILayout.Width(notesBox.width - 5), GUILayout.Height(notesBox.height * 0.7f));
                         }
+                        tempColor = GUI.backgroundColor;
+                        GUI.backgroundColor = Color.magenta;
+                        GUILayout.Space(notesBox.height * 0.02f);
+                        GUILayout.BeginHorizontal();
+                            if (GUILayout.Button("Build Character", GUILayout.Width(notesBox.width * 0.33f), GUILayout.Height(notesBox.height * 0.13f)))
+                            {
+                                SliceSprite(sliceSpritePath, 64, 64);
+                            }
+                            GUILayout.Space(notesBox.width * 0.48f);
+                        GUILayout.EndHorizontal();
+                        
+                        GUI.backgroundColor = tempColor;
                     GUILayout.EndArea();
                     #endregion //End of notebox area
             
@@ -680,11 +685,6 @@ namespace Remorse.Tools.RPGDatabase.Window
         {
             for (int i = 1; i <= size; i++)
             {
-                // FACES FOLDER
-                if(!AssetDatabase.IsValidFolder("Assets/Resources/Data/ActorData" + "/Image" + (i).ToString() + "/Faces"))
-                    AssetDatabase.CreateFolder("Assets/Resources/Data/ActorData/Image" + i.ToString(),
-                                            "Faces");
-
                 // CHARACTER FOLDER
                 if (!AssetDatabase.IsValidFolder("Assets/Resources/Data/ActorData" + "/Image" + (i).ToString() + "/Character"))
                     AssetDatabase.CreateFolder("Assets/Resources/Data/ActorData/Image" + i.ToString(),
