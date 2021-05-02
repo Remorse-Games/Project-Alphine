@@ -56,7 +56,7 @@ namespace Remorse.Tools.RPGDatabase.Window
         Texture2D characterImage;
         Texture2D battlerImage;
 
-        public static string[] sliceSpritePath;
+        public static string sliceSpritePath;
         #endregion
 
         #region TempValues
@@ -390,14 +390,17 @@ namespace Remorse.Tools.RPGDatabase.Window
                                 GUI.backgroundColor = Color.green;
                                 if (GUILayout.Button("Edit Character", GUILayout.Height(imageBox.height / 10), GUILayout.Width(imageBox.width / 3 - 10))) 
                                 {
-                                        actor[index].characterWorld = ImageChanger(     
-                                        "Choose Character",
-                                        "Assets/Resources/Image"
+                                        actor[index].characterWorld = ImageChanger(
+                                                    "Choose Character",
+                                                    "Assets/Resources/Image"
                                         );
                                         ItemTabLoader(index);
-                                        SliceSprite(sliceSpritePath, 64, 64);
+                SliceSprite(sliceSpritePath, 64, 64); // The Sprite Slicing Must Be Into Another Folder, So That The Original File
+                                                        // Won't Be Affected
                 AnimationCreator("sprites", 25, "Assets/Resources/sprites/Mai.anim");
-                ControllerCreator("sprites/Mai", "Assets/Resources/sprites/asfd.controller");
+                                                        // AnimationCreator() Takes The Sprite From The SliceSprite Folder
+                //ControllerCreator("sprites/Mai", "Assets/Resources/sprites/asfd.controller");
+                //Change Controller Create Path at The Animation Creator Function
                 GameObjectForAnimationCreator(actor[index].characterWorld, "Random", "sprites/asfd");
                                 }
                                 GUI.backgroundColor = tempColor2;

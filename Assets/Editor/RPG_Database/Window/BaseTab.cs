@@ -360,21 +360,22 @@ namespace Remorse.Tools.RPGDatabase.Window
         /// <param name="assetPath">Current Sprite Path ["Assets/Resources/..."]</param>
         /// <param name="sliceWidth">Slice Width</param>
         /// <param name="sliceHeight">Slice Height</param>
-        public void SliceSprite(string[] assetPath, int sliceWidth, int sliceHeight)
+        public void SliceSprite(string assetPath, int sliceWidth, int sliceHeight)
         {
-            int findResourcesPath = assetPath[0].IndexOf("Assets", 0, assetPath[0].Length);
-            string relativePath = assetPath[0].Remove(0, findResourcesPath);
             // Remove Path Until The First Index Of Assets
 
-            Texture2D myTexture = (Texture2D)AssetDatabase.LoadAssetAtPath<Texture2D>(relativePath);
-
+            Texture2D myTexture = Resources.Load<Texture2D>(assetPath);
+            Debug.Log(assetPath);
             string path = AssetDatabase.GetAssetPath(myTexture);
             TextureImporter ti = AssetImporter.GetAtPath(path) as TextureImporter;
             ti.isReadable = true;
             List<SpriteMetaData> newData = new List<SpriteMetaData>();
 
+            Sprite[] temp = new Sprite[myTexture.width/sliceWidth + 2];
             for (int i = 0; i < myTexture.width; i += sliceWidth)
             {
+                Vector2 a = new Vector2();
+                Rect b = new Rect();
                 for (int j = myTexture.height; j > 0; j -= sliceHeight)
                 {
                     SpriteMetaData smd = new SpriteMetaData();
@@ -382,10 +383,13 @@ namespace Remorse.Tools.RPGDatabase.Window
                     smd.alignment = 9;
                     smd.name = myTexture.name + "_" + (i / sliceWidth);
                     smd.rect = new Rect(i, j - sliceHeight, sliceWidth, sliceHeight);
-                    
                     newData.Add(smd);
+                    a = smd.pivot;
+                    b = smd.rect;
                 }
+                temp[i / sliceWidth] = Sprite.Create(myTexture, b, a);
             }
+
             ti.spritesheet = newData.ToArray();
             AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceUpdate);
 
@@ -394,6 +398,11 @@ namespace Remorse.Tools.RPGDatabase.Window
                 ti.spriteImportMode = SpriteImportMode.Multiple;
                 AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceUpdate);
             }
+
+
+            AssetDatabase.CreateAsset(temp[0], "Assets/Resources/Rand/0.png");
+            AssetDatabase.CreateAsset(temp[1], "Assets/Resources/Rand/1.png");
+            AssetDatabase.CreateAsset(temp[2], "Assets/Resources/Rand/2.png");
         }
 
         /// <summary>
@@ -402,7 +411,6 @@ namespace Remorse.Tools.RPGDatabase.Window
         /// <param name="spritePath">Path of The Sprite To Be Added In The Animation [Takes only "sprite" from (Assets/Resources/sprite)]</param>
         /// <param name="fps">FPS in Animation</param>
         /// <param name="animCreatePath">Location To Create The Animator ["Assets/Resources/..."]</param>
-        /// <param name="spriteName">Sprite Property Name</param>
         public void AnimationCreator(string spritePath, int fps, string animCreatePath)
         {
             Sprite[] sprites = Resources.LoadAll<Sprite>(spritePath);
@@ -433,7 +441,15 @@ namespace Remorse.Tools.RPGDatabase.Window
                 AssetDatabase.CreateAsset(animClip, animCreatePath);
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh();
-            
+
+            int findResourcesPath = animCreatePath.IndexOf("Resources", 0, animCreatePath.Length);
+            // relative path to the Resources folder.
+            // I added +10 because of the process to get the end of "Resources\"
+            // to get relative path directly even we had subfolder.
+            string relativePath = animCreatePath.Remove(0, findResourcesPath + 10);
+            // remove the file extension.
+            string finalPath = relativePath.Remove(relativePath.Length - 4, 4);
+            ControllerCreator(finalPath, "Assets/Resources/sprites/asfd.controller");
         }
 
         /// <summary>
@@ -457,6 +473,8 @@ namespace Remorse.Tools.RPGDatabase.Window
             emptyState.name = "Main State";
             var stateComponent = controller.layers[0].stateMachine.AddState(emptyState.name);
             stateComponent.motion = animClip;
+
+
         }
 
         /// <summary>
@@ -468,7 +486,6 @@ namespace Remorse.Tools.RPGDatabase.Window
         public Sprite ImageChanger(string panelName, string assetPath)
         {
             string[] rawPath = StandaloneFileBrowser.OpenFilePanel(panelName, assetPath, fileExtensions, false);
-
             if (rawPath.Length != 0)
             {
                 int findResourcesPath = rawPath[0].IndexOf("Resources", 0, rawPath[0].Length);
@@ -479,10 +496,22 @@ namespace Remorse.Tools.RPGDatabase.Window
                 // remove the file extension.
                 string finalPath = relativePath.Remove(relativePath.Length - 4, 4);
 
-                ActorTab.sliceSpritePath = rawPath; // Give string to ActorTab to run SliceSprite()
+                ActorTab.sliceSpritePath = finalPath; // Give string to ActorTab to run SliceSprite()
 
                 Sprite imageChosen = Resources.Load<Sprite>(finalPath);
-                // rawPath[0] = "D:Documents\Assets\ResourcesData\pict.png";
+                AssetDatabase.CopyAsset("Assets/Resources/Image/kiri idle.png", "Assets/Resources/Data/ActorData/CharacterWorld/copy1.png");
+                imageChosen = Resources.Load<Sprite>("Data/ActorData/CharacterWorld/copy1");
+
+
+                string path = AssetDatabase.GetAssetPath(imageChosen);
+                TextureImporter ti = AssetImporter.GetAtPath(path) as TextureImporter;
+                ti.isReadable = true;
+                TextureImporterSettings tiS = new TextureImporterSettings();
+                ti.ReadTextureSettings(tiS);
+                ti.maxTextureSize = 128;
+                ti.SetTextureSettings(tiS);
+                AssetDatabase.WriteImportSettingsIfDirty(path);
+                AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceUpdate);
 
                 if (imageChosen == null)
                 {
