@@ -56,7 +56,7 @@ namespace Remorse.Tools.RPGDatabase.Window
         Texture2D characterImage;
         Texture2D battlerImage;
 
-        public static string[] sliceSpritePath;
+        public static string sliceSpritePath;
         #endregion
 
         #region TempValues
@@ -103,6 +103,11 @@ namespace Remorse.Tools.RPGDatabase.Window
 
             //Create Folder For TraitsData and its sum is based on actorSize value
             FolderCreator(actorSize, "Assets/Resources/Data/ActorData", "TraitData");
+
+            
+            //Create Folder For TraitsData and its sum is based on actorSize value
+            FolderCreator(actorSize, "Assets/Resources/Data/ActorData", "Image");
+            ImageFolderCounter(actorSize);
 
             //Check if TraitsData_(index) is empty, if it is empty then create a SO named Trait_1
             if (traitSize[index] <= 0)
@@ -203,6 +208,8 @@ namespace Remorse.Tools.RPGDatabase.Window
                     {
                         index = indexTemp = 0;
                         FolderCreator(actorSizeTemp, "Assets/Resources/Data/ActorData", "TraitData");
+                        FolderCreator(actorSizeTemp, "Assets/Resources/Data/ActorData", "Image");
+                        ImageFolderCounter(actorSizeTemp);
                         ChangeMaximum<ActorData>(actorSizeTemp, actor, PathDatabase.ActorExplicitDataPath);
                     
                         //Remove Name Duplicates
@@ -390,15 +397,12 @@ namespace Remorse.Tools.RPGDatabase.Window
                                 GUI.backgroundColor = Color.green;
                                 if (GUILayout.Button("Edit Character", GUILayout.Height(imageBox.height / 10), GUILayout.Width(imageBox.width / 3 - 10))) 
                                 {
-                                        actor[index].characterWorld = ImageChanger(     
-                                        "Choose Character",
-                                        "Assets/Resources/Image"
+                                        actor[index].characterWorld = ImageChanger(
+                                                    "Choose Character",
+                                                    "Assets/Resources/Image",
+                                                    "Data/ActorData/Image" + index + "/Character"
                                         );
                                         ItemTabLoader(index);
-                                        SliceSprite(sliceSpritePath, 64, 64);
-                AnimationCreator("sprites", 25, "Assets/Resources/sprites/Mai.anim");
-                ControllerCreator("sprites/Mai", "Assets/Resources/sprites/asfd.controller");
-                GameObjectForAnimationCreator(actor[index].characterWorld, "Random", "sprites/asfd");
                                 }
                                 GUI.backgroundColor = tempColor2;
                             GUILayout.EndVertical();
@@ -413,10 +417,9 @@ namespace Remorse.Tools.RPGDatabase.Window
                                 {
                                         actor[index].battler = ImageChanger(
                                         "Choose Face", 
-                                        "Assets/Resources/Image" 
+                                        "Assets/Resources/Image"
                                         );
                                         ItemTabLoader(index);
-
                                 }
                                 GUI.backgroundColor = tempColor3;
                                 GUILayout.EndVertical();
@@ -565,12 +568,24 @@ namespace Remorse.Tools.RPGDatabase.Window
                         GUILayout.Space(notesBox.height / 50);
                         if (actorSize > 0)
                         {
-                            actor[index].notes = GUILayout.TextArea(actor[index].notes, GUILayout.Width(notesBox.width - 5), GUILayout.Height(notesBox.height * 0.9f));
+                            actor[index].notes = GUILayout.TextArea(actor[index].notes, GUILayout.Width(notesBox.width - 5), GUILayout.Height(notesBox.height * 0.7f));
                         }
                         else
                         {
-                            GUILayout.TextArea("Null", GUILayout.Width(notesBox.width - 5), GUILayout.Height(notesBox.height * 0.85f));
+                            GUILayout.TextArea("Null", GUILayout.Width(notesBox.width - 5), GUILayout.Height(notesBox.height * 0.7f));
                         }
+                        tempColor = GUI.backgroundColor;
+                        GUI.backgroundColor = Color.magenta;
+                        GUILayout.Space(notesBox.height * 0.02f);
+                        GUILayout.BeginHorizontal();
+                            if (GUILayout.Button("Build Character", GUILayout.Width(notesBox.width * 0.33f), GUILayout.Height(notesBox.height * 0.13f)))
+                            {
+                                SliceSprite(sliceSpritePath, 64, 64);
+                            }
+                            GUILayout.Space(notesBox.width * 0.48f);
+                        GUILayout.EndHorizontal();
+                        
+                        GUI.backgroundColor = tempColor;
                     GUILayout.EndArea();
                     #endregion //End of notebox area
             
@@ -666,6 +681,22 @@ namespace Remorse.Tools.RPGDatabase.Window
             }
         }
 
+        public void ImageFolderCounter(int size)
+        {
+            for (int i = 1; i <= size; i++)
+            {
+                // CHARACTER FOLDER
+                if (!AssetDatabase.IsValidFolder("Assets/Resources/Data/ActorData" + "/Image" + (i).ToString() + "/Character"))
+                    AssetDatabase.CreateFolder("Assets/Resources/Data/ActorData/Image" + i.ToString(),
+                                            "Character");
+
+                // SV BATTLER FOLDER
+                if (!AssetDatabase.IsValidFolder("Assets/Resources/Data/ActorData" + "/Image" + (i).ToString() + "/SVBattler"))
+                    AssetDatabase.CreateFolder("Assets/Resources/Data/ActorData/Image" + i.ToString(),
+                                            "SVBattler");
+            }
+            
+        }
         public override void ItemTabLoader(int index)
         {
             Texture2D defTex = new Texture2D(256, 256);
