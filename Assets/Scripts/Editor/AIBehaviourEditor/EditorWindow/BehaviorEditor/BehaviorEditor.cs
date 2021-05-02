@@ -10,6 +10,31 @@ using Remorse.AI;
 
 namespace Remorse.BehaviorEditor
 {
+    internal class StateAssCreator : EditorWindow
+    {
+        private string text;
+        
+        private void OnEnable()
+        {
+            text = "New_Data_State";
+		}
+			
+        private void OnGUI()
+        {
+            text = GUILayout.TextArea(text, GUILayout.Width(300), GUILayout.Height(15)) ;
+            if ( GUILayout.Button("Add Data State", GUILayout.Width(300), GUILayout.Height(30)) )
+            {
+                State temp = (State)ScriptableObject.CreateInstance( typeof(State) );
+                
+                temp.idCount = 1; 
+                AssetDatabase.CreateAsset(temp, "Assets/Resources/States/"+ text + ".asset");
+                AssetDatabase.SaveAssets();
+                
+                this.Close();
+            }
+        }
+    }
+    
     public class BehaviorEditor : EditorWindow
     {
 
@@ -18,6 +43,8 @@ namespace Remorse.BehaviorEditor
         bool clickedOnWindow;
         BaseNode selectedNode;
 
+        StateAssCreator assCreator;
+        
         public static EditorSettings settings;
         int transitFromId;
         Rect mouseRect = new Rect(0, 0, 1, 1);
@@ -38,7 +65,8 @@ namespace Remorse.BehaviorEditor
 
         public enum UserActions
         {
-            addState,addTransitionNode,deleteNode,commentNode,makeTransition,makePortal,resetPan
+            addState,addTransitionNode,deleteNode,commentNode,makeTransition,makePortal,resetPan,
+            addStateData
         }
         #endregion
 
@@ -395,12 +423,18 @@ namespace Remorse.BehaviorEditor
         void ModifyNode(Event e)
         {
             GenericMenu menu = new GenericMenu();
+            
+            /* State Node */
             if (selectedNode.drawNode is StateNode)
             {
+                /* Add State Data Assets */
+                menu.AddItem(new GUIContent("Create State Data"), false, ContextCallback, UserActions.addStateData);
+                
                 if (selectedNode.stateRef.currentState != null)
                 {
                     menu.AddSeparator("");
                     menu.AddItem(new GUIContent("Add Condition"), false, ContextCallback, UserActions.addTransitionNode);
+                    menu.AddItem(new GUIContent("Create State Data"), false, ContextCallback, UserActions.addTransitionNode);
                 }
                 else
                 {
@@ -411,12 +445,14 @@ namespace Remorse.BehaviorEditor
                 menu.AddItem(new GUIContent("Delete"), false, ContextCallback, UserActions.deleteNode);
             }
 
+            /* Portal Node */
 			if (selectedNode.drawNode is PortalNode)
 			{
 				menu.AddSeparator("");
 				menu.AddItem(new GUIContent("Delete"), false, ContextCallback, UserActions.deleteNode);
 			}
 
+            /* Transition Node */
 			if (selectedNode.drawNode is TransitionNode)
             {
                 if (selectedNode.isDuplicate || !selectedNode.isAssigned)
@@ -433,6 +469,7 @@ namespace Remorse.BehaviorEditor
                 menu.AddItem(new GUIContent("Delete"), false, ContextCallback, UserActions.deleteNode);
             }
 
+            /* Comment Node */
             if (selectedNode.drawNode is CommentNode)
             {
                 menu.AddSeparator("");
@@ -481,6 +518,15 @@ namespace Remorse.BehaviorEditor
 				case UserActions.resetPan:
 					ResetScroll();
 					break;
+                    
+                case UserActions.addStateData:
+
+                    assCreator = EditorWindow.GetWindow<StateAssCreator>();
+                    assCreator.maxSize = new Vector2(310, 50);
+                    assCreator.minSize = new Vector2(310, 50);
+                    assCreator.ShowModal();
+                    
+                    break;
             }
 
 			forceSetDirty = true;

@@ -10,15 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e09f12a9b8fb5e44eb81fa499afbecc4, type: 3}
-  m_Name: Patrolling
+  m_Name: New_States
   m_EditorClassIdentifier: 
   onFixed: []
   onUpdate: []
   onEnter: []
   onExit: []
-  idCount: 11
-  transitions:
-  - id: 10
-    condition: {fileID: 0}
-    targetState: {fileID: 0}
-    disable: 0
+  idCount: 0
+  transitions: []

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-namespace LastBossEditor.AI
+namespace RemorseEditor.AI
 {
  //   [CustomEditor(typeof(FieldOfView))]
     public class FieldOfViewEditor : Editor

@@ -10,6 +10,8 @@ namespace Remorse.AI
     [CustomEditor(typeof(AIBehaviour))]
     public class AIBehaviourEditor : Editor
     {
+        /* Note from Imandana */
+        /* This one must me dynamically check, because not every Chararter has All this AI types */
         public string[] tabNames =
         {
             "Character",
@@ -26,61 +28,76 @@ namespace Remorse.AI
 
         Vector2 scrollPos = Vector2.zero;
 
-        AIBehaviour myTarget;
-
+        /* Edited by Imandana */
+        AIBehaviour obj ;
+        
+        AICharacter myChar;
+        AIMovement myMovement;
+        AICombat myCombat;
+        AIPatrol myPatrol;
+        /* Edited by Imandana */ 
+        
         private void OnEnable()
         {
-            myTarget = (AIBehaviour)target;
+            obj = target as AIBehaviour;
+            
+            myChar = obj.GetComponent<AICharacter>();
+            myMovement =   obj.GetComponent<AIMovement>();
+            myCombat =  obj.GetComponent<AICombat>();
+            myPatrol =  obj.GetComponent<AIPatrol>();
         }
 
         public override void OnInspectorGUI()
         {
+            /* Note from Imandana */
+            /* NOTE : AICharacter, AIMovement, AICombat, AIPatrol script must first Attach to the GameObject FIRST
+            /* before attaching THIS class due to statically data */
             index = GUILayout.SelectionGrid(index, tabNames, tabNames.Length);
 
             switch (index)
             {
                 case 0:
-                    myTarget.health = EditorGUILayout.FloatField("Health", myTarget.health);
+                    myChar.health = EditorGUILayout.FloatField("Health", myChar.health);
                     break;
 
                 case 1:
-                    myTarget.moveSpeed = EditorGUILayout.Slider("Move Speed", myTarget.moveSpeed, 0, 100);
-                    myTarget.runSpeed = EditorGUILayout.Slider("Run Speed", myTarget.runSpeed, 0, 100);
-                    myTarget.rotateSpeed = EditorGUILayout.Slider("Rotate Speed", myTarget.rotateSpeed, 0, 100);
+                    myMovement.moveSpeed = EditorGUILayout.Slider("Move Speed", myMovement.moveSpeed, 0, 100);
+                    myMovement.runSpeed = EditorGUILayout.Slider("Run Speed", myMovement.runSpeed, 0, 100);
+                    myMovement.rotateSpeed = EditorGUILayout.Slider("Rotate Speed", myMovement.rotateSpeed, 0, 100);
                     break;
 
                 case 2:
-                    myTarget.distanceForCombat = EditorGUILayout.Slider("Distance For Combat", myTarget.distanceForCombat, 0, 50);
-                    myTarget.combatCooldown = EditorGUILayout.Slider("Combat Cooldown", myTarget.combatCooldown, 0, 100);
+                    myCombat.distanceForCombat = EditorGUILayout.Slider("Distance For Combat", myCombat.distanceForCombat, 0, 50);
+                    myCombat.combatCooldown = EditorGUILayout.Slider("Combat Cooldown", myCombat.combatCooldown, 0, 100);
 
                     GUILayout.Space(10);
 
-                    myTarget.bullet = (GameObject)EditorGUILayout.ObjectField("Bullet", myTarget.bullet, typeof(GameObject), true);
-                    myTarget.spawnBullet = (Transform)EditorGUILayout.ObjectField("Spawn Bullet Position", myTarget.spawnBullet, typeof(Transform), true);
+                    myCombat.bullet = (GameObject)EditorGUILayout.ObjectField("Bullet", myCombat.bullet, typeof(GameObject), true);
+                    myCombat.spawnBullet = (Transform)EditorGUILayout.ObjectField("Spawn Bullet Position", myCombat.spawnBullet, typeof(Transform), true);
                     break;
 
                 case 3:
-                    myTarget.currentState = (State)EditorGUILayout.ObjectField("Current State", myTarget.currentState, typeof(State), true);
+                    myPatrol.currentState = (State)EditorGUILayout.ObjectField("Current State", myPatrol.currentState, typeof(State), true);
 
                     GUILayout.Space(10);
 
-                    EditorGUI.BeginDisabledGroup(myTarget.editPatrolArea);
+                    EditorGUI.BeginDisabledGroup(myPatrol.editPatrolArea);
 
-                        myTarget.radius = EditorGUILayout.Slider("Vision Radius", myTarget.radius, 0, 50);
-                        myTarget.fov = EditorGUILayout.Slider("Vision FOV", myTarget.fov, 0, 360);
+                        myPatrol.radius = EditorGUILayout.Slider("Vision Radius", myPatrol.radius, 0, 50);
+                        myPatrol.fov = EditorGUILayout.Slider("Vision FOV", myPatrol.fov, 0, 360);
 
                     EditorGUI.EndDisabledGroup();
 
                     GUILayout.Space(10);
 
-                    myTarget.editPatrolArea = GUILayout.Toggle(myTarget.editPatrolArea, "Edit Patrol Area", "Button");
+                    myPatrol.editPatrolArea = GUILayout.Toggle(myPatrol.editPatrolArea, "Edit Patrol Area", "Button");
                     break;
             }
         }
 
         private void OnSceneGUI()
         {
-            if (myTarget.editPatrolArea)
+            if (myPatrol.editPatrolArea)
             {
                 ActiveEditorTracker.sharedTracker.isLocked = true;
 
@@ -113,7 +130,7 @@ namespace Remorse.AI
 
                                     GUILayout.BeginHorizontal();
 
-                                        int length = myTarget.patrolArea.Count;
+                                        int length = myPatrol.patrolArea.Count;
                             
                                         string[] pointNames = new string[length];
                                         string[] removeNames = new string[length];
@@ -140,7 +157,7 @@ namespace Remorse.AI
                                         if (removeIndex != -1)
                                         {
                                             pointIndex = -1;
-                                            myTarget.patrolArea.RemoveAt(removeIndex);
+                                            myPatrol.patrolArea.RemoveAt(removeIndex);
                                             removeIndex = -1;
                                         }
 
@@ -148,8 +165,8 @@ namespace Remorse.AI
                 
                                     if (GUILayout.Button("Add"))
                                     {   
-                                        myTarget.patrolArea.Add(new GridVector());
-                                        pointIndex = myTarget.patrolArea.Count - 1;
+                                        myPatrol.patrolArea.Add(new GridVector());
+                                        pointIndex = myPatrol.patrolArea.Count - 1;
                                     }
 
                                 GUILayout.EndScrollView();
@@ -176,7 +193,7 @@ namespace Remorse.AI
                     if (pointIndex != -1)
                     {
                         Vector3 point = hit.point;
-                        myTarget.patrolArea[pointIndex] = new GridVector(
+                        myPatrol.patrolArea[pointIndex] = new GridVector(
                             point.x,
                             point.y,
                             point.z
@@ -196,7 +213,7 @@ namespace Remorse.AI
 
                         for (int i = 0; i < length; i++)
                         {
-                            if (point == myTarget.patrolArea[i])
+                            if (point == myPatrol.patrolArea[i])
                             {
                                 lastPointIndex = i;
                                 break;
@@ -217,7 +234,7 @@ namespace Remorse.AI
                 for (int i = 0; i < length; i++)
                 {
                     Handles.Label(
-                        myTarget.patrolArea[i] + Vector3.up, 
+                        myPatrol.patrolArea[i] + Vector3.up, 
                         string.Format("Point {0}", i + 1), 
                         style
                     );

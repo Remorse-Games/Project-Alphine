@@ -40,7 +40,7 @@ namespace Remorse.BehaviorEditor
                 (Condition)EditorGUILayout.ObjectField(transition.condition
                 , typeof(Condition), false);
 
-            if(transition.condition == null)
+            if(transition.condition == null) 
             {            
                 EditorGUILayout.LabelField("No Condition!");
                 b.isAssigned = false;

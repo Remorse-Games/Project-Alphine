@@ -12,5 +12,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 711dbd0dcc0707448ad710a82f0aa6b6, type: 3}
   m_Name: TestAIGraph
   m_EditorClassIdentifier: 
-  windows: []
-  idCount: 20
+  windows:
+  - id: 20
+    drawNode: {fileID: 0}
+    windowRect:
+      serializedVersion: 2
+      x: 30
+      y: 102
+      width: 200
+      height: 310
+    windowTitle: State
+    enterNode: 0
+    targetNode: 0
+    isDuplicate: 0
+    comment: 
+    isAssigned: 1
+    showDescription: 0
+    isOnCurrent: 0
+    collapse: 0
+    showActions: 1
+    showEnterExit: 0
+    previousCollapse: 0
+    stateRef:
+      currentState: {fileID: 11400000, guid: 55d139ddfd312d4499dc608ff36656a5, type: 2}
+      previousState: {fileID: 11400000, guid: 55d139ddfd312d4499dc608ff36656a5, type: 2}
+    transRef:
+      previousCondition: {fileID: 0}
+      transitionId: 0
+  idCount: 21
