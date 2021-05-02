@@ -448,7 +448,6 @@ namespace Remorse.Tools.RPGDatabase.Window
             string relativePath = animCreatePath.Remove(0, findResourcesPath + 10);
             // remove the file extension.
             string finalPath = relativePath.Remove(relativePath.Length - 4, 4);
-            ControllerCreator(finalPath, "Assets/Resources/sprites/asfd.controller");
         }
 
         /// <summary>
@@ -499,12 +498,12 @@ namespace Remorse.Tools.RPGDatabase.Window
 
                 string fileName = finalPath.Split(new string[] { @"Image\" }, StringSplitOptions.None)[1];
 
-                Directory.CreateDirectory("Assets/Resources/Data/ActorData/CharacterWorld/");
-                AssetDatabase.CopyAsset("Assets/Resources/" + finalPath + ".png", "Assets/Resources/Data/ActorData/CharacterWorld/" + fileName + ".png");
+                Directory.CreateDirectory("Assets/Resources/Data/ActorData/Image1/CharacterWorld/");
+                AssetDatabase.CopyAsset("Assets/Resources/" + finalPath + ".png", "Assets/Resources/Data/ActorData/Image1/CharacterWorld/" + fileName + ".png");
 
                 Debug.Log(fileName);
 
-                Sprite imageChosen = Resources.Load<Sprite>("Data/ActorData/CharacterWorld/" + fileName);
+                Sprite imageChosen = Resources.Load<Sprite>("Data/ActorData/Image1/CharacterWorld/" + fileName);
 
                 string path = AssetDatabase.GetAssetPath(imageChosen);
                 TextureImporter ti = AssetImporter.GetAtPath(path) as TextureImporter;
@@ -516,6 +515,10 @@ namespace Remorse.Tools.RPGDatabase.Window
                 ti.spriteImportMode = SpriteImportMode.Single;
                 AssetDatabase.WriteImportSettingsIfDirty(path);
                 AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceUpdate);
+
+                AnimationCreator("Assets/Resources/" + finalPath + ".png", 60, "Assets/Resources/Image/Sliced/" + fileName + ".anim");
+                ControllerCreator("Assets/Resources/Image/Sliced/" + fileName, "Assets/Resources/Image/Sliced/" + fileName + ".controller");
+                GameObjectForAnimationCreator(imageChosen, fileName, "Assets/Resources/Image/Sliced/" + fileName);
 
                 if (imageChosen == null)
                 {

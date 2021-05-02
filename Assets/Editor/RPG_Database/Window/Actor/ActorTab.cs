@@ -104,6 +104,11 @@ namespace Remorse.Tools.RPGDatabase.Window
             //Create Folder For TraitsData and its sum is based on actorSize value
             FolderCreator(actorSize, "Assets/Resources/Data/ActorData", "TraitData");
 
+            
+            //Create Folder For TraitsData and its sum is based on actorSize value
+            FolderCreator(actorSize, "Assets/Resources/Data/ActorData", "Image");
+            ImageFolderCounter(actorSize);
+
             //Check if TraitsData_(index) is empty, if it is empty then create a SO named Trait_1
             if (traitSize[index] <= 0)
             {
@@ -203,6 +208,8 @@ namespace Remorse.Tools.RPGDatabase.Window
                     {
                         index = indexTemp = 0;
                         FolderCreator(actorSizeTemp, "Assets/Resources/Data/ActorData", "TraitData");
+                        FolderCreator(actorSizeTemp, "Assets/Resources/Data/ActorData", "Image");
+                        ImageFolderCounter(actorSizeTemp);
                         ChangeMaximum<ActorData>(actorSizeTemp, actor, PathDatabase.ActorExplicitDataPath);
                     
                         //Remove Name Duplicates
@@ -669,6 +676,27 @@ namespace Remorse.Tools.RPGDatabase.Window
             }
         }
 
+        public void ImageFolderCounter(int size)
+        {
+            for (int i = 1; i <= size; i++)
+            {
+                // FACES FOLDER
+                if(!AssetDatabase.IsValidFolder("Assets/Resources/Data/ActorData" + "/Image" + (i).ToString() + "/Faces"))
+                    AssetDatabase.CreateFolder("Assets/Resources/Data/ActorData/Image" + i.ToString(),
+                                            "Faces");
+
+                // CHARACTER FOLDER
+                if (!AssetDatabase.IsValidFolder("Assets/Resources/Data/ActorData" + "/Image" + (i).ToString() + "/Character"))
+                    AssetDatabase.CreateFolder("Assets/Resources/Data/ActorData/Image" + i.ToString(),
+                                            "Character");
+
+                // SV BATTLER FOLDER
+                if (!AssetDatabase.IsValidFolder("Assets/Resources/Data/ActorData" + "/Image" + (i).ToString() + "/SVBattler"))
+                    AssetDatabase.CreateFolder("Assets/Resources/Data/ActorData/Image" + i.ToString(),
+                                            "SVBattler");
+            }
+            
+        }
         public override void ItemTabLoader(int index)
         {
             Texture2D defTex = new Texture2D(256, 256);
