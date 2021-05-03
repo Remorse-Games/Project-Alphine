@@ -88,5 +88,20 @@ namespace Remorse.Tools.RPGDatabase.Commons
         {
         "Escape"
     };
+
+        public static string[] characterAnimationNames =
+        {
+            "/MoveDown_Walk",
+            "/MoveDown_Idle",
+
+            "/MoveRight_Walk",
+            "/MoveRight_Idle",
+
+            "/MoveLeft_Walk",
+            "/MoveLeft_Idle",
+
+            "/MoveUp_Walk",
+            "/MoveUp_Idle",
+        };
     }
 }

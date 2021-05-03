@@ -580,8 +580,29 @@ namespace Remorse.Tools.RPGDatabase.Window
                         GUILayout.BeginHorizontal();
                             if (GUILayout.Button("Build Character", GUILayout.Width(notesBox.width * 0.33f), GUILayout.Height(notesBox.height * 0.13f)))
                             {
-                                SliceSprite(actor[index].sliceSpritePath, 64, 64);
-                //AnimationCreator
+                                if (actor[index].sliceSpritePath != null)
+                                {
+                                    SliceSprite(actor[index].sliceSpritePath, 64, 64, ref actor[index].slicedSpriteLocation);
+                                    string generatedPath = FindAnimationPath();
+                                                    actor[index].animationPath = "Assets\\Resources\\" + generatedPath + "\\Animation";
+                                    if (!AssetDatabase.IsValidFolder(actor[index].animationPath))
+                                    {
+                                        AssetDatabase.CreateFolder("Assets\\Resources\\" + generatedPath, "Animation");
+                                    }
+                                    for (int i = 0; i < 32; i += 4)
+                                    {
+                                        AnimationCreator(actor[index].slicedSpriteLocation,
+                                                        6,
+                                                        actor[index].animationPath + CharacterDevelopmentData.characterAnimationNames[i / 4] + ".anim",
+                                                        i,
+                                                        i + 3
+                                                        );
+                                    }
+                                }
+                                else
+                                {
+                                    Debug.LogError("No Sliced Sprite Selected");
+                                }
                             }
                             GUILayout.Space(notesBox.width * 0.48f);
                         GUILayout.EndHorizontal();
@@ -698,6 +719,27 @@ namespace Remorse.Tools.RPGDatabase.Window
             }
             
         }
+
+        public string FindAnimationPath()
+        {
+            string originalPath = actor[index].sliceSpritePath;
+            int back = 0; // How Many Folder To Backward
+            int indexFound = 0;
+            for (int i = originalPath.Length - 1; i >= 0; i--)
+            {
+                if (originalPath[i] == '\\')
+                    back++;
+
+                if (back == 2)
+                {
+                    indexFound = i;
+                    break;
+                }
+            }
+            string finalString = originalPath.Remove(indexFound, actor[index].sliceSpritePath.Length - indexFound);
+            return finalString;
+        }
+
         public override void ItemTabLoader(int index)
         {
             Texture2D defTex = new Texture2D(256, 256);

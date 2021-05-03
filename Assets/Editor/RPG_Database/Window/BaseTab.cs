@@ -4,8 +4,6 @@ using UnityEditor;
 using UnityEditor.Animations;
 using System.IO;
 using SFB;
-using System;
-
 /*BASE TAB v 1.0
  * This base tab used for base tabbing, so we won't use
  * repeated codes that used in many occasion.
@@ -361,29 +359,32 @@ namespace Remorse.Tools.RPGDatabase.Window
         /// <param name="assetPath">Current Sprite Path ["Assets/Resources/..."]</param>
         /// <param name="sliceWidth">Slice Width</param>
         /// <param name="sliceHeight">Slice Height</param>
-        public void SliceSprite(string assetPath, int sliceWidth, int sliceHeight)
+        public void SliceSprite(string assetPath, int sliceWidth, int sliceHeight, ref string lastOutputPath)
         {
             // Remove Path Until The First Index Of Assets
 
             Texture2D myTexture = Resources.Load<Texture2D>(assetPath);
             string path = AssetDatabase.GetAssetPath(myTexture);
-            string outputPath = path.Split(new string[] { myTexture.name }, StringSplitOptions.None)[0] + "Sliced/" + myTexture.name + "/" + myTexture.name + ".png";
-            string outputDirectory = outputPath.Split(new string[] { myTexture.name }, StringSplitOptions.None)[0] + myTexture.name + "/";
+            string outputPath = path.Split(new string[] { myTexture.name }, System.StringSplitOptions.None)[0] + "Sliced/" + myTexture.name + "/" + myTexture.name + ".png";
+            string outputDirectory = outputPath.Split(new string[] { myTexture.name }, System.StringSplitOptions.None)[0] + myTexture.name + "/";
             Directory.CreateDirectory(outputDirectory);
             AssetDatabase.CopyAsset(path, outputPath);
+
+            lastOutputPath = outputPath;
 
             TextureImporter ti = AssetImporter.GetAtPath(outputPath) as TextureImporter;
             ti.isReadable = true;
             List<SpriteMetaData> newData = new List<SpriteMetaData>();
-            for (int i = 0; i < myTexture.height; i += sliceHeight)
+            for (int i = 0; i < myTexture.width; i += sliceWidth)
             {
-                for (int j = 0; j < myTexture.width; j += sliceWidth)
+                for (int j = myTexture.height; j > 0; j -= sliceHeight)
                 {
                     SpriteMetaData smd = new SpriteMetaData();
                     smd.pivot = new Vector2(0.5f, 0.5f);
                     smd.alignment = 9;
-                    smd.name = myTexture.name + "_" + (i / sliceWidth);
-                    smd.rect = new Rect(j, i, sliceWidth, sliceHeight);
+                    smd.name = (myTexture.height - j) / sliceHeight + ", " + i / sliceWidth;
+                    smd.rect = new Rect(i, j - sliceHeight, sliceWidth, sliceHeight);
+
                     newData.Add(smd);
                 }
             }
@@ -405,9 +406,11 @@ namespace Remorse.Tools.RPGDatabase.Window
         /// <param name="spritePath">Path of The Sprite To Be Added In The Animation [Takes only "sprite" from (Assets/Resources/sprite)]</param>
         /// <param name="fps">FPS in Animation</param>
         /// <param name="animCreatePath">Location To Create The Animator ["Assets/Resources/..."]</param>
-        public void AnimationCreator(string spritePath, int fps, string animCreatePath)
+        public void AnimationCreator(string spritePath, int fps, string animCreatePath, int startIndex, int endIndex)
         {
-            Sprite[] sprites = Resources.LoadAll<Sprite>(spritePath);
+            string relativePath = spritePath.Remove(0, 17); // Remove Assets/ and Resources/ string
+            string modifiedRelativePath = relativePath.Remove(relativePath.Length - 4, 4);
+            Object[] sprites = Resources.LoadAll<Sprite>(modifiedRelativePath);
             if (sprites == null)
             {
                 Debug.LogError("File Not Found!\nCheck Path / File Extension (sprite)");
@@ -418,12 +421,12 @@ namespace Remorse.Tools.RPGDatabase.Window
             spriteBinding.type = typeof(SpriteRenderer);
             spriteBinding.path = "";
             spriteBinding.propertyName = "m_Sprite";
-            ObjectReferenceKeyframe[] spriteKeyFrames = new ObjectReferenceKeyframe[sprites.Length];
-            for (int i = 0; i < (sprites.Length); i++)
+            ObjectReferenceKeyframe[] spriteKeyFrames = new ObjectReferenceKeyframe[4];
+            for (int i = startIndex; i <= (endIndex); i++)
             {
-                spriteKeyFrames[i] = new ObjectReferenceKeyframe();
-                spriteKeyFrames[i].time = (float)i / animClip.frameRate; //TIME?
-                spriteKeyFrames[i].value = sprites[i];
+                spriteKeyFrames[i - startIndex] = new ObjectReferenceKeyframe();
+                spriteKeyFrames[i - startIndex].time = ((float)i - (float)startIndex) / animClip.frameRate; //TIME?
+                spriteKeyFrames[i - startIndex].value = sprites[i];
             }
 
             AnimationClipSettings animClipSettings = new AnimationClipSettings();
@@ -484,7 +487,6 @@ namespace Remorse.Tools.RPGDatabase.Window
                 string finalPath = relativePath.Remove(relativePath.Length - 4, 4);
 
                 slicePath = finalPath; // Give string to ActorTab to run SliceSprite
-                Debug.Log(finalPath);
                 string fileName = Path.GetFileNameWithoutExtension(assetsBasedPath);
                 AssetDatabase.CopyAsset(assetsBasedPath, "Assets/Resources/" + copyLocation + fileName + ".png");
 

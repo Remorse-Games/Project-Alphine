@@ -6,7 +6,12 @@ public class ActorData : ScriptableObject
 {
     public string actorName;
     public string actorNickname;
+
+    // Folder Path
     public string sliceSpritePath;
+    public string animationPath;
+    public string slicedSpriteLocation;
+
     public int initLevel;
     public int selectedClassIndex;
     public int maxLevel;
