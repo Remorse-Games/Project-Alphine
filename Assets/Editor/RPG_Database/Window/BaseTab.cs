@@ -375,15 +375,15 @@ namespace Remorse.Tools.RPGDatabase.Window
             TextureImporter ti = AssetImporter.GetAtPath(outputPath) as TextureImporter;
             ti.isReadable = true;
             List<SpriteMetaData> newData = new List<SpriteMetaData>();
-            for (int i = 0; i < myTexture.width; i += sliceWidth)
+            for (int i = 0; i < myTexture.height; i += sliceHeight)
             {
-                for (int j = myTexture.height; j > 0; j -= sliceHeight)
+                for (int j = 0; j < myTexture.width; j += sliceWidth)
                 {
                     SpriteMetaData smd = new SpriteMetaData();
                     smd.pivot = new Vector2(0.5f, 0.5f);
                     smd.alignment = 9;
                     smd.name = myTexture.name + "_" + (i / sliceWidth);
-                    smd.rect = new Rect(i, j - sliceHeight, sliceWidth, sliceHeight);
+                    smd.rect = new Rect(j, i, sliceWidth, sliceHeight);
                     newData.Add(smd);
                 }
             }
@@ -468,7 +468,7 @@ namespace Remorse.Tools.RPGDatabase.Window
         /// <param name="panelName">Up Left Corner Window Name</param>
         /// <param name="assetPath">Data Path ["Assets/Resources/..."]</param>
         /// <returns></returns>
-        public Sprite ImageChanger(string panelName, string assetPath, string copyLocation)
+        public Sprite ImageChanger(string panelName, string assetPath, string copyLocation, ref string slicePath)
         {
             string[] rawPath = StandaloneFileBrowser.OpenFilePanel(panelName, assetPath, fileExtensions, false);
             if (rawPath.Length != 0)
@@ -483,7 +483,7 @@ namespace Remorse.Tools.RPGDatabase.Window
                 // remove the file extension.
                 string finalPath = relativePath.Remove(relativePath.Length - 4, 4);
 
-                ActorTab.sliceSpritePath = finalPath; // Give string to ActorTab to run SliceSprite
+                slicePath = finalPath; // Give string to ActorTab to run SliceSprite
                 Debug.Log(finalPath);
                 string fileName = Path.GetFileNameWithoutExtension(assetsBasedPath);
                 AssetDatabase.CopyAsset(assetsBasedPath, "Assets/Resources/" + copyLocation + fileName + ".png");

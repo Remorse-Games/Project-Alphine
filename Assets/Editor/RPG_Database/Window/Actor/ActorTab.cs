@@ -56,7 +56,6 @@ namespace Remorse.Tools.RPGDatabase.Window
         Texture2D characterImage;
         Texture2D battlerImage;
 
-        public static string sliceSpritePath;
         #endregion
 
         #region TempValues
@@ -400,7 +399,8 @@ namespace Remorse.Tools.RPGDatabase.Window
                                         actor[index].characterWorld = ImageChanger(
                                                     "Choose Character",
                                                     "Assets/Resources/Image",
-                                                    "Data/ActorData/Image" + index + "/Character"
+                                                    ("Data/ActorData/Image" + (index+1).ToString() + "/Character/"), 
+                                                    ref actor[index].sliceSpritePath
                                         );
                                         ItemTabLoader(index);
                                 }
@@ -580,7 +580,8 @@ namespace Remorse.Tools.RPGDatabase.Window
                         GUILayout.BeginHorizontal();
                             if (GUILayout.Button("Build Character", GUILayout.Width(notesBox.width * 0.33f), GUILayout.Height(notesBox.height * 0.13f)))
                             {
-                                SliceSprite(sliceSpritePath, 64, 64);
+                                SliceSprite(actor[index].sliceSpritePath, 64, 64);
+                //AnimationCreator
                             }
                             GUILayout.Space(notesBox.width * 0.48f);
                         GUILayout.EndHorizontal();

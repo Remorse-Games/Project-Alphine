@@ -6,6 +6,7 @@ public class ActorData : ScriptableObject
 {
     public string actorName;
     public string actorNickname;
+    public string sliceSpritePath;
     public int initLevel;
     public int selectedClassIndex;
     public int maxLevel;
