@@ -582,13 +582,22 @@ namespace Remorse.Tools.RPGDatabase.Window
                             {
                                 if (actor[index].sliceSpritePath != null)
                                 {
+                                    // SliceSprite and ref the actor[index].slicedSpriteLocation
                                     SliceSprite(actor[index].sliceSpritePath, 64, 64, ref actor[index].slicedSpriteLocation);
+                                    
+                                    // generatedPath is a path where the character name is located
                                     string generatedPath = FindAnimationPath();
-                                                    actor[index].animationPath = "Assets\\Resources\\" + generatedPath + "\\Animation";
+
+                                    // Set the actual animationPath from generatedPath by adding \Animation to put .anim and .controller
+                                    actor[index].animationPath = "Assets\\Resources\\" + generatedPath + "\\Animation";
+
+                                    // Check whether the Animation Folder Exists
                                     if (!AssetDatabase.IsValidFolder(actor[index].animationPath))
                                     {
                                         AssetDatabase.CreateFolder("Assets\\Resources\\" + generatedPath, "Animation");
                                     }
+
+                                    // Create All The Animation In Animation Folder
                                     for (int i = 0; i < 32; i += 4)
                                     {
                                         AnimationCreator(actor[index].slicedSpriteLocation,
@@ -598,6 +607,10 @@ namespace Remorse.Tools.RPGDatabase.Window
                                                         i + 3
                                                         );
                                     }
+
+                                    // Put The Controller In The Animation Folder
+                                    ControllerCreator(generatedPath, 
+                                                    actor[index].animationPath + '\\' + System.IO.Path.GetFileNameWithoutExtension(actor[index].slicedSpriteLocation) + ".controller");
                                 }
                                 else
                                 {

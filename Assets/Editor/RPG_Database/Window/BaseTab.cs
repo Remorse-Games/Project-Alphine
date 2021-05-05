@@ -445,9 +445,9 @@ namespace Remorse.Tools.RPGDatabase.Window
         /// </summary>
         /// <param name="animationPath">Path of The Animation To Be Added In The Controller</param>
         /// <param name="controllerCreatePath">Location To Create The Animator</param>
-        public void ControllerCreator(string animationPath, string controllerCreatePath)
+        public static void ControllerCreator(string animationPath, string controllerCreatePath)
         {
-            AnimationClip animClip = Resources.Load<AnimationClip>(animationPath);
+            AnimationClip[] animClip = Resources.LoadAll<AnimationClip>(animationPath);
             if (animClip == null)
             {
                 Debug.LogError("File Not Found!\nCheck Path / File Extension (anim)");
@@ -456,13 +456,53 @@ namespace Remorse.Tools.RPGDatabase.Window
             // Creates the controller
             var controller = UnityEditor.Animations.AnimatorController.CreateAnimatorControllerAtPath(controllerCreatePath);
 
-            AnimatorState emptyState = new AnimatorState();
-
-            emptyState.name = "Main State";
-            var stateComponent = controller.layers[0].stateMachine.AddState(emptyState.name);
-            stateComponent.motion = animClip;
+            BlendTree blendTree;
+            controller.CreateBlendTreeInController("Main Blend Tree", out blendTree, controller.layers.Length - 1);
 
 
+            blendTree.hideFlags = HideFlags.HideInHierarchy;
+            blendTree.blendType = BlendTreeType.FreeformCartesian2D;
+
+            // Create Parameter
+            controller.RemoveParameter(0);
+            controller.AddParameter("Vertical", AnimatorControllerParameterType.Float);
+            controller.AddParameter("Horizontal", AnimatorControllerParameterType.Float);
+
+            blendTree.blendParameter = "Horizontal"; // Main Parameter
+            blendTree.blendParameterY = "Vertical"; //  Y Axis Parameter
+
+            #region XYParams
+            float[] blendTreePosX =
+            {
+                0,
+                0,
+                -0.2f,
+                -1,
+                0.2f,
+                1,
+                0,
+                0
+            };
+
+            float[] blendTreePosY =
+            {
+                -0.2f,
+                -1,
+                0,
+                0,
+                0,
+                0,
+                0.2f,
+                1
+            };
+
+            #endregion
+
+            for (int i = 0; i < 8; i++)
+            {
+                blendTree.AddChild(animClip[i], new Vector2(blendTreePosX[i], blendTreePosY[i]));
+
+            }
         }
 
         /// <summary>
