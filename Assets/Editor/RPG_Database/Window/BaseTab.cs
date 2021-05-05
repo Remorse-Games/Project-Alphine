@@ -67,8 +67,12 @@ namespace Remorse.Tools.RPGDatabase.Window
             //Add Components
             objToSpawn.AddComponent<SpriteRenderer>();
             objToSpawn.GetComponent<SpriteRenderer>().sprite = mainSprite;
-            objToSpawn.AddComponent<Animator>();
+
+            var myAnimator = objToSpawn.AddComponent<Animator>();
             objToSpawn.GetComponent<Animator>().runtimeAnimatorController = animatorController;
+
+            objToSpawn.AddComponent<MoveScript>();
+            objToSpawn.GetComponent<MoveScript>().anim = myAnimator;
         }
 
         /// <summary>
@@ -406,7 +410,7 @@ namespace Remorse.Tools.RPGDatabase.Window
         /// <param name="spritePath">Path of The Sprite To Be Added In The Animation [Takes only "sprite" from (Assets/Resources/sprite)]</param>
         /// <param name="fps">FPS in Animation</param>
         /// <param name="animCreatePath">Location To Create The Animator ["Assets/Resources/..."]</param>
-        public void AnimationCreator(string spritePath, int fps, string animCreatePath, int startIndex, int endIndex)
+        public Sprite AnimationCreator(string spritePath, int fps, string animCreatePath, int startIndex, int endIndex)
         {
             string relativePath = spritePath.Remove(0, 17); // Remove Assets/ and Resources/ string
             string modifiedRelativePath = relativePath.Remove(relativePath.Length - 4, 4);
@@ -438,6 +442,8 @@ namespace Remorse.Tools.RPGDatabase.Window
                 AssetDatabase.CreateAsset(animClip, animCreatePath);
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh();
+
+            return (Sprite)sprites[0]; //For GameObject Thumbnail
         }
 
         /// <summary>

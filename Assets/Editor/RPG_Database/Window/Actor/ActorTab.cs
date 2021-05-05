@@ -597,20 +597,33 @@ namespace Remorse.Tools.RPGDatabase.Window
                                         AssetDatabase.CreateFolder("Assets\\Resources\\" + generatedPath, "Animation");
                                     }
 
+                                    Sprite forGameObject = null;
                                     // Create All The Animation In Animation Folder
                                     for (int i = 0; i < 32; i += 4)
                                     {
-                                        AnimationCreator(actor[index].slicedSpriteLocation,
-                                                        6,
-                                                        actor[index].animationPath + CharacterDevelopmentData.characterAnimationNames[i / 4] + ".anim",
-                                                        i,
-                                                        i + 3
-                                                        );
+                                        if(i == 0)
+                                            forGameObject = AnimationCreator(actor[index].slicedSpriteLocation,
+                                                                        6,
+                                                                        actor[index].animationPath + CharacterDevelopmentData.characterAnimationNames[i / 4] + ".anim",
+                                                                        i,
+                                                                        i + 3
+                                                                        );
+                                        else
+                                            AnimationCreator(actor[index].slicedSpriteLocation,
+                                                                        6,
+                                                                        actor[index].animationPath + CharacterDevelopmentData.characterAnimationNames[i / 4] + ".anim",
+                                                                        i,
+                                                                        i + 3
+                                                                        );
                                     }
 
+                                    string characterName = System.IO.Path.GetFileNameWithoutExtension(actor[index].slicedSpriteLocation); // used for gameObject Name
+                                    string controllerPath = actor[index].animationPath + '\\' + characterName + ".controller";
+
                                     // Put The Controller In The Animation Folder
-                                    ControllerCreator(generatedPath, 
-                                                    actor[index].animationPath + '\\' + System.IO.Path.GetFileNameWithoutExtension(actor[index].slicedSpriteLocation) + ".controller");
+                                    ControllerCreator(generatedPath, controllerPath);
+                                    GameObjectForAnimationCreator(forGameObject, characterName, generatedPath + "\\Animation\\" + characterName);
+
                                 }
                                 else
                                 {
