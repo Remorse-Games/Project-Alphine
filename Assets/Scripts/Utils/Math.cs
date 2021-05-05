@@ -24,6 +24,15 @@ namespace Remorse.Utility
             );
         }
 
+        public static GridVector VectorAbs(GridVector vector)
+        {
+            return new GridVector(
+                Mathf.Abs(vector.x),
+                Mathf.Abs(vector.y),
+                Mathf.Abs(vector.z)
+            );
+        }
+
     }
 
 }

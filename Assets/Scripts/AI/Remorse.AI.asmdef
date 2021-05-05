@@ -1,0 +1,15 @@
+{
+    "name": "Remorse.AI",
+    "references": [
+        "GUID:1598150d2a7acd648b4bb3bebb0e5210"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

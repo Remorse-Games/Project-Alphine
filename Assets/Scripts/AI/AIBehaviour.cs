@@ -17,6 +17,7 @@ namespace Remorse.AI
         [Header("Combat")]
         public float distanceForCombat;
         public float combatCooldown;
+
         public GameObject bullet;
         public Transform spawnBullet;
 
@@ -45,10 +46,12 @@ namespace Remorse.AI
 
         public void Patrolling()
         {
+
         }
 
         public void Chase()
         {
+
         }
 
         public bool IsInRange(float distance)

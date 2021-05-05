@@ -1,13 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
+using UnityEditor.UIElements;
+using UnityEngine.UIElements;
 using System;
 
 namespace Remorse.Utility
 {
+    [System.Serializable]
     public class GridVector
     {
-        private float _x, _y, _z;
+        [SerializeField] private float _x = 0, _y = 0, _z = 0;
 
         public float x
         {
@@ -24,19 +28,19 @@ namespace Remorse.Utility
             get { return Mathf.Round(_z); }
         }
 
+        public float magnitude
+        {
+            get { return ToVector3().magnitude; }
+        }
+
+        public float sqrMagnitude
+        {
+            get { return ToVector3().sqrMagnitude; }
+        }
+
         public Vector3 origin
         {
             get { return new Vector3(_x, _y, _z); }
-        }
-
-        public Vector3 ToVector3()
-        {
-            return new Vector3(x, y, z);
-        }
-
-        public Vector2 ToVector2()
-        {
-            return new Vector2(x, z);
         }
 
         public GridVector(float x = 0, float y = 0, float z = 0)
@@ -59,6 +63,64 @@ namespace Remorse.Utility
             _y = pos.y;
             _z = pos.z;
         }
+
+        public Vector3 ToVector3()
+        {
+            return new Vector3(x, y, z);
+        }
+
+        public Vector2 ToVector2()
+        {
+            return new Vector2(x, z);
+        }
+
+        public static GridVector Up()
+        {
+            return new GridVector(0, 0, 1);
+        }
+
+        public static GridVector down()
+        {
+            return new GridVector(0, 0, -1);
+        }
+
+        public static GridVector right()
+        {
+            return new GridVector(1, 0, 0);
+        }
+
+        public static GridVector left()
+        {
+            return new GridVector(-1, 0, 0);
+        }
+
+        public static GridVector direction(int dir)
+        {
+            switch (dir)
+            {
+                case 0:
+                    return Up();
+
+                case 1:
+                    return down();
+
+                case 2:
+                    return right();
+
+                case 3:
+                    return left();
+            }
+
+            return null;
+        }
+
+        public static bool operator ==(GridVector a, GridVector b) => a.ToVector3() == b.ToVector3();
+        public static bool operator ==(GridVector a, Vector3 b) => a.ToVector3() == b;
+        public static bool operator ==(Vector3 a, GridVector b) => a == b.ToVector3();
+
+        public static bool operator !=(GridVector a, GridVector b) => a.ToVector3() != b.ToVector3();
+        public static bool operator !=(GridVector a, Vector3 b) => a.ToVector3() != b;
+        public static bool operator !=(Vector3 a, GridVector b) => a != b.ToVector3();
 
         public static GridVector operator +(GridVector a, GridVector b) => new GridVector(a.x + b.x, a.y + b.y, a.z + b.z);
         public static GridVector operator -(GridVector a, GridVector b) => new GridVector(a.x - b.x, a.y - b.y, a.z - b.z);
@@ -110,5 +172,4 @@ namespace Remorse.Utility
             return string.Format("({0}, {1}, {2})", x, y, z);
         }
     }
-
 }
