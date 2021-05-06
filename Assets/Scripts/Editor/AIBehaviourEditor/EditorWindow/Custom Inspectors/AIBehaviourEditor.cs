@@ -61,6 +61,8 @@ namespace Remorse.AI
 
                 case 3:
                     myTarget.currentState = (State)EditorGUILayout.ObjectField("Current State", myTarget.currentState, typeof(State), true);
+                    myTarget.groundLayer = EditorGUILayout.LayerField("Ground Layer", myTarget.groundLayer);
+                    myTarget.playerLayer = EditorGUILayout.LayerField("Player Layer", myTarget.playerLayer);
 
                     GUILayout.Space(10);
 

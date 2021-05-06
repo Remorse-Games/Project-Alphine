@@ -28,8 +28,10 @@ namespace Remorse.AI
         public float radius;
         public float fov;
 
-        [HideInInspector] public int index;
-        [HideInInspector] public bool editPatrolArea;
+        public int index;
+        public int groundLayer;
+        public int playerLayer;
+        public bool editPatrolArea;
 
         //[HideInInspector] public FieldOfView fov;
         private float tempCooldown;

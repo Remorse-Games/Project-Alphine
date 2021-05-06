@@ -10,13 +10,13 @@ namespace Tests
 {
     public class PathFinderTest
     {
+        Path path = new Path(new GridVector());
+
         // A Test behaves as an ordinary method
         [Test]
-        public void FindPath()
+        public void Case1()
         {
-            Path path = new Path(new GridVector());
             path.FindPath(new GridVector(3, 0, 0));
-
             List<GridVector> ActualResult = path;
             CollectionAssert.AreEqual(
                 expected: new List<GridVector>
@@ -25,6 +25,24 @@ namespace Tests
                     new GridVector(1, 0, 0),
                     new GridVector(2, 0, 0),
                     new GridVector(3, 0, 0)
+                },
+                actual: ActualResult
+            );
+        }
+
+        [Test]
+        public void Case2()
+        {
+            path.FindPath(new GridVector(2, 0, 2));
+            List<GridVector> ActualResult = path;
+            CollectionAssert.AreEqual(
+                expected: new List<GridVector>
+                {
+                    new GridVector(0, 0, 0),
+                    new GridVector(0, 0, 1),
+                    new GridVector(1, 0, 1),
+                    new GridVector(1, 0, 2),
+                    new GridVector(2, 0, 2)
                 },
                 actual: ActualResult
             );

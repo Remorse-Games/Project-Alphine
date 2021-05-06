@@ -20,9 +20,14 @@ namespace Remorse.AI
     {
         private PathNode head;
 
-        public Path(GridVector pos)
+        public int avoidLayer = 0;
+
+        public Path(GridVector pos, int groundLayer, int playerLayer)
         {
             head = new PathNode(pos);
+
+            int unavoidableLayer = (1 << groundLayer) | (1 << playerLayer);
+            avoidLayer = ~unavoidableLayer;
         }
 
         public void FindPath(GridVector target)
@@ -51,6 +56,12 @@ namespace Remorse.AI
             for (int i = 0; i < 4; i++)
             {
                 GridVector direction = pos + GridVector.direction(i);
+
+                if (Physics.Raycast(pos, direction, 1, avoidLayer))
+                {
+                    continue;
+                }
+
                 float magnitude = (target - direction).magnitude;
 
                 if (magnitude < nearestPointMagnitude)
