@@ -10,7 +10,7 @@ namespace Tests
 {
     public class PathFinderTest
     {
-        Path path = new Path(new GridVector());
+        Path path = new Path(new GridVector(), LayerMask.NameToLayer("Ground"), LayerMask.NameToLayer("Player"));
 
         // A Test behaves as an ordinary method
         [Test]
