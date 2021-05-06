@@ -17,14 +17,14 @@ namespace Tests
             Path path = new Path(new GridVector());
             path.FindPath(new GridVector(3, 0, 0));
 
-            List<Vector3> ActualResult = (List<Vector3>)path;
+            List<GridVector> ActualResult = path;
             CollectionAssert.AreEqual(
-                expected: new List<Vector3>
+                expected: new List<GridVector>
                 {
-                    new Vector3(0, 0, 0),
-                    new Vector3(1, 0, 0),
-                    new Vector3(2, 0, 0),
-                    new Vector3(3, 0, 0)
+                    new GridVector(0, 0, 0),
+                    new GridVector(1, 0, 0),
+                    new GridVector(2, 0, 0),
+                    new GridVector(3, 0, 0)
                 },
                 actual: ActualResult
             );

@@ -188,11 +188,7 @@ namespace Remorse.AI
                     {
                         int lastPointIndex = -1;
 
-                        Vector3 point = new Vector3(
-                            Mathf.Round(hit.point.x),
-                            Mathf.Round(hit.point.y),
-                            Mathf.Round(hit.point.z)
-                        );
+                        GridVector point = new GridVector(hit.point);
 
                         for (int i = 0; i < length; i++)
                         {

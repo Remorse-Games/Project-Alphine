@@ -114,13 +114,40 @@ namespace Remorse.Utility
             return null;
         }
 
-        public static bool operator ==(GridVector a, GridVector b) => a.ToVector3() == b.ToVector3();
-        public static bool operator ==(GridVector a, Vector3 b) => a.ToVector3() == b;
-        public static bool operator ==(Vector3 a, GridVector b) => a == b.ToVector3();
+        public bool Equals(GridVector vector)
+        {
+            if (vector is null)
+            {
+                return false;
+            }
 
-        public static bool operator !=(GridVector a, GridVector b) => a.ToVector3() != b.ToVector3();
-        public static bool operator !=(GridVector a, Vector3 b) => a.ToVector3() != b;
-        public static bool operator !=(Vector3 a, GridVector b) => a != b.ToVector3();
+            return (x == vector.x) && (y == vector.y) && (z == vector.z);
+        }
+
+        public override bool Equals(object obj) => this.Equals(obj as GridVector);
+        public override int GetHashCode() => (x, y, z).GetHashCode();
+
+        public static bool operator ==(GridVector a, GridVector b)
+        {
+            if (a is null)
+            {
+                if (b is null)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+
+            return a.Equals(b);
+        }
+
+        public static bool operator ==(GridVector a, Vector3 b) => a.Equals(b);
+        public static bool operator ==(GridVector a, Vector2 b) => a.Equals(b);
+
+        public static bool operator !=(GridVector a, GridVector b) => !(a == b);
+        public static bool operator !=(GridVector a, Vector3 b) => !(a == b);
+        public static bool operator !=(GridVector a, Vector2 b) => !(a == b);
 
         public static GridVector operator +(GridVector a, GridVector b) => new GridVector(a.x + b.x, a.y + b.y, a.z + b.z);
         public static GridVector operator -(GridVector a, GridVector b) => new GridVector(a.x - b.x, a.y - b.y, a.z - b.z);
