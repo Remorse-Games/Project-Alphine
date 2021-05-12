@@ -142,13 +142,13 @@ namespace Remorse.Tools.RPGDatabase.Window
             GUILayout.EndVertical();
 
             #region SV Magic Skills
-            Rect svMagicSkillsTab = new Rect(startingPartyTab.width + gameTitleTab.width + 15, 5, tabWidth * 1 / 4, tabHeight * 2 / 4 - 15);
+            Rect svMagicSkillsTab = new Rect(startingPartyTab.width + gameTitleTab.width + 15, 5, tabWidth * .243f, tabHeight * 2 / 4 - 15);
             GUILayout.BeginArea(svMagicSkillsTab, tabStyle);
             GUILayout.Space(2);
             GUILayout.BeginVertical();
             GUILayout.Label("[SV] Magic Skills", EditorStyles.boldLabel);
             GUILayout.Space(2);
-            scrollSVMagic = GUILayout.BeginScrollView(scrollSVMagic, false, true, GUILayout.Width(svMagicSkillsTab.width - 5), GUILayout.Height(svMagicSkillsTab.height - 30));
+            scrollSVMagic = GUILayout.BeginScrollView(scrollSVMagic, false, true, GUILayout.Width(svMagicSkillsTab.width * .97f), GUILayout.Height(svMagicSkillsTab.height - 30));
             EditorGUI.BeginDisabledGroup(selectedMagicSkillIndex != -1);
             selectedMagicSkillIndex = GUILayout.SelectionGrid(selectedMagicSkillIndex, system.magicSkills.ToArray(), 1, GUILayout.Height(svMagicSkillsTab.height / 10 * system.magicSkills.Count));
             EditorGUI.EndDisabledGroup();
