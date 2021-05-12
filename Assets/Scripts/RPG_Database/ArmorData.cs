@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class ArmorData : ScriptableObject
 {
+    // General
     public string armorName;
-    public Sprite Icon;
-
     [TextArea]
     public string armorDescription;
+    [TextArea]
+    public string notes;
 
-    //Index for selected Class.
+    // Index
     public int selectedArmorTypeIndex;
     public int selectedArmorEquipmentIndex;
 
+    // Basic Values
     public int armorPrice;
     public int armorAttack;
     public int armorDefense;
@@ -24,8 +26,9 @@ public class ArmorData : ScriptableObject
     public int armorMaxHP;
     public int armorMaxMP;
 
-    [TextArea]
-    public string notes;
+    // Sprite Image
+    public Sprite Icon;
+
     public void OnEnable()
     {
         if (armorName == null)
@@ -35,20 +38,6 @@ public class ArmorData : ScriptableObject
     }
     public void Init()
     {
-        Sprite sp = Resources.Load<Sprite>("Image");
-
         armorName = "New Armor";
-        Icon = sp;
-        armorDescription = "Insert your description here";
-        armorPrice = 500;
-        armorAttack = 10;
-        armorDefense = 0;
-        armorMAttack = 0;
-        armorMDefense = 0;
-        armorAgility = 0;
-        armorLuck = 0;
-        armorMaxHP = 0;
-        armorMaxMP = 0;
-        notes = "";
     }
 }

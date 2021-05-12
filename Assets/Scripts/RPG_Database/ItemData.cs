@@ -5,40 +5,38 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Database/ItemData")]
 public class ItemData : ScriptableObject
 {
+    // General
     public string itemName;
-    public Sprite Icon;
-
+    [TextArea]
+    public string notes;
     [TextArea]
     public string itemDescription;
     public string itemUserNameMessage;
     public string itemMessage;
 
-    //Index for selected Class.
+    // Index
     public int selecteditemTypeIndex;
     public int selecteditemScopeIndex;
     public int selecteditemOccasionIndex;
     public int selecteditemHitTypeIndex;
     public int selecteditemAnimationIndex;
     public int selectedConsumableIndex;
-
     public int selectedTypeIndex;
     public int selectedElementIndex;
     public int selectedCriticalHits;
+
+    // Value
     public int itemPrice;
-
-
     public int itemSpeed;
     public int itemSuccessLevel;
     public int itemRepeat;
     public int itemTPGain;
-
     public string itemFormula;
     public int itemVariance;
 
-    //TODO: Effects
+    // Sprite Image
+    public Sprite Icon;
 
-    [TextArea]
-    public string notes;
     public void OnEnable()
     {
         if (itemName == null)

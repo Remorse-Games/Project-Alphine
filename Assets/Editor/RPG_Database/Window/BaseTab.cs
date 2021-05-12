@@ -289,7 +289,7 @@ namespace Remorse.Tools.RPGDatabase.Window
         /// <param name="currentIndex">Current Data Index</param>
         /// /// <param name="currentName">Current Data Name</param>
         /// /// <param name="names">Name List</param>
-        public string RemoveDuplicates(int lastIndex, int currentIndex, string currentName, List<string> names)
+        public string CheckNameInput(int lastIndex, int currentIndex, string currentName, List<string> names)
         {
             names[currentIndex] = currentName;
 
@@ -302,6 +302,39 @@ namespace Remorse.Tools.RPGDatabase.Window
                 for (int j = 0; j < lastIndex; j++)
                 {
                     if (names[j] == names[currentIndex] && currentIndex != j)
+                    {
+                        sameNameFound = true;
+                        break;
+                    }
+                }
+
+                if (sameNameFound)
+                    names[currentIndex] = originalName + ' ' + ++nameIncrement;
+            }
+
+            return names[currentIndex];
+        }
+
+        /// <summary>
+        /// Remove Name Duplicates Using Function From List
+        /// </summary>
+        /// <param name="lastIndex">Last Index To Be Checked</param>
+        /// <param name="currentIndex">Current Data Index</param>
+        /// /// <param name="currentName">Current Data Name</param>
+        /// /// <param name="names">Name List</param>
+        public string ChangeMaximumNaming(int currentIndex, string currentName, List<string> names)
+        {
+            names[currentIndex] = currentName;
+
+            string originalName = currentName;
+            bool sameNameFound = true;
+            int nameIncrement = 0;
+            while (sameNameFound)
+            {
+                sameNameFound = false;
+                for (int j = 0; j < currentIndex; j++)
+                {
+                    if (names[j] == names[currentIndex])
                     {
                         sameNameFound = true;
                         break;

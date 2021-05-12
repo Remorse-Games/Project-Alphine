@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a71c7ab9b764dff4fb9df372dbd54910, type: 3}
   m_Name: Skill_1
   m_EditorClassIdentifier: 
-  dataName: New Skill Type
+  dataName: Physical

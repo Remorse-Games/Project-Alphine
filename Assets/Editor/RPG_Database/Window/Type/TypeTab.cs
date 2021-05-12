@@ -155,6 +155,10 @@ namespace Remorse.Tools.RPGDatabase.Window
             {
                 element[elementIndex].dataName = GUILayout.TextField(element[elementIndex].dataName, GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
                 elementDisplayName[elementIndex] = element[elementIndex].dataName;
+
+
+                //Remove Name Duplicates
+                element[elementIndex].dataName = CheckNameInput(elementSize, elementIndex, element[elementIndex].dataName, elementDisplayName);
             }
             else
             {
@@ -175,7 +179,7 @@ namespace Remorse.Tools.RPGDatabase.Window
                     for (int i = oldElementSize; i < elementSizeTemp; i++)
                     {
                         //Function Calling from BaseTab to check same names
-                        element[i].dataName = RemoveDuplicates(elementSizeTemp, i, element[i].dataName, elementDisplayName);
+                        element[i].dataName = ChangeMaximumNaming(i, element[i].dataName, elementDisplayName);
                         ElementListReset();
                     }
                 }
@@ -219,6 +223,10 @@ namespace Remorse.Tools.RPGDatabase.Window
             {
                 skill[skillIndex].dataName = GUILayout.TextField(skill[skillIndex].dataName, GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
                 skillDisplayName[skillIndex] = skill[skillIndex].dataName;
+
+                //Remove Name Duplicates
+                skill[skillIndex].dataName = CheckNameInput(skillSize, skillIndex, skill[skillIndex].dataName, skillDisplayName);
+
             }
             else
             {
@@ -240,7 +248,7 @@ namespace Remorse.Tools.RPGDatabase.Window
                     for (int i = oldSkillSize; i < skillSizeTemp; i++)
                     {
                         //Function Calling from BaseTab to check same names
-                        skill[i].dataName = RemoveDuplicates(skillSizeTemp, i, skill[i].dataName, skillDisplayName);
+                        skill[i].dataName = ChangeMaximumNaming(i, skill[i].dataName, skillDisplayName);
                         SkillListReset();
                     }
                 }
@@ -284,6 +292,9 @@ namespace Remorse.Tools.RPGDatabase.Window
             {
                 weapon[weaponIndex].dataName = GUILayout.TextField(weapon[weaponIndex].dataName, GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
                 weaponDisplayName[weaponIndex] = weapon[weaponIndex].dataName;
+
+                //Remove Name Duplicates
+                weapon[weaponIndex].dataName = CheckNameInput(weaponSize, weaponIndex, weapon[weaponIndex].dataName, weaponDisplayName);
             }
             else
             {
@@ -304,7 +315,7 @@ namespace Remorse.Tools.RPGDatabase.Window
                     for (int i = oldWeaponSize; i < weaponSizeTemp; i++)
                     {
                         //Function Calling from BaseTab to check same names
-                        weapon[i].dataName = RemoveDuplicates(weaponSizeTemp, i, weapon[i].dataName, weaponDisplayName);
+                        weapon[i].dataName = ChangeMaximumNaming(i, weapon[i].dataName, weaponDisplayName);
                         WeaponListReset();
                     }
                 }
@@ -348,6 +359,9 @@ namespace Remorse.Tools.RPGDatabase.Window
             {
                 armor[armorIndex].dataName = GUILayout.TextField(armor[armorIndex].dataName, GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
                 armorDisplayName[armorIndex] = armor[armorIndex].dataName;
+                //Remove Name Duplicates
+                armor[armorIndex].dataName = CheckNameInput(armorSize, armorIndex, armor[armorIndex].dataName, armorDisplayName);
+
             }
             else
             {
@@ -368,7 +382,7 @@ namespace Remorse.Tools.RPGDatabase.Window
                     for (int i = oldArmorSize; i < armorSizeTemp; i++)
                     {
                         //Function Calling from BaseTab to check same names
-                        armor[i].dataName = RemoveDuplicates(armorSizeTemp, i, armor[i].dataName, armorDisplayName);
+                        armor[i].dataName = ChangeMaximumNaming(i, armor[i].dataName, armorDisplayName);
                         ArmorListReset();
                     }
                 }
@@ -412,6 +426,9 @@ namespace Remorse.Tools.RPGDatabase.Window
             {
                 equipment[equipmentIndex].dataName = GUILayout.TextField(equipment[equipmentIndex].dataName, GUILayout.Width(eachTabWidth), GUILayout.Height(position.height * .75f / 15 - 10));
                 equipmentDisplayName[equipmentIndex] = equipment[equipmentIndex].dataName;
+                //Remove Name Duplicates
+                equipment[equipmentIndex].dataName = CheckNameInput(equipmentSize, equipmentIndex, equipment[equipmentIndex].dataName, equipmentDisplayName);
+
             }
             else
             {
@@ -432,7 +449,7 @@ namespace Remorse.Tools.RPGDatabase.Window
                     for (int i = oldEquipmentSize; i < equipmentSizeTemp; i++)
                     {
                         //Function Calling from BaseTab to check same names
-                        equipment[i].dataName = RemoveDuplicates(equipmentSizeTemp, i, equipment[i].dataName, equipmentDisplayName);
+                        equipment[i].dataName = ChangeMaximumNaming(i, equipment[i].dataName, equipmentDisplayName);
                         EquipmentListReset();
                     }
                 }

@@ -207,7 +207,7 @@ namespace Remorse.Tools.RPGDatabase.Window
                             for (int i = oldTroopSize; i < troopSizeTemp; i++)
                             {
                                 //Function Calling from BaseTab to check same names
-                                troop[i].troopName = RemoveDuplicates(troopSize, i, troop[i].troopName, troopDisplayName);
+                                troop[i].troopName = ChangeMaximumNaming(i, troop[i].troopName, troopDisplayName);
                                 ListReset();
                             }
                         }
@@ -257,7 +257,7 @@ namespace Remorse.Tools.RPGDatabase.Window
 
                                 
                                     //Function Calling from BaseTab to check same names
-                                    troop[index].troopName = RemoveDuplicates(troopSize, index, troop[index].troopName, troopDisplayName);
+                                    troop[index].troopName = CheckNameInput(troopSize, index, troop[index].troopName, troopDisplayName);
                                 }
                                 else
                                 {

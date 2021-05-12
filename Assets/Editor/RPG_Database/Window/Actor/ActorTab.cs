@@ -218,7 +218,7 @@ namespace Remorse.Tools.RPGDatabase.Window
                             actorSize = actorSizeTemp;
                             ListReset();
 
-                            for (int i = oldActorSize; i < actorSizeTemp; i++)
+                            for(int i = oldActorSize; i < actorSizeTemp; i++)
                             {
                                 //Resets the armor index array length
                                 if (actor[i].allArmorIndexes == null || actor[i].allArmorIndexes.Length != equipmentTypeSize)
@@ -227,7 +227,7 @@ namespace Remorse.Tools.RPGDatabase.Window
                                 }
 
                                 //Function Calling from BaseTab to check same names
-                                actor[i].actorName = RemoveDuplicates(actorSizeTemp, i, actor[i].actorName, actorDisplayName);
+                                actor[i].actorName = ChangeMaximumNaming(i, actor[i].actorName, actorDisplayName);
                                 ListReset();
                             }
                         }
@@ -291,7 +291,7 @@ namespace Remorse.Tools.RPGDatabase.Window
                                         actorDisplayName[index] = actor[index].actorName;
 
                                         //Remove Name Duplicates
-                                        actor[index].actorName = RemoveDuplicates(actorSize, index, actor[index].actorName, actorDisplayName);
+                                        actor[index].actorName = CheckNameInput(actorSize, index, actor[index].actorName, actorDisplayName);
                                     }
                                     else
                                     { 

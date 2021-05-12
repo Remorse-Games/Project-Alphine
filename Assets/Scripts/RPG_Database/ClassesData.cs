@@ -2,6 +2,8 @@
 
 public class ClassesData : ScriptableObject
 {
+    // Ask Keju For Further Details
+    // General
     public string className;
     public string notes;
 
@@ -68,6 +70,7 @@ public class ClassesData : ScriptableObject
     public int maxLuck;
     public int growthRateLuck;
     #endregion
+
     public int getExp(int level)
     {
         return Mathf.RoundToInt(baseValue * (Mathf.Pow(level - 1, 0.9f + accelA / 250f)) * level *

@@ -242,7 +242,7 @@ namespace Remorse.Tools.RPGDatabase.Window
                         for (int i = oldSkillSize; i < skillSizeTemp; i++)
                         {
                             //Function Calling from BaseTab to check same names
-                            skill[i].skillName = RemoveDuplicates(skillSizeTemp, i, skill[i].skillName, skillDisplayName);
+                            skill[i].skillName = ChangeMaximumNaming(i, skill[i].skillName, skillDisplayName);
                             ListReset();
                         }
                     }
@@ -300,7 +300,7 @@ namespace Remorse.Tools.RPGDatabase.Window
                                         skillDisplayName[index] = skill[index].skillName;
 
                                         //Remove Name Duplicates
-                                        skill[index].skillName = RemoveDuplicates(skillSize, index, skill[index].skillName, skillDisplayName);
+                                        skill[index].skillName = CheckNameInput(skillSize, index, skill[index].skillName, skillDisplayName);
                                     }
                                     else
                                     {

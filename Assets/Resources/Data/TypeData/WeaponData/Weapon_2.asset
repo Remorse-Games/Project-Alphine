@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27c30a7a814e0c0429173d89b21c95de, type: 3}
   m_Name: Weapon_2
   m_EditorClassIdentifier: 
-  dataName: Axe
+  dataName: Staff

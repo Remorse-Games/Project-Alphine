@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a88e3bf206481942b365ad86dc90d5c, type: 3}
   m_Name: Equipment_1
   m_EditorClassIdentifier: 
-  dataName: New Equipment Type
+  dataName: Headband

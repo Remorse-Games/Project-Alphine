@@ -182,7 +182,7 @@ namespace Remorse.Tools.RPGDatabase.Window
                             for (int i = oldWeaponSize; i < weaponSizeTemp; i++)
                             {
                                 //Function Calling from BaseTab to check same names
-                                weapon[i].weaponName = RemoveDuplicates(weaponSize, i, weapon[i].weaponName, weaponDisplayName);
+                                weapon[i].weaponName = ChangeMaximumNaming(i, weapon[i].weaponName, weaponDisplayName);
                                 ListReset();
                             }
                         }
@@ -244,7 +244,7 @@ namespace Remorse.Tools.RPGDatabase.Window
 
                                         
                                             //Function Calling from BaseTab to check same names
-                                            weapon[index].weaponName = RemoveDuplicates(weaponSize, index, weapon[index].weaponName, weaponDisplayName);
+                                            weapon[index].weaponName = CheckNameInput(weaponSize, index, weapon[index].weaponName, weaponDisplayName);
                                         }
                                         else
                                         {

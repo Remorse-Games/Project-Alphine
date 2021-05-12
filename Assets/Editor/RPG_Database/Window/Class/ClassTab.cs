@@ -179,7 +179,7 @@ namespace Remorse.Tools.RPGDatabase.Window
                             for (int i = oldClassSize; i < classSizeTemp; i++)
                             {
                                 //Function Calling from BaseTab to check same names
-                                classes[i].className = RemoveDuplicates(classSize, i, classes[i].className, classesNames);
+                                classes[i].className = ChangeMaximumNaming(i, classes[i].className, classesNames);
                                 ListReset();
                             }
                         }
@@ -259,7 +259,7 @@ namespace Remorse.Tools.RPGDatabase.Window
                                     classesNames[index] = classes[index].className;
 
                                     //Remove Name Duplicates
-                                    classes[index].className = RemoveDuplicates(classSize, index, classes[index].className, classesNames);
+                                    classes[index].className = CheckNameInput(classSize, index, classes[index].className, classesNames);
                                 }
                                 else
                                 {

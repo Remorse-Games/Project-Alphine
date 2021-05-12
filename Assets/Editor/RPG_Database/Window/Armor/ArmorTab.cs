@@ -175,7 +175,7 @@ namespace Remorse.Tools.RPGDatabase.Window
                             for (int i = oldArmorSize; i < armorSizeTemp; i++)
                             {
                                 //Function Calling from BaseTab to check same names
-                                armor[i].armorName = RemoveDuplicates(armorSize, i, armor[i].armorName, armorDisplayName);
+                                armor[i].armorName = ChangeMaximumNaming(i, armor[i].armorName, armorDisplayName);
                                 ListReset();
                             }
                         }
@@ -238,7 +238,7 @@ namespace Remorse.Tools.RPGDatabase.Window
 
 
                                         //Function Calling from BaseTab to check same names
-                                        armor[index].armorName = RemoveDuplicates(armorSize, index, armor[index].armorName, armorDisplayName);
+                                        armor[index].armorName = CheckNameInput(armorSize, index, armor[index].armorName, armorDisplayName);
                                     }
                                     else
                                     {

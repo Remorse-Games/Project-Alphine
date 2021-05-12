@@ -4,16 +4,23 @@ using System.Collections.Generic;
 [CreateAssetMenu(menuName = "Database/TroopData")]
 public class TroopData : ScriptableObject
 {
+    // General
     public string troopName;
-    public Sprite background;
+    [TextArea]
+    public string notes;
+
+    // List of Names
     public List<string> troopAddedList = new List<string>();
+
+    // Index
     public int indexAddedListTemp = -1;
     public int indexAvailableListTemp = -1;
     public int indexAddedList = 0;
     public int indexAvailableList = 0;
 
-    [TextArea]
-    public string notes;
+
+    // Sprite Image
+    public Sprite background;
 
     public void OnEnable()
     {

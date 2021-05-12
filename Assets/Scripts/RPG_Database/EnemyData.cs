@@ -5,12 +5,16 @@ using UnityEngine.UIElements;
 
 public class EnemyData : ScriptableObject
 {
+    // General
     public string enemyName;
-    public Sprite Image;
+    [TextArea]
+    public string notes;
 
+    // Index
     public int[] selectedToggle = new int[3];
     public int[] selectedIndex = new int[3];
 
+    // Value
     public int[] enemyProbability = new int[3] {1, 1, 1};
     public int enemyAttack;
     public int enemyDefense;
@@ -23,8 +27,9 @@ public class EnemyData : ScriptableObject
     public int enemyEXP;
     public int enemyGold;
 
-    [TextArea]
-    public string notes;
+    // Sprite Image
+    public Sprite Image;
+
     public void OnEnable()
     {
         if (enemyName == null)
@@ -34,19 +39,6 @@ public class EnemyData : ScriptableObject
     }
     public void Init()
     {
-        Sprite sp = Resources.Load<Sprite>("Image");
         enemyName = "New Enemy";
-        enemyEXP = 0;
-        enemyAttack = 30;
-        enemyDefense = 30;
-        enemyMaxMP = 0;
-        enemyMAttack = 30;
-        enemyMDefense = 30;
-        enemyAgility = 30;
-        enemyLuck = 30;
-        enemyMaxHP = 500;
-        enemyGold = 0;
-        Image = sp;
-        notes = "write your notes here, it won't affect the game though.";
     }
 }

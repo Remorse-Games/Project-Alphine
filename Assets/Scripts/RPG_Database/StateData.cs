@@ -3,31 +3,39 @@
 [CreateAssetMenu(menuName = "Database/StateData")]
 public class StateData : ScriptableObject
 {
+    // General
     public string stateName;
-    public Sprite icon;
+    [TextArea]
+    public string notes;
 
-    public int statePriority;
+    // Index
     public int selectedRestriction;
     public int selectedSVMotion;
     public int selectedSVOverlay;
     public int selectedAutoRemoval;
+
+    // General Settings
+    public int statePriority;
     public int durationInTurnsA;
     public int durationInTurnsB;
     public int removeByDamageValue;
     public int removeByWalkingValue;
 
+    // Messages
     public string firstMessageTarget;
     public string secondMessageTarget;
     public string thirdMessageTarget;
     public string fourthMessageTarget;
 
+    // Selection Toogle
     public bool stateRemoveAt;
     public bool stateRemoveByRestriction;
     public bool stateRemoveByDamage;
     public bool stateRemoveByWalking;
 
-    [TextArea]
-    public string notes;
+
+    // Sprite Image
+    public Sprite icon;
 
     public void OnEnable()
     {
@@ -39,18 +47,6 @@ public class StateData : ScriptableObject
 
     public void Init()
     {
-        Sprite sp = Resources.Load<Sprite>("Image");
-
         stateName = "New State";
-        icon = sp;
-
-        statePriority = 100;
-
-        durationInTurnsA = 1;
-        durationInTurnsB = 1;
-
-        firstMessageTarget = "Is fallen!";
-        secondMessageTarget = "Is slain!";
-        fourthMessageTarget = "Revives!";
     }
 }

@@ -243,7 +243,7 @@ namespace Remorse.Tools.RPGDatabase.Window
                             for (int i = oldItemSize; i < itemSizeTemp; i++)
                             {
                                 //Function Calling from BaseTab to check same names
-                                item[i].itemName = RemoveDuplicates(itemSize, i, item[i].itemName, itemDisplayName);
+                                item[i].itemName = ChangeMaximumNaming(i, item[i].itemName, itemDisplayName);
                                 ListReset();
                             }
                         }
@@ -301,7 +301,7 @@ namespace Remorse.Tools.RPGDatabase.Window
 
 
                                         //Function Calling from BaseTab to check same names
-                                        item[index].itemName = RemoveDuplicates(itemSize, index, item[index].itemName, itemDisplayName);
+                                        item[index].itemName = CheckNameInput(itemSize, index, item[index].itemName, itemDisplayName);
                                     }
                                     else
                                     {

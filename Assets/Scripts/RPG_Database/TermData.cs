@@ -3,6 +3,8 @@
 [CreateAssetMenu(menuName = "Database/TermData")]
 public class TermData : ScriptableObject
 {
+    // Names In Tab
+
     public string termLevel;
     public string termHP;
     public string termMP;

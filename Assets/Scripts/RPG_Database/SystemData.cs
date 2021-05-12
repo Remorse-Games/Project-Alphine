@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SystemData : ScriptableObject
 {
+    // Ask Keju For Further Details
     public List<string> startingParty;
 
     public string gameTitle;
@@ -25,12 +26,6 @@ public class SystemData : ScriptableObject
 
     public void Init()
     {
-        startingParty = new List<string>();
-        magicSkills = new List<string>();
-
-        gameTitle = "Game Title";
-
-        currencyUnit = "G";
         windowColor = new Color32(128,128,128,255);
     }
 }

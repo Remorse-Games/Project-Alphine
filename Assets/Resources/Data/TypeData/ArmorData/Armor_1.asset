@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acb95b9fcb719a3498e09aa9734d3735, type: 3}
   m_Name: Armor_1
   m_EditorClassIdentifier: 
-  dataName: New Armor Type
+  dataName: Magic Armor

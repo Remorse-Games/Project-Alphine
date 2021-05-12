@@ -203,7 +203,7 @@ namespace Remorse.Tools.RPGDatabase.Window
                             for (int i = oldStateSize; i < stateSizeTemp; i++)
                             {
                                 //Function Calling from BaseTab to check same names
-                                state[i].stateName = RemoveDuplicates(stateSize, i, state[i].stateName, stateDisplayName);
+                                state[i].stateName = ChangeMaximumNaming(i, state[i].stateName, stateDisplayName);
                                 ListReset();
                             }
                         }
@@ -263,7 +263,7 @@ namespace Remorse.Tools.RPGDatabase.Window
 
                                         
                                             //Function Calling from BaseTab to check same names
-                                            state[index].stateName = RemoveDuplicates(stateSize, index, state[index].stateName, stateDisplayName);
+                                            state[index].stateName = CheckNameInput(stateSize, index, state[index].stateName, stateDisplayName);
                                         }
                                         else
                                         {
