@@ -362,13 +362,13 @@ namespace Remorse.Tools.RPGDatabase.Window
 
 
                     //Images tab
-                    Rect imageBox = new Rect(5, generalBox.height + 10, firstTabWidth + 60, position.height / 3 - 30); //Second Row
+                    Rect imageBox = new Rect(5, generalBox.height + 10, firstTabWidth + 60, position.height / 3); //Second Row
                     #region ImageArea
                     GUILayout.BeginArea(imageBox, tabStyle); //Image Tab
                         GUILayout.Space(2);
                         GUILayout.Label("Images", EditorStyles.boldLabel); //Image Label
-                        GUILayout.Space(imageBox.height / 15);
                         //Three image parts
+                        GUILayout.BeginVertical();
                         #region ImagePart
                         GUILayout.BeginHorizontal();
                             #region Face
@@ -424,21 +424,81 @@ namespace Remorse.Tools.RPGDatabase.Window
                                 GUI.backgroundColor = tempColor3;
                                 GUILayout.EndVertical();
                                                 #endregion
-                                            GUILayout.EndHorizontal();
-                                            #endregion
-                                        GUILayout.EndArea();
-                                        #endregion
+                            GUILayout.EndHorizontal();
+                            #endregion
+
+                            GUILayout.Space(imageBox.height / 15 - 8);
+                            GUILayout.BeginHorizontal();
+                                GUILayout.Space(imageBox.width / 3);
+                                tempColor1 = GUI.backgroundColor;
+                                GUI.backgroundColor = Color.magenta;
+                                if (GUILayout.Button("Build Character", GUILayout.Height(imageBox.height / 10 + 10), GUILayout.Width(imageBox.width / 3 - 10)))
+                                {
+                                    if (actor[index].sliceSpritePath != null)
+                                    {
+                                        // SliceSprite and ref the actor[index].slicedSpriteLocation
+                                        SliceSprite(actor[index].sliceSpritePath, 64, 64, ref actor[index].slicedSpriteLocation);
+
+                                        // generatedPath is a path where the character name is located
+                                        string generatedPath = FindAnimationPath();
+
+                                        // Set the actual animationPath from generatedPath by adding \Animation to put .anim and .controller
+                                        actor[index].animationPath = "Assets\\Resources\\" + generatedPath + "\\Animation";
+
+                                        // Check whether the Animation Folder Exists
+                                        if (!AssetDatabase.IsValidFolder(actor[index].animationPath))
+                                        {
+                                            AssetDatabase.CreateFolder("Assets\\Resources\\" + generatedPath, "Animation");
+                                        }
+
+                                        Sprite forGameObject = null;
+                                        // Create All The Animation In Animation Folder
+                                        for (int i = 0; i < 32; i += 4)
+                                        {
+                                            if (i == 0)
+                                                forGameObject = AnimationCreator(actor[index].slicedSpriteLocation,
+                                                                            6,
+                                                                            actor[index].animationPath + CharacterDevelopmentData.characterAnimationNames[i / 4] + ".anim",
+                                                                            i,
+                                                                            i + 3
+                                                                            );
+                                            else
+                                                AnimationCreator(actor[index].slicedSpriteLocation,
+                                                                            6,
+                                                                            actor[index].animationPath + CharacterDevelopmentData.characterAnimationNames[i / 4] + ".anim",
+                                                                            i,
+                                                                            i + 3
+                                                                            );
+                                        }
+
+                                        string characterName = System.IO.Path.GetFileNameWithoutExtension(actor[index].slicedSpriteLocation); // used for gameObject Name
+                                        string controllerPath = actor[index].animationPath + '\\' + characterName + ".controller";
+
+                                        // Put The Controller In The Animation Folder
+                                        ControllerCreator(generatedPath, controllerPath);
+                                        GameObjectForAnimationCreator(forGameObject, characterName, generatedPath + "\\Animation\\" + characterName);
+
+                                    }
+                                    else
+                                    {
+                                        Debug.LogError("No Sliced Sprite Selected");
+                                    }
+                                }
+                                GUI.backgroundColor = tempColor1;
+                                GUILayout.EndHorizontal();
+                        GUILayout.EndVertical();
+                    GUILayout.EndArea();
+                    #endregion
 
                 
                     //Initial Equipment
-                    Rect equipmentBox = new Rect(5, generalBox.height + imageBox.height + 20, firstTabWidth + 60, position.height / 3 + 20);
+                    Rect equipmentBox = new Rect(5, generalBox.height + imageBox.height + 15, firstTabWidth + 60, position.height / 3);
                     #region Equipment
                     GUILayout.BeginArea(equipmentBox, tabStyle);
                         GUILayout.Space(2);
                         GUILayout.Label("Initial Equipment", EditorStyles.boldLabel);
                         #region Vertical
                         GUILayout.BeginVertical();
-                            GUILayout.Space(equipmentBox.height / 10);
                             #region Horizontal
                             GUILayout.BeginHorizontal();
                                 GUILayout.Label(PadString("Type", string.Format("{0}", " Equipment Item")), GUILayout.Width(equipmentBox.width));
@@ -560,7 +620,7 @@ namespace Remorse.Tools.RPGDatabase.Window
 
 
                     //Notes
-                    Rect notesBox = new Rect(5, traitsBox.height + 15, firstTabWidth + 15, position.height * 2.5f / 8);
+                    Rect notesBox = new Rect(5, traitsBox.height + 10, firstTabWidth + 17, position.height * 2.5f / 8);
                     #region NoteBox
                     GUILayout.BeginArea(notesBox, tabStyle);
                         GUILayout.Space(2);
@@ -568,72 +628,12 @@ namespace Remorse.Tools.RPGDatabase.Window
                         GUILayout.Space(notesBox.height / 50);
                         if (actorSize > 0)
                         {
-                            actor[index].notes = GUILayout.TextArea(actor[index].notes, GUILayout.Width(notesBox.width - 5), GUILayout.Height(notesBox.height * 0.7f));
+                            actor[index].notes = GUILayout.TextArea(actor[index].notes, GUILayout.Width(notesBox.width - 5), GUILayout.Height(notesBox.height * 0.85f));
                         }
                         else
                         {
-                            GUILayout.TextArea("Null", GUILayout.Width(notesBox.width - 5), GUILayout.Height(notesBox.height * 0.7f));
+                            GUILayout.TextArea("Null", GUILayout.Width(notesBox.width - 5), GUILayout.Height(notesBox.height * 0.85f));
                         }
-                        tempColor = GUI.backgroundColor;
-                        GUI.backgroundColor = Color.magenta;
-                        GUILayout.Space(notesBox.height * 0.02f);
-                        GUILayout.BeginHorizontal();
-                            if (GUILayout.Button("Build Character", GUILayout.Width(notesBox.width * 0.33f), GUILayout.Height(notesBox.height * 0.13f)))
-                            {
-                                if (actor[index].sliceSpritePath != null)
-                                {
-                                    // SliceSprite and ref the actor[index].slicedSpriteLocation
-                                    SliceSprite(actor[index].sliceSpritePath, 64, 64, ref actor[index].slicedSpriteLocation);
-                                    
-                                    // generatedPath is a path where the character name is located
-                                    string generatedPath = FindAnimationPath();
-
-                                    // Set the actual animationPath from generatedPath by adding \Animation to put .anim and .controller
-                                    actor[index].animationPath = "Assets\\Resources\\" + generatedPath + "\\Animation";
-
-                                    // Check whether the Animation Folder Exists
-                                    if (!AssetDatabase.IsValidFolder(actor[index].animationPath))
-                                    {
-                                        AssetDatabase.CreateFolder("Assets\\Resources\\" + generatedPath, "Animation");
-                                    }
-
-                                    Sprite forGameObject = null;
-                                    // Create All The Animation In Animation Folder
-                                    for (int i = 0; i < 32; i += 4)
-                                    {
-                                        if(i == 0)
-                                            forGameObject = AnimationCreator(actor[index].slicedSpriteLocation,
-                                                                        6,
-                                                                        actor[index].animationPath + CharacterDevelopmentData.characterAnimationNames[i / 4] + ".anim",
-                                                                        i,
-                                                                        i + 3
-                                                                        );
-                                        else
-                                            AnimationCreator(actor[index].slicedSpriteLocation,
-                                                                        6,
-                                                                        actor[index].animationPath + CharacterDevelopmentData.characterAnimationNames[i / 4] + ".anim",
-                                                                        i,
-                                                                        i + 3
-                                                                        );
-                                    }
-
-                                    string characterName = System.IO.Path.GetFileNameWithoutExtension(actor[index].slicedSpriteLocation); // used for gameObject Name
-                                    string controllerPath = actor[index].animationPath + '\\' + characterName + ".controller";
-
-                                    // Put The Controller In The Animation Folder
-                                    ControllerCreator(generatedPath, controllerPath);
-                                    GameObjectForAnimationCreator(forGameObject, characterName, generatedPath + "\\Animation\\" + characterName);
-
-                                }
-                                else
-                                {
-                                    Debug.LogError("No Sliced Sprite Selected");
-                                }
-                            }
-                            GUILayout.Space(notesBox.width * 0.48f);
-                        GUILayout.EndHorizontal();
-                        
-                        GUI.backgroundColor = tempColor;
                     GUILayout.EndArea();
                     #endregion //End of notebox area
             
