@@ -536,9 +536,9 @@ namespace Remorse.Tools.RPGDatabase.Window
                         {
                             if (skillIndex != skillIndexTemp)
                             {
-                            
                                 skillIndexTemp = skillIndex;
                                 SkillsToLearnWindow.ShowWindow(skillToLearn, skillIndex, skillToLearnSize[index]);
+                                AssetDatabase.SetLabels(skillToLearn[skillIndex], new[] { classesNames[index] });
                             }
                         }
 
