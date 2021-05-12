@@ -309,7 +309,7 @@ namespace Remorse.Tools.RPGDatabase.Window
                                 GUILayout.EndVertical();
                                 #endregion
                                 #region Icon
-                                GUILayout.BeginArea(new Rect(generalBox.width / 2 - 3, generalBox.height * .05f + 5, firstTabWidth - 220, position.height / 2)); // Icon Area
+                                GUILayout.BeginArea(new Rect(generalBox.width / 2 - 3, generalBox.height * .05f + 5, firstTabWidth * .52f, position.height / 2)); // Icon Area
                                 GUILayout.BeginHorizontal();
                                     GUILayout.BeginVertical();
                                         GUILayout.Label("Icon:"); // Icon label
@@ -329,6 +329,24 @@ namespace Remorse.Tools.RPGDatabase.Window
                                                                     ItemTabLoader(index);
                                                                 }
                                     GUI.backgroundColor = tempColor;
+
+                                    GUILayout.EndVertical();
+                                    GUILayout.Space(5);
+                                    GUILayout.BeginVertical();
+                                        GUILayout.Label("Cooldown\nTime:");
+                                        if (skillSize > 0)
+                                        { 
+                                            skill[index].skillCooldownTime = EditorGUILayout.IntField(skill[index].skillCooldownTime, 
+                                                                                                    GUILayout.Width(generalBox.width * .15f), 
+                                                                                                    GUILayout.Height(generalBox.height / 14)); 
+                                        }
+                                        else
+                                        { 
+                                            EditorGUILayout.IntField(-1, 
+                                                                    GUILayout.Width(generalBox.width * .15f), 
+                                                                    GUILayout.Height(generalBox.height / 14)); 
+                                        }
+
 
                                     GUILayout.EndVertical();
                                 GUILayout.EndHorizontal();

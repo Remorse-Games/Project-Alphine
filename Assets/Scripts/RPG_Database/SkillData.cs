@@ -34,6 +34,7 @@ public class SkillData : ScriptableObject
 
     public int skillSpeed;
     public int skillSuccessLevel;
+    public int skillCooldownTime;
     public int skillRepeat;
     public int skillTPGain;
 
