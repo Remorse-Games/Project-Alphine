@@ -10,13 +10,13 @@ namespace Tests
 {
     public class PathFinderTest
     {
-        Path path = new Path(new GridVector(), LayerMask.NameToLayer("Ground"), LayerMask.NameToLayer("Player"));
+        Path path = new Path(LayerMask.NameToLayer("Ground"), LayerMask.NameToLayer("Player"));
 
         // A Test behaves as an ordinary method
         [Test]
         public void Case1()
         {
-            path.FindPath(new GridVector(3, 0, 0));
+            path.FindPath(new GridVector(), new GridVector(3, 0, 0));
             List<GridVector> ActualResult = path;
             CollectionAssert.AreEqual(
                 expected: new List<GridVector>
@@ -33,14 +33,14 @@ namespace Tests
         [Test]
         public void Case2()
         {
-            path.FindPath(new GridVector(2, 0, 2));
+            path.FindPath(new GridVector(), new GridVector(2, 0, 2));
             List<GridVector> ActualResult = path;
-            CollectionAssert.AreEqual(
+            CollectionAssert.AreEquivalent(
                 expected: new List<GridVector>
                 {
                     new GridVector(0, 0, 0),
                     new GridVector(0, 0, 1),
-                    new GridVector(1, 0, 1),
+                    new GridVector(0, 0, 2),
                     new GridVector(1, 0, 2),
                     new GridVector(2, 0, 2)
                 },

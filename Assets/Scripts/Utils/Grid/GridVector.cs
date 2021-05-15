@@ -74,44 +74,21 @@ namespace Remorse.Utility
             return new Vector2(x, z);
         }
 
-        public static GridVector Up()
+        public List<GridVector> Neighbour()
         {
-            return new GridVector(0, 0, 1);
-        }
-
-        public static GridVector down()
-        {
-            return new GridVector(0, 0, -1);
-        }
-
-        public static GridVector right()
-        {
-            return new GridVector(1, 0, 0);
-        }
-
-        public static GridVector left()
-        {
-            return new GridVector(-1, 0, 0);
-        }
-
-        public static GridVector direction(int dir)
-        {
-            switch (dir)
+            return new List<GridVector>()
             {
-                case 0:
-                    return Up();
-
-                case 1:
-                    return down();
-
-                case 2:
-                    return right();
-
-                case 3:
-                    return left();
-            }
-
-            return null;
+                this + new GridVector( 0,  0,  1),
+                this + new GridVector( 0,  0, -1),
+                this + new GridVector( 1,  0,  0),
+                this + new GridVector(-1,  0,  0)
+            };
+        }
+        
+        public static float ManhattanDistance(GridVector pos, GridVector des)
+        {
+            return Mathf.Abs(pos.x - des.x) +
+                   Mathf.Abs(pos.z - des.z);
         }
 
         public bool Equals(GridVector vector)

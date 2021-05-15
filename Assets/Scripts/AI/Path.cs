@@ -1,115 +1,162 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Remorse.Utility;
 
 namespace Remorse.AI
 {
-    public class PathNode
+    public class Node
     {
-        public GridVector pos = new GridVector();
-        public PathNode next = null;
+        public Node parent;
+        public GridVector pos;
 
-        public PathNode(GridVector pos)
+        public float g, h;
+
+        public float f 
         {
+            get 
+            {
+                return g + h;
+            }
+        }
+
+        public Node(Node parent, GridVector pos, float g = 0, float h = 0)
+        {
+            this.parent = parent;
             this.pos = pos;
+            
+            this.g = g;
+            this.h = h;
+        }
+
+        public Node(GridVector pos)
+        {
+            this.parent = null;
+            this.pos = pos;
+        
+            g = h = 0;
+        }
+
+        public Node()
+        {
+            parent = null;
+            pos = new GridVector();
+
+            g = h = 0;
         }
     }
 
     public class Path
     {
-        private PathNode head;
+        private List<GridVector> path = new List<GridVector>();
 
-        public int avoidLayer = 0;
+        private int avoidLayer = 0;
 
-        public Path(GridVector pos, int groundLayer, int playerLayer)
+        public Path(int groundLayer, int playerLayer)
         {
-            head = new PathNode(pos);
-
             int unavoidableLayer = (1 << groundLayer) | (1 << playerLayer);
             avoidLayer = ~unavoidableLayer;
         }
 
-        public void FindPath(GridVector target)
+        public void FindPath(GridVector start, GridVector target)
         {
-            // reset node
-            if (head.next != null) head.next = null;
+            Node startNode = new Node(start);
+            Node endNode = new Node(target);
 
-            PathNode currentNode = head;
+            List<Node> openSet = new List<Node>();
+            List<Node> closeSet = new List<Node>();
 
-            while (currentNode.pos != target)
+            openSet.Add(startNode);
+
+            while (openSet.Count > 0)
             {
-                GridVector nextNodePos = FindNextDirection(currentNode.pos, target);
-                currentNode.next = new PathNode(nextNodePos);
+                Node currentNode = openSet[0];
 
-                currentNode = currentNode.next;
+                foreach (Node node in openSet)
+                {
+                    if (node.f < currentNode.f)
+                    {
+                        currentNode = node;
+                    }
+                }
+
+                openSet.Remove(currentNode);
+                closeSet.Add(currentNode);
+
+                if (currentNode.pos == endNode.pos)
+                {
+                    List<GridVector> path = new List<GridVector>();
+
+                    Node current = currentNode;
+
+                    while (current != null)
+                    {
+                        path.Add(current.pos);
+                        current = current.parent;
+                    }
+
+                    path.Reverse();
+
+                    this.path = path;
+
+                    return;
+                }
+
+                List<Node> children = new List<Node>();
+
+                foreach (GridVector nextPos in currentNode.pos.Neighbour())
+                {
+                    if (isWalkable(currentNode.pos, nextPos))
+                        continue;
+
+                    Node newNode = new Node(currentNode, nextPos);
+                    children.Add(newNode);
+                }
+
+                foreach (Node child in children)
+                {
+                    foreach (Node closedChild in closeSet)
+                    {
+                        if (closedChild == child)
+                        {
+                            continue;
+                        }
+                    }
+
+                    child.g = currentNode.g + 1;
+                    child.h = GridVector.ManhattanDistance(currentNode.pos, endNode.pos);
+
+                    foreach (Node openNode in openSet)
+                    {
+                        if (child == openNode && child.g > openNode.g)
+                            continue;
+                    }
+
+                    openSet.Add(child);
+                }
             }
         }
 
-        private GridVector FindNextDirection(GridVector pos, GridVector target)
+        private bool isWalkable(GridVector currentPos, GridVector target)
         {
-            /* find the closest point using dot product */
-
-            GridVector nearestPoint = pos;
-            float nearestPointMagnitude = (target - nearestPoint).magnitude;
-
-            for (int i = 0; i < 4; i++)
-            {
-                GridVector direction = pos + GridVector.direction(i);
-
-                if (Physics.Raycast(pos, direction, 1, avoidLayer))
-                {
-                    continue;
-                }
-
-                float magnitude = (target - direction).magnitude;
-
-                if (magnitude < nearestPointMagnitude)
-                {
-                    nearestPoint = direction;
-                    nearestPointMagnitude = magnitude;
-                }
-            }
-
-            return nearestPoint;
+            return Physics.Raycast(currentPos, target - currentPos, 1, avoidLayer);
         }
 
         public static implicit operator List<GridVector>(Path path)
         {
-            List<GridVector> result = new List<GridVector>();
-            PathNode currentNode = path.head;
-
-            while (currentNode.next != null)
-            {
-                result.Add(currentNode.pos);
-                currentNode = currentNode.next;
-
-                if (currentNode.next == null)
-                {
-                    result.Add(currentNode.pos);
-                }
-            }
-
-            return result;
+            return path.path;
         }
 
         public static explicit operator List<Vector3>(Path path)
         {
-            List<Vector3> result = new List<Vector3>();
-            PathNode currentNode = path.head;
+            List<Vector3> vectorList = new List<Vector3>();
 
-            while (currentNode.next != null)
+            foreach (GridVector pos in path.path)
             {
-                result.Add(currentNode.pos);
-                currentNode = currentNode.next;
-
-                if (currentNode.next == null)
-                {
-                    result.Add(currentNode.pos);
-                }
+                vectorList.Add(pos);
             }
 
-            return result;
+            return vectorList;
         }
     }
 }
