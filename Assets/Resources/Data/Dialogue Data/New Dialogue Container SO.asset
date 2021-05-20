@@ -1,0 +1,151 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99a69ff5ed214494b835d86b8438ac53, type: 3}
+  m_Name: New Dialogue Container SO
+  m_EditorClassIdentifier: 
+  NodeLinkDatas:
+  - BaseNodeGuid: b28b47e4-2e08-43e0-a0a9-0d145e986ef8
+    TargetNodeGuid: 2fecc2d8-eaf0-4a53-b2a2-d2bb32681b55
+  - BaseNodeGuid: 1ab1c099-ec3e-4f0f-9cf3-f175f79b0530
+    TargetNodeGuid: 9bf43320-203a-4012-8df5-97d0be4ca5d3
+  - BaseNodeGuid: 1ab1c099-ec3e-4f0f-9cf3-f175f79b0530
+    TargetNodeGuid: 195c8b86-ef6b-43d1-a476-328960b54030
+  - BaseNodeGuid: 1ab1c099-ec3e-4f0f-9cf3-f175f79b0530
+    TargetNodeGuid: 1e56c674-4fea-44f5-8deb-e2fa4d23ce5f
+  - BaseNodeGuid: 1ab1c099-ec3e-4f0f-9cf3-f175f79b0530
+    TargetNodeGuid: 71e2520e-5063-4114-937c-06563081c194
+  - BaseNodeGuid: 2fecc2d8-eaf0-4a53-b2a2-d2bb32681b55
+    TargetNodeGuid: a31d8d41-9735-443b-9522-9a0c2575178e
+  - BaseNodeGuid: 2fecc2d8-eaf0-4a53-b2a2-d2bb32681b55
+    TargetNodeGuid: 1ab1c099-ec3e-4f0f-9cf3-f175f79b0530
+  - BaseNodeGuid: a31d8d41-9735-443b-9522-9a0c2575178e
+    TargetNodeGuid: fd6b729f-d755-4120-af5a-bd9378869a0b
+  - BaseNodeGuid: fd6b729f-d755-4120-af5a-bd9378869a0b
+    TargetNodeGuid: 9bf43320-203a-4012-8df5-97d0be4ca5d3
+  DialogueNodeDatas:
+  - NodeGuid: 2fecc2d8-eaf0-4a53-b2a2-d2bb32681b55
+    Position: {x: 248, y: 50}
+    DialogueNodePorts:
+    - InputGuid: a31d8d41-9735-443b-9522-9a0c2575178e
+      OutputGuid: 2fecc2d8-eaf0-4a53-b2a2-d2bb32681b55
+      TextLanguages:
+      - LanguageType: 0
+        LanguageGenericType: Continue
+      - LanguageType: 1
+        LanguageGenericType: Continue
+    - InputGuid: 1ab1c099-ec3e-4f0f-9cf3-f175f79b0530
+      OutputGuid: 2fecc2d8-eaf0-4a53-b2a2-d2bb32681b55
+      TextLanguages:
+      - LanguageType: 0
+        LanguageGenericType: Continue
+      - LanguageType: 1
+        LanguageGenericType: Continue
+    Sprite: {fileID: 0}
+    DialogueFaceImageType: 1
+    AudioClips:
+    - LanguageType: 0
+      LanguageGenericType: {fileID: 0}
+    - LanguageType: 1
+      LanguageGenericType: {fileID: 0}
+    Name: Kenneth
+    TextType:
+    - LanguageType: 0
+      LanguageGenericType: English
+    - LanguageType: 1
+      LanguageGenericType: Indonesia
+  - NodeGuid: 1ab1c099-ec3e-4f0f-9cf3-f175f79b0530
+    Position: {x: 511, y: 165}
+    DialogueNodePorts:
+    - InputGuid: 9bf43320-203a-4012-8df5-97d0be4ca5d3
+      OutputGuid: 1ab1c099-ec3e-4f0f-9cf3-f175f79b0530
+      TextLanguages:
+      - LanguageType: 0
+        LanguageGenericType: End
+      - LanguageType: 1
+        LanguageGenericType: Continue
+    - InputGuid: 195c8b86-ef6b-43d1-a476-328960b54030
+      OutputGuid: 1ab1c099-ec3e-4f0f-9cf3-f175f79b0530
+      TextLanguages:
+      - LanguageType: 0
+        LanguageGenericType: Repeat
+      - LanguageType: 1
+        LanguageGenericType: Continue
+    - InputGuid: 1e56c674-4fea-44f5-8deb-e2fa4d23ce5f
+      OutputGuid: 1ab1c099-ec3e-4f0f-9cf3-f175f79b0530
+      TextLanguages:
+      - LanguageType: 0
+        LanguageGenericType: GoBack
+      - LanguageType: 1
+        LanguageGenericType: Continue
+    - InputGuid: 71e2520e-5063-4114-937c-06563081c194
+      OutputGuid: 1ab1c099-ec3e-4f0f-9cf3-f175f79b0530
+      TextLanguages:
+      - LanguageType: 0
+        LanguageGenericType: Return
+      - LanguageType: 1
+        LanguageGenericType: Continue
+    Sprite: {fileID: 0}
+    DialogueFaceImageType: 1
+    AudioClips:
+    - LanguageType: 0
+      LanguageGenericType: {fileID: 0}
+    - LanguageType: 1
+      LanguageGenericType: {fileID: 0}
+    Name: Kenneth
+    TextType:
+    - LanguageType: 0
+      LanguageGenericType: English 2
+    - LanguageType: 1
+      LanguageGenericType: Indonesia
+  - NodeGuid: fd6b729f-d755-4120-af5a-bd9378869a0b
+    Position: {x: 766, y: -250}
+    DialogueNodePorts:
+    - InputGuid: 9bf43320-203a-4012-8df5-97d0be4ca5d3
+      OutputGuid: fd6b729f-d755-4120-af5a-bd9378869a0b
+      TextLanguages:
+      - LanguageType: 0
+        LanguageGenericType: End
+      - LanguageType: 1
+        LanguageGenericType: Continue
+    Sprite: {fileID: 0}
+    DialogueFaceImageType: 0
+    AudioClips:
+    - LanguageType: 0
+      LanguageGenericType: {fileID: 0}
+    - LanguageType: 1
+      LanguageGenericType: {fileID: 0}
+    Name: Kenneth
+    TextType:
+    - LanguageType: 0
+      LanguageGenericType: English
+    - LanguageType: 1
+      LanguageGenericType: Indonesia
+  EndNodeDatas:
+  - NodeGuid: 195c8b86-ef6b-43d1-a476-328960b54030
+    Position: {x: 811, y: 196}
+    EndNodeType: 1
+  - NodeGuid: 1e56c674-4fea-44f5-8deb-e2fa4d23ce5f
+    Position: {x: 817, y: 298}
+    EndNodeType: 2
+  - NodeGuid: 71e2520e-5063-4114-937c-06563081c194
+    Position: {x: 818, y: 402}
+    EndNodeType: 3
+  - NodeGuid: 9bf43320-203a-4012-8df5-97d0be4ca5d3
+    Position: {x: 1062, y: 44}
+    EndNodeType: 0
+  StartNodeDatas:
+  - NodeGuid: b28b47e4-2e08-43e0-a0a9-0d145e986ef8
+    Position: {x: 82, y: 78}
+  EventNodeDatas:
+  - NodeGuid: a31d8d41-9735-443b-9522-9a0c2575178e
+    Position: {x: 507, y: 51}
+    DialogueEventSO: {fileID: 0}
