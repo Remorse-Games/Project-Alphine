@@ -437,7 +437,7 @@ namespace Remorse.Tools.RPGDatabase.Window
                                     if (actor[index].sliceSpritePath != null)
                                     {
                                         // SliceSprite and ref the actor[index].slicedSpriteLocation
-                                        SliceSprite(actor[index].sliceSpritePath, 64, 64, ref actor[index].slicedSpriteLocation);
+                                        SliceSprite(actor[index].sliceSpritePath, ref actor[index].slicedSpriteLocation);
 
                                         // generatedPath is a path where the character name is located
                                         string generatedPath = FindAnimationPath();

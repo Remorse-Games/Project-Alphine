@@ -38,7 +38,6 @@ namespace Remorse.Tools.RPGDatabase.Window
         public string PadString(string key, string value)
         {
             int pad = 4 - (key.Length / 4);
-
             if (key.Length >= 12)
             {
                 pad++;
@@ -396,7 +395,7 @@ namespace Remorse.Tools.RPGDatabase.Window
         /// <param name="assetPath">Current Sprite Path ["Assets/Resources/..."]</param>
         /// <param name="sliceWidth">Slice Width</param>
         /// <param name="sliceHeight">Slice Height</param>
-        public void SliceSprite(string assetPath, int sliceWidth, int sliceHeight, ref string lastOutputPath)
+        public void SliceSprite(string assetPath, ref string lastOutputPath)
         {
             // Remove Path Until The First Index Of Assets
 
@@ -408,7 +407,8 @@ namespace Remorse.Tools.RPGDatabase.Window
             AssetDatabase.CopyAsset(path, outputPath);
 
             lastOutputPath = outputPath;
-
+            int sliceHeight = myTexture.height / 8;
+            int sliceWidth = myTexture.width / 4;
             TextureImporter ti = AssetImporter.GetAtPath(outputPath) as TextureImporter;
             ti.isReadable = true;
             List<SpriteMetaData> newData = new List<SpriteMetaData>();
@@ -472,9 +472,9 @@ namespace Remorse.Tools.RPGDatabase.Window
             AnimationUtility.SetAnimationClipSettings(animClip, animClipSettings);
 
             AnimationUtility.SetObjectReferenceCurve(animClip, spriteBinding, spriteKeyFrames);
-                AssetDatabase.CreateAsset(animClip, animCreatePath);
-                AssetDatabase.SaveAssets();
-                AssetDatabase.Refresh();
+            AssetDatabase.CreateAsset(animClip, animCreatePath);
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
 
             return (Sprite)sprites[0]; //For GameObject Thumbnail
         }
@@ -597,7 +597,6 @@ namespace Remorse.Tools.RPGDatabase.Window
             Debug.LogError("Image Changer should have path directly to this!");
             return null;
         }
-
         /// <summary>
         /// Image Importer
         /// </summary>
@@ -611,7 +610,7 @@ namespace Remorse.Tools.RPGDatabase.Window
             if (rawPath.Length != 0)
             {
                 int findResourcesPath = rawPath[0].IndexOf("Resources", 0, rawPath[0].Length);
-                // relative path to the Resources folder.
+                // relative path to the Resources folder
                 // I added +10 because of the process to get the end of "Resources\"
                 // to get relative path directly even we had subfolder.
                 string relativePath = rawPath[0].Remove(0, findResourcesPath + 10);
