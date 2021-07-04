@@ -155,6 +155,15 @@ namespace Remorse.AI
                                     }
 
                                 GUILayout.EndScrollView();
+
+                                GUILayout.Space(5);
+
+                                if (GUILayout.Button("Generate Path")) 
+                                {
+                                    
+                                }
+
+                                GUILayout.Space(5);
                     
                             GUILayout.EndArea();
 

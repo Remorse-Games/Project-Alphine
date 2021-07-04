@@ -20,7 +20,7 @@ namespace Remorse.Utility
 
         public float y
         {
-            get { return _y; }
+            get { return Mathf.Round(_y); }
         }
 
         public float z

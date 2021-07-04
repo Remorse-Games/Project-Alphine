@@ -60,6 +60,9 @@ namespace Remorse.AI
 
         public void FindPath(GridVector start, GridVector target)
         {
+            if (start.y != target.y)
+                throw new System.ArgumentException("Start Y Position and Target Y Position Must Be Same!");
+
             Node startNode = new Node(start);
             Node endNode = new Node(target);
 
