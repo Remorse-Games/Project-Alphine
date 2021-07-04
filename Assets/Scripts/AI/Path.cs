@@ -106,8 +106,8 @@ namespace Remorse.AI
 
                 foreach (GridVector nextPos in currentNode.pos.Neighbour())
                 {
-                    if (isWalkable(currentNode.pos, nextPos))
-                        continue;
+                    //if (isWalkable(currentNode.pos, nextPos))
+                    //    continue;
 
                     Node newNode = new Node(currentNode, nextPos);
                     children.Add(newNode);
@@ -137,15 +137,9 @@ namespace Remorse.AI
             }
         }
 
-        private bool isWalkable(GridVector currentPos, GridVector target)
-        {
-            return Physics.Raycast(currentPos, target - currentPos, 1, avoidLayer);
-        }
+        private bool isWalkable(GridVector currentPos, GridVector target) => Physics.Raycast(currentPos, target - currentPos, 1, avoidLayer);
 
-        public static implicit operator List<GridVector>(Path path)
-        {
-            return path.path;
-        }
+        public static implicit operator List<GridVector>(Path path) => path.path;
 
         public static explicit operator List<Vector3>(Path path)
         {

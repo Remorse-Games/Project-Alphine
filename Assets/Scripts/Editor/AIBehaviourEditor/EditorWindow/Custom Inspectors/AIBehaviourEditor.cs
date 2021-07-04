@@ -178,11 +178,7 @@ namespace Remorse.AI
                     if (pointIndex != -1)
                     {
                         Vector3 point = hit.point;
-                        myTarget.patrolArea[pointIndex] = new GridVector(
-                            point.x,
-                            point.y,
-                            point.z
-                        );
+                        myTarget.patrolArea[pointIndex] = point;
                     }
 
                     // On left mouse down
